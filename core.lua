@@ -284,6 +284,14 @@ local function OnEvent(self, event, unit)
 					dispelType = dispelType,
 				}
 				table.insert(active[id], spell)
+				
+				-- sort spell by expiration time else spellID
+				table.sort(active[id], function(a, b)
+					if (a.expires == b.expires) then
+						return a.spellID < b.spellID
+					end
+					return a.expires < b.expires
+				end)
 			end
 		end
 		-- update icons/bars

@@ -8,6 +8,7 @@ Filger.Options = {
 	-- setup/test options
 	["show"] = false,				-- display elements to make easier to position them.
 	["configmode"] = false,			-- enable a simulation mode.
+	["rec"] = false,				-- enable feature /filger <cmd>.
 	
 	-- bar
 	["barwidth"] = 200,				-- set bar width (default is 200).
@@ -377,20 +378,21 @@ Filger.Spells = {
 			size = 32,
 			spacing = 7,
 			unit = "player",
-
 			-- Enchants
-			{ spellID = 190909, caster = "player", filter = "BUFF" },			-- Mark of the Claw
 			
 			-- Potions
-			{ spellID = 229206, caster = "player", filter = "BUFF" },			-- Potion of Prolonged Power
-			{ spellID = 188027, caster = "player", filter = "BUFF" },			-- Potion of Deadly Grace
+			{ spellID = 188034, caster = "player", filter = "BUFF" },			-- Flask of the Countless Armies
 			
 			-- External Buffs
 			{ spellID =  57934, caster = "all", filter = "BUFF" },				-- Tricks of the Trade
 			{ spellID =   2825, caster = "all", filter = "BUFF" },				-- Bloodlust
 			{ spellID =  32182, caster = "all", filter = "BUFF" },				-- Heroism
 			{ spellID =  80353, caster = "all", filter = "BUFF" },				-- Time Warp
-			{ spellID =  90355, caster = "all", filter = "BUFF" },				-- Ancient Hysteria			
+			{ spellID =  90355, caster = "all", filter = "BUFF" },				-- Ancient Hysteria
+			
+			-- Items (procs/use)
+			{ spellID = 207472, caster = "player", filter = "BUFF" },			-- Xavaric's Magnum Opus (Neckless: Prydaz, Xavaric's Magnum Opus)
+			{ spellID = 256818, caster = "player", filter = "BUFF" },			-- Glimpse of Enlightenment (Trinket: Aman'Thul's Vision)
 		},
 		{
 			name = "PLAYER_DEBUFFS_PvE/PvP",

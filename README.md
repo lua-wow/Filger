@@ -9,5 +9,5 @@
  
 ## Info:
 
-	**Author:** Nils Ruesch, Affli
-	**Credits:** FourOne, Shestak, Garagar ,hidekki
+ **Author:** Nils Ruesch, Affli
+ **Credits:** FourOne, Shestak, Garagar, hidekki
