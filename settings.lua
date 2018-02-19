@@ -45,6 +45,7 @@ Filger.Spells = {
 			{ spellID =     17, caster = "player", filter = "BUFF" },		-- Power Word: Shield
 			{ spellID =  10060, caster = "player", filter = "BUFF" },		-- Power Infusion
 			{ spellID =  33206, caster = "player", filter = "BUFF" },		-- Pain Suppresion
+			{ spellID =  45252, caster = "player", filter = "BUFF" },		-- Focused Will
 			{ spellID =  47536, caster = "player", filter = "BUFF" },		-- Rapture
 			{ spellID =  65081, caster = "player", filter = "BUFF" },		-- Body and Soul
 			{ spellID = 121557, caster = "player", filter = "BUFF" },		-- Angelic Feather
@@ -74,9 +75,18 @@ Filger.Spells = {
 			spacing = 7,
 			unit = "player",
 			-- Shadow
-			{ spellID =  47585, caster = "player", filter = "CD" },			-- Dispersion
 			{ spellID =  15286, caster = "player", filter = "CD" },			-- Vampiric Embrace
-			
+			{ spellID =  47585, caster = "player", filter = "CD" },			-- Dispersion
+			{ spellID =  34433, caster = "player", filter = "CD" },			-- Shadowfiend
+			-- Discipline
+			{ spellID =  10060, caster = "player", filter = "CD" },			-- Power Infusion
+			{ spellID =  62618, caster = "player", filter = "CD" },			-- Power World: Barrier
+			{ spellID =  33206, caster = "player", filter = "CD" },			-- Pain Suppresion
+			-- Holy
+			{ spellID = 200183, caster = "player", filter = "CD" },			-- Apotheosis
+			{ spellID =  47788, caster = "player", filter = "CD" },			-- Guardian Spirit
+			{ spellID = 120517, caster = "player", filter = "CD" },			-- Halo
+			{ spellID =  64844, caster = "player", filter = "CD" },			-- Divine Hymn
 			-- Equipped Items
 			--{ slotID =  2, caster = "player", filter = "CD" },			-- Neck (DELETE)cc
 			--{ slotID = 13, caster = "player", filter = "CD" },			-- Trinket 1
@@ -94,7 +104,7 @@ Filger.Spells = {
 			-- Discipline
 			{ spellID =     17, caster = "player", filter = "BUFF" },		-- Power Word: Shield
 			{ spellID =  33206, caster = "player", filter = "BUFF" },		-- Pain Suppresion
-			{ spellID =  47536, caster = "player", filter = "BUFF" },		-- Rapture
+			{ spellID =  41635, caster = "player", filter = "BUFF" },		-- Player of Mending
 			{ spellID =  65081, caster = "player", filter = "BUFF" },		-- Body and Soul
 			{ spellID = 121557, caster = "player", filter = "BUFF" },		-- Angelic Feather
 			{ spellID = 152118, caster = "player", filter = "BUFF" },		-- Clarity of Will
@@ -142,12 +152,27 @@ Filger.Spells = {
 			{ spellID = 115203, caster = "player", filter = "BUFF" },			-- Fortifying Brew
 			{ spellID = 115176, caster = "player", filter = "BUFF" },			-- Zen Meditation
 			{ spellID = 116847, caster = "player", filter = "BUFF" },			-- Rushing Jade Wind
+			-- Mistweaver
+			{ spellID = 116849, caster = "player", filter = "BUFF" },			-- Life Cocoon
+			{ spellID = 197916, caster = "player", filter = "BUFF" },			-- Lifecycles (Vivify)
+			{ spellID = 197919, caster = "player", filter = "BUFF" },			-- Lifecycles (Enveloping Mist)
+			{ spellID = 191840, caster = "player", filter = "BUFF" },			-- Essence Font
+			{ spellID = 197908, caster = "player", filter = "BUFF" },			-- Mana Tea
+			{ spellID = 197206, caster = "player", filter = "BUFF" },			-- Uplifting Trance
+			{ spellID = 243435, caster = "player", filter = "BUFF" },			-- Fortifying Brew (Healer)
+				-- HoTs
+				{ spellID = 119611, caster = "player", filter = "BUFF" },			-- Renewing Mist
+				{ spellID = 115175, caster = "player", filter = "BUFF" },			-- Soothing Mist
+				{ spellID = 124682, caster = "player", filter = "BUFF" },			-- Enveloping Mist
+
 			-- Windwalker
 			{ spellID = 122783, caster = "player", filter = "BUFF" },			-- Diffuse Magic
 			{ spellID = 122278, caster = "player", filter = "BUFF" },			-- Danpwm Harm
 			{ spellID = 196740, caster = "player", filter = "BUFF" },			-- Hit Combo
 			{ spellID = 116768, caster = "player", filter = "BUFF" },			-- Blackout Kick!
 			{ spellID = 122470, caster = "player", filter = "BUFF" },			-- Touch of Karma
+			-- All
+			{ spellID = 116841, caster = "player", filter = "BUFF" },			-- Tiger's Lust
 		},
 		{
 			name = "PLAYER_COOLDOWN",
@@ -162,10 +187,28 @@ Filger.Spells = {
 			-- Brewmaster
 			{ spellID = 115203, caster = "player", filter = "CD" },			-- Fortifying Brew
 			{ spellID = 115176, caster = "player", filter = "CD" },			-- Zen Meditation
-			{ spellID = 122278, caster = "player", filter = "CD" },			-- Danpwm Harm
+			{ spellID = 122278, caster = "player", filter = "CD" },			-- Danpem Harm
+			{ spellID = 132578, caster = "player", filter = "CD" },			-- Invoke Niuzao, the Black Ox
+			-- Mistweaver
+			{ spellID = 116849, caster = "player", filter = "CD" },			-- Life Cocoon
 			-- MindWalker
 			{ spellID = 122783, caster = "player", filter = "CD" },			-- Diffuse Magic
-			
+		},
+		{
+			name = "TARGET_BUFFS",
+			anchor = { "LEFT", UIParent, "CENTER", 160, -39 },
+			direction = "RIGHT",
+			mode = "ICON",
+			num = 6,
+			size = 32,
+			spacing = 7,
+			unit = "target",
+			-- Mistweaver
+			{ spellID = 116849, caster = "player", filter = "BUFF" },			-- Life Cocoon
+			{ spellID = 191840, caster = "player", filter = "BUFF" },			-- Essence Font
+			{ spellID = 119611, caster = "player", filter = "BUFF" },			-- Renewing Mist
+			{ spellID = 115175, caster = "player", filter = "BUFF" },			-- Soothing Mist
+			{ spellID = 124682, caster = "player", filter = "BUFF" },			-- Enveloping Mist
 		},
 		{
 			name = "TARGET_DEBUFFS",
@@ -208,6 +251,8 @@ Filger.Spells = {
 			{ spellID = 164545, caster = "player", filter = "BUFF" },			-- Solar Empowerment
 			{ spellID = 191034, caster = "player", filter = "BUFF" },			-- Starfall
 			{ spellID =  22812, caster = "player", filter = "BUFF" },			-- Barkskin
+			{ spellID = 202737, caster = "player", filter = "BUFF" },			-- Blessing of Elune
+			{ spellID = 202739, caster = "player", filter = "BUFF" },			-- Blessing of An'she
 			-- Feral
 			{ spellID = 102547, caster = "player", filter = "BUFF" },			-- Incarnation: King of the Jungle
 			{ spellID =  77764, caster = "player", filter = "BUFF" },			-- Stampeding Roar
@@ -235,6 +280,7 @@ Filger.Spells = {
 			{ spellID =  33763, caster = "player", filter = "BUFF" },			-- Lifebloom
 			{ spellID =  48438, caster = "player", filter = "BUFF" },			-- Wild Growth
 			{ spellID = 114108, caster = "player", filter = "BUFF" },			-- Soul of the Forest
+			{ spellID = 102342, caster = "player", filter = "BUFF" },			-- Ironbark
 		},
 		{
 			name = "PLAYER_COOLDOWN",
@@ -251,9 +297,14 @@ Filger.Spells = {
 			-- Balance
 			{ spellID = 191034, caster = "player", filter = "CD" },				-- Starfall
 			{ spellID = 194223, caster = "player", filter = "CD" },				-- Celestial Alignment
+			{ spellID = 202360, caster = "player", filter = "CD" },				-- Blessing of the Ancients
+			{ spellID = 78675, caster = "player", filter = "CD" },				-- Solar Beam
 			-- Restoration
-			{ spellID = 102351, caster = "player", filter = "CD" },				-- Cenarion Ward
+			{ spellID =    740, caster = "player", filter = "CD" },				-- Tranquility
 			{ spellID =  29166, caster = "player", filter = "CD" },				-- Innervate
+			{ spellID = 102342, caster = "player", filter = "CD" },				-- Ironbark
+			{ spellID = 102351, caster = "player", filter = "CD" },				-- Cenarion Ward
+			{ spellID = 197721, caster = "player", filter = "CD" },				-- Flourish
 		},
 		{
 			name = "TARGET_BUFFS",
@@ -274,7 +325,7 @@ Filger.Spells = {
 			{ spellID =  29166, caster = "player", filter = "BUFF" },			-- Innervate
 			{ spellID =  33763, caster = "player", filter = "BUFF" },			-- Lifebloom
 			{ spellID =  48438, caster = "player", filter = "BUFF" },			-- Wild Growth
-			
+			{ spellID = 102342, caster = "player", filter = "BUFF" },			-- Ironbark
 		},
 		{
 			name = "TARGET_DEBUFFS",
@@ -323,8 +374,12 @@ Filger.Spells = {
 			{ spellID = 173183, caster = "player", filter = "BUFF" },			-- Elemental Blast: Haste
 			{ spellID = 173184, caster = "player", filter = "BUFF" },			-- Elemental Blast: Mastery
 			{ spellID = 210714, caster = "player", filter = "BUFF" },			-- Icefury
-			
-			{ spellID = 2825, caster = "player", filter = "BUFF" },			-- Bloodlust
+			-- Restoration
+			{ spellID =   2645, caster = "player", filter = "BUFF" },			-- Ghost Wolf
+			{ spellID =  53390, caster = "player", filter = "BUFF" },			-- Tidal Waves
+			{ spellID =  61295, caster = "player", filter = "BUFF" },			-- Riptide
+			{ spellID =  73685, caster = "player", filter = "BUFF" },			-- Unleash Life
+			{ spellID =  79206, caster = "player", filter = "BUFF" },			-- Spiritwalker's Grace
 		},
 		{
 			name = "PLAYER_COOLDOWN",
@@ -337,9 +392,9 @@ Filger.Spells = {
 			spacing = 7,
 			unit = "player",
 			-- Elemental
-			{ spellID = 114050, caster = "player", filter = "CD" },				-- Ascendance
 			{ spellID =   2825, caster = "player", filter = "CD" },				-- Bloodlust
 			{ spellID = 108281, caster = "player", filter = "CD" },				-- Ancestral Guidance
+			{ spellID = 114050, caster = "player", filter = "CD" },				-- Ascendance
 			{ spellID = 117014, caster = "player", filter = "CD" },				-- Elemental Blast
 		},
 		{
@@ -384,11 +439,12 @@ Filger.Spells = {
 			{ spellID = 188034, caster = "player", filter = "BUFF" },			-- Flask of the Countless Armies
 			
 			-- External Buffs
-			{ spellID =  57934, caster = "all", filter = "BUFF" },				-- Tricks of the Trade
 			{ spellID =   2825, caster = "all", filter = "BUFF" },				-- Bloodlust
 			{ spellID =  32182, caster = "all", filter = "BUFF" },				-- Heroism
 			{ spellID =  80353, caster = "all", filter = "BUFF" },				-- Time Warp
 			{ spellID =  90355, caster = "all", filter = "BUFF" },				-- Ancient Hysteria
+			
+			{ spellID =  57934, caster = "all", filter = "BUFF" },				-- Tricks of the Trade
 			
 			-- Items (procs/use)
 			{ spellID = 207472, caster = "player", filter = "BUFF" },			-- Xavaric's Magnum Opus (Neckless: Prydaz, Xavaric's Magnum Opus)

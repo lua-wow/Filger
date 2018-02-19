@@ -1,4 +1,8 @@
-## Filgera ChangeLog:
+## Filger ChangeLog:
+
+### Changes in 1.2-release
+
+ - Added: Spell List Update #1.
 
 ### Changes in 1.1-release
 
