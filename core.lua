@@ -155,7 +155,6 @@ function Update(self)
 				element:SetValue(1)
 			end
 			
-			-- update element position
 			if (index == 1) then
 				element:SetPoint(unpack(self.anchor))
 			else
@@ -181,7 +180,7 @@ function Update(self)
 		if (element.name) then element.name:SetText(item.name) end
 		if (element.icon) then element.icon:SetTexture(item.icon) end
 		if (element.count) then
-			element.count:SetText(item.count > 1 and item.count or "")
+			element.count:SetText(item.count and item.count > 1 and item.count or "")
 		end
 		
 		-- color borde by spell type

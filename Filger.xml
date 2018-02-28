@@ -2,9 +2,7 @@
 	
 	<Script file = "init.lua"/>
 	<Script file = "settings.lua"/>
-	<Script file = "filter.lua"/>
 	<Script file = "core.lua"/>
-	
 	<Script file = "dev.lua"/>
 	
 </Ui>

@@ -1,8 +1,14 @@
 ## Filger ChangeLog:
 
+### Changes in 1.3-release
+
+ - Fixed: element.count error when data.count got nil as value.
+ - Added: Spell List Update #2 (new Paladin)
+ - Fixed: Spell List Reviewed.
+
 ### Changes in 1.2-release
 
- - Added: Spell List Update #1.
+ - Added: Spell List Update #1
 
 ### Changes in 1.1-release
 
