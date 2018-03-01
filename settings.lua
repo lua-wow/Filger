@@ -462,6 +462,7 @@ Filger.Spells = {
 			-- Enhancement
 			{ spellID = 195256, caster = "player", filter = "BUFF" },			-- Stormslash
 			-- Restoration
+			{ spellID =  16196, caster = "player", filter = "BUFF" },			-- Resurgence
 			{ spellID =  53390, caster = "player", filter = "BUFF" },			-- Tidal Waves
 			{ spellID =  61295, caster = "player", filter = "BUFF" },			-- Riptide
 			{ spellID =  73685, caster = "player", filter = "BUFF" },			-- Unleash Life
@@ -469,6 +470,7 @@ Filger.Spells = {
 			{ spellID = 207495, caster = "player", filter = "BUFF" },			-- Ancestral Protection Totem
 			{ spellID = 216251, caster = "player", filter = "BUFF" },			-- Undulation
 			{ spellID = 201633, caster = "all", filter = "BUFF" },				-- Earthen Shield
+			{ spellID = 207400, caster = "player", filter = "BUFF" },			-- Ancestral Vigor
 		},
 		{
 			name = "PLAYER_COOLDOWN",
@@ -513,6 +515,7 @@ Filger.Spells = {
 			-- Restoration
 			{ spellID =  61295, caster = "player", filter = "BUFF" },			-- Riptide
 			{ spellID =  73921, caster = "player", filter = "BUFF" },			-- Healing Rain
+			{ spellID = 207400, caster = "player", filter = "BUFF" },			-- Ancestral Vigor
 		},
 		{
 			name = "TARGET_DEBUFFS",

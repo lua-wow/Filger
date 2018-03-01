@@ -1,5 +1,9 @@
 ## Filger ChangeLog:
 
+### Changes in 1.4-release
+
+ - Added: Spell list Update #3 (Shaman Resurgence and Ancestral Vigor)
+
 ### Changes in 1.3-release
 
  - Fixed: element.count error when data.count got nil as value.
