@@ -15,12 +15,12 @@ Filger.Options = {
 	["barheight"] = 18,				-- set bar height and icon size.
 	
 	-- icon
-	["iconsize"] = 32,				-- sei icon size.
+	["iconsize"] = 32,				-- set icon size.
 	["colordebuff"] = true,			-- enable debuff icon color base on spell type.
 }
 
 -- Examples: Equipped Items
---{ slotID =  2, caster = "player", filter = "CD" },			-- Neck
+--{ slotID =  2, caster = "player", filter = "CD" },			-- Necklace
 --{ slotID = 13, caster = "player", filter = "CD" },			-- Trinket 1
 --{ slotID = 14, caster = "player", filter = "CD" },			-- Trinket 2
 
@@ -607,7 +607,7 @@ Filger.Spells = {
 			{ spellID = 152262, caster = "player", filter = "CD" },				-- Seraphim
 			-- Retribution
 			{ spellID = 184662, caster = "player", filter = "CD" },				-- Shield of Vengeance
-			{ spellID = 205191, caster = "player", filter = "cD" },				-- Eye for a Eye
+			{ spellID = 205191, caster = "player", filter = "CD" },				-- Eye for a Eye
 			{ spellID = 210220, caster = "player", filter = "CD" },				-- Holy Wrath
 			{ spellID = 231895, caster = "player", filter = "CD" },				-- Crusade
 		},
@@ -673,6 +673,11 @@ Filger.Spells = {
 			size = 32,
 			spacing = 7,
 			unit = "player",
+			
+			-- Race
+			{ spellID = 20572, caster = "player", filter = "BUFF" },			-- Blood Fury (Orc)
+			{ spellID = 26297, caster = "player", filter = "BUFF" },			-- Berserking (Troll)
+			
 			-- Enchants
 			
 			-- Potions

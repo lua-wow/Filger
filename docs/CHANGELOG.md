@@ -1,5 +1,12 @@
 ## Filger ChangeLog:
 
+### Changes in 1.5-release
+
+ - Added: Racials Skills (just Troll and Orc).
+ - Fixed: Misspellings.
+ - Changed: edited README file.
+ - Changed: docs and media folders.
+
 ### Changes in 1.4-release
 
  - Added: Spell list Update #3 (Shaman Resurgence and Ancestral Vigor)
