@@ -1,0 +1,28 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    
+    <!-- General -->
+    <Script file="bosses.lua"/>
+	<Script file="dungeons.lua"/>
+    <Script file="raids.lua"/>
+
+    <!-- Cataclysm -->
+    <Script file="cataclysm/dungeons.lua"/>
+    <Script file="cataclysm/raids.lua"/>
+
+    <!-- Mists of Pandaria -->
+    <Script file="mop/dungeons.lua"/>
+    <Script file="mop/raids.lua"/>
+
+    <!-- Warlords of Draenor -->
+    <Script file="wod/dungeons.lua"/>
+    <Script file="wod/raids.lua"/>
+
+    <!-- Legion -->
+    <Script file="legion/dungeons.lua"/>
+    <Script file="legion/raids.lua"/>
+
+    <!-- Battle of Azeroth -->
+    <Script file="boa/dungeons.lua"/>
+    <Script file="boa/raids.lua"/>
+
+</Ui>
