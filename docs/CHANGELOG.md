@@ -1,5 +1,12 @@
 # Filger ChangeLog:
 
+## Changes in 2.1-release
+
++ Added: Druid (all specs) spell list.
++ Added: Warrior (Protection) spell list.
++ Fixed: Test command duration error (*division by zero*).
++ Fixed: StatusBar was hiding timer text.
+
 ## Changes in 2.0-release
 
  + Update: Filger complete rebuild.

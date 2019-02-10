@@ -6,6 +6,8 @@ local SpellList = ns.SpellList
 ----------------------------------------------------------------
 -- Commands
 ----------------------------------------------------------------
+local tinsert, tsort = table.insert, table.sort
+
 local function CmdSplit(cmd)
     if (cmd:find("%s")) then
         return strsplit(" ", cmd)
@@ -18,20 +20,20 @@ SlashCmdList["FILGER"] = function(cmd)
     local arg1, arg2 = CmdSplit(cmd)
     
     if (arg1 == "test") then
-        local class = Filger.MyClass
+        -- local class = Filger.MyClass
         
-        for index, data in ipairs(SpellList[class]) do
-            local frame = Filger[index]
-            for _, value in ipairs(frame.spells) do
+        for index, frame in ipairs(Filger) do
+            -- local frame = Filger[index]
+            for _, data in ipairs(frame.spells) do
                 local name, icon, start, duration, expirationTime
                 if (not frame.actives) then
                     frame.actives = {}
                 end
 
-                if (value.spellID) then
-                    name, _, icon = GetSpellInfo(value.spellID)
-                elseif (value.slotID) then
-                    local slotLink = GetInventoryItemLink("player", value.slotID)
+                if (data.spellID) then
+                    name, _, icon = GetSpellInfo(data.spellID)
+                elseif (data.slotID) then
+                    local slotLink = GetInventoryItemLink("player", data.slotID)
                     if (slotLink) then
                         name, _, _, _, _, _, _, _, _, icon = GetItemInfo(slotLink)
                     end
@@ -40,22 +42,33 @@ SlashCmdList["FILGER"] = function(cmd)
                 if (name) then
 
                     start = GetTime()
-                    duration = math.random(15, 180) * index / #data
+                    duration = math.random(15, 60)
                     expirationTime = start + duration
 
                     tinsert(frame.actives, {
-                        data = value,
+                        spellID = data.spellID,
+                        slotID = data.slotID,
+                        caster = data.caster,
+                        filter = data.filter,
                         name = name,
                         icon = icon,
                         count = 0,
                         caster = "player",
                         debuffType = false,
-                        isPlayer = false,
+                        isPlayer = true,
                         isBossDebuff = false,
                         start = start,
                         duration = duration,
                         expirationTime = expirationTime, 
                     })
+
+                    -- sort by expiration time
+                    tsort(frame.actives, function(a, b)
+                        if (a.expirationTime == b.expirationTime) then
+                            return a.name < b.name
+                        end
+                        return a.expirationTime < b.expirationTime
+                    end)
 
                     Filger.DisplayActives(frame)
                 end

@@ -216,7 +216,7 @@ function Filger:DisplayActives(...)
                 if (aura.time) then
                     aura.time = _G[aura.count:GetName()]
                 else
-                    aura.time = aura:CreateFontString("$parentTime", "OVERLAY")
+                    aura.time = aura.statusbar:CreateFontString("$parentTime", "OVERLAY")
                     aura.time:SetPoint("RIGHT", aura.statusbar, "RIGHT", -5, 0)
                     aura.time:SetFont(Font, FontSize, FontStyle)
                     aura.time:SetJustifyH("RIGHT")
@@ -610,7 +610,7 @@ function Filger:PLAYER_ENTERING_WORLD(...)
     local Zone = Instances[instanceID]
     
     if (Zone and #Zone > 0) then
-         for _, frame in ipairs(Filger) do
+        for _, frame in ipairs(Filger) do
             if (frame.instance) then
                 
                 -- clear frame spell table

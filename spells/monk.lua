@@ -19,11 +19,11 @@ SpellList["MONK"] = {
         filter = "HELPFUL",
 
         -- Brewmaster
+        { spellID = 115176, caster = "player", filter = "BUFF" },   -- Zen Meditation
         { spellID = 115295, caster = "player", filter = "BUFF" },   -- Guard
         { spellID = 116847, caster = "player", filter = "BUFF" },   -- Rushing Jade Wind
         { spellID = 120954, caster = "player", filter = "BUFF" },   -- Fortigying Brew
         { spellID = 122278, caster = "player", filter = "BUFF" },   -- Dampen Harm
-        { spellID = 115176, caster = "player", filter = "BUFF" },   -- Zen Meditation
         { spellID = 195630, caster = "player", filter = "BUFF" },   -- Elusive Brawler
         { spellID = 215479, caster = "player", filter = "BUFF" },   -- Ironskin Brew
 
@@ -44,6 +44,7 @@ SpellList["MONK"] = {
         { spellID = 197908, caster = "player", filter = "BUFF" },   -- Mana Tea
         { spellID = 243435, caster = "player", filter = "BUFF" },   -- Fortifying Brew
     }, -- [1]
+    --[[
     {
         name = "PLAYER_COOLDOWNS",
         anchor = Config["Panels"].PlayerCooldowns,
@@ -60,7 +61,7 @@ SpellList["MONK"] = {
         { spellID = 115176, caster = "player", filter = "CD" }, -- Zen Meditation
         { spellID = 115203, caster = "player", filter = "CD" }, -- Fortifying Brew
         { spellID = 115295, caster = "player", filter = "CD" }, -- Guard
-        { spellID = 115308, caster = "player", filter = "CD" }, -- Iropnskin Brew
+        { spellID = 115308, caster = "player", filter = "CD" }, -- Ironskin Brew
         { spellID = 115399, caster = "player", filter = "CD" }, -- Black Ox Brew
         { spellID = 122278, caster = "player", filter = "CD" }, -- Dampen Harm
         { spellID = 215479, caster = "player", filter = "CD" }, -- Ironskin Brew
@@ -70,6 +71,7 @@ SpellList["MONK"] = {
         { spellID = 116849, caster = "player", filter = "CD" }, -- Life Cocoon
 
     }, -- [2]
+    ]]--
     {
         name = "TARGET_AURAS",
         anchor = Config["Panels"].TargetAuras,

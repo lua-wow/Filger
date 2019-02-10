@@ -41,7 +41,7 @@ SpellList["ALL"] = {
         { spellID = 32182 , caster = "all", filter = "BUFF" },  -- Heroism (Shaman Alliance)
         { spellID = 80353 , caster = "all", filter = "BUFF" },  -- Time Warp (Mage)
         { spellID = 264667, caster = "all", filter = "BUFF" },  -- Primal Rage (Hunter)
-        { spellID = 97462 , caster = "all", filter = "BUFF" },  -- Rallying Cry
+        { spellID = 97463 , caster = "all", filter = "BUFF" },  -- Rallying Cry
     }, -- [1]
     {
         name = "PLAYER_RAID_AURAS",
@@ -59,6 +59,8 @@ SpellList["ALL"] = {
         ----------------------------------------------------------------
         -- Druid
         { spellID = 29166 , caster = "all", filter = "BUFF" },  -- Innervate
+        { spellID = 77761 , caster = "all", filter = "BUFF" },  -- Stampeding Roar (Guardian)
+        { spellID = 77764 , caster = "all", filter = "BUFF" },  -- Stampeding Roar (Feral)
         { spellID = 102342, caster = "all", filter = "BUFF" },  -- Ironbark
         -- Monk
         { spellID = 116841, caster = "all", filter = "BUFF" },  -- Tiger's Lust

@@ -4,10 +4,7 @@ Filger is a minimal buff/debuff tracker addon for [World of Warcraft](https://wo
 
  **obs.:** Only buffs/debuffs/cooldowns specified by you that will be tracked and displayed, and each spell need to be configure by it's respective spellID.
 
-<figure>
-	<figcaption>Example: Filger ScreenShot</figcaption>
-	<img src="https://i.imgur.com/58wcJx1.jpg" width="800px" alt="Filger ScreenShot" border="1px solif black"/>
-</figure>
+<a href="https://i.imgur.com/58wcJx1.jpg"><img src="https://i.imgur.com/58wcJx1.jpg" alt="Filger-sample" width="800px" border="1 solid black"/></a>
 
 ## Classes:
 
@@ -15,10 +12,11 @@ Not all classes/specializations have their spell table complete configured.
 At the moment, only the following classes were configured:
 	+ Priest (Discipline, Holy and Shadow)
 	+ Monk (Brewmaster and Mistweaver)
+	+ Druid (Balance, Feral, Guardian and Restoration)
+	+ Warrior (Protection)
 
 ## To-Do-List:
 
-+ Add Druid spell table
 + Add Shaman spell table
 + Add Paladin spell table
 + Add All spell table (potions, flasks, enchantments, ...)

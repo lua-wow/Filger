@@ -70,6 +70,7 @@ SpellList["PRIEST"] = {
             { spellID = 124430, caster = "player", filter = "BUFF" },   -- Shadowy Insight
             { spellID = 197937, caster = "player", filter = "BUFF" },   -- Lingering Insanity
     }, -- [1]
+    --[[
     {
         name = "PLAYER_COOLDOWNS",
         anchor = Config["Panels"].PlayerCooldowns,
@@ -102,6 +103,7 @@ SpellList["PRIEST"] = {
         { spellID = 280711, caster = "player", filter = "CD" },	-- Dark Ascencion
 
     }, -- [2]
+    --]]
     {
         name = "TARGET_AURAS",
         anchor = Config["Panels"].TargetAuras,
