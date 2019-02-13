@@ -2,7 +2,7 @@
 ## Author: Nils Ruesch, Affli
 ## Credits: Nils Ruesch, Shestak, Affli, Garagar, hidekki, FourOne
 ## Editor: Luaerror
-## Version: 2.0
+## Version: 2.1
 ## Title: |cff00ff96Filger|r
 ## Notes: Minimal buff/debuff tracker
 ## Website: https://github.com/PedroZC90/Filger

@@ -33,6 +33,7 @@ SpellList["WARRIOR"] = {
         { spellID = 202602, caster = "player", filter = "BUFF" },	-- Into the Fray
 
         -- Procs
+        { spellID = 5302  , caster = "player", filter = "BUFF" },	-- Vengeance
         { spellID = 202573, caster = "player", filter = "BUFF" },	-- Vengeance: Revenge
         { spellID = 202574, caster = "player", filter = "BUFF" },	-- Vengeance: Ignore Pain
         { spellID = 227744, caster = "player", filter = "BUFF" },	-- Ravager
