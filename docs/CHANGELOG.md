@@ -4,8 +4,12 @@
 
 + Added: Druid (all specs) spell list.
 + Added: Warrior (Protection) spell list.
++ Added: Shaman (Elemental and Restoration) spell list.
++ Added: Paladin (all specs) spell list.
++ Update: Monk spell list.
 + Fixed: Test command duration error (*division by zero*).
 + Fixed: StatusBar was hiding timer text.
++ Fixed: invalid spellID warnning receiving nil variable.
 
 ## Changes in 2.0-release
 

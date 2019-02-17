@@ -40,9 +40,19 @@ SpellList["MONK"] = {
         { spellID = 116849, caster = "player", filter = "BUFF" },   -- Life Cocoon
         { spellID = 119611, caster = "player", filter = "BUFF" },   -- Renewing Mist
         { spellID = 122783, caster = "player", filter = "BUFF" },   -- Diffuse Magic
+        { spellID = 124682, caster = "player", filter = "BUFF" },	-- Enveloping Mist
         { spellID = 191837, caster = "player", filter = "BUFF" },   -- Essence Font
         { spellID = 197908, caster = "player", filter = "BUFF" },   -- Mana Tea
+        { spellID = 197916, caster = "player", filter = "BUFF" },   -- Lifecycles (Vivify)
+        { spellID = 197919, caster = "player", filter = "BUFF" },   -- Lifecycles (Enveloping Mist)
         { spellID = 243435, caster = "player", filter = "BUFF" },   -- Fortifying Brew
+
+        -- Windwalker
+        { spellID = 115288, caster = "player", filter = "BUFF" },   -- Energizing Elixir
+        { spellID = 116768, caster = "player", filter = "BUFF" },   -- Blackout Kick!
+        { spellID = 137639, caster = "player", filter = "BUFF" },   -- Storm, Earth, and Fire
+        { spellID = 152173, caster = "player", filter = "BUFF" },   -- Serenity
+        { spellID = 261769, caster = "player", filter = "BUFF" },   -- Inner Strength
     }, -- [1]
     --[[
     {
@@ -69,7 +79,6 @@ SpellList["MONK"] = {
         -- Mistweaver
         { spellID = 115310, caster = "player", filter = "CD" }, -- Revival
         { spellID = 116849, caster = "player", filter = "CD" }, -- Life Cocoon
-
     }, -- [2]
     ]]--
     {
@@ -93,6 +102,7 @@ SpellList["MONK"] = {
         { spellID = 119611, caster = "player", filter = "BUFF" },	-- Renewing Mist
         { spellID = 115175, caster = "player", filter = "BUFF" },	-- Soothing Mist
         { spellID = 116849, caster = "player", filter = "BUFF" },	-- Life Cocoon
+        { spellID = 124682, caster = "player", filter = "BUFF" },	-- Enveloping Mist
 
         ----------------------------------------------------------------
         -- Debuffs
@@ -108,5 +118,12 @@ SpellList["MONK"] = {
         { spellID = 123725, caster = "player", filter = "DEBUFF" }, -- Breath of Fire
         { spellID = 117952, caster = "player", filter = "DEBUFF" }, -- Crackling Jade Lightning
         { spellID = 196608, caster = "player", filter = "DEBUFF" }, -- Eye of the Tiger
+
+        -- Windwalker
+        { spellID = 115080, caster = "player", filter = "DEBUFF" }, -- Touch of Death
+        { spellID = 115804, caster = "player", filter = "DEBUFF" }, -- Mortal Wound
+        { spellID = 116095, caster = "player", filter = "DEBUFF" }, -- Disable
+        { spellID = 122470, caster = "player", filter = "DEBUFF" }, -- Touch of Karma
+        { spellID = 228287, caster = "player", filter = "DEBUFF" }, -- Mark of the Crane
     }, -- [3]
 }

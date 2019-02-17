@@ -467,9 +467,9 @@ function Filger:BuildSpellList()
             -- check if there is any bad spellID/slotID
             if (not obj.name) then
                 if (obj.spellID) then
-                    Filger.Debug("spellID (" .. data.spellID .. ") is INVALID at section " .. data.name)
+                    Filger.Debug("spellID (" .. obj.spellID .. ") is INVALID at section " .. data.name)
                 elseif (obj.slotID) then
-                    Filger.Debug("slotID (" .. data.slotID .. ") is INVALID at section " .. data.name)
+                    Filger.Debug("slotID (" .. obj.slotID .. ") is INVALID at section " .. data.name)
                 end
                 tinsert(jdx, j)
             end

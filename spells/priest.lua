@@ -20,7 +20,7 @@ SpellList["PRIEST"] = {
 
         -- All Spec
         { spellID = 586   , caster = "player", filter = "BUFF" },	-- Fade
-
+        
         -- Discipline
         { spellID = 17    , caster = "player", filter = "BUFF" },	-- Power Word: Shield
         { spellID = 33206 , caster = "player", filter = "BUFF" },	-- Pain Suppression
@@ -101,7 +101,6 @@ SpellList["PRIEST"] = {
         { spellID = 200174, caster = "player", filter = "CD" },	-- Mind Bender
         { spellID = 263346, caster = "player", filter = "CD" },	-- Dark Void
         { spellID = 280711, caster = "player", filter = "CD" },	-- Dark Ascencion
-
     }, -- [2]
     --]]
     {

@@ -21,10 +21,14 @@ SpellList["ALL"] = {
         ----------------------------------------------------------------
         -- Racials
         ----------------------------------------------------------------
-        { spellID = 26297, caster = "player", filter = "BUFF" },    -- Berserking (Troll)
-        { spellID = 20572, caster = "player", filter = "BUFF" },    -- Blood Fury (Orc - Attack Power)
-        { spellID = 33697, caster = "player", filter = "BUFF" },    -- Blood Fury (Orc - Attack Power/Intellect)
-        { spellID = 33702, caster = "player", filter = "BUFF" },    -- Blood Fury (Orc - Intellect)
+        { spellID = 26297 , caster = "player", filter = "BUFF" },   -- Berserking (Troll)
+        { spellID = 20572 , caster = "player", filter = "BUFF" },   -- Blood Fury (Orc - Attack Power)
+        { spellID = 33697 , caster = "player", filter = "BUFF" },   -- Blood Fury (Orc - Attack Power/Intellect)
+        { spellID = 33702 , caster = "player", filter = "BUFF" },   -- Blood Fury (Orc - Intellect)
+
+        { spellID = 57724 , caster = "all", filter = "DEBUFF" },    -- Sated
+        { spellID = 80354 , caster = "all", filter = "DEBUFF" },    -- Temporal Displacement
+        { spellID = 264689, caster = "all", filter = "DEBUFF" },    -- Fatigued
 
         -- Potions / Flasks
         -- Trinkets
@@ -37,11 +41,11 @@ SpellList["ALL"] = {
         ----------------------------------------------------------------
         -- Raid Cooldowns
         ----------------------------------------------------------------
-        { spellID = 2825  , caster = "all", filter = "BUFF" },  -- Bloodlust (Shaman Horde)
-        { spellID = 32182 , caster = "all", filter = "BUFF" },  -- Heroism (Shaman Alliance)
-        { spellID = 80353 , caster = "all", filter = "BUFF" },  -- Time Warp (Mage)
-        { spellID = 264667, caster = "all", filter = "BUFF" },  -- Primal Rage (Hunter)
-        { spellID = 97463 , caster = "all", filter = "BUFF" },  -- Rallying Cry
+        { spellID = 2825  , caster = "all", filter = "BUFF" },      -- Bloodlust (Shaman Horde)
+        { spellID = 32182 , caster = "all", filter = "BUFF" },      -- Heroism (Shaman Alliance)
+        { spellID = 80353 , caster = "all", filter = "BUFF" },      -- Time Warp (Mage)
+        { spellID = 264667, caster = "all", filter = "BUFF" },      -- Primal Rage (Hunter)
+        { spellID = 97463 , caster = "all", filter = "BUFF" },      -- Rallying Cry
     }, -- [1]
     {
         name = "PLAYER_RAID_AURAS",
@@ -58,26 +62,27 @@ SpellList["ALL"] = {
         -- External Cooldowns
         ----------------------------------------------------------------
         -- Druid
-        { spellID = 29166 , caster = "all", filter = "BUFF" },  -- Innervate
-        { spellID = 77761 , caster = "all", filter = "BUFF" },  -- Stampeding Roar (Guardian)
-        { spellID = 77764 , caster = "all", filter = "BUFF" },  -- Stampeding Roar (Feral)
-        { spellID = 102342, caster = "all", filter = "BUFF" },  -- Ironbark
+        { spellID = 29166 , caster = "all", filter = "BUFF" },      -- Innervate
+        { spellID = 77761 , caster = "all", filter = "BUFF" },      -- Stampeding Roar (Guardian)
+        { spellID = 77764 , caster = "all", filter = "BUFF" },      -- Stampeding Roar (Feral)
+        { spellID = 102342, caster = "all", filter = "BUFF" },      -- Ironbark
         -- Monk
-        { spellID = 116841, caster = "all", filter = "BUFF" },  -- Tiger's Lust
-        { spellID = 116849, caster = "all", filter = "BUFF" },  -- Life Cocoon
+        { spellID = 116841, caster = "all", filter = "BUFF" },      -- Tiger's Lust
+        { spellID = 116849, caster = "all", filter = "BUFF" },      -- Life Cocoon
         -- Paladin
-        { spellID = 1022  , caster = "all", filter = "BUFF" },  -- Blessing of Protection
-        { spellID = 1044  , caster = "all", filter = "BUFF" },  -- Blessing of Freedom
-        { spellID = 6940  , caster = "all", filter = "BUFF" },  -- Blessing of Sacrifice
-        { spellID = 204018, caster = "all", filter = "BUFF" },  -- Blessing of Spellwarding
+        { spellID = 1022  , caster = "all", filter = "BUFF" },      -- Blessing of Protection
+        { spellID = 1044  , caster = "all", filter = "BUFF" },      -- Blessing of Freedom
+        { spellID = 6940  , caster = "all", filter = "BUFF" },      -- Blessing of Sacrifice
+        { spellID = 204018, caster = "all", filter = "BUFF" },      -- Blessing of Spellwarding
         -- Priest
-        { spellID = 33206 , caster = "all", filter = "BUFF" },  -- Pain Suppression
-        { spellID = 47788 , caster = "all", filter = "BUFF" },  -- Guardian Spirit
+        { spellID = 33206 , caster = "all", filter = "BUFF" },      -- Pain Suppression
+        { spellID = 47788 , caster = "all", filter = "BUFF" },      -- Guardian Spirit
         -- Shaman
-        { spellID = 98008 , caster = "all", filter = "BUFF" },  -- Spirit Link Totem
-        { spellID = 207399, caster = "all", filter = "BUFF" },  -- Ancestral Protection Totem
+        { spellID = 98007 , caster = "all", filter = "BUFF" },      -- Spirit Link Totem
+        { spellID = 192082, caster = "all", filter = "BUFF" },      -- Wind Rush Totem
+        { spellID = 207498, caster = "all", filter = "BUFF" },      -- Ancestral Protection Totem
         -- Warlock
-        { spellID = 20707 , caster = "all", filter = "BUFF" },  -- Soulstone
+        { spellID = 20707 , caster = "all", filter = "BUFF" },      -- Soulstone
     }, -- [2]
     {
         name = "BOSS_DEBUFFS",
