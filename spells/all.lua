@@ -26,18 +26,22 @@ SpellList["ALL"] = {
         { spellID = 33697 , caster = "player", filter = "BUFF" },   -- Blood Fury (Orc - Attack Power/Intellect)
         { spellID = 33702 , caster = "player", filter = "BUFF" },   -- Blood Fury (Orc - Intellect)
 
-        { spellID = 57724 , caster = "all", filter = "DEBUFF" },    -- Sated
-        { spellID = 80354 , caster = "all", filter = "DEBUFF" },    -- Temporal Displacement
-        { spellID = 264689, caster = "all", filter = "DEBUFF" },    -- Fatigued
-
         -- Potions / Flasks
         -- Trinkets
         -- Profissions
             -- Enchanting
+            { spellID = 268887, caster = "all", filter = "BUFF" },  -- Quick Navigation
+
             -- Engineering
             -- Herbalism
             -- Tailoring
-        
+            
+        ----------------------------------------------------------------
+        -- Classes Specs
+        ----------------------------------------------------------------
+        -- Balance
+        { spellID = 209746 , caster = "all", filter = "BUFF" },   -- Moonkin Aura
+
         ----------------------------------------------------------------
         -- Raid Cooldowns
         ----------------------------------------------------------------
@@ -46,6 +50,10 @@ SpellList["ALL"] = {
         { spellID = 80353 , caster = "all", filter = "BUFF" },      -- Time Warp (Mage)
         { spellID = 264667, caster = "all", filter = "BUFF" },      -- Primal Rage (Hunter)
         { spellID = 97463 , caster = "all", filter = "BUFF" },      -- Rallying Cry
+
+        { spellID = 57724 , caster = "all", filter = "DEBUFF" },    -- Sated
+        { spellID = 80354 , caster = "all", filter = "DEBUFF" },    -- Temporal Displacement
+        { spellID = 264689, caster = "all", filter = "DEBUFF" },    -- Fatigued
     }, -- [1]
     {
         name = "PLAYER_RAID_AURAS",
