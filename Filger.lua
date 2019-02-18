@@ -4,13 +4,18 @@ local Config = ns.Config
 local SpellList = ns.SpellList
 local Instances = ns.Instances
 
-local tinsert, tremove, tsort, wipe = table.insert, table.remove, table.sort, table.wipe
-local FormatTime =  Filger.FormatTime
 ----------------------------------------------------------------
 -- Filger
 ----------------------------------------------------------------
+-- player info
 local class = select(2, UnitClass("player"))
 local color = RAID_CLASS_COLORS[class]
+
+-- import
+local tinsert, tremove, tsort, wipe = table.insert, table.remove, table.sort, table.wipe
+local FormatTime =  Filger.FormatTime
+
+-- resources
 local BlankTex = Config["Medias"].Blank
 local Font, FontSize, FontStyle = Config["Medias"].PixelFont, 12, "MONOCHROMEOUTLINE"
 
@@ -325,7 +330,6 @@ function Filger:OnEvent(event, ...)
     elseif (event == "SPELL_UPDATE_COOLDOWN") then unit = "player"
     elseif (event == "PLAYER_TARGET_CHANGED") then unit = "target"
     elseif (event == "PLAYER_FOCUS_CHANGED") then unit = "focus"
-    -- elseif (event == "PLAYER_ENTERING_WORLD") then end
     end
 
     if (self.unit ~= unit) then return end
@@ -534,17 +538,19 @@ function Filger:CreatePanels()
             frame:SetHeight(frame.size)
         end
 
-        -- if (Config["General"].ConfigMode) then
+        if (true) then
+            -- frame
             frame:CreateBackdrop("Transparent")
             frame.Backdrop:Hide()
 
+            -- name
             frame.text = frame:CreateFontString(nil, "OVERLAY")
             frame.text:SetPoint("CENTER", frame, "CENTER", 0, 1)
             frame.text:SetFont(Font, FontSize, FontStyle)
             frame.text:SetText(index .. " - " .. frame.name)
             frame.text:SetJustifyH("CENTER")
             frame.text:Hide()
-        -- end
+        end
 
         -- check if there is any cooldown filter
         for _, spell in ipairs(data) do
@@ -584,15 +590,12 @@ Filger:SetScript("OnEvent", function(self, event, ...)
     self[event](self, ...)
 end)
 
-function Filger:ADDON_LOADED(...)
-    local addon = ...
-    
-    if (addon == "Filger") then
-        print(Filger.WelcomeMessage)
-    end
+function Filger:ADDON_LOADED(addon)
+    if (addon ~= "Filger") then return end
+    print(Filger.WelcomeMessage)
 end
 
-function Filger:PLAYER_LOGIN(...)
+function Filger:PLAYER_LOGIN()
     
     -- filter classes and remove invalid spells
     self:BuildSpellList()
@@ -601,12 +604,12 @@ function Filger:PLAYER_LOGIN(...)
     self:CreatePanels()
 end
 
-function Filger:PLAYER_ENTERING_WORLD(...)
+function Filger:PLAYER_ENTERING_WORLD()
     -- get instance/continent information
     local inInstance, instanceType = IsInInstance()
     local instanceName, _, difficultyID, difficultyName, maxPlayers, dynamicDifficulty, isDynamic, instanceID, instanceGroupSize = GetInstanceInfo()
     
-    -- import instace spell table
+    -- import instance spell table
     local Zone = Instances[instanceID]
     
     if (Zone and #Zone > 0) then

@@ -10,7 +10,6 @@
 	<Script file = "config/config.lua"/>
 
 	<!-- Core -->
-	<Script file = "core\api.lua"/>
 	<Script file = "core\functions.lua"/>
 	<Script file = "core\commands.lua"/>
 	<Script file = "core\development.lua"/>

@@ -1,5 +1,10 @@
 # Filger ChangeLog:
 
+## Changes in 2.2-release
+
++ Fixed: api.lua removed. (useless)
++ Added: command /filger help.
+
 ## Changes in 2.1-release
 
 + Added: Druid (all specs) spell list.
@@ -21,4 +26,4 @@
  + Added: import only current instance/zone bosses spell list.
  + Added: Cataclysm Raid spell list..
  + Added: Mists of Pandaria Raids and Dungeon spell list.
- + Added: Commands /filger [help][show][hide][test].
+ + Added: Commands /filger [show][hide][test].

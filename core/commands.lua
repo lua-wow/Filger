@@ -6,7 +6,11 @@ local SpellList = ns.SpellList
 ----------------------------------------------------------------
 -- Commands
 ----------------------------------------------------------------
+-- import
 local tinsert, tsort = table.insert, table.sort
+
+-- string formats
+local STRING_COLOR = "|cffb3ff19%s|r"   --"|cff00ff96%s|r"
 
 local function CmdSplit(cmd)
     if (cmd:find("%s")) then
@@ -84,8 +88,12 @@ SlashCmdList["FILGER"] = function(cmd)
             frame.Backdrop:Hide()
             frame.text:Hide()
         end
-    elseif (arg1 == "help") then
-        print("Filger Commands:")
-        print("[test]: start test mode.")
+    elseif (arg1 == "") or (arg1 == "help") then
+        print(" ")
+        print(STRING_COLOR:format("Filger Commands:"))
+        print(STRING_COLOR:format("test:"), "Test Filger.")
+        print(STRING_COLOR:format("show:"), "Display Frames.")
+        print(STRING_COLOR:format("hide:"), "Hide Frames.")
+        print(" ")
     end
 end
