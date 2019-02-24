@@ -123,6 +123,9 @@ function Filger:DisplayActives(...)
                     aura.cooldown:SetAllPoints(aura.icon)
                     aura.cooldown:SetReverse(true)
                     aura.cooldown:SetDrawEdge(false)
+                    aura.cooldown.noOCC = true
+                    aura.cooldown.noCooldownCount = true
+                    aura.cooldown:SetHideCountdownNumbers(true)
                 end
 
                 -- time left
@@ -158,7 +161,7 @@ function Filger:DisplayActives(...)
                     aura.count:SetParent(aura.overlay)
                 end
 
-                --
+                -- animation
                 if (aura.animation) then
                     aura.animation = _G[aura.animation:GetName()]
                 else
@@ -171,7 +174,7 @@ function Filger:DisplayActives(...)
                     aura.animation.fadeout:SetDuration(.5)
                     aura.animation.fadeout:SetSmoothing("IN_OUT")
                 end
-                --
+                
             elseif (self.mode == "BAR") then
                 -- aura
                 aura:SetWidth(self.width)
@@ -258,6 +261,7 @@ function Filger:DisplayActives(...)
         if (aura.icon) then aura.icon:SetTexture(data.icon) end
         if (aura.count) then aura.count:SetText(data.count > 0 and data.count or "") end
         if (aura.text) then aura.text:SetText(data.name) end
+        if (aura.time) then aura.time:SetText(data.duration > 0 and FormatTime(data.duration) or "") end
 
         -- aura border colored by debuff type
         if (data.filter == "DEBUFF") then
@@ -277,7 +281,7 @@ function Filger:DisplayActives(...)
                 aura.animation.Playing = true
             else
                 aura.animation:Stop()
-                aura.animation.Playing = true
+                aura.animation.Playing = false
             end
         end
 
@@ -326,10 +330,14 @@ end
 function Filger:OnEvent(event, ...)
     local unit = nil
     
-    if (event == "UNIT_AURA") then unit = ... 
-    elseif (event == "SPELL_UPDATE_COOLDOWN") then unit = "player"
-    elseif (event == "PLAYER_TARGET_CHANGED") then unit = "target"
-    elseif (event == "PLAYER_FOCUS_CHANGED") then unit = "focus"
+    if (event == "UNIT_AURA") then
+        unit = ... 
+    elseif (event == "SPELL_UPDATE_COOLDOWN") then
+        unit = "player"
+    elseif (event == "PLAYER_TARGET_CHANGED") then
+        unit = "target"
+    elseif (event == "PLAYER_FOCUS_CHANGED") then
+        unit = "focus"
     end
 
     if (self.unit ~= unit) then return end
@@ -382,8 +390,6 @@ function Filger:OnEvent(event, ...)
             if (duration) and (expirationTime) then
                 start = expirationTime - duration
             end
-        else
-            Filger.Debug(self.name, data.spellID or data.slotID)
         end
 
         -- check if frame active table exists

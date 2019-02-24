@@ -1,5 +1,10 @@
 # Filger ChangeLog:
 
+## Changes in 2.3-release
+
++ Fixed: icon cooldown countdown double text.
++ Fixed: timer text for auras with no expiration time.
+
 ## Changes in 2.2-release
 
 + Fixed: api.lua removed. (useless)
