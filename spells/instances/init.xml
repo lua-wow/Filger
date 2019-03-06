@@ -5,6 +5,10 @@
 	<Script file="dungeons.lua"/>
     <Script file="raids.lua"/>
 
+    <!-- Wrath of the Lich King -->
+    <Script file="wolk/dungeons.lua"/>
+    <Script file="wolk/raids.lua"/>
+
     <!-- Cataclysm -->
     <Script file="cataclysm/dungeons.lua"/>
     <Script file="cataclysm/raids.lua"/>

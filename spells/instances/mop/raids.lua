@@ -11,7 +11,7 @@ Instances[1008] = {
     ----------------------------------------------------------------
     -- The Stone Guard
     ----------------------------------------------------------------
-    { spellID = 116235, unit = "player", caster = "all", filter = "DEBUFF" },   -- Amethyst Pool
+    { spellID = 130774, unit = "player", caster = "all", filter = "DEBUFF" },   -- Amethyst Pool
     { spellID = 129460, unit = "player", caster = "all", filter = "DEBUFF" },   -- Cobalt Mine
     { spellID = 130395, unit = "player", caster = "all", filter = "DEBUFF" },   -- Jasper Chains
     { spellID = 125206, unit = "player", caster = "all", filter = "DEBUFF" },   -- Rend Flesh
@@ -31,8 +31,8 @@ Instances[1008] = {
     { spellID = 116942, unit = "player", caster = "all", filter = "DEBUFF" },   -- Flaming Spear
     { spellID = 116417, unit = "player", caster = "all", filter = "DEBUFF" },   -- Arcane Resonance
     { spellID = 131790, unit = "player", caster = "all", filter = "DEBUFF" },   -- Arcane Shock
-    { spellID = 115817, unit = "player", caster = "all", filter = "BUFF" },     -- Nullification Barrier
-    { spellID = 115911, unit = "player", caster = "all", filter = "BUFF" },     -- Shroud of Reversal
+    { spellID = 115811, unit = "player", caster = "all", filter = "BUFF" },     -- Nullification Barrier
+    { spellID = 115972, unit = "player", caster = "all", filter = "BUFF" },     -- Shroud of Reversal
 
     { spellID = 116937, unit = "target", caster = "all", filter = "DEBUFF" },   -- Epicenter
     { spellID = 116374, unit = "target", caster = "all", filter = "DEBUFF" },   -- Lightning Charge
@@ -41,6 +41,7 @@ Instances[1008] = {
     { spellID = 116942, unit = "target", caster = "all", filter = "DEBUFF" },   -- Flaming Spear
     { spellID = 116417, unit = "target", caster = "all", filter = "DEBUFF" },   -- Arcane Resonance
     { spellID = 131790, unit = "target", caster = "all", filter = "DEBUFF" },   -- Arcane Shock
+
     ----------------------------------------------------------------
     -- Gara'jal the Spiritbinder
     ----------------------------------------------------------------
@@ -74,7 +75,7 @@ Instances[1008] = {
     -- Elegon
     ----------------------------------------------------------------
     { spellID = 117878, unit = "player", caster = "all", filter = "DEBUFF" },   -- Overcharged
-    { spellID = 117870, unit = "player", caster = "all", filter = "DEBUFF" },   -- Touch of the Titans
+    { spellID = 130287, unit = "player", caster = "all", filter = "DEBUFF" },   -- Touch of the Titans
     { spellID = 117949, unit = "player", caster = "all", filter = "DEBUFF" },   -- Closed Circuit
     { spellID = 119722, unit = "player", caster = "all", filter = "DEBUFF" },   -- Energy Cascade
     { spellID = 132222, unit = "player", caster = "all", filter = "DEBUFF" },   -- Destabilizing Energies
@@ -89,7 +90,8 @@ Instances[1008] = {
 
         -- Jan-xi and Qin-xi
         { spellID = 34716 , unit = "player", caster = "all", filter = "DEBUFF" },   -- Stomp
-        { spellID = 116805, unit = "player", caster = "all", filter = "DEBUFF" },   -- Magnetized
+        { spellID = 116818, unit = "player", caster = "all", filter = "DEBUFF" },   -- Magnetized (Qin-xi)
+        { spellID = 117195, unit = "player", caster = "all", filter = "DEBUFF" },   -- Magnetized (Jan-xi)
         { spellID = 116835, unit = "player", caster = "all", filter = "DEBUFF" },   -- Devastating Arc
         -- Emperor's Rage 
         { spellID = 116525, unit = "player", caster = "all", filter = "DEBUFF" },   -- Focused Assault
@@ -117,14 +119,16 @@ Instances[996] = {
     ----------------------------------------------------------------
     -- Protector Kaolan
     { spellID = 117519, unit = "player", caster = "all", filter = "DEBUFF" },   -- Touch of Sha
-    { spellID = 117986, unit = "player", caster = "all", filter = "DEBUFF" },   -- Defiled Ground
+    { spellID = 118091, unit = "player", caster = "all", filter = "DEBUFF" },   -- Defiled Ground
+    { spellID = 117052, unit = "target", caster = "all", filter = "BUFF" },     -- Sha Corruption
+    { spellID = 117905, unit = "target", caster = "all", filter = "BUFF" },     -- Greater Corruption Essence
     
     -- Elder Regail 
     { spellID = 117398, unit = "player", caster = "all", filter = "DEBUFF" },   -- Lightning Prison
     
     -- Elder Asani
     { spellID = 117235, unit = "player", caster = "all", filter = "DEBUFF" },   -- Purified
-    { spellID = 117309, unit = "target", caster = "all", filter = "BUFF" }, -- Cleansing Waters
+    { spellID = 117309, unit = "target", caster = "all", filter = "BUFF" },     -- Cleansing Waters
 
     -- Minion of Fear
     { spellID = 118191, unit = "player", caster = "all", filter = "DEBUFF" },   -- Corrupted Essence
@@ -136,7 +140,7 @@ Instances[996] = {
     { spellID = 122768, unit = "player", caster = "all", filter = "DEBUFF" },   -- Dread Shadows
     { spellID = 122777, unit = "player", caster = "all", filter = "DEBUFF" },   -- Nightmares
     { spellID = 122752, unit = "player", caster = "all", filter = "DEBUFF" },   -- Shadow Breath
-    { spellID = 122789, unit = "player", caster = "all", filter = "DEBUFF" },   -- Sunbeam
+    { spellID = 122782, unit = "player", caster = "all", filter = "DEBUFF" },   -- Sunbeam (122789)
     -- The Day
     { spellID = 123011, unit = "player", caster = "all", filter = "DEBUFF" },   -- Terrorize
     { spellID = 123036, unit = "player", caster = "all", filter = "DEBUFF" },   -- Fright
@@ -170,7 +174,7 @@ Instances[996] = {
     { spellID = 120268, unit = "player", caster = "all", filter = "BUFF" },     -- Champion of the Light
     { spellID = 129378, unit = "player", caster = "all", filter = "DEBUFF" },   -- Fading Light
     { spellID = 120669, unit = "player", caster = "all", filter = "DEBUFF" },   -- Naked and Afraid
-    { spellID = 75683, unit = "player", caster = "all", filter = "DEBUFF" },    -- Waterspout
+    { spellID = 75683 , unit = "player", caster = "all", filter = "DEBUFF" },   -- Waterspout
     { spellID = 120629, unit = "player", caster = "all", filter = "DEBUFF" },   -- Huddle in Terror
 }
 

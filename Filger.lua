@@ -42,6 +42,10 @@ local function UpdateAuraTimer(self, elapsed)
             end
 
         else
+            self.time:SetText("")
+            self.start = 0
+            self.duration = 0
+            self.expirationTime = 0
             tremove(parent.actives, self.index)
             self:SetScript("OnUpdate", nil)
             Filger.DisplayActives(parent)
@@ -261,7 +265,7 @@ function Filger:DisplayActives(...)
         if (aura.icon) then aura.icon:SetTexture(data.icon) end
         if (aura.count) then aura.count:SetText(data.count > 0 and data.count or "") end
         if (aura.text) then aura.text:SetText(data.name) end
-        if (aura.time) then aura.time:SetText(data.duration > 0 and FormatTime(data.duration) or "") end
+        if (aura.time and data.duration == 0) then aura.time:SetText("") end
 
         -- aura border colored by debuff type
         if (data.filter == "DEBUFF") then
@@ -300,7 +304,6 @@ function Filger:DisplayActives(...)
 
                 aura:SetScript("OnUpdate", UpdateAuraTimer)
             else
-                if (aura.text) then aura.text:Hide() end
                 if (aura.cooldown) then aura.cooldown:Hide() end
                 if (aura.statusbar) then
                     aura.statusbar:SetMinMaxValues(0, 1)

@@ -1,5 +1,10 @@
 # Filger ChangeLog:
 
+## Changes in 2.4-release
+
++ Added: WoLK dungeons and raid tables.
++ Added: update BoA dungeon and raid tables.
+
 ## Changes in 2.3-release
 
 + Fixed: icon cooldown countdown double text.

@@ -1,23 +1,23 @@
-<Ui xmlns = "http://www.blizzard.com/wow/ui/">
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
 
 	<!-- Engine	 -->
-	<Script file = "core\init.lua"/>
+	<Script file="core\init.lua"/>
 
 	<!-- Medias -->
-	<Script file = "medias/medias.lua"/>
+	<Script file="medias/medias.lua"/>
 
 	<!-- Config -->
-	<Script file = "config/config.lua"/>
+	<Script file="config/config.lua"/>
 
 	<!-- Core -->
-	<Script file = "core\functions.lua"/>
-	<Script file = "core\commands.lua"/>
-	<Script file = "core\development.lua"/>
+	<Script file="core\functions.lua"/>
+	<Script file="core\commands.lua"/>
+	<Script file="core\development.lua"/>
 
 	<!-- Spell List -->
 	<Include file="spells\init.xml"/>
 
 	<!-- Filger -->
-	<Script file = "Filger.lua"/>
+	<Script file="Filger.lua"/>
 	
 </Ui>

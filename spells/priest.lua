@@ -142,6 +142,7 @@ SpellList["PRIEST"] = {
         ----------------------------------------------------------------
         -- Discipline
         { spellID = 6788  , caster = "player", filter = "DEBUFF" },	-- Weakened Soul
+        { spellID = 187464, caster = "player", filter = "DEBUFF" },	-- Shadow Mend
         { spellID = 204213, caster = "player", filter = "DEBUFF" },	-- Purge the Wicked
         { spellID = 204263, caster = "player", filter = "DEBUFF" },	-- Shining Force
         { spellID = 208772, caster = "player", filter = "DEBUFF" },	-- Smite
