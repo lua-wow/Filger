@@ -4,6 +4,7 @@
 
 + Added: WoLK dungeons and raid tables.
 + Added: update BoA dungeon and raid tables.
++ Added: Tracer plugins (help to build spell tables by saving buffs/debuffs that affect player)
 
 ## Changes in 2.3-release
 

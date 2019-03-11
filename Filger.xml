@@ -14,6 +14,9 @@
 	<Script file="core\commands.lua"/>
 	<Script file="core\development.lua"/>
 
+	<!-- Plugins -->
+	<Script file="plugins/tracer.lua">
+
 	<!-- Spell List -->
 	<Include file="spells\init.xml"/>
 

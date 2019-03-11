@@ -27,10 +27,24 @@ SpellList["ALL"] = {
         { spellID = 33702 , caster = "player", filter = "BUFF" },   -- Blood Fury (Orc - Intellect)
 
         -- Potions / Flasks
+        { spellID = 251837, caster = "all", filter = "BUFF" },  -- Flask of Endless Fathoms
+
         -- Trinkets
+        { spellID = 289523, caster = "all", filter = "BUFF" },  -- Incandescent Luster
+        { spellID = 271054, caster = "all", filter = "BUFF" },  -- Fangs of Intertwined Essence
+
         -- Profissions
             -- Enchanting
             { spellID = 268887, caster = "all", filter = "BUFF" },  -- Quick Navigation
+            { spellID = 268893, caster = "all", filter = "BUFF" },  -- Quick Navigation
+            { spellID = 268904, caster = "all", filter = "BUFF" },  -- Deadly Navigation
+            { spellID = 268905, caster = "all", filter = "BUFF" },  -- Deadly Navigation
+            { spellID = 268910, caster = "all", filter = "BUFF" },  -- Stalward Navigation
+            { spellID = 268911, caster = "all", filter = "BUFF" },  -- Stalward Navigation
+            { spellID = 268854, caster = "all", filter = "BUFF" },  -- Versatile Navigation
+            { spellID = 268856, caster = "all", filter = "BUFF" },  -- Versatile Navigation
+            { spellID = 268899, caster = "all", filter = "BUFF" },  -- Masterful Navigation
+            { spellID = 268898, caster = "all", filter = "BUFF" },  -- Masterful Navigation
 
             -- Engineering
             -- Herbalism

@@ -9,18 +9,22 @@ local yOffset = 39
 
 Config["General"] = {
 
-    ["ConfigMode"] = false,
+    ["ConfigMode"] = false,                         -- enables config mode for help on position frames.
 
-    ["IconSize"] = 32,
-    ["IconSpacing"] = 7,
+    ["IconSize"] = 32,                              -- sets icons size.
+    ["IconSpacing"] = 7,                            -- sets space between icons.
 
-    ["BarWidth"] = 200,
-    ["BarHeight"] = 18,
-    ["BarSpacing"] = 7,
-    ["ClassColor"] = true,
+    ["BarWidth"] = 200,                             -- sets bar width.
+    ["BarHeight"] = 18,                             -- sets bar height.
+    ["BarSpacing"] = 7,                             -- sets space between bars.
+    ["ClassColor"] = true,                          -- sets status bar color by class.
 
     ["BackdropColor"] = { .05, .05, .05 },
     ["BorderColor"] = { .125, .125, .125 },
+}
+
+Config["Plugins"] = {
+    ["Tracer"] = true,                              -- enables aura tracer plugins.
 }
 
 Config["Panels"] = {

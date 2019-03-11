@@ -602,6 +602,8 @@ end)
 function Filger:ADDON_LOADED(addon)
     if (addon ~= "Filger") then return end
     print(Filger.WelcomeMessage)
+
+    self.unit = "player"
 end
 
 function Filger:PLAYER_LOGIN()
@@ -615,8 +617,8 @@ end
 
 function Filger:PLAYER_ENTERING_WORLD()
     -- get instance/continent information
-    local inInstance, instanceType = IsInInstance()
-    local instanceName, _, difficultyID, difficultyName, maxPlayers, dynamicDifficulty, isDynamic, instanceID, instanceGroupSize = GetInstanceInfo()
+    local inInstance = IsInInstance()
+    local instanceName, instanceType, difficultyID, difficultyName, maxPlayers, dynamicDifficulty, isDynamic, instanceID, instanceGroupSize = GetInstanceInfo()
     
     -- import instance spell table
     local Zone = Instances[instanceID]
@@ -630,7 +632,7 @@ function Filger:PLAYER_ENTERING_WORLD()
                 if (frame.actives) then wipe(frame.actives) end
                 if (frame.auras) then wipe(frame.auras) end
 
-                -- copy frame defualt spell table
+                -- copy frame default spell table
                 for _, data in ipairs(SpellList[class][frame.id]) do
                     tinsert(frame.spells, data)
                 end
