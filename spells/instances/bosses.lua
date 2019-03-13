@@ -69,5 +69,11 @@ Instances[1220] = {}    -- Broken Isles
 Instances[1669] = {}    -- Argus
     
 --[[ Battle for Azeroth ]]--
-Instances[1642] = {}    -- Zandalar
+
+-- Zandalar
+Instances[1642] = {
+    --[[ Ji'arak ]]--
+    { spellID = 260989, unit = "player", caster = "all", filter = "DEBUFF" },   -- Storm Wing
+}
+
 Instances[1643] = {}    -- Kul Tiras
