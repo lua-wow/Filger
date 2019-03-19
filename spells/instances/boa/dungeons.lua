@@ -7,6 +7,8 @@ local Instances = ns.Instances
 ----------------------------------------------------------------
 -- The Motherlode
 Instances[1594] = {
+    saved = true,
+    
     --[[ Coin-Operated Crowd Pummeler ]]--
     { spellID = 257337, unit = "player", caster = "all", filter = "DEBUFF" },   -- Shocking Claw
     { spellID = 262347, unit = "player", caster = "all", filter = "DEBUFF" },   -- Static Pulse
@@ -14,6 +16,7 @@ Instances[1594] = {
 
     { spellID = 269493, unit = "target", caster = "all", filter = "BUFF" },     -- Footbomb Launcher
     { spellID = 271903, unit = "target", caster = "all", filter = "BUFF" },     -- Coin Magnet
+    { spellID = 267547, unit = "target", caster = "all", filter = "BUFF" },     -- Insufficient Funds
 
     --[[ Azerokk ]]--
     { spellID = 275907, unit = "player", caster = "all", filter = "DEBUFF" },   -- Tectonic Smash
@@ -21,6 +24,7 @@ Instances[1594] = {
     { spellID = 257582, unit = "player", caster = "all", filter = "DEBUFF" },   -- Raging Gaze
 
     { spellID = 257597, unit = "target", caster = "all", filter = "BUFF" },     -- Azerite Infusion
+    { spellID = 275598, unit = "target", caster = "all", filter = "BUFF" },     -- "Ascended"
 
     --[[ Rixxa Fluxflame ]]--
     { spellID = 259853, unit = "player", caster = "all", filter = "DEBUFF" },   -- Chemical Burn
@@ -59,6 +63,7 @@ Instances[1594] = {
     { spellID = 257481, unit = "target", caster = "all", filter = "DEBUFF" },   -- Fracking Totem
     { spellID = 263276, unit = "target", caster = "all", filter = "DEBUFF" },   -- Cover
     { spellID = 257481, unit = "target", caster = "all", filter = "DEBUFF" },   -- Fracking Totem
+    { spellID = 275616, unit = "target", caster = "all", filter = "DEBUFF" },   -- Azerite Smoke
     
     { spellID = 263215, unit = "target", caster = "all", filter = "BUFF" },     -- Tectonic Barrier
     { spellID = 268702, unit = "target", caster = "all", filter = "BUFF" },     -- Furious Quake
@@ -89,6 +94,8 @@ Instances[1594] = {
     { spellID = 268130, unit = "target", caster = "all", filter = "BUFF" },     -- Kaja'Cola Refresher
     { spellID = 268712, unit = "target", caster = "all", filter = "BUFF" },     -- Bag of Bombs
     { spellID = 280602, unit = "target", caster = "all", filter = "BUFF" },     -- Eject!
+    { spellID = 268810, unit = "target", caster = "all", filter = "BUFF" },     -- Unstable Mutation
+    { spellID = 275681, unit = "target", caster = "all", filter = "BUFF" },     -- Unbridled Fury
 }
 
 -- Freehold
@@ -354,15 +361,24 @@ Instances[1864] = {
 
 -- Temple of Sethraliss
 Instances[1877] = {
+    saved = true,
+
     --[[ Adderis and Aspix ]]--
     { spellID = 263371, unit = "player", caster = "all", filter = "DEBUFF" },   -- Conduction
+
+        --[[ Aspix ]]--
+        { spellID = 263778, unit = "player", caster = "all", filter = "DEBUFF" },   -- Gale Force
+        { spellID = 273411, unit = "target", caster = "all", filter = "BUFF" },     -- Lightning Shield
+        { spellID = 263246, unit = "target", caster = "all", filter = "BUFF" },     -- Lightning Shield
     
     --[[ Merektha ]]--
     { spellID = 263927, unit = "player", caster = "all", filter = "DEBUFF" },   -- Tocix Pool
     { spellID = 263958, unit = "player", caster = "all", filter = "DEBUFF" },   -- A Knot of Snakes
+    { spellID = 269970, unit = "player", caster = "all", filter = "DEBUFF" }, -- Blinding Sand
 
     --[[ Galvazzt ]]--
     { spellID = 266923, unit = "player", caster = "all", filter = "DEBUFF" },   -- Galvanize
+    { spellID = 266511, unit = "target", caster = "all", filter = "BUFF" },     -- Capacitance
 
     --[[ Avatar of Sethraliss ]]--
     { spellID = 269670, unit = "player", caster = "all", filter = "DEBUFF" },   -- Empowerment
@@ -376,6 +392,26 @@ Instances[1877] = {
     { spellID = 272655, unit = "player", caster = "all", filter = "DEBUFF" },   -- Scouring Sand
     { spellID = 267027, unit = "player", caster = "all", filter = "DEBUFF" },   -- Cytotoxin
     { spellID = 280032, unit = "player", caster = "all", filter = "DEBUFF" },   -- Neurotoxin
+    { spellID = 1604  , unit = "player", caster = "all", filter = "DEBUFF" }, -- Dazed
+    { spellID = 268008, unit = "player", caster = "all", filter = "DEBUFF" }, -- Snake Charm
+    { spellID = 268013, unit = "player", caster = "all", filter = "DEBUFF" }, -- Flame Shock
+    { spellID = 272696, unit = "player", caster = "all", filter = "DEBUFF" }, -- Lightning in a Bottle
+    { spellID = 260792, unit = "target", caster = "all", filter = "DEBUFF" }, -- Dust Cloud
+    { spellID = 268993, unit = "player", caster = "all", filter = "DEBUFF" }, -- Cheap Shot
+    { spellID = 273234, unit = "target", caster = "all", filter = "DEBUFF" }, -- Loose Sparks
+    { spellID = 273563, unit = "player", caster = "all", filter = "DEBUFF" }, -- Neurotoxin
+    { spellID = 265755, unit = "target", caster = "all", filter = "DEBUFF" }, -- Reclaimed Orb
 
     { spellID = 269129, unit = "target", caster = "all", filter = "BUFF" },     -- Accumulated Charge
+    { spellID = 258908, unit = "target", caster = "all", filter = "BUFF" }, -- Blade Flurry
+    { spellID = 265912, unit = "target", caster = "all", filter = "BUFF" }, -- Accumulate Charge
+    { spellID = 272659, unit = "target", caster = "all", filter = "BUFF" }, -- Electrified Scales
+    { spellID = 273956, unit = "target", caster = "all", filter = "BUFF" }, -- Alchemical Tolerance
+    { spellID = 269896, unit = "target", caster = "all", filter = "BUFF" }, -- Embryonic Vigor
+    { spellID = 267237, unit = "target", caster = "all", filter = "BUFF" }, -- Drain
+    { spellID = 267584, unit = "target", caster = "all", filter = "BUFF" }, -- Spawn
+    { spellID = 273272, unit = "target", caster = "all", filter = "BUFF" }, -- Polarized Field
+    { spellID = 274609, unit = "target", caster = "all", filter = "BUFF" }, -- Bind
+    { spellID = 265338, unit = "target", caster = "all", filter = "BUFF" }, -- Spawn
+    { spellID = 273641, unit = "target", caster = "all", filter = "BUFF" }, -- Stealth
 }

@@ -69,6 +69,10 @@ SpellList["PRIEST"] = {
             { spellID = 123254, caster = "player", filter = "BUFF" },   -- Twist of Fate
             { spellID = 124430, caster = "player", filter = "BUFF" },   -- Shadowy Insight
             { spellID = 197937, caster = "player", filter = "BUFF" },   -- Lingering Insanity
+        
+        -- Azerite
+        { spellID = 279572, caster = "player", filter = "BUFF" },   -- Chorus of Insanity
+        { spellID = 279902, caster = "player", filter = "BUFF" },   -- Unstable Flames
     }, -- [1]
     --[[
     {
