@@ -24,7 +24,7 @@ Config["General"] = {
 }
 
 Config["Plugins"] = {
-    ["Tracer"] = true,                              -- enables aura tracer plugins.
+    ["Tracer"] = "auto",                              -- enables aura tracer plugins.
 }
 
 Config["Panels"] = {
