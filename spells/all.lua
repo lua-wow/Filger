@@ -133,6 +133,9 @@ SpellList["ALL"] = {
         instance = true,
 
         -- add boss self buffs/debuffs
+
+        -- Mythic Keystone
+        { spellID = 209859, unit = "target", caster = "all", filter = "BUFF" },     -- Bolster
     }, -- [4]
     {
         name = "FOCUS_AURAS",
