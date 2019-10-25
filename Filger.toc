@@ -1,8 +1,8 @@
-## Interface: 80100
+## Interface: 80205
 ## Author: Nils Ruesch, Affli
 ## Credits: Nils Ruesch, Shestak, Affli, Garagar, hidekki, FourOne
 ## Editor: Luaerror
-## Version: 2.4
+## Version: 2.5
 ## Title: |cffb3ff19Filger|r
 ## Notes: Minimal buff/debuff tracker
 ## Website: https://github.com/PedroZC90/Filger
