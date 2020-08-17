@@ -18,3 +18,5 @@ ns.Filger.MyLevel = UnitLevel("player")
 ns.Filger.MyFaction = select(2, UnitFactionGroup("player"))
 ns.Filger.MyRace = select(2, UnitRace("player"))
 ns.Filger.MyRealm = GetRealmName()
+ns.Filger.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+ns.Filger.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
