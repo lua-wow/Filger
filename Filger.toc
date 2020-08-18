@@ -1,11 +1,11 @@
-## Interface: 80300
+## Interface: 11305
 ## Author: Nils Ruesch, Affli
 ## Credits: Nils Ruesch, Shestak, Affli, Garagar, hidekki, FourOne
 ## Editor: Luaerror
-## Version: 2.5
-## Title: |cffb3ff19Filger|r
+## Version: 1.0
+## Title: |cffb3ff19Filger Classic|r
 ## Notes: Minimal buff/debuff tracker
-## Website: https://github.com/PedroZC90/Filger
+## Website: https://github.com/PedroZC90/Filger/tree/classic
 ## SavedVariables: FilgerData
 
 Filger.xml

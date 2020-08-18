@@ -19,60 +19,59 @@ SpellList["PRIEST"] = {
         filter = "HELPFUL",
 
         -- All Spec
-        { spellID = 586   , caster = "player", filter = "BUFF" },	-- Fade
+        { spellID = 586   , caster = "player", filter = "BUFF" },	-- Fade (Rank 1)
+        { spellID = 9578  , caster = "player", filter = "BUFF" },	-- Fade (Rank 2)
+        { spellID = 9579  , caster = "player", filter = "BUFF" },	-- Fade (Rank 3)
+        { spellID = 9592  , caster = "player", filter = "BUFF" },	-- Fade (Rank 4)
+        { spellID = 10941 , caster = "player", filter = "BUFF" },	-- Fade (Rank 5)
+        { spellID = 10942 , caster = "player", filter = "BUFF" },	-- Fade (Rank 6)
+
+        { spellID = 15274 , caster = "player", filter = "BUFF" },	-- Improved Fade (Rank 1)
+        { spellID = 15311 , caster = "player", filter = "BUFF" },	-- Improved Fade (Rank 2)
         
         -- Discipline
-        { spellID = 17    , caster = "player", filter = "BUFF" },	-- Power Word: Shield
-        { spellID = 33206 , caster = "player", filter = "BUFF" },	-- Pain Suppression
-        { spellID = 47536 , caster = "player", filter = "BUFF" },	-- Rapture
-        { spellID = 81782 , caster = "player", filter = "BUFF" },	-- Power Word: Barrier
-        { spellID = 194384, caster = "player", filter = "BUFF" },	-- Atonement
-        { spellID = 271466, caster = "player", filter = "BUFF" },	-- Luminous Barrier
+        { spellID = 17    , caster = "player", filter = "BUFF" },	-- Power Word: Shield (Rank 1)
+        { spellID = 592   , caster = "player", filter = "BUFF" },	-- Power Word: Shield (Rank 2)
+        { spellID = 600   , caster = "player", filter = "BUFF" },	-- Power Word: Shield (Rank 3)
+        { spellID = 3747  , caster = "player", filter = "BUFF" },	-- Power Word: Shield (Rank 4)
+        { spellID = 6065  , caster = "player", filter = "BUFF" },	-- Power Word: Shield (Rank 5)
+        { spellID = 6066  , caster = "player", filter = "BUFF" },	-- Power Word: Shield (Rank 6)
+        { spellID = 10898 , caster = "player", filter = "BUFF" },	-- Power Word: Shield (Rank 7)
+        { spellID = 10899 , caster = "player", filter = "BUFF" },	-- Power Word: Shield (Rank 8)
+        { spellID = 10900 , caster = "player", filter = "BUFF" },	-- Power Word: Shield (Rank 9)
+        { spellID = 10901 , caster = "player", filter = "BUFF" },	-- Power Word: Shield (Rank 10)
+
+        { spellID = 14748 , caster = "player", filter = "BUFF" },	-- Improved Power Word: Shield (Rank 1)
+        { spellID = 14768 , caster = "player", filter = "BUFF" },	-- Improved Power Word: Shield (Rank 2)
+        { spellID = 14769 , caster = "player", filter = "BUFF" },	-- Improved Power Word: Shield (Rank 3)
+
+        { spellID = 10060 , caster = "player", filter = "BUFF" },	-- Power Infusion
 
             -- Procs
-            { spellID = 193065, caster = "player", filter = "BUFF" },	-- Masohism (Talent)
-            { spellID = 198069, caster = "player", filter = "BUFF" },	-- Power of the Dark Side
-            { spellID = 265258, caster = "player", filter = "BUFF" },	-- Twist of Fate
+            { spellID = 14743 , caster = "player", filter = "BUFF" },   -- Focused Casting (Rank 1)
+            { spellID = 27828 , caster = "player", filter = "BUFF" },   -- Focused Casting (Rank 2)
             
             -- Debuffs
             { spellID = 6788  , caster = "player", filter = "DEBUFF" },	-- Weakened Soul
 
         -- Holy
-        { spellID = 139   , caster = "player", filter = "BUFF" },    -- Renew
-        { spellID = 41635 , caster = "player", filter = "BUFF" },	-- Prayer of Mending
-        { spellID = 47788 , caster = "player", filter = "BUFF" },    -- Guardian Spirit
-        { spellID = 64843 , caster = "player", filter = "BUFF" },	-- Divine Hymn
-        { spellID = 64901 , caster = "player", filter = "BUFF" },	-- Symbol fo Hope
-        { spellID = 77489 , caster = "player", filter = "BUFF" },	-- Echo of Light
-        { spellID = 111759, caster = "player", filter = "BUFF" },	-- Levitade
-        { spellID = 121557, caster = "player", filter = "BUFF" },	-- Angelic Feather
-        { spellID = 19236 , caster = "player", filter = "BUFF" },	-- Desperate Prayer
+        { spellID = 139   , caster = "player", filter = "BUFF" },    -- Renew (Rank 1)
+        { spellID = 6074  , caster = "player", filter = "BUFF" },    -- Renew (Rank 2)
+        { spellID = 6075  , caster = "player", filter = "BUFF" },    -- Renew (Rank 3)
+        { spellID = 6076  , caster = "player", filter = "BUFF" },    -- Renew (Rank 4)
+        { spellID = 6077  , caster = "player", filter = "BUFF" },    -- Renew (Rank 5)
+        { spellID = 6078  , caster = "player", filter = "BUFF" },    -- Renew (Rank 6)
+        { spellID = 10927 , caster = "player", filter = "BUFF" },    -- Renew (Rank 7)
+        { spellID = 10928 , caster = "player", filter = "BUFF" },    -- Renew (Rank 8)
+        { spellID = 10929 , caster = "player", filter = "BUFF" },    -- Renew (Rank 9)
+        { spellID = 25351 , caster = "player", filter = "BUFF" },    -- Renew (Rank 10)
 
-            -- Procs
-            { spellID = 27827 , caster = "player", filter = "BUFF" },   -- Spirit of Redemption
-            { spellID = 45242 , caster = "player", filter = "BUFF" },   -- Focused Will
-            { spellID = 114255,	caster = "player", filter = "BUFF" },   -- Surge of Light
-            { spellID = 200183, caster = "player", filter = "BUFF" },   -- Apotheosis
-            { spellID = 214121, caster = "player", filter = "BUFF" },   -- Body and Mind
+        { spellID = 14908 , caster = "player", filter = "BUFF" },    -- Improved Renew (Rank 1)
+        { spellID = 15020 , caster = "player", filter = "BUFF" },    -- Improved Renew (Rank 2)
+        { spellID = 17191 , caster = "player", filter = "BUFF" },    -- Improved Renew (Rank 3)
 
         -- Shadow
-        { spellID = 15286 , caster = "player", filter = "BUFF" },	-- Vampiric Embrace
-        { spellID = 47585 , caster = "player", filter = "BUFF" },	-- Dispersion
-        { spellID = 65081 , caster = "player", filter = "BUFF" },	-- Body and Soul
-        { spellID = 193223, caster = "player", filter = "BUFF" },	-- Surrender to Madness
-        { spellID = 194249, caster = "player", filter = "BUFF" },	-- Voidform
-        { spellID = 232698, caster = "player", filter = "BUFF" },	-- Shadowform
-        { spellID = 263406, caster = "player", filter = "BUFF" },	-- Surrendered to Madness
-
-            -- Procs
-            { spellID = 87160 ,	caster = "player", filter = "BUFF" },   -- Surge of Darkness
-            { spellID = 123254, caster = "player", filter = "BUFF" },   -- Twist of Fate
-            { spellID = 124430, caster = "player", filter = "BUFF" },   -- Shadowy Insight
-            { spellID = 197937, caster = "player", filter = "BUFF" },   -- Lingering Insanity
-        
-        -- Azerite
-        { spellID = 279572, caster = "player", filter = "BUFF" },   -- Chorus of Insanity
-        { spellID = 279902, caster = "player", filter = "BUFF" },   -- Unstable Flames
+        { spellID = 15473 , caster = "player", filter = "BUFF" },	-- Shadowform
     }, -- [1]
     --[[
     {
@@ -122,52 +121,106 @@ SpellList["PRIEST"] = {
         -- Buffs
         ----------------------------------------------------------------
         -- Discipline
-        { spellID = 17    , caster = "player", filter = "BUFF" },	-- Power Word: Shield
-        { spellID = 33206 , caster = "player", filter = "BUFF" },	-- Pain Suppression
-        { spellID = 47536 , caster = "player", filter = "BUFF" },	-- Rapture
-        { spellID = 81782 , caster = "player", filter = "BUFF" },	-- Power Word: Barrier
-        { spellID = 194384, caster = "player", filter = "BUFF" },	-- Atonement
-        { spellID = 271466, caster = "player", filter = "BUFF" },	-- Luminous Barrier
+        { spellID = 17    , caster = "player", filter = "BUFF" },	-- Power Word: Shield (Rank 1)
+        { spellID = 592   , caster = "player", filter = "BUFF" },	-- Power Word: Shield (Rank 2)
+        { spellID = 600   , caster = "player", filter = "BUFF" },	-- Power Word: Shield (Rank 3)
+        { spellID = 3747  , caster = "player", filter = "BUFF" },	-- Power Word: Shield (Rank 4)
+        { spellID = 6065  , caster = "player", filter = "BUFF" },	-- Power Word: Shield (Rank 5)
+        { spellID = 6066  , caster = "player", filter = "BUFF" },	-- Power Word: Shield (Rank 6)
+        { spellID = 10898 , caster = "player", filter = "BUFF" },	-- Power Word: Shield (Rank 7)
+        { spellID = 10899 , caster = "player", filter = "BUFF" },	-- Power Word: Shield (Rank 8)
+        { spellID = 10900 , caster = "player", filter = "BUFF" },	-- Power Word: Shield (Rank 9)
+        { spellID = 10901 , caster = "player", filter = "BUFF" },	-- Power Word: Shield (Rank 10)
+
+        { spellID = 14748 , caster = "player", filter = "BUFF" },	-- Improved Power Word: Shield (Rank 1)
+        { spellID = 14768 , caster = "player", filter = "BUFF" },	-- Improved Power Word: Shield (Rank 2)
+        { spellID = 14769 , caster = "player", filter = "BUFF" },	-- Improved Power Word: Shield (Rank 3)
 
         -- Holy
-        { spellID = 139   , caster = "player", filter = "BUFF" },    -- Renew
-        { spellID = 19236 , caster = "player", filter = "BUFF" },	-- Desperate Prayer
-        { spellID = 41635 , caster = "player", filter = "BUFF" },	-- Prayer of Mending
-        { spellID = 47788 , caster = "player", filter = "BUFF" },    -- Guardian Spirit
-        { spellID = 77489 , caster = "player", filter = "BUFF" },	-- Echo of Light
-        { spellID = 111759, caster = "player", filter = "BUFF" },	-- Levitade
-        { spellID = 121557, caster = "player", filter = "BUFF" },	-- Angelic Feather
+        { spellID = 139   , caster = "player", filter = "BUFF" },    -- Renew (Rank 1)
+        { spellID = 6074  , caster = "player", filter = "BUFF" },    -- Renew (Rank 2)
+        { spellID = 6075  , caster = "player", filter = "BUFF" },    -- Renew (Rank 3)
+        { spellID = 6076  , caster = "player", filter = "BUFF" },    -- Renew (Rank 4)
+        { spellID = 6077  , caster = "player", filter = "BUFF" },    -- Renew (Rank 5)
+        { spellID = 6078  , caster = "player", filter = "BUFF" },    -- Renew (Rank 6)
+        { spellID = 10927 , caster = "player", filter = "BUFF" },    -- Renew (Rank 7)
+        { spellID = 10928 , caster = "player", filter = "BUFF" },    -- Renew (Rank 8)
+        { spellID = 10929 , caster = "player", filter = "BUFF" },    -- Renew (Rank 9)
+        { spellID = 25351 , caster = "player", filter = "BUFF" },    -- Renew (Rank 10)
+
+        { spellID = 14908 , caster = "player", filter = "BUFF" },    -- Improved Renew (Rank 1)
+        { spellID = 15020 , caster = "player", filter = "BUFF" },    -- Improved Renew (Rank 2)
+        { spellID = 17191 , caster = "player", filter = "BUFF" },    -- Improved Renew (Rank 3)
 
         -- Shadow
-        { spellID = 65081 , caster = "player", filter = "BUFF" },	-- Body and Soul
 
         ----------------------------------------------------------------
         -- Debuffs
         ----------------------------------------------------------------
         -- Discipline
         { spellID = 6788  , caster = "player", filter = "DEBUFF" },	-- Weakened Soul
-        { spellID = 187464, caster = "player", filter = "DEBUFF" },	-- Shadow Mend
-        { spellID = 204213, caster = "player", filter = "DEBUFF" },	-- Purge the Wicked
-        { spellID = 204263, caster = "player", filter = "DEBUFF" },	-- Shining Force
-        { spellID = 208772, caster = "player", filter = "DEBUFF" },	-- Smite
-        { spellID = 214621, caster = "player", filter = "DEBUFF" },	-- Schism
 
         -- Holy
-        { spellID = 14914 , caster = "player", filter = "DEBUFF" },	-- Holy Fire
-        { spellID = 200196, caster = "player", filter = "DEBUFF" },	-- Holy Word: Chastise
-        { spellID = 200200, caster = "player", filter = "DEBUFF" },	-- Holy Word: Chastise
+        { spellID = 14914 , caster = "player", filter = "DEBUFF" },	-- Holy Fire (Rank 1)
+        { spellID = 15262 , caster = "player", filter = "DEBUFF" },	-- Holy Fire (Rank 2)
+        { spellID = 15263 , caster = "player", filter = "DEBUFF" },	-- Holy Fire (Rank 3)
+        { spellID = 15264 , caster = "player", filter = "DEBUFF" },	-- Holy Fire (Rank 4)
+        { spellID = 15265 , caster = "player", filter = "DEBUFF" },	-- Holy Fire (Rank 5)
+        { spellID = 15266 , caster = "player", filter = "DEBUFF" },	-- Holy Fire (Rank 6)
+        { spellID = 15267 , caster = "player", filter = "DEBUFF" },	-- Holy Fire (Rank 7)
+        { spellID = 15261 , caster = "player", filter = "DEBUFF" },	-- Holy Fire (Rank 8)
 
         -- Shadow
-        { spellID = 589   , caster = "player", filter = "DEBUFF" },	-- Shadow Word: Pain
-        { spellID = 605   , caster = "player", filter = "DEBUFF" },	-- Mind Control
+        { spellID = 589   , caster = "player", filter = "DEBUFF" },	-- Shadow Word: Pain (Rank 1)
+        { spellID = 594   , caster = "player", filter = "DEBUFF" },	-- Shadow Word: Pain (Rank 2)
+        { spellID = 970   , caster = "player", filter = "DEBUFF" },	-- Shadow Word: Pain (Rank 3)
+        { spellID = 992   , caster = "player", filter = "DEBUFF" },	-- Shadow Word: Pain (Rank 4)
+        { spellID = 2767  , caster = "player", filter = "DEBUFF" },	-- Shadow Word: Pain (Rank 5)
+        { spellID = 10892 , caster = "player", filter = "DEBUFF" },	-- Shadow Word: Pain (Rank 6)
+        { spellID = 10893 , caster = "player", filter = "DEBUFF" },	-- Shadow Word: Pain (Rank 7)
+        { spellID = 10894 , caster = "player", filter = "DEBUFF" },	-- Shadow Word: Pain (Rank 8)
+
+        { spellID = 15275 , caster = "player", filter = "DEBUFF" },	-- Improved Shadow Word: Pain (Rank 1)
+        { spellID = 15317 , caster = "player", filter = "DEBUFF" },	-- Improved Shadow Word: Pain (Rank 2)
+
+        { spellID = 2944  , caster = "player", filter = "DEBUFF" },	-- Devouring Plague (Rank 1 - Undead)
+        { spellID = 19276 , caster = "player", filter = "DEBUFF" },	-- Devouring Plague (Rank 2 - Undead)
+        { spellID = 19277 , caster = "player", filter = "DEBUFF" },	-- Devouring Plague (Rank 3 - Undead)
+        { spellID = 19278 , caster = "player", filter = "DEBUFF" },	-- Devouring Plague (Rank 4 - Undead)
+        { spellID = 19279 , caster = "player", filter = "DEBUFF" },	-- Devouring Plague (Rank 5 - Undead)
+        { spellID = 19280 , caster = "player", filter = "DEBUFF" },	-- Devouring Plague (Rank 6 - Undead)
+
+        { spellID = 15286 , caster = "player", filter = "DEBUFF" },	-- Vampiric Embrace (Rank 1)
+        
+        { spellID = 27839 , caster = "player", filter = "DEBUFF" },	-- Improved Vampiric Embrace (Rank 1)
+        { spellID = 27840 , caster = "player", filter = "DEBUFF" },	-- Improved Vampiric Embrace (Rank 2)
+
+        { spellID = 15407 , caster = "player", filter = "DEBUFF" },	-- Mind Flay (Rank 1)
+        { spellID = 17311 , caster = "player", filter = "DEBUFF" },	-- Mind Flay (Rank 2)
+        { spellID = 17312 , caster = "player", filter = "DEBUFF" },	-- Mind Flay (Rank 3)
+        { spellID = 17313 , caster = "player", filter = "DEBUFF" },	-- Mind Flay (Rank 4)
+        { spellID = 17314 , caster = "player", filter = "DEBUFF" },	-- Mind Flay (Rank 5)
+        { spellID = 18807 , caster = "player", filter = "DEBUFF" },	-- Mind Flay (Rank 6)
+
+        { spellID = 15258 , caster = "player", filter = "DEBUFF" },	-- Shadow Vulnerability
+
+        { spellID = 453   , caster = "player", filter = "DEBUFF" },	-- Mind Soothe (Rank 1)
+        { spellID = 8192  , caster = "player", filter = "DEBUFF" },	-- Mind Soothe (Rank 2)
+        { spellID = 10953 , caster = "player", filter = "DEBUFF" },	-- Mind Soothe (Rank 3)
+
+        { spellID = 605   , caster = "player", filter = "DEBUFF" },	-- Mind Control (Rank 1)
+        { spellID = 10911 , caster = "player", filter = "DEBUFF" },	-- Mind Control (Rank 2)
+        { spellID = 10912 , caster = "player", filter = "DEBUFF" },	-- Mind Control (Rank 3)
+
         { spellID = 8122  , caster = "player", filter = "DEBUFF" },	-- Psychic Scream
         { spellID = 15407 , caster = "player", filter = "DEBUFF" },	-- Mind Flay
         { spellID = 15487 , caster = "player", filter = "DEBUFF" },	-- Silence
-        { spellID = 34914 , caster = "player", filter = "DEBUFF" },	-- Vampiric Touch
-        { spellID = 48045 , caster = "player", filter = "DEBUFF" },	-- Mind Sear
-        { spellID = 64044 , caster = "player", filter = "DEBUFF" },	-- Psychic Horror
-        { spellID = 226943, caster = "player", filter = "DEBUFF" },	-- Mind Bomb
-        { spellID = 205369, caster = "player", filter = "DEBUFF" },	-- Mind Bomb
-        { spellID = 263165, caster = "player", filter = "DEBUFF" },	-- Void Torrent
+
+        { spellID = 2652  , caster = "player", filter = "DEBUFF" },   --Touch of Weakness (Rank 1 - Undead - Priest)
+        { spellID = 19261 , caster = "player", filter = "DEBUFF" },   --Touch of Weakness (Rank 2 - Undead - Priest)
+        { spellID = 19262 , caster = "player", filter = "DEBUFF" },   --Touch of Weakness (Rank 3 - Undead - Priest)
+        { spellID = 19264 , caster = "player", filter = "DEBUFF" },   --Touch of Weakness (Rank 4 - Undead - Priest)
+        { spellID = 19265 , caster = "player", filter = "DEBUFF" },   --Touch of Weakness (Rank 5 - Undead - Priest)
+        { spellID = 19266 , caster = "player", filter = "DEBUFF" },   --Touch of Weakness (Rank 6 - Undead - Priest)
     }, -- [3]
 }
