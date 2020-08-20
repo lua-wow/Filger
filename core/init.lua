@@ -1,4 +1,6 @@
 local addon, ns = ...
+local LibStub = LibStub
+
 ns.Filger = CreateFrame("Frame", "Filger", UIParent)
 ns.Config = {}
 ns.SpellList = {}
@@ -20,3 +22,5 @@ ns.Filger.MyRace = select(2, UnitRace("player"))
 ns.Filger.MyRealm = GetRealmName()
 ns.Filger.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 ns.Filger.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+
+ns.Filger.LCD = LibStub("LibClassicDurations", true)

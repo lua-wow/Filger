@@ -4,6 +4,8 @@ local Config = ns.Config
 local SpellList = ns.SpellList
 local Instances = ns.Instances
 
+local LCD = Filger.LCD
+
 ----------------------------------------------------------------
 -- Filger
 ----------------------------------------------------------------
@@ -61,6 +63,14 @@ function Filger:UnitAura(unit, spell, filter)
         local name, texture, count, debuffType, duration, expiration, caster, isStealable,
 		nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll,
 		timeMod, effect1, effect2, effect3 = UnitAura(unit or "player", index, filter or "HELPFUL")
+        
+        if ((name and spellID) and (not expirationTime)) then
+            local duration2, expirationTime2 = Filger.LCD:GetAuraDurationByUnit(unit, spellID, caster, name)
+            
+            if (filter == "HARMFUL") then
+                print("DATA:", name, spellID, duration, expirationTime, caster, casterIsPlayer, " => ", duration2, expirationTime2)
+            end
+        end
 
         if (not spellID) then
             -- no auras left
@@ -347,6 +357,11 @@ function Filger:OnEvent(event, ...)
 
     -- clear active spells table
     wipe(self.actives)
+
+    -- check if frame active table exists
+    if (not self.actives) then
+        self.actives = {}
+    end
     
     -- scan unit auras and search for spell in the spell list.
     -- for index, data in ipairs(SpellList[class][self.id]) do
@@ -395,13 +410,8 @@ function Filger:OnEvent(event, ...)
             end
         end
 
-        -- check if frame active table exists
-        if (not self.actives) then
-            self.actives = {}
-        end
-
         -- remove repeated spells
-            for i, v in ipairs(self.actives) do
+        for i, v in ipairs(self.actives) do
             if (v.name == name) then
                 tremove(self.actives, i)
                 break
