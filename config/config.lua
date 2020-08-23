@@ -12,7 +12,7 @@ Config["General"] = {
     ["ConfigMode"] = false,                         -- enables config mode for help on position frames.
 
     ["IconSize"] = 32,                              -- sets icons size.
-    ["IconSpacing"] = 7,                            -- sets space between icons.
+    ["IconSpacing"] = 3,                            -- sets space between icons.
 
     ["BarWidth"] = 200,                             -- sets bar width.
     ["BarHeight"] = 18,                             -- sets bar height.
@@ -39,6 +39,20 @@ Config["Panels"] = {
 
     -- Right
     ["TargetAuras"] = { "LEFT", UIParent, "CENTER", xOffset, 0 },
-    ["FocusAuras"] = { "LEFT", UIParent, "CENTER", xOffset, -yOffset },
+    ["TargetDebuffs"] = { "LEFT", UIParent, "CENTER", xOffset, -yOffset },
+    -- ["FocusAuras"] = { "LEFT", UIParent, "CENTER", xOffset, -yOffset },
     ["BossBuffs"] = { "LEFT", UIParent, "CENTER", xOffset, yOffset },
+}
+
+Config["BlackList"] = {
+    [1243] = true,              -- Power Word: Fortitude (Rank 1)
+    [1244] = true,              -- Power Word: Fortitude (Rank 2)
+    [1245] = true,              -- Power Word: Fortitude (Rank 3)
+    [2791] = true,              -- Power Word: Fortitude (Rank 4)
+    [10937] = true,             -- Power Word: Fortitude (Rank 5)
+    [10938] = true,             -- Power Word: Fortitude (Rank 6)
+
+    [976] = true,               -- Shadow Protection (Rank 1)
+    [10957] = true,             -- Shadow Protection (Rank 2)
+    [10958] = true,             -- Shadow Protection (Rank 3)
 }
