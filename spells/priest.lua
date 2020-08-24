@@ -3,6 +3,29 @@ local Filger = ns.Filger
 local Config = ns.Config
 local SpellList = ns.SpellList
 
+--[[ Example:
+{
+    name = "PLAYER_AURAS",                              -- frame name
+    anchor = { "CENTER", UIParent, "CENTER", 0, 0 },    -- frame anchor
+    direction = "LEFT",                                 -- frame growth direction
+    mode = "ICON",                                      -- auras mode ("ICON" or "BAR")
+    limit = 8,                                          -- maximum number of auras displayed
+    size = 32,                                          -- aura icon size or bar height
+    spacing = 3,                                        -- space between auras
+
+    buffs = true,                                       -- display buffs
+    buffFilter = "PLAYER|HELPFUL",                      -- overwrite buffs filters
+
+    debuffs = true,                                     -- display debuffs
+    debuffFilter = "PLAYER|HARMFUL",                    -- overwrite debuffs filter
+
+    unit = "player",                                    -- unit which has the auras
+    caster = "player",                                  -- unit who applyed the aura ("player", "target", etc.). if nil it will not filter caster.
+    pve = false,                                        -- display only auras applied by npcs.                                       
+    pvp = false                                         -- display only auras applied by players.
+}
+--]]
+
 ----------------------------------------------------------------
 -- Priest
 ----------------------------------------------------------------
@@ -18,8 +41,7 @@ SpellList["PRIEST"] = {
 
         unit = "player",
         caster = "player",
-        boss = false,
-        pvp = false
+        buffs = true
     }, -- [1]
     {
         name = "TARGET_AURAS",
@@ -32,10 +54,7 @@ SpellList["PRIEST"] = {
 
         unit = "target",
         caster = "player",
-        debuffs = true,
-        buffs = true,
-        boss = false,
-        pvp = false
+        buffs = true
     }, -- [2]
     {
         name = "TARGET_DEBUFFS",
@@ -50,10 +69,7 @@ SpellList["PRIEST"] = {
 
         unit = "target",
         caster = "player",
-        debuffs = true,
-        buffs = true,
-        boss = false,
-        pvp = false
+        debuffs = true
     } -- [3]
     -- {
     --     name = "TARGET_DEBUFFS",

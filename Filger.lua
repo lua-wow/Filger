@@ -10,6 +10,8 @@ local VISIBLE = 1
 local HIDDEN = 0
 
 local UnitAura = UnitAura
+local UnitIsEnemy = UnitIsEnemy
+local IsSpellKnown = IsSpellKnown
 
 ----------------------------------------------------------------
 -- Filger
@@ -18,6 +20,14 @@ local UnitAura = UnitAura
 local class = select(2, UnitClass("player"))
 local color = RAID_CLASS_COLORS[class]
 
+local debuffTypes = {
+    ["Curse"]   = { 0.60, 0.00, 1.00 },
+    ["Disease"] = { 0.60, 0.40, 0.00 },
+    ["Magic"]   = { 0.20, 0.60, 1.00 },
+    ["Poison"]  = { 0.00, 0.60, 0.00 },
+    ["Unknown"]  = { 0.80, 0.00, 0.00 }
+}
+
 -- import
 local tinsert, tremove, tsort, wipe = table.insert, table.remove, table.sort, table.wipe
 local FormatTime =  Filger.FormatTime
@@ -25,8 +35,23 @@ local FormatTime =  Filger.FormatTime
 -- resources
 local BlankTex = Config["Medias"].Blank
 local Font, FontSize, FontStyle = Config["Medias"].PixelFont, 12, "MONOCHROMEOUTLINE"
+local BorderColor = Config["General"].BorderColor
 
--- updates aura timer
+-- Tooltips
+local function onEnter(self)
+	if (not self:IsVisible()) then return end
+    
+    GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+	GameTooltip:AddDoubleLine(self.name, self.spellID)
+	GameTooltip:SetClampedToScreen(true)
+	GameTooltip:Show()
+end
+
+local function onLeave()
+	GameTooltip:Hide()
+end
+
+-- Aura Timer
 local function UpdateAuraTimer(self, elapsed)
     local parent = self:GetParent()
     self.elapsed = (self.elapsed or 0) + elapsed
@@ -79,20 +104,7 @@ function Filger:SetPosition(element, aura, index)
     end
 end
 
-local function onEnter(self)
-	if (not self:IsVisible()) then return end
-    
-    GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-	GameTooltip:AddDoubleLine(self.name, self.spellID)
-	GameTooltip:SetClampedToScreen(true)
-	GameTooltip:Show()
-end
-
-local function onLeave()
-	GameTooltip:Hide()
-end
-
-
+-- Create Aura Icon
 function Filger:CreateAura(element, index)
 
     local aura = CreateFrame("Frame", element:GetName() .. "Aura" .. index, element)
@@ -154,38 +166,89 @@ function Filger:CreateAura(element, index)
     return aura
 end
 
+-- check if aura is dispelable by the player
+local function IsDispelable(debuffType)
+    if (not debuffType) then return end
+
+    if (class == "DRUID") then
+        -- Abolish Poison (Poison) = 2893
+        -- Cure Poison (Poison) = 8946
+        -- Remove Curse (Curse) = 2782
+        -- Soothe Animal (Enrage) = 2908
+        return (
+            (debuffType == "Poison" and (IsSpellKnown(2893) or IsSpellKnown(8946))) or
+            (debuffType == "Curse" and (IsSpellKnown(2782))) or
+            (debuffType == "Enrage" and IsSpellKnown(2908))
+        )
+    elseif (class == "HUNTER") then
+        -- Tranquilizing Shot (Frenzy) = 19801
+        return (
+            (debuffType == "Enrage" and IsSpellKnown(19801))
+        )
+    elseif (class == "PALADIN") then
+        -- Cleanse (Poison, Disease, Magic) = 4987
+        -- Purify (Disease, Poison) = 1152
+        return (
+            ((debuffType == "Poison" or debuffType == "Disease" or debuffType == "Magic") and IsSpellKnown(4987)) or
+            ((debuffType == "Poison" or debuffType == "Disease") and IsSpellKnown(1152))
+        )
+    elseif (class == "PRIEST") then
+        -- Dispel Magic Rank 1 (Magic) = 527
+        -- Dispel Magic Rank 2 (Magic) = 988
+        -- Cure Disease (Disease) = 528
+        -- Abolish Disease (Disease) = 552
+        return (
+            (debuffType == "Magic" and (IsSpellKnown(527) or IsSpellKnown(988))) or
+            (debuffType == "Disease" and (IsSpellKnown(528) or IsSpellKnown(552)))
+        )
+    elseif (class == "SHAMAN") then
+        -- Purge Rank 1 (Magic) = 370
+        -- Purge Rank 2 (Magic) = 8012
+        -- Cure Poison (Poison) = 526
+        -- Poison Cleansing Totem (Poison) = 8166
+        -- Cure Disease (Disease) = 2870
+        return (
+            (debuffType == "Magic" and (IsSpellKnown(370) or IsSpellKnown(8012))) or
+            (debuffType == "Poison" and (IsSpellKnown(526) or IsSpellKnown(8166))) or
+            (debuffType == "Disease" and IsSpellKnown(2870))
+        )
+    elseif (class == "WARLOCK") then
+        -- Felhunter
+        -- Devour Magic Rank 1 (Magic) = 19505
+        -- Devour Magic Rank 2 (Magic) = 19731
+        -- Devour Magic Rank 3 (Magic) = 19734
+        -- Devour Magic Rank 4 (Magic) = 19736
+        local hasDevourMagic = (
+            IsSpellKnown(19505, true) or
+            IsSpellKnown(19731, true) or
+            IsSpellKnown(19734, true) or
+            IsSpellKnown(19736, true)
+        )
+        return (
+            (debuffType == "Magic" and hasDevourMagic)
+        )
+    end
+end
+
 function Filger:CustomFilter(element, unit, ...)
     local name, texture, count, debuffType, duration, expiration, caster, isStealable,
 		nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll,
         timeMod, effect1, effect2, effect3 = ...
     
-    -- if (duration == 0) then return false end
-    -- if (element.caster ~= caster) then
-    --     return false
-    -- end
-
-    -- if (Config.BlackList[spellID]) then
-    --     return false
-    -- end
-
+    if (element.caster ~= caster) then
+        return false
+    end
     return true
 end
 
-function Filger:CustomAuraType(aura, type, caster, isDebuff)
-    if (caster ~= "player" and (not isDebuff)) then
-        if (type == "Curse") then
-            aura:SetBorderColor(0.60, 0.00, 1.00)
-        elseif (type == "Disease") then
-            aura:SetBorderColor(0.60, 0.40, 0.00)
-        elseif (type == "Magic") then
-            aura:SetBorderColor(0.20, 0.60, 1.00)
-        elseif (type == "Poison") then
-            aura:SetBorderColor(0.00, 0.60, 0.00)
-        else
-            aura:SetBorderColor(0.80, 0.00, 0.00)
-        end
+local function UpdateAuraBorderType(element, unit, aura, isDebuff, name, debuffType, caster, isStealable, spellID, isBossDebuff, casterIsPlayer)
+    local isEnemy = (type(caster) == "string") and UnitIsEnemy(caster, "player") or false
+    if (caster ~= "player" and (isDebuff)) then
+        local color = debuffTypes[debuffType or "Unknown"]
+        if (not color) then color = BorderColor end
+        aura:SetBorderColor(unpack(color))
     else
-        aura:SetBorderColor(unpack(Config["General"].BorderColor))
+        aura:SetBorderColor(unpack(BorderColor))
     end
 end
 
@@ -196,9 +259,11 @@ function Filger:UpdateAura(element, unit, index, offset, filter, isDebuff, visib
     
     if (not name) then return end
 
-    -- print(name, texture, count, debuffType, duration, expiration, caster, isStealable,
-    -- nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll,
-    -- timeMod, effect1, effect2, effect3)
+    if (debuffType ~= "Magic" and debuffType ~= "Curse" and debuffType ~= "Poison" and debuffType ~= "Disease") then
+        print("TYPE:", name, texture, count, debuffType, duration, expiration, caster, isStealable,
+            nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll,
+            timeMod, effect1, effect2, effect3)
+    end
 
     if (not duration or duration == 0) and (not expiration or expiration == 0) then
         local duration_lcd, expiration_lcd = LCD:GetAuraDurationByUnit(unit, spellID, caster, name)
@@ -212,7 +277,6 @@ function Filger:UpdateAura(element, unit, index, offset, filter, isDebuff, visib
 
     if (not aura) then
         aura = Filger:CreateAura(element, position)
-
         tinsert(element, aura)
     end
 
@@ -237,7 +301,6 @@ function Filger:UpdateAura(element, unit, index, offset, filter, isDebuff, visib
     timeMod, effect1, effect2, effect3)
 
     if (show) then
-
         if (aura.icon) then
             aura.icon:SetTexture(texture)
         end
@@ -275,7 +338,7 @@ function Filger:UpdateAura(element, unit, index, offset, filter, isDebuff, visib
             end
         end
 
-        Filger:CustomAuraType(aura, debuffType, caster, isDebuff)
+        UpdateAuraBorderType(element, unit, aura, isDebuff, name, debuffType, caster, isStealable, spellID, isBossDebuff, casterIsPlayer)
         aura:Show()
 
         return VISIBLE
@@ -344,8 +407,25 @@ local OnEvent = function(self, event, ...)
         PLAYER | HELPFUL
         PLAYER | HARMFUL
     ]]
+    local visibleBuffs, hiddenBuffs, visibleDebuffs, hiddenDebuffs
 
-    local visible, hidden = Filger:FilterAuras(self, unit, self.filter or "HELPFUL", self.limit, nil, 0, false)
+    if (self.buffs) then
+        local filter = "HELPFUL"
+        if (self.caster == "player") then
+            filter = "PLAYER" .. "|" .. filter
+        end
+
+        local visible, hidden = Filger:FilterAuras(self, unit, filter, self.limit, nil, 0, false)
+    end
+
+    if (self.debuffs) then
+        local filter = "HARMFUL"
+        if (self.caster == "player") then
+            filter = "PLAYER" .. "|" .. filter
+        end
+        
+        local visible, hidden = Filger:FilterAuras(self, unit, filter, self.limit, true, 0, false)
+    end
 end
 
 -- remove invalid spells or empty section and merge extra tables
@@ -414,81 +494,6 @@ function Filger:BuildSpellList()
 	end
 end
 
--- create panels for each one defined at class table
-function Filger:CreatePanels()
-    
-    for index, data in pairs(SpellList[class]) do
-
-        local frame = CreateFrame("Frame", self:GetName() .. index, self)
-        frame.id = index
-        frame.name = data.name
-        frame.anchor = data.anchor
-        frame.direction = data.direction or "LEFT"
-        frame.mode = data.mode or "ICON"
-        frame.num = data.num or 7
-        frame.size = data.size or 32
-        frame.width = data.width or 200
-        frame.spacing = data.spacing or 7
-        frame.alpha = data.alpha or 1
-        frame.unit = data.unit or "player"
-        frame.filter = data.filter
-        frame.instance = data.instance or false
-
-        -- active spell tacked by the frame
-        frame.actives = {}
-
-        frame.spells = {}
-        for _, value in ipairs(data) do
-            tinsert(frame.spells, value)
-        end
-
-        frame:SetPoint(unpack(frame.anchor))
-        frame:SetAlpha(frame.alpha)
-
-        if (frame.mode == "ICON") then
-            frame:SetWidth(frame.num * frame.size + (frame.num - 1) * frame.spacing)
-            frame:SetHeight(frame.size)
-        elseif (frame.mode == "BAR") then
-            frame:SetWidth(frame.size + frame.width + frame.spacing)
-            frame:SetHeight(frame.size)
-        end
-
-        if (true) then
-            -- frame
-            frame:CreateBackdrop("Transparent")
-            frame.Backdrop:Hide()
-
-            -- name
-            frame.text = frame:CreateFontString(nil, "OVERLAY")
-            frame.text:SetPoint("CENTER", frame, "CENTER", 0, 1)
-            frame.text:SetFont(Font, FontSize, FontStyle)
-            frame.text:SetText(index .. " - " .. frame.name)
-            frame.text:SetJustifyH("CENTER")
-            frame.text:Hide()
-        end
-
-        -- register events
-        if (frame.unit == "player") then
-            -- check if any spell filter
-            for _, value in ipairs(data) do
-                if (value.filter == "CD") then
-                    frame:RegisterEvent("SPELL_UPDATE_COOLDOWN")
-                    break
-                end
-            end
-        end
-        
-        frame:RegisterEvent("UNIT_AURA")
-        frame:RegisterEvent("PLAYER_ENTERING_WORLD")
-        if (frame.unit == "focus") then frame:RegisterEvent("PLAYER_FOCUS_CHANGED") end
-        if (frame.unit == "target") then frame:RegisterEvent("PLAYER_TARGET_CHANGED") end
-
-        frame:SetScript("OnEvent", self.OnEvent)
-
-        self[index] = frame
-    end
-end
-
 Filger:RegisterEvent("ADDON_LOADED")
 Filger:RegisterEvent("PLAYER_LOGIN")
 -- Filger:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -509,7 +514,6 @@ function Filger:PLAYER_LOGIN()
     -- self:BuildSpellList()
 
     -- create panels based on spell list
-    -- self:CreatePanels()
     for index, data in pairs(SpellList[class]) do
         self:Spawn(index, data)
     end
@@ -531,27 +535,19 @@ function Filger:Spawn(index, data)
 
     frame.size = data.size or 32
     frame.width = data.width or 200
-    frame.spacing = data.spacing or 7
+    frame.spacing = data.spacing or 3
     frame.alpha = data.alpha or 1
 
     frame.filter = data.filter
     frame.unit = data.unit or "player"
     frame.caster = data.caster or "player"
-    frame.boss = data.boss or false
-    frame.pvp = data.pvp or false
+    frame.buffs = data.buffs or false
+    frame.debuffs = data.debuffs or false
 
     frame.instance = data.instance or false
 
     frame:SetAttribute("unit", data.unit)
     frame:SetAttribute("caster", data.caster)
-
-    -- active spell tacked by the frame
-    -- frame.auras = {}
-
-    -- frame.spells = {}
-    -- for _, value in ipairs(data) do
-    --     tinsert(frame.spells, value)
-    -- end
 
     frame:SetPoint(unpack(frame.anchor))
     frame:SetAlpha(frame.alpha)
@@ -566,7 +562,6 @@ function Filger:Spawn(index, data)
 
     do
         -- frame
-        -- frame:SetTemplate("Transparent", nil, "Triple")
         frame:CreateBackdrop()
         frame.Backdrop:SetTemplate("Transparent", nil, "Triple")
         frame.Backdrop:Hide()
