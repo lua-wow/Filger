@@ -28,22 +28,79 @@ Config["Plugins"] = {
 }
 
 Config["Panels"] = {
+    -- LEFT
+    {
+        name = "PLAYER_AURAS",
+        anchor = { "RIGHT", UIParent, "CENTER", -xOffset, 0 },
+        direction = "LEFT",
+        mode = "ICON",
+        limit = 8,
+        size = Config["General"].IconSize,
+        spacing = Config["General"].IconSpacing,
 
-    -- Left
-    ["PlayerAllAuras"] = { "RIGHT", UIParent, "CENTER", -xOffset, -yOffset },
+        unit = "player",
+        caster = "player",
+        showOnlyPlayer = true,
+        buffs = true
+    }, -- [1]
+    {
+        name = "PLAYER_DEBUFFS",
+        anchor = { "RIGHT", UIParent, "CENTER", -xOffset, -yOffset },
+        direction = "LEFT",
+        mode = "ICON",
+        limit = 8,
+        size = Config["General"].IconSize,
+        spacing = Config["General"].IconSpacing,
 
-    ["PlayerAuras"] = { "RIGHT", UIParent, "CENTER", -xOffset, 0 },
+        unit = "player",
+        caster = "all",
+        debuffs = true
+    }, -- [2]
+    {
+        name = "PLAYER_BUFFS",
+        anchor = { "RIGHT", UIParent, "CENTER", -xOffset, yOffset },
+        direction = "LEFT",
+        mode = "ICON",
+        limit = 8,
+        size = Config["General"].IconSize,
+        spacing = Config["General"].IconSpacing,
 
-    ["PlayerRaidAuras"] = { "RIGHT", UIParent, "CENTER", -xOffset, -2 * yOffset },
-    ["BossDebuffs"] = { "RIGHT", UIParent, "CENTER", -xOffset, yOffset },
-    ["PvPDebuffs"] = { "RIGHT", UIParent, "CENTER", -xOffset, -3 * yOffset },
-    ["PlayerCooldowns"] = { "CENTER", UIParent, "CENTER", 0, -7 * yOffset },
+        unit = "player",
+        caster = "all",
+        hidePlayer = true,
+        buffs = true
+    }, -- [3]
 
-    -- Right
-    ["TargetAuras"] = { "LEFT", UIParent, "CENTER", xOffset, 0 },
-    ["TargetDebuffs"] = { "LEFT", UIParent, "CENTER", xOffset, -yOffset },
-    -- ["FocusAuras"] = { "LEFT", UIParent, "CENTER", xOffset, -yOffset },
-    ["BossBuffs"] = { "LEFT", UIParent, "CENTER", xOffset, yOffset },
+    -- RIGHT
+    {
+        name = "TARGET_AURAS",
+        anchor = { "LEFT", UIParent, "CENTER", xOffset, 0 },
+        direction = "RIGHT",
+        mode = "ICON",
+        limit = 8,
+        size = Config["General"].IconSize,
+        spacing = Config["General"].IconSpacing,
+
+        unit = "target",
+        caster = "player",
+        showOnlyPlayer = true,
+        buffs = true
+    }, -- [4]
+    {
+        name = "TARGET_DEBUFFS",
+        anchor = { "LEFT", UIParent, "CENTER", xOffset, -yOffset },
+        direction = "RIGHT",
+        mode = "ICON",
+        limit = 8,
+        size = Config["General"].IconSize,
+        spacing = Config["General"].IconSpacing,
+
+        filter = "PLAYER|HARMFUL",
+
+        unit = "target",
+        caster = "player",
+        debuffs = true
+    } -- [5]
 }
 
 Config["BlackList"] = {
@@ -90,4 +147,10 @@ Config["BlackList"] = {
     [27841] = true,             -- Prayer of Spirit (Rank 4)
     
     [21562] = true,             -- Prayer of Fortitude (Rank 1)
+    ----------------------------------------------------------------
+    -- Priest
+    ----------------------------------------------------------------
+    -- [132794] = true,            -- Drink
+    [16609] = true,            -- Warchief's Blessing
+    [22888] = true,            -- Rallying Cry of the Dragonslayer
 }

@@ -44,6 +44,32 @@ SpellList["PRIEST"] = {
         buffs = true
     }, -- [1]
     {
+        name = "PLAYER_DEBUFFS",
+        anchor = Config["Panels"].PlayerDebuffs,
+        direction = "LEFT",
+        mode = "ICON",
+        limit = 8,
+        size = Config["General"].IconSize,
+        spacing = Config["General"].IconSpacing,
+
+        unit = "player",
+        caster = nil,
+        debuffs = true
+    }, -- [1]
+    {
+        name = "PLAYER_BUFFS",
+        anchor = Config["Panels"].PlayerDebuffs,
+        direction = "LEFT",
+        mode = "ICON",
+        limit = 8,
+        size = Config["General"].IconSize,
+        spacing = Config["General"].IconSpacing,
+
+        unit = "player",
+        caster = nil,
+        buffs = true
+    }, -- [1]
+    {
         name = "TARGET_AURAS",
         anchor = Config["Panels"].TargetAuras,
         direction = "RIGHT",
