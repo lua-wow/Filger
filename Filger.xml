@@ -21,7 +21,7 @@
 	<Script file="plugins\tracer.lua"/>
 
 	<!-- Spell List -->
-	<Include file="spells\init.xml"/>
+	<!-- <Include file="spells\init.xml"/> -->
 
 	<!-- Filger -->
 	<Script file="Filger.lua"/>

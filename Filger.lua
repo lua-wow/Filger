@@ -89,21 +89,25 @@ local function UpdateAuraTimer(self, elapsed)
     end
 end
 
-function Filger:SetPosition(element, aura, index)
-    if (index == 1) then
-        aura:SetPoint(unpack(element.anchor))
-    else
-        local previous = element[index - 1]
-        if (element.direction == "UP") then
-            aura:SetPoint("BOTTOM", previous, "TOP", 0, element.spacing)
-        elseif (element.direction == "RIGHT") then
-            aura:SetPoint("LEFT", previous, "RIGHT", element.spacing, 0)
-        elseif (element.direction == "LEFT") then
-            aura:SetPoint("RIGHT", previous, "LEFT", -element.spacing, 0)
-        elseif (element.direction == "DOWN") then
-            aura:SetPoint("TOP", previous, "BOTTOM", 0, -element.spacing)
-        end
-    end
+function Filger:SetPosition(element, from, to)
+    local sizex = (element.size) + (element["spacing-x"] or element.spacing or 0)
+	local sizey = (element.size) + (element["spacing-y"] or element.spacing or 0)
+	local anchor = element.initialAnchor or "BOTTOMLEFT"
+	local growthx = (element['growth-x'] == 'LEFT' and -1) or 1
+	local growthy = (element['growth-y'] == 'DOWN' and -1) or 1
+	local cols = math.floor(element:GetWidth() / sizex + 0.5)
+
+	for i = from, to do
+		local aura = element[i]
+
+		-- Bail out if the to range is out of scope.
+		if (not aura) then break end
+		local col = (i - 1) % cols
+		local row = math.floor((i - 1) / cols)
+
+		aura:ClearAllPoints()
+		aura:SetPoint(anchor, element, anchor, col * sizex * growthx, row * sizey * growthy)
+	end
 end
 
 -- Create Aura Icon
@@ -237,18 +241,19 @@ local function CustomFilter(element, unit, aura, ...)
     -- hide unecessary auras (Fortitude, Intellect, etc.)
     if (BlackList[spellID]) then return end
     
-    -- show only auras casted by the player
-    if ((element.showOnlyPlayer and aura.isPlayer) or (not element.onlyShowPlayer and name)) then
-        return true
-    end
+    -- -- show only auras casted by the player
+    if (element.showOnlyPlayer and (not aura.isPlayer)) then return end
 
     -- show only auras not casted by the player
-    if (element.hidePlayer and caster == "player") then return end
+    if (element.hidePlayer and aura.isPlayer) then return end
+
+    return true
     
 end
 
-function Filger:PostUpdateAura(element, unit, aura, index, position, duration, expiration, debuffType, isStealable)
-    if (caster ~= "player" and (isDebuff)) then
+function Filger:PostUpdateAura(element, unit, aura, index, position, duration, expiration, debuffType, isDebuff, isStealable)
+    -- print(element.name, unit, aura.spellID, aura.name, debuffType, isDebuff)
+    if (isDebuff or (unit ~= "player" and aura.isEnemy and IsDispelable(debuffType))) then
         local color = debuffTypes[debuffType or "Unknown"]
         if (not color) then color = BorderColor end
         aura:SetBorderColor(unpack(color))
@@ -264,19 +269,6 @@ local function UpdateAura(element, unit, index, offset, filter, isDebuff, visibl
     
     if (not name) then return end
 
-    if (
-        (debuffType ~= "Magic" and
-         debuffType ~= "Curse" and
-         debuffType ~= "Poison" and
-         debuffType ~= "Disease") or
-        (name == "Spirit Tap") or
-        (not caster)
-    ) then
-        Filger:Debug(name, texture, count, debuffType, duration, expiration, caster, isStealable,
-        nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll,
-        timeMod, effect1, effect2, effect3)
-    end
-
     if (not duration or duration == 0) then
         local duration_lcd, expiration_lcd = LCD:GetAuraDurationByUnit(unit, spellID, caster, name)
         if (duration_lcd and duration_lcd > 0) then
@@ -285,17 +277,10 @@ local function UpdateAura(element, unit, index, offset, filter, isDebuff, visibl
     end
 
     local position = visible + offset + 1
-    local aura = element[index]
+    local aura = element[position]
 
     if (not aura) then
-        --[[ CreateAura(element, position)
-            Used to create the aura button at a given position.
-
-            * self      -- the widget holding the aura.
-            * position  -- the position at which the aura button is to be created (number)
-        --]]
         aura = Filger:CreateAura(element, position)
-        Filger:SetPosition(element, aura, position)
     end
 
     aura.caster = caster
@@ -326,75 +311,54 @@ local function UpdateAura(element, unit, index, offset, filter, isDebuff, visibl
         count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID,
         canApply, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3)
 
-    if (show) then
-    
-        if (aura.icon) then
-            aura.icon:SetTexture(texture)
-        end
-
-        if (aura.cooldown) then
-            if (duration and duration > 0) then
-                aura.cooldown:SetCooldown(expiration - duration, duration)
-                aura.cooldown:Show()
-            else
-                aura.cooldown:Hide()
-            end
-        end
-
-        if (aura.time) then
-            if (duration and duration > 0) then
-                aura:SetScript("OnUpdate", UpdateAuraTimer)
-            else
-                aura:SetScript("OnUpdate", nil)
-            end
-        end
-
-        if (aura.count) then
-            aura.count:SetText(count > 1 and count)
-        end
-
-        -- play aura animation
-        if (aura.animation) then
-            -- if ((unit == "player") and (isDebuff and IsDispelable(debuffType))) or
-            --     ((unit == "target") and (isStealable or IsDispelable(debuffType))) then
-            if (((unit == "player") and (isDebuff) and IsDispelable(debuffType)) or
-                ((unit == "target" and IsDispelable(debuffType)) and ((not isEnemy and isDebuff) or (isEnemy and not isDebuff)))) then
-
-                    --[[
-                    (unit == "player") and (isDebuff) and IsDispelable(debuffType)
-
-                    (unit == "target") and (not isEnemy) and (isDebuff) and (IsDispelable(debuffType))
-                    (unit == "target") and (isEnemy) and (not isDebuff) and (IsDispelable(debuffType))
-                    
-                    --]]
-
-                aura.animation:Play()
-                aura.animation.Playing = true
-            else
-                aura.animation:Stop()
-                aura.animation.Playing = false
-            end
-        end
-
-        aura:Show()
-
-        --[[ PostUpdateIcon(unit, button, index, position)
-			Called after the aura button has been updated.
-			* self        - the widget holding the aura buttons
-			* unit        - the unit on which the aura is cast (string)
-			* button      - the updated aura button (Button)
-			* index       - the index of the aura (number)
-			* position    - the actual position of the aura button (number)
-			* duration    - the aura duration in seconds (number?)
-			* expiration  - the point in time when the aura will expire. Comparable to GetTime() (number)
-			* debuffType  - the debuff type of the aura (string?)['Curse', 'Disease', 'Magic', 'Poison']
-			* isStealable - whether the aura can be stolen or purged (boolean)
-        --]]
-        Filger:PostUpdateAura(element, unit, aura, index, position, duration, expiration, debuffType, isStealable)
-
-        return VISIBLE, name
+    if (not show) then
+        return HIDDEN
     end
-    return HIDDEN
+    
+    if (aura.icon) then
+        aura.icon:SetTexture(texture)
+    end
+
+    if (aura.cooldown) then
+        if (duration and duration > 0) then
+            aura.cooldown:SetCooldown(expiration - duration, duration)
+            aura.cooldown:Show()
+        else
+            aura.cooldown:Hide()
+        end
+    end
+
+    if (aura.time) then
+        if (duration and duration > 0) then
+            aura:SetScript("OnUpdate", UpdateAuraTimer)
+        else
+            aura:SetScript("OnUpdate", nil)
+        end
+    end
+
+    if (aura.count) then
+        aura.count:SetText(count > 1 and count)
+    end
+
+    if (aura.animation) then
+        if (
+            (unit == "player" and isDebuff and IsDispelable(debuffType)) or
+            (unit == "target" and isDebuff and IsDispelable(debuffType) and (not aura.isEnemy)) or
+            (unit == "target" and (not isDebuff) and IsDispelable(debuffType) and aura.isEnemy)
+        ) then
+            aura.animation:Play()
+            aura.animation.Playing = true
+        else
+            aura.animation:Stop()
+            aura.animation.Playing = false
+        end
+    end
+
+    aura:Show()
+
+    Filger:PostUpdateAura(element, unit, aura, index, position, duration, expiration, debuffType, isDebuff, isStealable)
+
+    return VISIBLE
 end
 
 function Filger:FilterAuras(element, unit, filter, limit, isDebuff, offset, dontHide)
@@ -417,7 +381,6 @@ function Filger:FilterAuras(element, unit, filter, limit, isDebuff, offset, dont
     if (not dontHide) then
         for i = visible + offset + 1, #element do
             element[i]:Hide()
-            -- element[i].Backdrop:Hide()
         end
     end
 
@@ -425,9 +388,6 @@ function Filger:FilterAuras(element, unit, filter, limit, isDebuff, offset, dont
 end
 
 -- handles events and update active spells
---[[ Callback: handle spell events
-* self  -- current frame
-]]
 local OnEvent = function(self, event, ...)
     local unit = nil
     
@@ -461,25 +421,9 @@ local OnEvent = function(self, event, ...)
         PLAYER | HELPFUL
         PLAYER | HARMFUL
     ]]
-    local visibleBuffs, hiddenBuffs, visibleDebuffs, hiddenDebuffs = 0, 0, 0, 0
+    local visible, hidden = Filger:FilterAuras(self, unit, self.filter, self.limit, self.isDebuff, 0, false)
 
-    if (self.buffs) then
-        local filter = "HELPFUL"
-        if (self.caster == "player") then
-            filter = "PLAYER" .. "|" .. filter
-        end
-        
-        visibleBuffs, hiddenBuffs = Filger:FilterAuras(self, unit, filter, self.limit, nil, 0, false)
-    end
-
-    if (self.debuffs) then
-        local filter = "HARMFUL"
-        if (self.caster == "player") then
-            filter = "PLAYER" .. "|" .. filter
-        end
-        
-        visibleDebuffs, hiddenDebuffs = Filger:FilterAuras(self, unit, filter, self.limit - visibleBuffs, true, visibleBuffs, false)
-    end
+    Filger:SetPosition(self, 1, #self)
 end
 
 -- remove invalid spells or empty section and merge extra tables
@@ -579,39 +523,29 @@ function Filger:Spawn(index, data)
     frame.name = data.name
     frame.anchor = data.anchor
     frame.direction = data.direction or "LEFT"
-    frame.mode = data.mode or "ICON"
     frame.limit = data.limit or 8
 
     frame.size = data.size or 32
-    frame.width = data.width or 200
     frame.spacing = data.spacing or 3
     frame.alpha = data.alpha or 1
+    frame.initialAnchor = data.initialAnchor or "BOTTOMLEFT"
+    frame["growth-x"] = data["growth-x"] or "LEFT"
+    frame["growth-y"] = data["growth-y"] or "DOWN"
 
-    frame.filter = data.filter
     frame.unit = data.unit or "player"
     frame.caster = data.caster
-    frame.showOnlyPlayer = data.showOnlyPlayer
-    frame.hidePlayer = data.hidePlayer
-    frame.buffs = data.buffs or false
-    frame.debuffs = data.debuffs or false
+    frame.showOnlyPlayer = data.showOnlyPlayer or false
+    frame.hidePlayer = data.hidePlayer or false
+
+    frame.filter = data.filter
+    frame.isDebuff = data.isDebuff or false
 
     frame.createdAuras = 0
 
-    frame.instance = data.instance or false
-
-    frame:SetAttribute("unit", data.unit)
-    frame:SetAttribute("caster", data.caster)
-
     frame:SetPoint(unpack(frame.anchor))
+    frame:SetWidth((frame.limit * frame.size) + (frame.limit - 1) * frame.spacing)
+    frame:SetHeight(frame.size)
     frame:SetAlpha(frame.alpha)
-
-    if (frame.mode == "ICON") then
-        frame:SetWidth(frame.limit * frame.size + (frame.limit - 1) * frame.spacing)
-        frame:SetHeight(frame.size)
-    elseif (frame.mode == "BAR") then
-        frame:SetWidth(frame.size + frame.width + frame.spacing)
-        frame:SetHeight(frame.size)
-    end
 
     do
         -- frame
@@ -627,6 +561,9 @@ function Filger:Spawn(index, data)
         frame.text:SetJustifyH("CENTER")
         frame.text:Hide()
     end
+
+    frame:SetAttribute("unit", data.unit)
+    frame:SetAttribute("caster", data.caster)
 
     frame:RegisterEvent("UNIT_AURA")
     if (frame.unit == "player") then

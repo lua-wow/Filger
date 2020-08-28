@@ -30,76 +30,81 @@ Config["Plugins"] = {
 Config["Panels"] = {
     -- LEFT
     {
-        name = "PLAYER_AURAS",
+        enabled = true,        name = "PLAYER_AURAS",
         anchor = { "RIGHT", UIParent, "CENTER", -xOffset, 0 },
-        direction = "LEFT",
-        mode = "ICON",
         limit = 8,
         size = Config["General"].IconSize,
         spacing = Config["General"].IconSpacing,
+        initialAnchor = 'BOTTOMRIGHT',
+        ['growth-x'] = "LEFT",
+        ['growth-y'] = "DOWN",
 
+        filter = "PLAYER|HELPFUL",
         unit = "player",
         caster = "player",
-        showOnlyPlayer = true,
-        buffs = true
+        showOnlyPlayer = true
     }, -- [1]
     {
         name = "PLAYER_DEBUFFS",
         anchor = { "RIGHT", UIParent, "CENTER", -xOffset, -yOffset },
-        direction = "LEFT",
-        mode = "ICON",
         limit = 8,
         size = Config["General"].IconSize,
         spacing = Config["General"].IconSpacing,
+        initialAnchor = 'BOTTOMRIGHT',
+        ['growth-x'] = "LEFT",
+        ['growth-y'] = "DOWN",
 
+        filter = "HARMFUL",
         unit = "player",
         caster = "all",
-        debuffs = true
+        isDebuff = true
     }, -- [2]
     {
         name = "PLAYER_BUFFS",
         anchor = { "RIGHT", UIParent, "CENTER", -xOffset, yOffset },
-        direction = "LEFT",
-        mode = "ICON",
         limit = 8,
         size = Config["General"].IconSize,
         spacing = Config["General"].IconSpacing,
+        initialAnchor = 'BOTTOMRIGHT',
+        ['growth-x'] = "LEFT",
+        ['growth-y'] = "DOWN",
 
+        filter = "HELPFUL",
         unit = "player",
         caster = "all",
-        hidePlayer = true,
-        buffs = true
+        hidePlayer = true
     }, -- [3]
 
     -- RIGHT
     {
         name = "TARGET_AURAS",
         anchor = { "LEFT", UIParent, "CENTER", xOffset, 0 },
-        direction = "RIGHT",
-        mode = "ICON",
         limit = 8,
         size = Config["General"].IconSize,
         spacing = Config["General"].IconSpacing,
+        initialAnchor = 'BOTTOMLEFT',
+        ['growth-x'] = "RIGHT",
+        ['growth-y'] = "DOWN",
 
+        filter = "HELPFUL",
         unit = "target",
         caster = "player",
-        showOnlyPlayer = true,
-        buffs = true
+        showOnlyPlayer = true
     }, -- [4]
     {
         name = "TARGET_DEBUFFS",
         anchor = { "LEFT", UIParent, "CENTER", xOffset, -yOffset },
-        direction = "RIGHT",
-        mode = "ICON",
         limit = 8,
         size = Config["General"].IconSize,
         spacing = Config["General"].IconSpacing,
+        initialAnchor = 'BOTTOMLEFT',
+        ['growth-x'] = "RIGHT",
+        ['growth-y'] = "DOWN",
 
         filter = "PLAYER|HARMFUL",
-
         unit = "target",
         caster = "player",
-        debuffs = true
+        isDebuff = true
     } -- [5]
 }
 
@@ -153,4 +158,5 @@ Config["BlackList"] = {
     -- [132794] = true,            -- Drink
     [16609] = true,            -- Warchief's Blessing
     [22888] = true,            -- Rallying Cry of the Dragonslayer
+    [1135] = true,              -- Drink
 }
