@@ -30,7 +30,7 @@ Config["Plugins"] = {
 Config["Panels"] = {
     -- LEFT
     {
-        enabled = true,        name = "PLAYER_AURAS",
+        name = "PLAYER_AURAS",
         anchor = { "RIGHT", UIParent, "CENTER", -xOffset, 0 },
         limit = 8,
         size = Config["General"].IconSize,
@@ -89,7 +89,7 @@ Config["Panels"] = {
         filter = "HELPFUL",
         unit = "target",
         caster = "player",
-        showOnlyPlayer = true
+        showOnlyPlayer = false
     }, -- [4]
     {
         name = "TARGET_DEBUFFS",
@@ -101,13 +101,14 @@ Config["Panels"] = {
         ['growth-x'] = "RIGHT",
         ['growth-y'] = "DOWN",
 
-        filter = "PLAYER|HARMFUL",
+        filter = "HARMFUL",
         unit = "target",
         caster = "player",
         isDebuff = true
     } -- [5]
 }
 
+-- List of spells that do not need to be displayed
 Config["BlackList"] = {
     ----------------------------------------------------------------
     -- Druid
@@ -122,6 +123,10 @@ Config["BlackList"] = {
 
     [21849] = true,             -- Gift of the Wild (Rank 1)
     [21850] = true,             -- Gift of the Wild (Rank 2)
+
+    [24932] = true,             -- Leader of the Pack
+
+    [5487] = false,             -- Bear Form
 
     ----------------------------------------------------------------
     -- Mage
@@ -152,11 +157,20 @@ Config["BlackList"] = {
     [27841] = true,             -- Prayer of Spirit (Rank 4)
     
     [21562] = true,             -- Prayer of Fortitude (Rank 1)
+
     ----------------------------------------------------------------
-    -- Priest
+    -- Warlock
     ----------------------------------------------------------------
-    -- [132794] = true,            -- Drink
-    [16609] = true,            -- Warchief's Blessing
-    [22888] = true,            -- Rallying Cry of the Dragonslayer
+    [11766] = true,             -- Blood Pact
+
+    ----------------------------------------------------------------
+    -- General
+    ----------------------------------------------------------------
+    [15007] = true,             -- Ressurection Sickness
+    [16609] = true,             -- Warchief's Blessing
+    [22888] = true,             -- Rallying Cry of the Dragonslayer
     [1135] = true,              -- Drink
+    [1117] = true,              -- Food
+
+    [8098] = true,              -- Intellect (Scroll III)
 }

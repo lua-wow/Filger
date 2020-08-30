@@ -185,9 +185,7 @@ local function IsDispelable(debuffType)
         )
     elseif (class == "HUNTER") then
         -- Tranquilizing Shot (Frenzy) = 19801
-        return (
-            (debuffType == "Enrage" and IsSpellKnown(19801))
-        )
+        return (debuffType == "Enrage" and IsSpellKnown(19801))
     elseif (class == "PALADIN") then
         -- Cleanse (Poison, Disease, Magic) = 4987
         -- Purify (Disease, Poison) = 1152
@@ -227,9 +225,7 @@ local function IsDispelable(debuffType)
             IsSpellKnown(19734, true) or
             IsSpellKnown(19736, true)
         )
-        return (
-            (debuffType == "Magic" and hasDevourMagic)
-        )
+        return (debuffType == "Magic" and hasDevourMagic)
     end
 end
 
@@ -241,7 +237,7 @@ local function CustomFilter(element, unit, aura, ...)
     -- hide unecessary auras (Fortitude, Intellect, etc.)
     if (BlackList[spellID]) then return end
     
-    -- -- show only auras casted by the player
+    -- show only auras casted by the player
     if (element.showOnlyPlayer and (not aura.isPlayer)) then return end
 
     -- show only auras not casted by the player
@@ -251,15 +247,57 @@ local function CustomFilter(element, unit, aura, ...)
     
 end
 
+local function selectColorByType(debuffType)
+    local color = debuffTypes[debuffType or "Unknown"]
+    if (not color) then
+        return BorderColor
+    end
+    return color
+end
+
 function Filger:PostUpdateAura(element, unit, aura, index, position, duration, expiration, debuffType, isDebuff, isStealable)
-    -- print(element.name, unit, aura.spellID, aura.name, debuffType, isDebuff)
-    if (isDebuff or (unit ~= "player" and aura.isEnemy and IsDispelable(debuffType))) then
-        local color = debuffTypes[debuffType or "Unknown"]
-        if (not color) then color = BorderColor end
+    local isDispelable = IsDispelable(debuffType)
+    local isRemovable = isDispelable or isStealable
+
+    local unitIsEnemy = UnitIsEnemy(unit or "player", "player")
+    local unitIsFriendly = not unitIsEnemy
+
+    local casterIsEnemy = UnitIsEnemy(caster or "player", "player")
+    local casterIsFriendly = not casterIsEnemy
+
+    -- color aura border by it's type
+    --[[
+        1 - Debuffs not casted by player
+        2 - Dispelable/Stealable buffs (unit is a enemy)
+    --]]
+    if (isDebuff and (not aura.isPlayer)) then
+        local color = selectColorByType(debuffType)
         aura:SetBorderColor(unpack(color))
     else
         aura:SetBorderColor(unpack(BorderColor))
     end
+
+    -- aura animation to show each aura is dispelable/stealable
+    if (aura.animation) then
+        --[[
+            1 - Dispelable Debuffs on friendly unit and are casted by a boss
+            2 - Dispelable Debuffs on player/friend and are casted by a enemy player
+            3 - Dispelable Buffs on enemy
+        --]]
+        local dispelableDebuffs = isDebuff and isRemovable and casterIsEnemy and unitIsFriendly
+        local dispelableEnemyBuffs = (not isDebuff) and unitIsEnemy and isRemovable
+        if (dispelableDebuffs or  dispelableEnemyBuffs) then
+            aura.animation:Play()
+            aura.animation.Playing = true
+        else
+            aura.animation:Stop()
+            aura.animation.Playing = false
+        end
+    end
+
+    -- if (aura.icon) then
+    --     aura.icon:SetDesaturated(isDebuff and (unit ~= "player") and (not aura.isPlayer))
+    -- end
 end
 
 local function UpdateAura(element, unit, index, offset, filter, isDebuff, visible)
@@ -269,6 +307,7 @@ local function UpdateAura(element, unit, index, offset, filter, isDebuff, visibl
     
     if (not name) then return end
 
+    -- classic UnitAura do not return duration and expiration parameters
     if (not duration or duration == 0) then
         local duration_lcd, expiration_lcd = LCD:GetAuraDurationByUnit(unit, spellID, caster, name)
         if (duration_lcd and duration_lcd > 0) then
@@ -281,21 +320,21 @@ local function UpdateAura(element, unit, index, offset, filter, isDebuff, visibl
 
     if (not aura) then
         aura = Filger:CreateAura(element, position)
+        aura.filter = filter
+        aura.isDebuff = isDebuff
     end
 
     aura.caster = caster
-    aura.filter = filter
-    aura.isDebuff = isDebuff
-    aura.isPlayer = (caster == "player" or caster == "vehicle")
+    aura.isPlayer = (caster == "player" or caster == "vehicle" or caster == "pet")
     aura.isBossDebuff = isBossDebuff
     aura.casterIsPlayer = casterIsPlayer
-    aura.isEnemy = (caster) and UnitIsEnemy(caster, "player")
 
     aura.name = name
     aura.spellID = spellID
     aura.debuffType = debuffType
-    aura.expiration = expiration or expiration2
-    aura.duration = duration or duration2
+
+    aura.expiration = expiration or 0
+    aura.duration = duration
     aura.start = expiration - duration
     aura.first = true
     
@@ -331,27 +370,15 @@ local function UpdateAura(element, unit, index, offset, filter, isDebuff, visibl
     if (aura.time) then
         if (duration and duration > 0) then
             aura:SetScript("OnUpdate", UpdateAuraTimer)
+            aura.time:Show()
         else
             aura:SetScript("OnUpdate", nil)
+            aura.time:Hide()
         end
     end
 
     if (aura.count) then
         aura.count:SetText(count > 1 and count)
-    end
-
-    if (aura.animation) then
-        if (
-            (unit == "player" and isDebuff and IsDispelable(debuffType)) or
-            (unit == "target" and isDebuff and IsDispelable(debuffType) and (not aura.isEnemy)) or
-            (unit == "target" and (not isDebuff) and IsDispelable(debuffType) and aura.isEnemy)
-        ) then
-            aura.animation:Play()
-            aura.animation.Playing = true
-        else
-            aura.animation:Stop()
-            aura.animation.Playing = false
-        end
     end
 
     aura:Show()
@@ -519,15 +546,13 @@ end
 function Filger:Spawn(index, data)
     
     local frame = CreateFrame("Frame", self:GetName() .. index, self)
-    frame.id = index
     frame.name = data.name
     frame.anchor = data.anchor
-    frame.direction = data.direction or "LEFT"
-    frame.limit = data.limit or 8
 
+    frame.limit = data.limit or 32
     frame.size = data.size or 32
     frame.spacing = data.spacing or 3
-    frame.alpha = data.alpha or 1
+    
     frame.initialAnchor = data.initialAnchor or "BOTTOMLEFT"
     frame["growth-x"] = data["growth-x"] or "LEFT"
     frame["growth-y"] = data["growth-y"] or "DOWN"
@@ -545,7 +570,7 @@ function Filger:Spawn(index, data)
     frame:SetPoint(unpack(frame.anchor))
     frame:SetWidth((frame.limit * frame.size) + (frame.limit - 1) * frame.spacing)
     frame:SetHeight(frame.size)
-    frame:SetAlpha(frame.alpha)
+    frame:SetAlpha(data.alpha or 1)
 
     do
         -- frame
