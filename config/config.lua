@@ -162,6 +162,16 @@ Config["BlackList"] = {
     -- Warlock
     ----------------------------------------------------------------
     [11766] = true,             -- Blood Pact
+    [11767] = true,             -- Blood Pact
+    [19480] = true,             -- Paranoia
+
+    ----------------------------------------------------------------
+    -- Shaman
+    ----------------------------------------------------------------
+    [5672] = true,              -- Healing Stream
+    [8163] = true,              -- Strength of Earth
+    [8836] = true,              -- Grace of Air
+    [10491] = true,             -- Mana Spring
 
     ----------------------------------------------------------------
     -- General
@@ -170,6 +180,7 @@ Config["BlackList"] = {
     [16609] = true,             -- Warchief's Blessing
     [22888] = true,             -- Rallying Cry of the Dragonslayer
     [1135] = true,              -- Drink
+    [1137] = true,              -- Drink
     [1117] = true,              -- Food
 
     [8098] = true,              -- Intellect (Scroll III)
