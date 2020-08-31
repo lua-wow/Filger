@@ -270,7 +270,7 @@ function Filger:PostUpdateAura(element, unit, aura, index, position, duration, e
         1 - Debuffs not casted by player
         2 - Dispelable/Stealable buffs (unit is a enemy)
     --]]
-    if (isDebuff and (not aura.isPlayer)) then
+    if (isDebuff and (not aura.isPlayer) and (unit ~= "player")) then
         local color = selectColorByType(debuffType)
         aura:SetBorderColor(unpack(color))
     else
@@ -286,6 +286,9 @@ function Filger:PostUpdateAura(element, unit, aura, index, position, duration, e
         --]]
         local dispelableDebuffs = isDebuff and isRemovable and casterIsEnemy and unitIsFriendly
         local dispelableEnemyBuffs = (not isDebuff) and unitIsEnemy and isRemovable
+        -- if (not aura.isPlayer and unit == "player") then
+        --     print(aura.name, aura.spellID, aura.caster, debuffType, isDebuff, unit, isDispelable, isStealable, dispelableDebuffs, dispelableEnemyBuffs)
+        -- end
         if (dispelableDebuffs or  dispelableEnemyBuffs) then
             aura.animation:Play()
             aura.animation.Playing = true
