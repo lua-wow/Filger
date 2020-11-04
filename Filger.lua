@@ -267,10 +267,16 @@ function Filger:PostUpdateAura(element, unit, aura, index, position, duration, e
 
     -- color aura border by it's type
     --[[
-        1 - Debuffs not casted by player
-        2 - Dispelable/Stealable buffs (unit is a enemy)
+        1 - Debuffs on player.
+        2 - Debuffs on friendly target, color if dispelabled.
+        3 - Buffs on enemy target, but are dispelable or stealable should be colored.
     --]]
-    if (isDebuff and (not aura.isPlayer) and (unit ~= "player")) then
+    if (
+        (isDebuff and (unit == "player") and isRemovable) or
+        (isDebuff and unitIsFriendly and isRemovable) or
+        ((not isDebuff) and unitIsEnemy and isRemovable)
+    ) then
+    -- if (isDebuff and (not aura.isPlayer) and (unit ~= "player")) then
         local color = selectColorByType(debuffType)
         aura:SetBorderColor(unpack(color))
     else
@@ -286,9 +292,7 @@ function Filger:PostUpdateAura(element, unit, aura, index, position, duration, e
         --]]
         local dispelableDebuffs = isDebuff and isRemovable and casterIsEnemy and unitIsFriendly
         local dispelableEnemyBuffs = (not isDebuff) and unitIsEnemy and isRemovable
-        -- if (not aura.isPlayer and unit == "player") then
-        --     print(aura.name, aura.spellID, aura.caster, debuffType, isDebuff, unit, isDispelable, isStealable, dispelableDebuffs, dispelableEnemyBuffs)
-        -- end
+        
         if (dispelableDebuffs or  dispelableEnemyBuffs) then
             aura.animation:Play()
             aura.animation.Playing = true
@@ -298,9 +302,10 @@ function Filger:PostUpdateAura(element, unit, aura, index, position, duration, e
         end
     end
 
-    -- if (aura.icon) then
-    --     aura.icon:SetDesaturated(isDebuff and (unit ~= "player") and (not aura.isPlayer))
-    -- end
+    -- 2 - Debuffs on enemy target, but not casted by player should be desaturated.
+    if (aura.icon) then
+        aura.icon:SetDesaturated(isDebuff and (not aura.isPlayer) and (casterIsFriendly) and (unitIsEnemy))
+    end
 end
 
 local function UpdateAura(element, unit, index, offset, filter, isDebuff, visible)
