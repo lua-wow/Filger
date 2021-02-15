@@ -8,6 +8,7 @@ local SpellList = ns.SpellList
 ----------------------------------------------------------------
 -- imports
 local tinsert, tsort = table.insert, table.sort
+local strsplit = string.strsplit
 
 -- string formats
 local STRING_COLOR = "|cffb3ff19%s|r"   --"|cff00ff96%s|r"

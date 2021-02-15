@@ -4,6 +4,7 @@ local Config = ns.Config
 local SpellList = ns.SpellList
 
 local format = string.format
+local floor, ceil = math.floor, math.ceil
 ----------------------------------------------------------------
 -- Functions
 ----------------------------------------------------------------

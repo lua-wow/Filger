@@ -23,5 +23,3 @@ ns.Filger.MyRealm = GetRealmName()
 ns.Filger.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 ns.Filger.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 ns.Filger.Dummy = function() end
-
-ns.Filger.LCD = LibStub("LibClassicDurations", true)

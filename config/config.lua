@@ -11,7 +11,7 @@ Config["General"] = {
 
     ["ConfigMode"] = false,                         -- enables config mode for help on position frames.
 
-    ["IconSize"] = 32,                              -- sets icons size.
+    ["IconSize"] = 35,                              -- sets icons size.
     ["IconSpacing"] = 3,                            -- sets space between icons.
 
     ["BarWidth"] = 200,                             -- sets bar width.
@@ -110,78 +110,28 @@ Config["Panels"] = {
 
 -- List of spells that do not need to be displayed
 Config["BlackList"] = {
-    ----------------------------------------------------------------
-    -- Druid
-    ----------------------------------------------------------------
-    [1126] = true,              -- Mark of the Wild (Rank 1)
-    [5232] = true,              -- Mark of the Wild (Rank 2)
-    [6756] = true,              -- Mark of the Wild (Rank 3)
-    [5234] = true,              -- Mark of the Wild (Rank 4)
-    [8907] = true,              -- Mark of the Wild (Rank 5)
-    [9884] = true,              -- Mark of the Wild (Rank 6)
-    [9885] = true,              -- Mark of the Wild (Rank 7)
-
-    [21849] = true,             -- Gift of the Wild (Rank 1)
-    [21850] = true,             -- Gift of the Wild (Rank 2)
-
-    [24932] = true,             -- Leader of the Pack
-
-    [5487] = false,             -- Bear Form
 
     ----------------------------------------------------------------
     -- Mage
     ----------------------------------------------------------------
-    [1459] = true,              -- Arcane Intellect (Rank 1)
-    [1460] = true,              -- Arcane Intellect (Rank 2)
-    [1461] = true,              -- Arcane Intellect (Rank 3)
-    [10156] = true,             -- Arcane Intellect (Rank 4)
-    [10157] = true,             -- Arcane Intellect (Rank 5)
+    [1459] = true,              -- Arcane Intellect
 
     ----------------------------------------------------------------
     -- Priest
     ----------------------------------------------------------------
-    [1243] = true,              -- Power Word: Fortitude (Rank 1)
-    [1244] = true,              -- Power Word: Fortitude (Rank 2)
-    [1245] = true,              -- Power Word: Fortitude (Rank 3)
-    [2791] = true,              -- Power Word: Fortitude (Rank 4)
-    [10937] = true,             -- Power Word: Fortitude (Rank 5)
-    [10938] = true,             -- Power Word: Fortitude (Rank 6)
-
-    [976] = true,               -- Shadow Protection (Rank 1)
-    [10957] = true,             -- Shadow Protection (Rank 2)
-    [10958] = true,             -- Shadow Protection (Rank 3)
-
-    [27681] = true,             -- Prayer of Spirit (Rank 1)
-    [14818] = true,             -- Prayer of Spirit (Rank 2)
-    [14819] = true,             -- Prayer of Spirit (Rank 3)
-    [27841] = true,             -- Prayer of Spirit (Rank 4)
-    
-    [21562] = true,             -- Prayer of Fortitude (Rank 1)
+    [21562] = true,             -- Power Word: Fortitude
 
     ----------------------------------------------------------------
-    -- Warlock
+    -- Paladin
     ----------------------------------------------------------------
-    [11766] = true,             -- Blood Pact
-    [11767] = true,             -- Blood Pact
-    [19480] = true,             -- Paranoia
-
-    ----------------------------------------------------------------
-    -- Shaman
-    ----------------------------------------------------------------
-    [5672] = true,              -- Healing Stream
-    [8163] = true,              -- Strength of Earth
-    [8836] = true,              -- Grace of Air
-    [10491] = true,             -- Mana Spring
+    [465] = true,               -- Power Word: Fortitude
 
     ----------------------------------------------------------------
     -- General
     ----------------------------------------------------------------
-    [15007] = true,             -- Ressurection Sickness
-    [16609] = true,             -- Warchief's Blessing
-    [22888] = true,             -- Rallying Cry of the Dragonslayer
-    [1135] = true,              -- Drink
-    [1137] = true,              -- Drink
-    [1117] = true,              -- Food
-
-    [8098] = true,              -- Intellect (Scroll III)
+    [186406] = true,            -- Sign of the Critter
+    [160331] = true,            -- Blood Elf Illusion
+    [257427] = true,            -- Food & Drink
+    [257410] = true,            -- Well Fed
+    [288075] = true             -- Well Fed
 }
