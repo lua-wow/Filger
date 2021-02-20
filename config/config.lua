@@ -133,5 +133,6 @@ Config["BlackList"] = {
     [160331] = true,            -- Blood Elf Illusion
     [257427] = true,            -- Food & Drink
     [257410] = true,            -- Well Fed
-    [288075] = true             -- Well Fed
+    [288075] = true,            -- Well Fed
+    [335151] = true,            -- Sign of the Mists
 }
