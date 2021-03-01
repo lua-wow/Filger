@@ -2,28 +2,29 @@ local _, ns = ...
 local Filger = ns.Filger
 local Config = ns.Config
 local SpellList = ns.SpellList
-local Instances = ns.Instances
+local Panels = Config.Panels
+local BlackList = Config.BlackList
 
 local VISIBLE = 1
 local HIDDEN = 0
 
-local UnitClass
 local UnitAura = UnitAura
 local UnitIsEnemy = UnitIsEnemy
 local IsSpellKnown = IsSpellKnown
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
-local GetTime = GetTime
+
 local GetSpellInfo, GetItemInfo, GetInventoryItemLink = GetSpellInfo, GetItemInfo, GetInventoryItemLink
+local GetSpellCooldown, GetSpellBaseCooldown = GetSpellCooldown, GetSpellBaseCooldown
 
 ----------------------------------------------------------------
 -- Filger
 ----------------------------------------------------------------
 -- player info
 local class = Filger.MyClass
-local color = RAID_CLASS_COLORS[class]
+local classColor = RAID_CLASS_COLORS[class]
 
-local debuffTypes = {
+local DebuffTypeColors = {
     ["Curse"]   = { 0.60, 0.00, 1.00 },
     ["Disease"] = { 0.60, 0.40, 0.00 },
     ["Magic"]   = { 0.20, 0.60, 1.00 },
@@ -31,16 +32,12 @@ local debuffTypes = {
     ["Unknown"]  = { 0.80, 0.00, 0.00 }
 }
 
-local Panels = Config["Panels"]
-local BlackList = Config["BlackList"]
-
 -- import
 local tinsert, tremove, tsort, wipe = table.insert, table.remove, table.sort, table.wipe
-local FormatTime =  Filger.FormatTime
+local UpdateAuraTimer = Filger.UpdateAuraTimer
 
 -- resources
 local BlankTex = Config["Medias"].Blank
--- local Font, FontSize, FontStyle = Config["Medias"].PixelFont, 12, "MONOCHROMEOUTLINE"
 local Font, FontSize, FontStyle = Config["Medias"].Font, 12, "OUTLINE"
 local BorderColor = Config["General"].BorderColor
 
@@ -61,42 +58,6 @@ local function onMouseDown(self)
     print(self.spellID, " - ", self.name)
 end
 
--- Aura Timer
-local function UpdateAuraTimer(self, elapsed)
-    local parent = self:GetParent()
-    self.elapsed = (self.elapsed or 0) + elapsed
-
-    if (self.elapsed >= 0.1) then
-        if (not self.first) then
-            self.timeleft = self.timerleft - self.elapsed
-        else
-            self.timeleft = (self.expiration) - GetTime()
-        end
-
-        if (self.timeleft > 0) then
-            if (self.time) then self.time:SetText(FormatTime(self.timeleft)) end
-            if (self.statusbar) then self.statusbar:SetValue(self.timeleft) end
-
-            if (self.timeleft <= 5) then
-                self.time:SetTextColor(0.99, 0.31, 0.31)
-            else
-                self.time:SetTextColor(0.84, 0.75, 0.65)
-            end
-
-        else
-            self.time:SetText("")
-            self.start = 0
-            self.duration = 0
-            self.expiration = 0
-            -- tremove(parent.actives, self.index)
-            self:SetScript("OnUpdate", nil)
-            -- Filger.DisplayActives(parent)
-        end
-
-        self.elapsed = 0
-    end
-end
-
 function Filger:SetPosition(element, from, to)
     local sizex = (element.size) + (element["spacing-x"] or element.spacing or 0)
 	local sizey = (element.size) + (element["spacing-y"] or element.spacing or 0)
@@ -115,6 +76,38 @@ function Filger:SetPosition(element, from, to)
 
 		aura:ClearAllPoints()
 		aura:SetPoint(anchor, element, anchor, col * sizex * growthx, row * sizey * growthy)
+	end
+end
+
+function Filger:SetCooldownPosition(element, from, to)
+    local sizex = (element.size) + (element["spacing-x"] or element.spacing or 0)
+	local sizey = (element.size) + (element["spacing-y"] or element.spacing or 0)
+	local anchor = element.initialAnchor or "BOTTOMLEFT"
+	local growthx = (element['growth-x'] == 'LEFT' and -1) or 1
+	local growthy = (element['growth-y'] == 'DOWN' and -1) or 1
+	local cols = math.floor(element:GetWidth() / sizex + 0.5)
+
+	for i = from, to do
+		local aura = element[i]
+
+		-- Bail out if the to range is out of scope.
+		if (not aura) then break end
+
+        aura:ClearAllPoints()
+
+        if (i == 1) then
+            if (to % 2 == 1) then
+                aura:SetPoint("CENTER", element, "CENTER", 0, 0)
+            else
+                aura:SetPoint("RIGHT", element, "CENTER", -math.ceil(element.spacing/2), 0)
+            end
+        elseif (i == 2) then
+            aura:SetPoint("LEFT", element[1], "RIGHT", element.spacing, 0)
+        elseif (i % 2 == 0) then
+            aura:SetPoint("LEFT", element[i - 2], "RIGHT", element.spacing, 0)
+        else
+            aura:SetPoint("RIGHT", element[i - 2], "LEFT", -element.spacing, 0)
+        end
 	end
 end
 
@@ -178,63 +171,87 @@ function Filger:CreateAura(element, index)
 end
 
 -- check if aura is dispelable by the player
-local function IsDispelable(debuffType)
-    if (not debuffType) then return end
+local function IsDispelable(DebuffType, TargetIsPlayer, TargetIsEnemy, isDebuff)
+    if (not DebuffType) then return false end
 
-    if (class == "DRUID") then
-        -- Abolish Poison (Poison) = 2893
-        -- Cure Poison (Poison) = 8946
-        -- Remove Curse (Curse) = 2782
-        -- Soothe Animal (Enrage) = 2908
-        return (
-            (debuffType == "Poison" and (IsSpellKnown(2893) or IsSpellKnown(8946))) or
-            (debuffType == "Curse" and (IsSpellKnown(2782))) or
-            (debuffType == "Enrage" and IsSpellKnown(2908))
-        )
+    local TargetIsFriendly = not TargetIsEnemy
+
+    if (TargetIsEnemy and isDebuff) or (TargetIsFriendly and (not isDebuff)) then return false end
+
+    -- Blood Elf: Arcane Torrent (155145): removes 1 beneficial magic effect from enemy target.
+    -- Dark Iron Dwarf: Fireblood (265221): removes all magic, disease, curse, poison and bleed from player.
+    -- Dwarf: Stoneform (20594): removes all magic, disease, curse, poison and bleed effects from player.
+    local RacialAbility = (IsSpellKnown(155145) and (DebuffType == "Magic") and TargetIsEnemy) or
+        (IsSpellKnown(20594) or IsSpellKnown(265221) and  (
+            DebuffType == "Magic" or
+            DebuffType == "Disease" or
+            DebuffType == "Curse" or
+            DebuffType == "Poison" or
+            DebuffType == "Bleed"
+        ) and TargetIsPlayer)
+
+    local Ability = nil
+    if (class == "DEMONHUNTER") then
+        -- Consume Magic (278326): remove 1 beneficial magic effect from enemy target.
+        Ability = (DebuffType == "Magic") and IsSpellKnown(278326) and TargetIsEnemy and (not isDebuff)
+    elseif (class == "DRUID") then
+        -- Soothe (2908): removes enrage from enemy target.
+        -- Remove Corruption (2782): removes harmful curse and poison effects from friendly target.
+        -- Nature's Cure (88423): removes harmful magic, curse and poison effects from friendly targets.
+        Ability =  TargetIsFriendly and (
+            ((DebuffType == "Magic") and IsSpellKnown(88423)) or
+            ((DebuffType == "Curse") and (IsSpellKnown(2782) or IsSpellKnown(88423)))) or
+            ((DebuffType == "Poison") and (IsSpellKnown(2782) or IsSpellKnown(88423))) or
+            (TargetIsEnemy and (DebuffType == "Enrage") and IsSpellKnown(88423))
     elseif (class == "HUNTER") then
-        -- Tranquilizing Shot (Frenzy) = 19801
-        return (debuffType == "Enrage" and IsSpellKnown(19801))
+        -- Tranquilizing Shot (19801): removes enrage and 1 magic effect from enemy target.
+        -- Mending Bandage (212640 - PvP): removes bleed, poison and disease effects from friendly target.
+        Ability =  (TargetIsEnemy and ((DebuffType == "Enrage") or (DebuffType == "Magic")) and IsSpellKnown(19801)) or
+            (TargetIsFriendly and ((DebuffType == "Bleed") or (DebuffType == "Poison") or (DebuffType == "Disease")) and IsSpellKnown(212640))
+    elseif (class == "MAGE") then
+        -- Remove Curse (475): removes all curses from friendly target.
+        Ability = (DebuffType == "Curse") and IsSpellKnown(475) and TargetIsFriendly
+    elseif (class == "MONK") then
+        -- Detox (218164): removes all magic, poison and disease effects from friendly target.
+        local Detox = 218164
+        Ability = IsSpellKnown(Detox) and (
+            (DebuffType == "Poison") or
+            (DebuffType == "Disease")
+        ) and IsSpellKnown(Detox) and TargetIsFriendly
     elseif (class == "PALADIN") then
-        -- Cleanse (Poison, Disease, Magic) = 4987
-        -- Purify (Disease, Poison) = 1152
-        return (
-            ((debuffType == "Poison" or debuffType == "Disease" or debuffType == "Magic") and IsSpellKnown(4987)) or
-            ((debuffType == "Poison" or debuffType == "Disease") and IsSpellKnown(1152))
-        )
+        -- Cleanse (4987): removes magic, disease and poison effects from friendly target.
+        -- Cleanse Toxins (213644): removes disease and poison effects from friendly target.
+        Ability = TargetIsFriendly and
+            ((DebuffType == "Magic") and IsSpellKnown(4987)) or
+            ((DebuffType == "Disease") and (IsSpellKnown(4987) or IsSpellKnown(213644))) or
+            ((DebuffType == "Poison") and (IsSpellKnown(4987) or IsSpellKnown(213644)))
     elseif (class == "PRIEST") then
-        -- Dispel Magic Rank 1 (Magic) = 527
-        -- Dispel Magic Rank 2 (Magic) = 988
-        -- Cure Disease (Disease) = 528
-        -- Abolish Disease (Disease) = 552
-        return (
-            (debuffType == "Magic" and (IsSpellKnown(527) or IsSpellKnown(988))) or
-            (debuffType == "Disease" and (IsSpellKnown(528) or IsSpellKnown(552)))
-        )
+        -- Purify (527): removes magic and disease effects from friendly/enemy target.
+        -- Dispel Magic (528): removes one magic effect from enemy target.
+        -- Mass Dispel (32375): removes all magic effects from 5 friendly targets and 1 beneficial magic spell from enemy target
+        -- Purify Disease (213634): removes all disease effects from friendly target.
+        local Purify = 527
+        local DispelMagic = 528
+        local MassDispel = 32375
+        local PurifyDisease = 213634
+        Ability = ((DebuffType == "Magic" or DebuffType == "Disease") and IsSpellKnown(Purify)) or
+            ((DebuffType == "Magic") and IsSpellKnown(DispelMagic) and TargetIsEnemy) or
+            ((DebuffType == "Magic") and IsSpellKnown(MassDispel) and ((TargetIsFriendly and isDebuff) or (TargetIsEnemy and (not isDebuff)))) or
+            ((DebuffType == "Disease") and IsSpellKnown(PurifyDisease) and TargetIsFriendly)
     elseif (class == "SHAMAN") then
-        -- Purge Rank 1 (Magic) = 370
-        -- Purge Rank 2 (Magic) = 8012
-        -- Cure Poison (Poison) = 526
-        -- Poison Cleansing Totem (Poison) = 8166
-        -- Cure Disease (Disease) = 2870
-        return (
-            (debuffType == "Magic" and (IsSpellKnown(370) or IsSpellKnown(8012))) or
-            (debuffType == "Poison" and (IsSpellKnown(526) or IsSpellKnown(8166))) or
-            (debuffType == "Disease" and IsSpellKnown(2870))
-        )
+        -- Purge (370): removes 1 beneficial magic effect from enemy target.
+        -- Purify Spirit (77130): removes all curses and magic from friendly target.
+        -- Cleanse Spirit (51886): removes all curses from friendly target.
+        Ability = ((DebuffType == "Magic") and IsSpellKnown(370) and TargetIsEnemy and (not isDebuff)) or
+            ((DebuffType == "Magic") and IsSpellKnown(77130) and TargetIsFriendly) or
+            ((DebuffType == "Curse") and (IsSpellKnown(77130) or IsSpellKnown(51886)) and TargetIsFriendly)
     elseif (class == "WARLOCK") then
-        -- Felhunter
-        -- Devour Magic Rank 1 (Magic) = 19505
-        -- Devour Magic Rank 2 (Magic) = 19731
-        -- Devour Magic Rank 3 (Magic) = 19734
-        -- Devour Magic Rank 4 (Magic) = 19736
-        local hasDevourMagic = (
-            IsSpellKnown(19505, true) or
-            IsSpellKnown(19731, true) or
-            IsSpellKnown(19734, true) or
-            IsSpellKnown(19736, true)
-        )
-        return (debuffType == "Magic" and hasDevourMagic)
+        -- Devour Magic - Felhunter (19505): removes 1 beneficial magic effect from enemy target.
+        -- Singe Magic - Imp (89808): removes harmful magic effects from friendly target.
+        Ability = ((DebuffType == "Magic") and IsSpellKnown(19505, true) and TargetIsEnemy and (not isDebuff)) or
+            ((DebuffType == "Magic") and IsSpellKnown(89808, true) and TargetIsFriendly and (isDebuff))
     end
+    return RacialAbility or Ability
 end
 
 local function CustomFilter(element, unit, aura, ...)
@@ -252,56 +269,29 @@ local function CustomFilter(element, unit, aura, ...)
     if (element.hidePlayer and aura.isPlayer) then return end
 
     return true
-
-end
-
-local function selectColorByType(debuffType)
-    local color = debuffTypes[debuffType or "Unknown"]
-    if (not color) then
-        return BorderColor
-    end
-    return color
 end
 
 function Filger:PostUpdateAura(element, unit, aura, index, position, duration, expiration, debuffType, isDebuff, isStealable)
-    local isDispelable = IsDispelable(debuffType)
-    local isRemovable = isDispelable or isStealable
 
-    local unitIsEnemy = UnitIsEnemy(unit or "player", "player")
-    local unitIsFriendly = not unitIsEnemy
-
+    local targetIsEnemy = UnitIsEnemy(unit or "player", "player")
     local casterIsEnemy = UnitIsEnemy(caster or "player", "player")
     local casterIsFriendly = not casterIsEnemy
 
-    -- color aura border by it's type
-    --[[
-        1 - Debuffs on player.
-        2 - Debuffs on friendly target, color if dispelabled.
-        3 - Buffs on enemy target, but are dispelable or stealable should be colored.
-    --]]
-    if (
-        (isDebuff and (unit == "player") and isRemovable) or
-        (isDebuff and unitIsFriendly and isRemovable) or
-        ((not isDebuff) and unitIsEnemy and isRemovable)
-    ) then
-    -- if (isDebuff and (not aura.isPlayer) and (unit ~= "player")) then
-        local color = selectColorByType(debuffType)
-        aura:SetBorderColor(unpack(color))
+    -- return true or false if aura can be dispeled by the player
+    -- 1. dispel harmful effects from friendly target.
+    -- 2. dispell beneficial effects from enemy target.
+    local isDispelable = IsDispelable(debuffType, aura.isPlayer, targetIsEnemy, isDebuff)
+
+    -- set border color by aura type, if it's dispelable.
+    if (isDispelable or isStealable) then
+        aura.Backdrop:SetBorderColor(unpack(DebuffTypeColors[debuffType or "Unknown"]))
     else
-        aura:SetBorderColor(unpack(BorderColor))
+        aura.Backdrop:SetBorderColor(unpack(BorderColor))
     end
 
     -- aura animation to show each aura is dispelable/stealable
     if (aura.animation) then
-        --[[
-            1 - Dispelable Debuffs on friendly unit and are casted by a boss
-            2 - Dispelable Debuffs on player/friend and are casted by a enemy player
-            3 - Dispelable Buffs on enemy
-        --]]
-        local dispelableDebuffs = isDebuff and isRemovable and casterIsEnemy and unitIsFriendly
-        local dispelableEnemyBuffs = (not isDebuff) and unitIsEnemy and isRemovable
-
-        if (dispelableDebuffs or  dispelableEnemyBuffs) then
+        if (isDispelable or isStealable) then
             aura.animation:Play()
             aura.animation.Playing = true
         else
@@ -310,9 +300,9 @@ function Filger:PostUpdateAura(element, unit, aura, index, position, duration, e
         end
     end
 
-    -- 2 - Debuffs on enemy target, but not casted by player should be desaturated.
+    -- bebuffs on enemy target, but not casted by player should be desaturated.
     if (aura.icon) then
-        aura.icon:SetDesaturated(isDebuff and (not aura.isPlayer) and (casterIsFriendly) and (unitIsEnemy))
+        aura.icon:SetDesaturated(isDebuff and (not aura.isPlayer) and (casterIsFriendly) and (targetIsEnemy))
     end
 end
 
@@ -396,16 +386,102 @@ local function UpdateAura(element, unit, index, offset, filter, isDebuff, visibl
     return VISIBLE
 end
 
+local function UpdateCooldown(element, unit, index, spellID, offset, visible)
+    local name, rank, icon, castTime, minRange, maxRange, _ = GetSpellInfo(spellID)
+    local start, duration, enabled, modRate = GetSpellCooldown(spellID)
+    local cooldownMS, gcdMS = GetSpellBaseCooldown(spellID)
+    local expiration = start + duration
+
+    if (not name) or (not duration) or (duration <= 1.5) then
+        return HIDDEN
+    end
+
+    local position = visible + offset + 1
+    local aura = element[position]
+
+    if (not aura) then
+        aura = Filger:CreateAura(element, position)
+        aura.filter = element.filter
+    end
+
+    aura.name = name
+    aura.spellID = spellID
+
+    aura.expiration = expiration
+    aura.duration = duration
+    aura.start = start
+    aura.first = true
+
+    if (aura.icon) then
+        aura.icon:SetTexture(icon)
+    end
+
+    if (aura.cooldown) then
+        if (duration and duration > 0) then
+            aura.cooldown:SetCooldown(start, duration)
+            aura.cooldown:Show()
+        else
+            aura.cooldown:Hide()
+        end
+    end
+
+    if (aura.time) then
+        if (duration and duration > 0) then
+            aura:SetScript("OnUpdate", UpdateAuraTimer)
+            aura.time:Show()
+        else
+            aura:SetScript("OnUpdate", nil)
+            aura.time:Hide()
+        end
+    end
+
+    if (aura.count) then
+        aura.count:Hide()
+    end
+
+    aura:Show()
+
+    return VISIBLE
+end
+
 function Filger:FilterAuras(element, unit, filter, limit, isDebuff, offset, dontHide)
     if (not offset) then offset = 0 end
     local index = 1
     local visible = 0
     local hidden = 0
     while (visible < limit) do
-        local result, name = UpdateAura(element, unit, index, offset, filter, isDebuff, visible)
+        local result = UpdateAura(element, unit, index, offset, filter, isDebuff, visible)
         if (not result) then
             break
         elseif (result == VISIBLE) then
+            visible = visible + 1
+        elseif (result == HIDDEN) then
+            hidden = hidden + 1
+        end
+        index = index + 1
+    end
+
+    if (not dontHide) then
+        for i = visible + offset + 1, #element do
+            element[i]:Hide()
+        end
+    end
+
+    return visible, hidden
+end
+
+function Filger:FilterCooldowns(element, unit, filter, limit, offset, dontHide)
+    if (not offset) then offset = 0 end
+    local index = 1
+    local visible = 0
+    local hidden = 0
+    for spellID, _ in pairs(element.spells) do
+        if (index >= limit) then
+            break
+        end
+
+        local result = UpdateCooldown(element, unit, index, spellID, offset, visible)
+        if (result == VISIBLE) then
             visible = visible + 1
         elseif (result == HIDDEN) then
             hidden = hidden + 1
@@ -440,91 +516,31 @@ local OnEvent = function(self, event, ...)
 
     if (self.unit ~= unit) then return end
 
-    --[[
-        * unit      -- unit whose auras to query. ("player", "target", "focus", etc.)
-        * index     -- aura index (from 1 to 40)
-        * filter    -- list of filters, separated by spaces or pipes. "HELPFUL" by default.
+    if (self.filter == "COOLDOWN") then
+        local visible, hidden = Filger:FilterCooldowns(self, unit, self.filter, self.limit, 0, false)
 
-        The following filters are available:
-        HELPFUL - buffs.
-        HARMFUL - debuffs.
-        PLAYER - auras that were applied by the player.
-        RAID - auras that can be applied (if HELPFUL) or dispelled (if HARMFUL) by the player.
-        CANCELABLE - buffs that can be removed (such as by right-clicking or using the /cancelaura command)
-        NOT_CANCELABLE - buffs that cannot be removed
+        Filger:SetCooldownPosition(self, 1, #self)
+    else
+        --[[
+            * unit      -- unit whose auras to query. ("player", "target", "focus", etc.)
+            * index     -- aura index (from 1 to 40)
+            * filter    -- list of filters, separated by spaces or pipes. "HELPFUL" by default.
 
-        PLAYER | HELPFUL
-        PLAYER | HARMFUL
-    ]]
-    local visible, hidden = Filger:FilterAuras(self, unit, self.filter, self.limit, self.isDebuff, 0, false)
+            The following filters are available:
+            HELPFUL - buffs.
+            HARMFUL - debuffs.
+            PLAYER - auras that were applied by the player.
+            RAID - auras that can be applied (if HELPFUL) or dispelled (if HARMFUL) by the player.
+            CANCELABLE - buffs that can be removed (such as by right-clicking or using the /cancelaura command)
+            NOT_CANCELABLE - buffs that cannot be removed
 
-    Filger:SetPosition(self, 1, #self)
-end
+            PLAYER | HELPFUL
+            PLAYER | HARMFUL
+        ]]
+        local visible, hidden = Filger:FilterAuras(self, unit, self.filter, self.limit, self.isDebuff, 0, false)
 
--- remove invalid spells or empty section and merge extra tables
-function Filger:BuildSpellList()
-    -- generate an empty class table if it doesn't exists
-    if (not SpellList[class]) then
-        SpellList[class] = {}
+        Filger:SetPosition(self, 1, #self)
     end
-
-    -- insert all class table into player class table
-    if (SpellList["ALL"]) then
-        for index, value in ipairs(SpellList["ALL"]) do
-            tinsert(SpellList[class], value)
-        end
-    end
-
-    -- remove all the other classes tables
-    for key in pairs(SpellList) do
-        if (key ~= class) then
-            SpellList[key] = nil
-        end
-    end
-
-    -- filter spell tables
-    local idx = {}                                  -- save index of empty sections
-    for i, data in ipairs(SpellList[class]) do
-        local jdx = {}                              -- save index of non-existent spellID
-        for j, obj in ipairs(data) do
-            if (obj.spellID) then
-                obj.name = GetSpellInfo(obj.spellID)
-            else
-                local slotLink = GetInventoryItemLink("player", obj.slotID)
-                if (slotLink) then
-                    obj.name = GetItemInfo(slotLink)
-                end
-            end
-
-            -- check if there is any bad spellID/slotID
-            if (not obj.name) then
-                if (obj.spellID) then
-                    Filger.Debug("spellID (" .. obj.spellID .. ") is INVALID at section " .. data.name)
-                elseif (obj.slotID) then
-                    Filger.Debug("slotID (" .. obj.slotID .. ") is INVALID at section " .. data.name)
-                end
-                tinsert(jdx, j)
-            end
-        end
-
-        -- remove the non-existents spells (this need to be done from bottom to the top)
-        for j = #jdx, 1, -1 do
-            tremove(data, jdx[j])
-        end
-
-        -- check if there is any empty sections
-        -- skip sections set as instance
-		if (#data == 0) and (not data.instance) then
-            Filger.Debug(data.name .. " section is EMPTY.")
-            tinsert(idx, i)
-        end
-
-    end
-
-    -- remove the empty sections (need to be done backwards)
-	for i = #idx, 1, -1 do
-    	tremove(SpellList[class], idx[i])
-	end
 end
 
 Filger:RegisterEvent("ADDON_LOADED")
@@ -541,13 +557,14 @@ function Filger:ADDON_LOADED(addon)
 end
 
 function Filger:PLAYER_LOGIN()
-
     -- filter classes and remove invalid spells
-    -- self:BuildSpellList()
+    Filger.BuildBlackList()
 
     -- create panels based on spell list
     for index, data in pairs(Panels) do
-        self:Spawn(index, data)
+        if (data.enabled) then
+            self:Spawn(index, data)
+        end
     end
 end
 
@@ -598,15 +615,20 @@ function Filger:Spawn(index, data)
     frame:SetAttribute("unit", data.unit)
     frame:SetAttribute("caster", data.caster)
 
-    frame:RegisterEvent("UNIT_AURA")
-    if (frame.unit == "player") then
-        frame:RegisterEvent("PLAYER_ENTERING_WORLD")
-    end
-    if (frame.unit == "focus") then
-        frame:RegisterEvent("PLAYER_FOCUS_CHANGED")
-    end
-    if (frame.unit == "target") then
-        frame:RegisterEvent("PLAYER_TARGET_CHANGED")
+    if (frame.filter == "COOLDOWN") then
+        frame:RegisterEvent("SPELL_UPDATE_COOLDOWN")
+        frame.spells = Filger.BuildCooldownList()
+    else
+        frame:RegisterEvent("UNIT_AURA")
+        if (frame.unit == "player") then
+            frame:RegisterEvent("PLAYER_ENTERING_WORLD")
+        end
+        if (frame.unit == "focus") then
+            frame:RegisterEvent("PLAYER_FOCUS_CHANGED")
+        end
+        if (frame.unit == "target") then
+            frame:RegisterEvent("PLAYER_TARGET_CHANGED")
+        end
     end
 
     frame:SetScript("OnEvent", OnEvent)

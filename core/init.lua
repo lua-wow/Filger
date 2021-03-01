@@ -1,5 +1,8 @@
 local addon, ns = ...
-local LibStub = LibStub
+
+-- Blizzard
+local GetAddOnMetadata, GetRealmName = GetAddOnMetadata, GetRealmName
+local UnitClass, UnitName, UnitLevel, UnitRace, UnitFactionGroup = UnitClass, UnitName, UnitLevel, UnitRace, UnitFactionGroup
 
 ns.Filger = CreateFrame("Frame", "Filger", UIParent)
 ns.Config = {}
