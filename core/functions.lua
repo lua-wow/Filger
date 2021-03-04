@@ -46,6 +46,14 @@ function Filger.FormatTime(s)
 	return format("%.1f", s)
 end
 
+-- compute table size
+function Filger.TableLength(table)
+    local count = 0
+    for _ in pairs(table) do count = count + 1 end
+    return count
+end
+
+-- update aura display timer (text or status bar)
 function Filger.UpdateAuraTimer(self, elapsed)
     self.timeleft = self.timeleft or 0
     self.elapsed = (self.elapsed or 0) + elapsed
@@ -57,10 +65,14 @@ function Filger.UpdateAuraTimer(self, elapsed)
         end
 
         if (self.timeleft > 0) then
-            if (self.time) then self.time:SetText(Filger.FormatTime(self.timeleft)) end
-            if (self.statusbar) then self.statusbar:SetValue(self.timeleft) end
+            -- update time bar
+            if (self.statusbar) then
+                self.statusbar:SetValue(self.timeleft)
+            end
 
+            -- update time text
 			if (self.time) then
+                self.time:SetText(Filger.FormatTime(self.timeleft))
 				if (self.timeleft <= 5) then
 					self.time:SetTextColor(0.99, 0.31, 0.31)
 				else
@@ -80,12 +92,9 @@ function Filger.UpdateAuraTimer(self, elapsed)
     end
 end
 
-function Filger.TableLength(table)
-    local count = 0
-    for _ in pairs(table) do count = count + 1 end
-    return count
-end
-
+-- build cooldown list
+-- concatenates player class spells and all class spells
+-- remove unknown spells
 function Filger.BuildCooldownList()
     local cooldowns = {}
     local class = Filger.MyClass
@@ -119,6 +128,7 @@ function Filger.BuildCooldownList()
     return cooldowns
 end
 
+-- filter black list by removing unknown spells
 function Filger.BuildBlackList()
     local index = 1
     for spellID, check in pairs(BlackList) do

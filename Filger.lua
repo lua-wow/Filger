@@ -476,7 +476,7 @@ function Filger:FilterCooldowns(element, unit, filter, limit, offset, dontHide)
     local visible = 0
     local hidden = 0
     for spellID, _ in pairs(element.spells) do
-        if (index >= limit) then
+        if (visible >= limit) then
             break
         end
 

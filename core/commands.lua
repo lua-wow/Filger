@@ -25,7 +25,7 @@ end
 SLASH_FILGER1 = "/filger"
 SlashCmdList["FILGER"] = function(cmd)
     local arg1, arg2 = CmdSplit(cmd)
-    
+
     if (arg1 == "show") then
         for index, frame in ipairs(Filger) do
             frame.Backdrop:Show()
