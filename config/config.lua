@@ -152,10 +152,11 @@ Config["BlackList"] = {
     ----------------------------------------------------------------
     -- World Buffs
     [331079] = true,                -- Trainee
-    [335151] = true,                -- Sign of the Mists
-    [335148] = true,                -- Sign of the Twisting Nether
-    [186406] = true,                -- Sign of the Critter
     [186401] = true,                -- Sign of the Skirmisher
+    [186406] = true,                -- Sign of the Critter
+    [225788] = true,                -- Sign of the Emissary
+    [335148] = true,                -- Sign of the Twisting Nether
+    [335151] = true,                -- Sign of the Mists
 
     -- Food
     [257427] = true,                -- Food & Drink
@@ -172,11 +173,31 @@ Config["Cooldowns"] = {
     ["PRIEST"] = {
         -- All
         [10060] = true,             -- Power Infusion
+        [19236] = true,             -- Desperate Prayer
+        [34433] = true,             -- Shadowfiend
         [73325] = true,             -- Leap of Faith
+
+        -- Disciplie
+        [33206] = true,             -- Pain Suppression
+        [47536] = true,             -- Rapture
+        [62618] = true,             -- Power Word: Barrier
+        [109964] = true,            -- Spirit Shell
+        [120517] = true,            -- Halo
+        [194509] = true,            -- Power Word: Radiance
+        [246287] = true,            -- Evangelism
+
+        -- Holy
+        [2050] = true,              -- Holy Word: Serenity
+        [64901] = true,             -- Symbol of Hope
+        [34861] = true,             -- Holy Word: Sanctify
+        [33076] = true,             -- Prayer of Mending
+        [47788] = true,             -- Guardian Spirit
+        [64843] = true,             -- Divine Hymn
+        [200183] = true,            -- Apotheosis
+        [204883] = false,           -- Circle of Healing
 
         -- Shadow
         [15286] = true,             -- Vampiric Embrace
-        [34433] = true,             -- Shadowfiend
         [47585] = true,             -- Dispersion
         [205369] = true             -- Mind Bomb
     },
@@ -197,10 +218,10 @@ Config["Cooldowns"] = {
     },
     ["ALL"] = {
         -- Horde Racials
-        [122] = true,               -- Berserking (Troll)
-        [28730] = true,             -- Arcane Torrent (Blood Elf)
         [20549] = true,             -- War Stomp (Tauren)
         [20572] = true,             -- Blood Fury (Orc)
+        [26297] = true,             -- Berserking (Troll)
+        [28730] = true,             -- Arcane Torrent (Blood Elf)
         [33697] = true,             -- Blood Fury (Orc)
         [255654] = true,            -- Bull Rush (Highmountain Tauren)
 
@@ -209,6 +230,9 @@ Config["Cooldowns"] = {
         [265221] = true,            -- Fireblood Fury (Dark Iron Dwarf)
 
         -- Kyrian
-        [324739] = false            -- Summon Steward
+        [324739] = false,           -- Summon Steward
+
+        -- Ventyr
+        [323673] = true,            -- Mindgames
     }
 }
