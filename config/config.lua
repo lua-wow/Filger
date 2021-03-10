@@ -4,8 +4,7 @@ local Config = ns.Config
 ----------------------------------------------------------------
 -- Config
 ----------------------------------------------------------------
-local xOffset = 200
-local yOffset = 39
+local xOffset, yOffset = 200, 39
 
 Config["General"] = {
 
@@ -151,12 +150,15 @@ Config["BlackList"] = {
     -- General
     ----------------------------------------------------------------
     -- World Buffs
+    [72221] = true,                 -- Luck of the Draw
+
     [331079] = true,                -- Trainee
     [186401] = true,                -- Sign of the Skirmisher
     [186406] = true,                -- Sign of the Critter
     [225788] = true,                -- Sign of the Emissary
     [335148] = true,                -- Sign of the Twisting Nether
     [335151] = true,                -- Sign of the Mists
+    [335152] = true,                -- Sign of Iron
 
     -- Food
     [257427] = true,                -- Food & Drink
