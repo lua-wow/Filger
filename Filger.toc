@@ -1,4 +1,4 @@
-## Interface: 90002
+## Interface: 90005
 ## Author: Nils Ruesch, Affli
 ## Credits: Nils Ruesch, Shestak, Affli, Garagar, hidekki, FourOne
 ## Editor: Luaerror
