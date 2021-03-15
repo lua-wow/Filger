@@ -1,21 +1,18 @@
 local _, ns = ...
 local Filger = ns.Filger
 local Config = ns.Config
-local SpellList = ns.SpellList
 local Panels = Config.Panels
 local BlackList = Config.BlackList
 
 local VISIBLE = 1
 local HIDDEN = 0
 
-local UnitAura = UnitAura
-local UnitIsEnemy = UnitIsEnemy
-local IsSpellKnown = IsSpellKnown
+-- wow api
 local CreateFrame = CreateFrame
-local GameTooltip = GameTooltip
-
-local GetSpellInfo, GetItemInfo, GetInventoryItemLink = GetSpellInfo, GetItemInfo, GetInventoryItemLink
+local UnitAura, UnitIsEnemy, GameTooltip = UnitAura, UnitIsEnemy, GameTooltip
+local GetSpellInfo, IsSpellKnown = GetSpellInfo, IsSpellKnown
 local GetSpellCooldown, GetSpellBaseCooldown = GetSpellCooldown, GetSpellBaseCooldown
+local GetItemInfo, GetInventoryItemLink = GetItemInfo, GetInventoryItemLink
 
 ----------------------------------------------------------------
 -- Filger
