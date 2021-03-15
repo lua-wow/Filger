@@ -172,6 +172,31 @@ Config["BlackList"] = {
 }
 
 Config["Cooldowns"] = {
+    ["MONK"] = {
+        -- All
+        [116841] = true,            -- Tiger Lust
+        [322101] = false,           -- Expel Harm
+
+        -- Brewmaster
+        [322507] = true,            -- Celestial Brew
+        [115203] = true,            -- Fortifying Brew
+        [119582] = true,            -- Purifiying Brew
+        [122278] = true,            -- Dumpen Harm
+        [132578] = true,            -- Invoke Niuzao, the Black Ox
+
+        -- Kyrian
+        [310454] = true             -- Weapons of Order
+    },
+    ["PALADIN"] = {
+        -- All
+        [498] = true,               -- Divine Protection
+        [642] = true,               -- Divine Shield
+        [633] = true,               -- Lay on Hands
+
+        -- Protection
+        [31850] = true,             -- Ardent Defender
+        [86659] = true,             -- Guardian of Ancient Kings
+    },
     ["PRIEST"] = {
         -- All
         [10060] = true,             -- Power Infusion
@@ -203,20 +228,9 @@ Config["Cooldowns"] = {
         [47585] = true,             -- Dispersion
         [205369] = true             -- Mind Bomb
     },
-    ["MONK"] = {
+    ["WARRIOR"] = {
         -- All
-        [116841] = true,            -- Tiger Lust
-        [322101] = false,           -- Expel Harm
-
-        -- Brewmaster
-        [322507] = true,            -- Celestial Brew
-        [115203] = true,            -- Fortifying Brew
-        [119582] = true,            -- Purifiying Brew
-        [122278] = true,            -- Dumpen Harm
-        [132578] = true,            -- Invoke Niuzao, the Black Ox
-
-        -- Kyrian
-        [310454] = true             -- Weapons of Order
+        -- Protection
     },
     ["ALL"] = {
         -- Horde Racials
