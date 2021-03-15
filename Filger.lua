@@ -280,7 +280,7 @@ function Filger:PostUpdateAura(element, unit, aura, index, position, duration, e
     -- return true or false if aura can be dispeled by the player
     -- 1. dispel harmful effects from friendly target.
     -- 2. dispell beneficial effects from enemy target.
-    local isDispelable = IsDispelable(debuffType, aura.isPlayer, targetIsEnemy, isDebuff)
+    local isDispelable = (not aura.casterIsPlayer) and IsDispelable(debuffType, aura.isPlayer, targetIsEnemy, isDebuff)
 
     -- set border color by aura type, if it's dispelable.
     if (isDispelable or isStealable) then
