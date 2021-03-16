@@ -192,10 +192,14 @@ Config["Cooldowns"] = {
         [498] = true,               -- Divine Protection
         [642] = true,               -- Divine Shield
         [633] = true,               -- Lay on Hands
+        [1022] = true,              -- Blessing of Protection
+        [1044] = true,              -- Blessing of Freedom
+        [6940] = true,              -- Blessing of Sacrifice
 
         -- Protection
         [31850] = true,             -- Ardent Defender
         [86659] = true,             -- Guardian of Ancient Kings
+        [152262] = true,            -- Seraphim
     },
     ["PRIEST"] = {
         -- All
