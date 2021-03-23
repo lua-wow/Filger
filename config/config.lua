@@ -152,11 +152,14 @@ Config["BlackList"] = {
     -- World Buffs
     [72221] = true,                 -- Luck of the Draw
 
-    [331079] = true,                -- Trainee
     [186401] = true,                -- Sign of the Skirmisher
+    [186403] = true,                -- Sign of Battle
     [186406] = true,                -- Sign of the Critter
     [225788] = true,                -- Sign of the Emissary
+    [331079] = true,                -- Trainee
     [335148] = true,                -- Sign of the Twisting Nether
+    [335149] = true,                -- Sign of the Scourge
+    [335150] = true,                -- Sign of the Destroyer
     [335151] = true,                -- Sign of the Mists
     [335152] = true,                -- Sign of Iron
 
@@ -234,7 +237,23 @@ Config["Cooldowns"] = {
     },
     ["WARRIOR"] = {
         -- All
+        [1161] = true,              -- Challenging Shout
+        [2565] = true,              -- Shield Block (Rank 1)
+        [3411] = true,              -- Intervene
+        [6544] = true,              -- Heroic Leap
+        [18499] = true,             -- Berserker Rage
+        [97462] = true,             -- Rallying Cry (Rank 1)
+        [190456] = true,            -- Ignore Pain
+        [231847] = true,            -- Shield Block (Rank 2)
+        [316825] = true,            -- Rallying Cry (Rank 2)
+
         -- Protection
+        [871] = true,               -- Shield Wall
+        [12975] = true,             -- Last Stand
+        [107574] = true,            -- Avatar
+        [316438] = true,            -- Avatar (Rank 2)
+        [316778] = true,            -- Ignore Pain (Rank 2)
+        [316834] = true             -- Shield Wall
     },
     ["ALL"] = {
         -- Horde Racials
