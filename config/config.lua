@@ -177,101 +177,105 @@ Config["BlackList"] = {
 Config["Cooldowns"] = {
     ["MONK"] = {
         -- All
-        [116841] = true,            -- Tiger Lust
-        [322101] = false,           -- Expel Harm
+        { spellID = 116841, check = true },            -- Tiger Lust
+        { spellID = 322101, check = false },           -- Expel Harm
 
         -- Brewmaster
-        [322507] = true,            -- Celestial Brew
-        [115203] = true,            -- Fortifying Brew
-        [119582] = true,            -- Purifiying Brew
-        [122278] = true,            -- Dumpen Harm
-        [132578] = true,            -- Invoke Niuzao, the Black Ox
+        { spellID = 322507, check = true },            -- Celestial Brew
+        { spellID = 115203, check = true },            -- Fortifying Brew
+        { spellID = 119582, check = true },            -- Purifiying Brew
+        { spellID = 122278, check = true },            -- Dumpen Harm
+        { spellID = 132578, check = true },            -- Invoke Niuzao, the Black Ox
 
         -- Kyrian
-        [310454] = true             -- Weapons of Order
+        { spellID = 310454, check = true },             -- Weapons of Order
     },
     ["PALADIN"] = {
         -- All
-        [498] = true,               -- Divine Protection
-        [642] = true,               -- Divine Shield
-        [633] = true,               -- Lay on Hands
-        [1022] = true,              -- Blessing of Protection
-        [1044] = true,              -- Blessing of Freedom
-        [6940] = true,              -- Blessing of Sacrifice
+        { spellID = 498, check = true },                -- Divine Protection
+        { spellID = 642, check = true },                -- Divine Shield
+        { spellID = 633, check = true },                -- Lay on Hands
+        { spellID = 1022, check = true },               -- Blessing of Protection
+        { spellID = 1044, check = true },               -- Blessing of Freedom
+        { spellID = 6940, check = true },               -- Blessing of Sacrifice
 
         -- Protection
-        [31850] = true,             -- Ardent Defender
-        [86659] = true,             -- Guardian of Ancient Kings
-        [152262] = true,            -- Seraphim
+        { spellID = 31850, check = true },              -- Ardent Defender
+        { spellID = 86659, check = true },              -- Guardian of Ancient Kings
+        { spellID = 152262, check = true },             -- Seraphim
     },
     ["PRIEST"] = {
         -- All
-        [10060] = true,             -- Power Infusion
-        [19236] = true,             -- Desperate Prayer
-        [34433] = true,             -- Shadowfiend
-        [73325] = true,             -- Leap of Faith
+        { spellID = 10060, check = true },              -- Power Infusion
+        { spellID = 19236, check = true },              -- Desperate Prayer
+        { spellID = 34433, check = true },              -- Shadowfiend
+        { spellID = 73325, check = true },              -- Leap of Faith
 
         -- Disciplie
-        [33206] = true,             -- Pain Suppression
-        [47536] = true,             -- Rapture
-        [62618] = true,             -- Power Word: Barrier
-        [109964] = true,            -- Spirit Shell
-        [120517] = true,            -- Halo
-        [194509] = true,            -- Power Word: Radiance
-        [246287] = true,            -- Evangelism
+        { spellID = 33206, check = true },              -- Pain Suppression
+        { spellID = 47536, check = true },              -- Rapture
+        { spellID = 62618, check = true },              -- Power Word: Barrier
+        { spellID = 109964, check = true },             -- Spirit Shell
+        { spellID = 120517, check = true },             -- Halo
+        { spellID = 194509, check = true },             -- Power Word: Radiance
+        { spellID = 246287, check = true },             -- Evangelism
 
         -- Holy
-        [2050] = true,              -- Holy Word: Serenity
-        [64901] = true,             -- Symbol of Hope
-        [34861] = true,             -- Holy Word: Sanctify
-        [33076] = true,             -- Prayer of Mending
-        [47788] = true,             -- Guardian Spirit
-        [64843] = true,             -- Divine Hymn
-        [200183] = true,            -- Apotheosis
-        [204883] = false,           -- Circle of Healing
+        { spellID = 2050, check = true },               -- Holy Word: Serenity
+        { spellID = 64901, check = true },              -- Symbol of Hope
+        { spellID = 34861, check = true },              -- Holy Word: Sanctify
+        { spellID = 33076, check = true },              -- Prayer of Mending
+        { spellID = 47788, check = true },              -- Guardian Spirit
+        { spellID = 64843, check = true },              -- Divine Hymn
+        { spellID = 200183, check = true },             -- Apotheosis
+        { spellID = 204883, check = false },            -- Circle of Healing
 
         -- Shadow
-        [15286] = true,             -- Vampiric Embrace
-        [47585] = true,             -- Dispersion
-        [205369] = true             -- Mind Bomb
+        { spellID = 15286, check = true },              -- Vampiric Embrace
+        { spellID = 47585, check = true },              -- Dispersion
+        { spellID = 205369, check = true },             -- Mind Bomb
     },
     ["WARRIOR"] = {
         -- All
-        [1161] = true,              -- Challenging Shout
-        [2565] = true,              -- Shield Block (Rank 1)
-        [3411] = true,              -- Intervene
-        [6544] = true,              -- Heroic Leap
-        [18499] = true,             -- Berserker Rage
-        [97462] = true,             -- Rallying Cry (Rank 1)
-        [190456] = true,            -- Ignore Pain
-        [231847] = true,            -- Shield Block (Rank 2)
-        [316825] = true,            -- Rallying Cry (Rank 2)
+        { spellID = 1161, check = true },               -- Challenging Shout
+        { spellID = 2565, check = true },               -- Shield Block (Rank 1)
+        { spellID = 3411, check = true },               -- Intervene
+        { spellID = 6544, check = true },               -- Heroic Leap
+        { spellID = 18499, check = true },              -- Berserker Rage
+        { spellID = 97462, check = true },              -- Rallying Cry (Rank 1)
+        { spellID = 190456, check = true },             -- Ignore Pain
+        { spellID = 231847, check = true },             -- Shield Block (Rank 2)
+        { spellID = 316825, check = true },             -- Rallying Cry (Rank 2)
 
         -- Protection
-        [871] = true,               -- Shield Wall
-        [12975] = true,             -- Last Stand
-        [107574] = true,            -- Avatar
-        [316438] = true,            -- Avatar (Rank 2)
-        [316778] = true,            -- Ignore Pain (Rank 2)
-        [316834] = true             -- Shield Wall
+        { spellID = 871, check = true },                -- Shield Wall
+        { spellID = 12975, check = true },              -- Last Stand
+        { spellID = 107574, check = true },             -- Avatar
+        { spellID = 316438, check = true },             -- Avatar (Rank 2)
+        { spellID = 316778, check = true },             -- Ignore Pain (Rank 2)
+        { spellID = 316834, check = true },             -- Shield Wall
     },
     ["ALL"] = {
         -- Horde Racials
-        [20549] = true,             -- War Stomp (Tauren)
-        [20572] = true,             -- Blood Fury (Orc)
-        [26297] = true,             -- Berserking (Troll)
-        [28730] = true,             -- Arcane Torrent (Blood Elf)
-        [33697] = true,             -- Blood Fury (Orc)
-        [255654] = true,            -- Bull Rush (Highmountain Tauren)
+        { spellID = 20549, check = true },              -- War Stomp (Tauren)
+        { spellID = 20572, check = true },              -- Blood Fury (Orc)
+        { spellID = 26297, check = true },              -- Berserking (Troll)
+        { spellID = 28730, check = true },              -- Arcane Torrent (Blood Elf)
+        { spellID = 33697, check = true },              -- Blood Fury (Orc)
+        { spellID = 255654, check = true },             -- Bull Rush (Highmountain Tauren)
 
         -- Alliance Racials
-        [20594] = true,             -- Stoneform (Dwarf)
-        [265221] = true,            -- Fireblood Fury (Dark Iron Dwarf)
+        { spellID = 20594, check = true },              -- Stoneform (Dwarf)
+        { spellID = 265221, check = true },             -- Fireblood Fury (Dark Iron Dwarf)
 
         -- Kyrian
-        [324739] = false,           -- Summon Steward
+        { spellID = 324739, check = false },            -- Summon Steward
 
         -- Ventyr
-        [323673] = true,            -- Mindgames
+        { spellID = 323673, check = true },             -- Mindgames
+
+        { slotID = 2, check = true },                   -- Neck
+        { slotID = 13, check = true },                  -- Trinket 1
+        { slotID = 14, check = true },                  -- Trinket 2
     }
 }

@@ -12,7 +12,7 @@ local CreateFrame = CreateFrame
 local UnitAura, UnitIsEnemy, GameTooltip = UnitAura, UnitIsEnemy, GameTooltip
 local GetSpellInfo, IsSpellKnown = GetSpellInfo, IsSpellKnown
 local GetSpellCooldown, GetSpellBaseCooldown = GetSpellCooldown, GetSpellBaseCooldown
-local GetItemInfo, GetInventoryItemLink = GetItemInfo, GetInventoryItemLink
+local GetItemInfo, GetInventoryItemLink, GetInventoryItemCooldown, GetItemCooldown, GetInventorySlotInfo = GetItemInfo, GetInventoryItemLink, GetInventoryItemCooldown, GetItemCooldown, GetInventorySlotInfo
 
 ----------------------------------------------------------------
 -- Filger
@@ -383,11 +383,24 @@ local function UpdateAura(element, unit, index, offset, filter, isDebuff, visibl
     return VISIBLE
 end
 
-local function UpdateCooldown(element, unit, index, spellID, offset, visible)
-    local name, rank, icon, castTime, minRange, maxRange, _ = GetSpellInfo(spellID)
-    local start, duration, enabled, modRate = GetSpellCooldown(spellID)
-    local cooldownMS, gcdMS = GetSpellBaseCooldown(spellID)
-    local expiration = start + duration
+local function UpdateCooldown(element, unit, index, spellID, slotID, offset, visible)
+    local name, icon, start, duration, expiration
+
+    if (spellID) then
+        name, _, icon, _, _, _, _ = GetSpellInfo(spellID)
+        start, duration, _, _ = GetSpellCooldown(spellID)
+    elseif (slotID) then
+        local itemLink = GetInventoryItemLink(unit, slotID)
+        if (not itemLink) then
+            return HIDDEN
+        end
+        name, _, _, _, _, _, _, _, _, icon, _, _, _, _, _, _, _ = GetItemInfo(itemLink)
+        start, duration, _ = GetInventoryItemCooldown(unit, slotID)
+    else
+        return HIDDEN
+    end
+
+    expiration = start + duration
 
     if (not name) or (not duration) or (duration <= 1.5) then
         return HIDDEN
@@ -403,6 +416,7 @@ local function UpdateCooldown(element, unit, index, spellID, offset, visible)
 
     aura.name = name
     aura.spellID = spellID
+    aura.slotID = slotID
 
     aura.expiration = expiration
     aura.duration = duration
@@ -468,16 +482,18 @@ function Filger:FilterAuras(element, unit, filter, limit, isDebuff, offset, dont
 end
 
 function Filger:FilterCooldowns(element, unit, filter, limit, offset, dontHide)
+    if (filter ~= "COOLDOWN") then return end
+
     if (not offset) then offset = 0 end
     local index = 1
     local visible = 0
     local hidden = 0
-    for spellID, _ in pairs(element.spells) do
+    for _, v in pairs(element.spells) do
         if (visible >= limit) then
             break
         end
 
-        local result = UpdateCooldown(element, unit, index, spellID, offset, visible)
+        local result = UpdateCooldown(element, unit, index, v.spellID, v.slotID, offset, visible)
         if (result == VISIBLE) then
             visible = visible + 1
         elseif (result == HIDDEN) then
@@ -614,7 +630,7 @@ function Filger:Spawn(index, data)
 
     if (frame.filter == "COOLDOWN") then
         frame:RegisterEvent("SPELL_UPDATE_COOLDOWN")
-        frame.spells = Filger.BuildCooldownList()
+        frame.spells = Filger.BuildCooldownList(frame.unit)
     else
         frame:RegisterEvent("UNIT_AURA")
         if (frame.unit == "player") then
