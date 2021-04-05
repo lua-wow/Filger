@@ -18,6 +18,8 @@ Config["General"] = {
     ["BarSpacing"] = 7,                             -- sets space between bars.
     ["ClassColor"] = true,                          -- sets status bar color by class.
 
+    ["HideWellFed"] = true,                         -- enabled filter to hide well fed buff (too many spells with this name)
+
     ["BackdropColor"] = { .05, .05, .05 },
     ["BorderColor"] = { .125, .125, .125 },
 }
@@ -155,6 +157,7 @@ Config["BlackList"] = {
     [186401] = true,                -- Sign of the Skirmisher
     [186403] = true,                -- Sign of Battle
     [186406] = true,                -- Sign of the Critter
+    [225787] = true,                -- Sign of the Warrior
     [225788] = true,                -- Sign of the Emissary
     [331079] = true,                -- Trainee
     [335148] = true,                -- Sign of the Twisting Nether
@@ -162,11 +165,14 @@ Config["BlackList"] = {
     [335150] = true,                -- Sign of the Destroyer
     [335151] = true,                -- Sign of the Mists
     [335152] = true,                -- Sign of Iron
+    [347600] = true,                -- Infused Ruby Tracking
 
     -- Food
     [257427] = true,                -- Food & Drink
-    [257410] = true,                -- Well Fed
-    [288075] = true,                -- Well Fed
+    -- [257410] = true,                -- Well Fed
+    -- [288075] = true,                -- Well Fed
+    -- [308525] = true,                -- Well Fed
+    -- [308434] = true,                -- Well Fed
 
     -- Costumes
     [93095] = true,                 -- Burgy Blackheart's Handsome Hat
@@ -250,10 +256,12 @@ Config["Cooldowns"] = {
         -- Protection
         { spellID = 871, check = true },                -- Shield Wall
         { spellID = 12975, check = true },              -- Last Stand
+        { spellID = 23920, check = true },              -- Spell Reflection
         { spellID = 107574, check = true },             -- Avatar
         { spellID = 316438, check = true },             -- Avatar (Rank 2)
         { spellID = 316778, check = true },             -- Ignore Pain (Rank 2)
         { spellID = 316834, check = true },             -- Shield Wall
+        { spellID = 107570, check = true },             -- Storm Bolt
     },
     ["ALL"] = {
         -- Horde Racials
@@ -274,8 +282,20 @@ Config["Cooldowns"] = {
         -- Ventyr
         { spellID = 323673, check = true },             -- Mindgames
 
+        -- Necrolords
+        { spellID = 324143, check = true },             -- Conqueror's Banner
+        { spellID = 324631, check = true },             -- Fleshcraft
+
+        -- Gear
         { slotID = 2, check = true },                   -- Neck
+        { slotID = 6, check = true },                   -- Waist
         { slotID = 13, check = true },                  -- Trinket 1
         { slotID = 14, check = true },                  -- Trinket 2
+
+        -- Potions
+        { itemID = 76089, check = true },               -- Virmen's Bite
+        { itemID = 127834, check = true },              -- Acient Healing Potion
+        { itemID = 163225, check = true },              -- Battle Potion of Stamina
+        { itemID = 180318, check = true },              -- Soulful Mana Potion
     }
 }

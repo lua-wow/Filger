@@ -4,9 +4,11 @@ local Config = ns.Config
 local Cooldowns = Config.Cooldowns
 local BlackList = Config.BlackList
 
+-- WoW API
 local GetTime = GetTime
 local GetSpellInfo = GetSpellInfo
-local GetInventoryItemLink, GetItemInfo, GetInventoryItemCooldown = GetInventoryItemLink, GetItemInfo, GetInventoryItemCooldown
+local GetInventoryItemLink, GetInventoryItemCooldown  = GetInventoryItemLink, GetInventoryItemCooldown
+local GetItemInfo, GetItemCooldown = GetItemInfo, GetItemCooldown
 
 table.remove_key = function(table, key)
     local value = table[key]
@@ -107,20 +109,25 @@ local validadeSpellTable = function(unit, spells, spell_table)
     for _, v in ipairs(spells) do
         if (v.check) then
             if (v.spellID) then
-                local spellID = v.spellID
-                local name = GetSpellInfo(spellID)
+                local name = GetSpellInfo(v.spellID)
                 if (name) then
                     table.insert(spell_table, v)
                 else
-                    Filger.Debug("spellID (" .. spellID .. ") is invalid.")
+                    Filger.Debug("spellID (" .. v.spellID .. ") is invalid.")
                 end
             elseif (v.slotID) then
-                local slotID = v.slotID
                 local itemLink = GetInventoryItemLink(unit, v.slotID)
                 if (itemLink) then
                     table.insert(spell_table, v)
                 else
-                    Filger.Debug("Invalid slotId (" .. slotID .. ").")
+                    Filger.Debug("Invalid slotId (" .. v.slotID .. ").")
+                end
+            elseif (v.itemID) then
+                local name = GetItemInfo(v.itemID)
+                if (name) then
+                    table.insert(spell_table, v)
+                else
+                    Filger.Debug("Invalid itemID (" .. v.itemID .. ").")
                 end
             end
         end
@@ -146,7 +153,6 @@ end
 
 -- filter black list by removing unknown spells
 function Filger.BuildBlackList()
-    local index = 1
     for spellID, check in pairs(BlackList) do
         local name = GetSpellInfo(spellID)
         if (not check or not name) then
@@ -155,6 +161,5 @@ function Filger.BuildBlackList()
             end
             table.remove_key(BlackList, spellID)
         end
-        index = index + 1
     end
 end

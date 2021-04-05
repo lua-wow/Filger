@@ -7,12 +7,13 @@ local BlackList = Config.BlackList
 local VISIBLE = 1
 local HIDDEN = 0
 
--- wow api
+-- WoW API
 local CreateFrame = CreateFrame
 local UnitAura, UnitIsEnemy, GameTooltip = UnitAura, UnitIsEnemy, GameTooltip
 local GetSpellInfo, IsSpellKnown = GetSpellInfo, IsSpellKnown
 local GetSpellCooldown, GetSpellBaseCooldown = GetSpellCooldown, GetSpellBaseCooldown
-local GetItemInfo, GetInventoryItemLink, GetInventoryItemCooldown, GetItemCooldown, GetInventorySlotInfo = GetItemInfo, GetInventoryItemLink, GetInventoryItemCooldown, GetItemCooldown, GetInventorySlotInfo
+local GetInventoryItemLink, GetInventoryItemCooldown, GetItemCooldown, GetInventorySlotInfo = GetInventoryItemLink, GetInventoryItemCooldown, GetItemCooldown, GetInventorySlotInfo
+local GetItemInfo, GetItemIcon = GetItemInfo, GetItemIcon
 
 ----------------------------------------------------------------
 -- Filger
@@ -259,6 +260,8 @@ local function CustomFilter(element, unit, aura, ...)
     -- hide unecessary auras (Fortitude, Intellect, etc.)
     if (BlackList[spellID]) then return end
 
+    if (Config.General["HideWellFed"] and name == "Well Fed") then return end
+
     -- show only auras casted by the player
     if (element.showOnlyPlayer and (not aura.isPlayer)) then return end
 
@@ -383,8 +386,8 @@ local function UpdateAura(element, unit, index, offset, filter, isDebuff, visibl
     return VISIBLE
 end
 
-local function UpdateCooldown(element, unit, index, spellID, slotID, offset, visible)
-    local name, icon, start, duration, expiration
+local function UpdateCooldown(element, unit, index, spellID, slotID, itemID, offset, visible)
+    local name, icon, start, duration, expiration, itemType
 
     if (spellID) then
         name, _, icon, _, _, _, _ = GetSpellInfo(spellID)
@@ -396,6 +399,11 @@ local function UpdateCooldown(element, unit, index, spellID, slotID, offset, vis
         end
         name, _, _, _, _, _, _, _, _, icon, _, _, _, _, _, _, _ = GetItemInfo(itemLink)
         start, duration, _ = GetInventoryItemCooldown(unit, slotID)
+    elseif (itemID) then
+        -- itemName, itemLink, itemQuality, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemTexture, sellPrice, classID, subclassID, bindType, expacID, setID, isCraftingReagent = GetItemInfo(itemID)
+        name, _, _, _, _, itemType, _, _, _, icon, _, _, _, _, _, _, _ = GetItemInfo(itemID)
+        -- icon = GetItemIcon(itemID)
+        start, duration, _ = GetItemCooldown(itemID)
     else
         return HIDDEN
     end
@@ -417,6 +425,7 @@ local function UpdateCooldown(element, unit, index, spellID, slotID, offset, vis
     aura.name = name
     aura.spellID = spellID
     aura.slotID = slotID
+    aura.itemID = itemID
 
     aura.expiration = expiration
     aura.duration = duration
@@ -493,7 +502,7 @@ function Filger:FilterCooldowns(element, unit, filter, limit, offset, dontHide)
             break
         end
 
-        local result = UpdateCooldown(element, unit, index, v.spellID, v.slotID, offset, visible)
+        local result = UpdateCooldown(element, unit, index, v.spellID, v.slotID, v.itemID, offset, visible)
         if (result == VISIBLE) then
             visible = visible + 1
         elseif (result == HIDDEN) then
