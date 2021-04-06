@@ -8,7 +8,7 @@ local BlackList = Config.BlackList
 local GetTime = GetTime
 local GetSpellInfo = GetSpellInfo
 local GetInventoryItemLink, GetInventoryItemCooldown  = GetInventoryItemLink, GetInventoryItemCooldown
-local GetItemInfo, GetItemCooldown = GetItemInfo, GetItemCooldown
+local GetItemInfo, GetItemInfoInstant, GetItemCooldown = GetItemInfo, GetItemInfoInstant, GetItemCooldown
 
 table.remove_key = function(table, key)
     local value = table[key]
@@ -120,11 +120,14 @@ local validadeSpellTable = function(unit, spells, spell_table)
                 if (itemLink) then
                     table.insert(spell_table, v)
                 else
-                    Filger.Debug("Invalid slotId (" .. v.slotID .. ").")
+                    Filger.Debug("Invalid slotID (" .. v.slotID .. ").")
                 end
             elseif (v.itemID) then
-                local name = GetItemInfo(v.itemID)
-                if (name) then
+                -- method GetItemInfo may not return item information when the games starts
+                -- because some item data may not have been cached from the server.
+                -- to avoid that we need to use GetItemInfoInstant or ItemMixin.
+                local itemID = GetItemInfoInstant(v.itemID)
+                if (itemID) then
                     table.insert(spell_table, v)
                 else
                     Filger.Debug("Invalid itemID (" .. v.itemID .. ").")

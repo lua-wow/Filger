@@ -12,8 +12,8 @@ local CreateFrame = CreateFrame
 local UnitAura, UnitIsEnemy, GameTooltip = UnitAura, UnitIsEnemy, GameTooltip
 local GetSpellInfo, IsSpellKnown = GetSpellInfo, IsSpellKnown
 local GetSpellCooldown, GetSpellBaseCooldown = GetSpellCooldown, GetSpellBaseCooldown
-local GetInventoryItemLink, GetInventoryItemCooldown, GetItemCooldown, GetInventorySlotInfo = GetInventoryItemLink, GetInventoryItemCooldown, GetItemCooldown, GetInventorySlotInfo
-local GetItemInfo, GetItemIcon = GetItemInfo, GetItemIcon
+local GetInventoryItemLink, GetInventoryItemCooldown, GetInventorySlotInfo = GetInventoryItemLink, GetInventoryItemCooldown, GetInventorySlotInfo
+local GetItemInfo, GetItemCooldown = GetItemInfo, GetItemCooldown
 
 ----------------------------------------------------------------
 -- Filger
@@ -400,9 +400,7 @@ local function UpdateCooldown(element, unit, index, spellID, slotID, itemID, off
         name, _, _, _, _, _, _, _, _, icon, _, _, _, _, _, _, _ = GetItemInfo(itemLink)
         start, duration, _ = GetInventoryItemCooldown(unit, slotID)
     elseif (itemID) then
-        -- itemName, itemLink, itemQuality, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemTexture, sellPrice, classID, subclassID, bindType, expacID, setID, isCraftingReagent = GetItemInfo(itemID)
         name, _, _, _, _, itemType, _, _, _, icon, _, _, _, _, _, _, _ = GetItemInfo(itemID)
-        -- icon = GetItemIcon(itemID)
         start, duration, _ = GetItemCooldown(itemID)
     else
         return HIDDEN
@@ -410,6 +408,7 @@ local function UpdateCooldown(element, unit, index, spellID, slotID, itemID, off
 
     expiration = start + duration
 
+    -- filter global cooldowns
     if (not name) or (not duration) or (duration <= 1.5) then
         return HIDDEN
     end
