@@ -167,6 +167,9 @@ Config["BlackList"] = {
     [335152] = true,                -- Sign of Iron
     [347600] = true,                -- Infused Ruby Tracking
 
+    -- Shrine of two Moons
+    [131526] = true,                -- Cyclonic Inspiration
+
     -- Food
     [257427] = true,                -- Food & Drink
     -- [257410] = true,                -- Well Fed
