@@ -53,7 +53,7 @@ local function onLeave()
 end
 
 local function onMouseDown(self)
-    print(self.spellID, " - ", self.name)
+    print(self.spellID, " - ", self.name, self.debuffType)
 end
 
 function Filger:SetPosition(element, from, to)
@@ -320,6 +320,10 @@ local function UpdateAura(element, unit, index, offset, filter, isDebuff, visibl
         aura = Filger:CreateAura(element, position)
         aura.filter = filter
         aura.isDebuff = isDebuff
+    end
+
+    if (debuffType and type(debuffType) == "string" and string.len(debuffType) == 0) then
+        debuffType = nil
     end
 
     aura.caster = caster
