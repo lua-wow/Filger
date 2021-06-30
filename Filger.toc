@@ -1,7 +1,7 @@
 ## Interface: 90005
 ## Author: Luaerror
 ## Credits: Nils Ruesch, Shestak, Affli, Garagar, hidekki, FourOne, Tukz
-## Version: 3.6
+## Version: 3.7
 ## Title: |cffb3ff19Filger|r
 ## Notes: Minimal buff/debuff tracker
 ## Website: https://github.com/PedroZC90/Filger/tree/master
