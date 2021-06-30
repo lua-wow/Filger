@@ -167,6 +167,8 @@ Config["BlackList"] = {
     [335152] = true,                -- Sign of Iron
     [347600] = true,                -- Infused Ruby Tracking
 
+    [245686] = true,                -- Fashionable!
+
     -- Shrine of two Moons
     [131526] = true,                -- Cyclonic Inspiration
 
