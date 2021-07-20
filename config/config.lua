@@ -183,6 +183,15 @@ Config["BlackList"] = {
     [93095] = true,                 -- Burgy Blackheart's Handsome Hat
     [160331] = true,                -- Blood Elf Illusion
     [331462] = true,                -- Stinky
+    [134522] = true,                -- Dressed to Kill
+    [96312] = true,                 -- Kalytha's Haunted Locked
+
+    -- Mounts
+    [297871] = true,                -- Anglers' Water Striders
+
+    -- Toys
+    [355462] = true,                -- Reliquary Sight
+    [329289] = true                 -- Music of Bastion
 }
 
 Config["Cooldowns"] = {
