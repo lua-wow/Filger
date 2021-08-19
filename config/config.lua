@@ -185,6 +185,8 @@ Config["BlackList"] = {
     [331462] = true,                -- Stinky
     [134522] = true,                -- Dressed to Kill
     [96312] = true,                 -- Kalytha's Haunted Locked
+    [16739] = true,                 -- Orb of Deception
+
 
     -- Mounts
     [297871] = true,                -- Anglers' Water Striders
