@@ -165,6 +165,7 @@ Config["BlackList"] = {
     [335150] = true,                -- Sign of the Destroyer
     [335151] = true,                -- Sign of the Mists
     [335152] = true,                -- Sign of Iron
+    [359082] = true,                -- Sign of the Legion
     [347600] = true,                -- Infused Ruby Tracking
 
     [245686] = true,                -- Fashionable!

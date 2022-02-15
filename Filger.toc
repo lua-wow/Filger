@@ -1,4 +1,4 @@
-## Interface: 90100
+## Interface: 90105
 ## Author: Luaerror
 ## Credits: Nils Ruesch, Shestak, Affli, Garagar, hidekki, FourOne, Tukz
 ## Version: 3.8
