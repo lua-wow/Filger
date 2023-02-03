@@ -139,6 +139,11 @@ Config["BlackList"] = {
     [1459] = true,                  -- Arcane Intellect
 
     ----------------------------------------------------------------
+    -- Monk
+    ----------------------------------------------------------------
+    [389684] = true,                -- Close to Heart
+
+    ----------------------------------------------------------------
     -- Priest
     ----------------------------------------------------------------
     [21562] = true,                 -- Power Word: Fortitude
@@ -167,6 +172,9 @@ Config["BlackList"] = {
     [335152] = true,                -- Sign of Iron
     [359082] = true,                -- Sign of the Legion
     [347600] = true,                -- Infused Ruby Tracking
+    [388598] = true,                -- Ride Along
+    [388588] = true,                -- Ride Along
+    [388600] = true,                -- Ride Along
 
     [245686] = true,                -- Fashionable!
 
@@ -188,7 +196,6 @@ Config["BlackList"] = {
     [96312] = true,                 -- Kalytha's Haunted Locked
     [16739] = true,                 -- Orb of Deception
 
-
     -- Mounts
     [297871] = true,                -- Anglers' Water Striders
 
@@ -208,10 +215,11 @@ Config["Cooldowns"] = {
         { spellID = 115203, check = true },            -- Fortifying Brew
         { spellID = 119582, check = true },            -- Purifiying Brew
         { spellID = 122278, check = true },            -- Dumpen Harm
+        { spellID = 122783, check = true },            -- Diffuse Magic
         { spellID = 132578, check = true },            -- Invoke Niuzao, the Black Ox
-
+        { spellID = 386276, check = true },            -- Bonedust Brew
         -- Kyrian
-        { spellID = 310454, check = true },             -- Weapons of Order
+        { spellID = 387184, check = true },             -- Weapons of Order
     },
     ["PALADIN"] = {
         -- All

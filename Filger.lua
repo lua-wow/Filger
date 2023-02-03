@@ -380,7 +380,7 @@ local function UpdateAura(element, unit, index, offset, filter, isDebuff, visibl
     end
 
     if (aura.count) then
-        aura.count:SetText(count > 1 and count)
+        aura.count:SetText(count > 1 and count or "")
     end
 
     aura:Show()
@@ -577,7 +577,7 @@ end)
 
 function Filger:ADDON_LOADED(addon)
     if (addon ~= "Filger") then return end
-    print(Filger.WelcomeMessage)
+    -- print(Filger.WelcomeMessage)
     self.unit = "player"
 end
 

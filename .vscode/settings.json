@@ -1,8 +1,0 @@
-{
-    "Lua.diagnostics.globals": [
-        "unpack"
-    ],
-    "Lua.diagnostics.disable": [
-        "undefined-global"
-    ]
-}

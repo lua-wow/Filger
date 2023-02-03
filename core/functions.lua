@@ -116,8 +116,9 @@ local validadeSpellTable = function(unit, spells, spell_table)
                     Filger.Debug("spellID (" .. v.spellID .. ") is invalid.")
                 end
             elseif (v.slotID) then
-                local itemLink = GetInventoryItemLink(unit, v.slotID)
-                if (itemLink) then
+                -- local itemLink = GetInventoryItemLink(unit, v.slotID)
+                -- if (itemLink) then
+                if (v.slotID >= 0 and v.slotID <= 19) then
                     table.insert(spell_table, v)
                 else
                     Filger.Debug("Invalid slotID (" .. v.slotID .. ").")
