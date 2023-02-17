@@ -6,9 +6,9 @@ local BlackList = Config["BlackList"]
 
 local Item = Item
 
-----------------------------------------------------------------
+------------------------------------------------------------
 -- Development (write anything here)
-----------------------------------------------------------------
+------------------------------------------------------------
 -- local frame = CreateFrame("Frame", nil, UIParent)
 -- frame.name = "TEST"
 -- frame.expiration = 5000
@@ -20,9 +20,9 @@ local Item = Item
 
 -- frame:SetScript("OnUpdate", Filger.UpdateAuraTimer)
 
-----------------------------------------------------------------
+------------------------------------------------------------
 -- Item Mixin
-----------------------------------------------------------------
+------------------------------------------------------------
 -- local item = Item:CreateFromItemID(21524)
 
 -- item:ContinueOnItemLoad(function()

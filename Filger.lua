@@ -15,9 +15,9 @@ local GetSpellCooldown, GetSpellBaseCooldown = GetSpellCooldown, GetSpellBaseCoo
 local GetInventoryItemLink, GetInventoryItemCooldown, GetInventorySlotInfo = GetInventoryItemLink, GetInventoryItemCooldown, GetInventorySlotInfo
 local GetItemInfo, GetItemCooldown = GetItemInfo, GetItemCooldown
 
-----------------------------------------------------------------
+------------------------------------------------------------
 -- Filger
-----------------------------------------------------------------
+------------------------------------------------------------
 -- player info
 local class = Filger.MyClass
 local classColor = RAID_CLASS_COLORS[class]

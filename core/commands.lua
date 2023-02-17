@@ -2,9 +2,9 @@ local _, ns = ...
 local Filger = ns.Filger
 local Config = ns.Config
 
-----------------------------------------------------------------
+------------------------------------------------------------
 -- Commands
-----------------------------------------------------------------
+------------------------------------------------------------
 -- imports
 local tinsert, tsort = table.insert, table.sort
 local strsplit = string.strsplit

@@ -4,9 +4,9 @@ local Config = ns.Config
 local SpellList = ns.SpellList
 local Instances = ns.Instances
 
-----------------------------------------------------------------
+------------------------------------------------------------
 -- Filger Tracer
-----------------------------------------------------------------
+------------------------------------------------------------
 if (not Config["Plugins"].Tracer) then return end
 
 local bor, band = bit.bor, bit.band
@@ -208,13 +208,12 @@ function Tracer:COMBAT_LOG_EVENT_UNFILTERED()
 end
 
 function Tracer:PLAYER_LOGOUT()
-    -- copy spell table into saved variables
     self:Save()
 end
 
-----------------------------------------------------------------
+------------------------------------------------------------
 -- Commands
-----------------------------------------------------------------
+------------------------------------------------------------
 local state = false
 Filger.AddOnCommands["tracer"] = function(arg2)
     if (not state) then
