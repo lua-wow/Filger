@@ -1,0 +1,15 @@
+## Interface: 20504
+## Author: Luaerror
+## Credits: Nils Ruesch, Shestak, Affli, Garagar, hidekki, FourOne, Tukz
+## Version: 4.0
+## Title: |cffb3ff19Filger|r
+## Notes: Minimal buff/debuff tracker
+## Website: https://github.com/PedroZC90/Filger/tree/master
+## RequiredDeps: Tukui
+## SavedVariables: FilgerData
+## X-Website: http://www.tukui.org
+## X-Maintainer: pedrozc90
+## X-LuaUI-ProjectID: 1
+## X-LuaUI-ProjectFolders: Filger
+
+Filger.xml
