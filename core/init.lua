@@ -16,17 +16,17 @@ end
 
 -- Interface
 ns.Filger.Interface = Interface
-ns.Filger.Retail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
-ns.Filger.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
-ns.Filger.BCC = (Interface >= 20000 and Interface < 30000)
-ns.Filger.WotLK = (Interface >= 30000 and Interface < 40000)
-ns.Filger.Cataclysm = (Interface >= 40000 and Interface < 50000)
-ns.Filger.MoP = (Interface >= 50000 and Interface < 60000)
-ns.Filger.WoD = (Interface >= 60000 and Interface < 70000)
-ns.Filger.Legion = (Interface >= 70000 and Interface < 80000)
-ns.Filger.BFA = (Interface >= 80000 and Interface < 90000)
-ns.Filger.Shadowlands = (Interface >= 90000 and Interface < 100000)
-ns.Filger.Dragonflight = (Interface >= 100000 and Interface < 110000)
+ns.Filger.isRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
+ns.Filger.isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+ns.Filger.isTBC = (Interface >= 20000 and Interface < 30000)
+ns.Filger.isWOTLK = (Interface >= 30000 and Interface < 40000)
+ns.Filger.isCataclysm = (Interface >= 40000 and Interface < 50000)
+ns.Filger.isMoP = (Interface >= 50000 and Interface < 60000)
+ns.Filger.isWoD = (Interface >= 60000 and Interface < 70000)
+ns.Filger.isLegion = (Interface >= 70000 and Interface < 80000)
+ns.Filger.isBFA = (Interface >= 80000 and Interface < 90000)
+ns.Filger.isShadowlands = (Interface >= 90000 and Interface < 100000)
+ns.Filger.isDragonflight = (Interface >= 100000 and Interface < 110000)
 
 -- Addon
 ns.Filger.Title = GetAddOnMetadata(addon, 'Title')

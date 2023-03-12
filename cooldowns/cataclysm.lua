@@ -4,4 +4,4 @@ local Config = ns.Config
 ------------------------------------------------------------
 -- Cataclysm
 ------------------------------------------------------------
-if (not ns.Filger.Cataclysm) then return end
+if (not ns.Filger.isCataclysm) then return end

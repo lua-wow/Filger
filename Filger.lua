@@ -169,16 +169,29 @@ function Filger:CreateAura(element, index)
 end
 
 -- check if aura is dispelable by the player
-local function IsDispelable(DebuffType, TargetIsPlayer, TargetIsEnemy, isDebuff)
+local function IsDispelable(DebuffType, TargetIsPlayer, TargetIsEnemy, isDebuff, spellID)
     if (not DebuffType) then return false end
 
-    local TargetIsFriendly = not TargetIsEnemy
+    local target = (TargetIsEnemy and "ENEMY" or " FRIENDLY")
 
-    if (TargetIsEnemy and isDebuff) or (TargetIsFriendly and (not isDebuff)) then return false end
+    if (TargetIsEnemy) then
+        if (isDebuff) then
+            return false
+        end
+        return Filger.DispelFilter["ENEMY"][DebuffType] or false
+    end
 
-    -- Blood Elf: Arcane Torrent (155145): removes 1 beneficial magic effect from enemy target.
-    -- Dark Iron Dwarf: Fireblood (265221): removes all magic, disease, curse, poison and bleed from player.
-    -- Dwarf: Stoneform (20594): removes all magic, disease, curse, poison and bleed effects from player.
+    if (not isDebuff) then
+        return false
+    end
+
+    return Filger.DispelFilter["FRIENDLY"][DebuffType] or false
+
+    --[[
+    local Stoneform = IsSpellKnown(20594)       -- Dwarf: removes all magic, disease, curse, poison and bleed effects from player.
+    local Fireblood = IsSpellKnown(265221)      -- Dark Iron Dwarf: removes all magic, disease, curse, poison and bleed from player.
+    local ArcaneTorrent = IsSpellKnown(155145)  -- Blood Elf: removes 1 beneficial magic effect from enemy target.
+
     local RacialAbility = (IsSpellKnown(155145) and (DebuffType == "Magic") and TargetIsEnemy) or
         (IsSpellKnown(20594) or IsSpellKnown(265221) and  (
             DebuffType == "Magic" or
@@ -187,69 +200,7 @@ local function IsDispelable(DebuffType, TargetIsPlayer, TargetIsEnemy, isDebuff)
             DebuffType == "Poison" or
             DebuffType == "Bleed"
         ) and TargetIsPlayer)
-
-    local Ability = nil
-    if (class == "DEMONHUNTER") then
-        -- Consume Magic (278326): remove 1 beneficial magic effect from enemy target.
-        Ability = (DebuffType == "Magic") and IsSpellKnown(278326) and TargetIsEnemy and (not isDebuff)
-    elseif (class == "DRUID") then
-        -- Soothe (2908): removes enrage from enemy target.
-        -- Remove Corruption (2782): removes harmful curse and poison effects from friendly target.
-        -- Nature's Cure (88423): removes harmful magic, curse and poison effects from friendly targets.
-        Ability =  TargetIsFriendly and (
-            ((DebuffType == "Magic") and IsSpellKnown(88423)) or
-            ((DebuffType == "Curse") and (IsSpellKnown(2782) or IsSpellKnown(88423)))) or
-            ((DebuffType == "Poison") and (IsSpellKnown(2782) or IsSpellKnown(88423))) or
-            (TargetIsEnemy and (DebuffType == "Enrage") and IsSpellKnown(88423))
-    elseif (class == "HUNTER") then
-        -- Tranquilizing Shot (19801): removes enrage and 1 magic effect from enemy target.
-        -- Mending Bandage (212640 - PvP): removes bleed, poison and disease effects from friendly target.
-        Ability =  (TargetIsEnemy and ((DebuffType == "Enrage") or (DebuffType == "Magic")) and IsSpellKnown(19801)) or
-            (TargetIsFriendly and ((DebuffType == "Bleed") or (DebuffType == "Poison") or (DebuffType == "Disease")) and IsSpellKnown(212640))
-    elseif (class == "MAGE") then
-        -- Remove Curse (475): removes all curses from friendly target.
-        Ability = (DebuffType == "Curse") and IsSpellKnown(475) and TargetIsFriendly
-    elseif (class == "MONK") then
-        -- Detox (218164): removes all magic, poison and disease effects from friendly target.
-        local Detox = 218164
-        Ability = IsSpellKnown(Detox) and (
-            (DebuffType == "Poison") or
-            (DebuffType == "Disease")
-        ) and IsSpellKnown(Detox) and TargetIsFriendly
-    elseif (class == "PALADIN") then
-        -- Cleanse (4987): removes magic, disease and poison effects from friendly target.
-        -- Cleanse Toxins (213644): removes disease and poison effects from friendly target.
-        Ability = TargetIsFriendly and
-            ((DebuffType == "Magic") and IsSpellKnown(4987)) or
-            ((DebuffType == "Disease") and (IsSpellKnown(4987) or IsSpellKnown(213644))) or
-            ((DebuffType == "Poison") and (IsSpellKnown(4987) or IsSpellKnown(213644)))
-    elseif (class == "PRIEST") then
-        -- Purify (527): removes magic and disease effects from friendly/enemy target.
-        -- Dispel Magic (528): removes one magic effect from enemy target.
-        -- Mass Dispel (32375): removes all magic effects from 5 friendly targets and 1 beneficial magic spell from enemy target
-        -- Purify Disease (213634): removes all disease effects from friendly target.
-        local Purify = 527
-        local DispelMagic = 528
-        local MassDispel = 32375
-        local PurifyDisease = 213634
-        Ability = ((DebuffType == "Magic" or DebuffType == "Disease") and IsSpellKnown(Purify)) or
-            ((DebuffType == "Magic") and IsSpellKnown(DispelMagic) and TargetIsEnemy) or
-            ((DebuffType == "Magic") and IsSpellKnown(MassDispel) and ((TargetIsFriendly and isDebuff) or (TargetIsEnemy and (not isDebuff)))) or
-            ((DebuffType == "Disease") and IsSpellKnown(PurifyDisease) and TargetIsFriendly)
-    elseif (class == "SHAMAN") then
-        -- Purge (370): removes 1 beneficial magic effect from enemy target.
-        -- Purify Spirit (77130): removes all curses and magic from friendly target.
-        -- Cleanse Spirit (51886): removes all curses from friendly target.
-        Ability = ((DebuffType == "Magic") and IsSpellKnown(370) and TargetIsEnemy and (not isDebuff)) or
-            ((DebuffType == "Magic") and IsSpellKnown(77130) and TargetIsFriendly) or
-            ((DebuffType == "Curse") and (IsSpellKnown(77130) or IsSpellKnown(51886)) and TargetIsFriendly)
-    elseif (class == "WARLOCK") then
-        -- Devour Magic - Felhunter (19505): removes 1 beneficial magic effect from enemy target.
-        -- Singe Magic - Imp (89808): removes harmful magic effects from friendly target.
-        Ability = ((DebuffType == "Magic") and IsSpellKnown(19505, true) and TargetIsEnemy and (not isDebuff)) or
-            ((DebuffType == "Magic") and IsSpellKnown(89808, true) and TargetIsFriendly and (isDebuff))
-    end
-    return RacialAbility or Ability
+    ]]
 end
 
 local function CustomFilter(element, unit, aura, ...)
@@ -271,7 +222,7 @@ local function CustomFilter(element, unit, aura, ...)
     return true
 end
 
-function Filger:PostUpdateAura(element, unit, aura, index, position, duration, expiration, debuffType, isDebuff, isStealable)
+function Filger:PostUpdateAura(element, unit, aura, index, position, duration, expiration, debuffType, isDebuff, isStealable, spellID)
 
     local targetIsEnemy = UnitIsEnemy(unit or "player", "player")
     local casterIsEnemy = UnitIsEnemy(aura.caster or "player", "player")
@@ -280,11 +231,12 @@ function Filger:PostUpdateAura(element, unit, aura, index, position, duration, e
     -- return true or false if aura can be dispeled by the player
     -- 1. dispel harmful effects from friendly target.
     -- 2. dispell beneficial effects from enemy target.
-    local isDispellable = (not aura.casterIsPlayer) and IsDispelable(debuffType, aura.isPlayer, targetIsEnemy, isDebuff)
+    local isDispellable = (not aura.casterIsPlayer) and IsDispelable(debuffType, aura.isPlayer, targetIsEnemy, isDebuff, spellID)
 
     -- set border color by aura type, if it's dispelable.
-    if (isDispellable or isStealable) then
-        aura.Backdrop:SetBorderColor(unpack(DebuffTypeColors[debuffType or "Unknown"]))
+    local color = DebuffTypeColors[debuffType]
+    if ((isDispellable or isStealable) and color) then
+        aura.Backdrop:SetBorderColor(unpack(color))
     else
         aura.Backdrop:SetBorderColor(unpack(BorderColor))
     end
@@ -385,7 +337,7 @@ local function UpdateAura(element, unit, index, offset, filter, isDebuff, visibl
 
     aura:Show()
 
-    Filger:PostUpdateAura(element, unit, aura, index, position, duration, expiration, debuffType, isDebuff, isStealable)
+    Filger:PostUpdateAura(element, unit, aura, index, position, duration, expiration, debuffType, isDebuff, isStealable, spellID)
 
     return VISIBLE
 end
@@ -572,16 +524,21 @@ Filger:RegisterEvent("ADDON_LOADED")
 Filger:RegisterEvent("PLAYER_LOGIN")
 Filger:SetScript("OnEvent", function(self, event, ...)
     -- call one of the function below
+    if (not self[event]) then return end
     self[event](self, ...)
 end)
 
 function Filger:ADDON_LOADED(addon)
     if (addon ~= "Filger") then return end
-    -- print(Filger.WelcomeMessage)
     self.unit = "player"
 end
 
 function Filger:PLAYER_LOGIN()
+    self:RegisterEvent("PLAYER_ENTERING_WORLD")
+    self:RegisterEvent("PLAYER_TALENT_UPDATE")
+    -- self:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED")
+    self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
+
     -- filter classes and remove invalid spells
     Filger.BuildBlackList()
 
@@ -590,6 +547,22 @@ function Filger:PLAYER_LOGIN()
         if (data.enabled) then
             self:Spawn(index, data)
         end
+    end
+end
+
+function Filger:PLAYER_ENTERING_WORLD(isLogin, isReload)
+    -- if (isLogin) then
+        self:UpdateDispelFilter()
+    -- end
+end
+
+function Filger:PLAYER_TALENT_UPDATE()
+    self:UpdateDispelFilter()
+end
+
+function Filger:UNIT_SPELLCAST_SUCCEEDED(unit, _, spellID)
+    if (unit == self.unit and (spellID == 200749 or spellID == 384255)) then
+        self:Inspect()
     end
 end
 

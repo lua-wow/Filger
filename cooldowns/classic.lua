@@ -4,7 +4,7 @@ local Config = ns.Config
 ------------------------------------------------------------
 -- Classic
 ------------------------------------------------------------
-if (not ns.Filger.Classic) then return end
+if (not ns.Filger.isClassic) then return end
 
 local Cooldowns = {
     ["PALADIN"] = {

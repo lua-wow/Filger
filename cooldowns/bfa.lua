@@ -4,4 +4,4 @@ local Config = ns.Config
 ------------------------------------------------------------
 -- Battle for Azeroth
 ------------------------------------------------------------
-if (not ns.Filger.BFA) then return end
+if (not ns.Filger.isBFA) then return end

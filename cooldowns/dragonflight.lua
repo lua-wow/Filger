@@ -4,9 +4,17 @@ local Config = ns.Config
 ------------------------------------------------------------
 -- Dragonflight
 ------------------------------------------------------------
-if (not ns.Filger.Retail) then return end
+if (not ns.Filger.isRetail) then return end
 
 local Cooldowns = {
+    ["DRUID"] = {
+        -- General
+        { spellID = 22812, check = true },              -- Barkskin
+
+        -- Guardian
+        { spellID = 50334, check = true },              -- Berserke
+        { spellID = 61336, check = true },              -- Survival Instincts
+    },
     ["MONK"] = {
         -- Talents
         { spellID = 115313, check = true },             -- Summon Jade Serpent Statue
@@ -15,6 +23,7 @@ local Cooldowns = {
         { spellID = 116844, check = true },             -- Ring of Peace
         { spellID = 388686, check = true },             -- Summon White Tiger Statue
         { spellID = 322101, check = false },            -- Expel Harm
+        { spellID = 322109, check = true },             -- Touch of Death
 
         -- Mistweaver
         { spellID = 115310, check = true },             -- Revival
@@ -139,4 +148,4 @@ local Cooldowns = {
     ["ALL"] = {}
 }
 
-Config.Cooldowns:import(Cooldowns)
+ns.Config.importCooldowns(Cooldowns)

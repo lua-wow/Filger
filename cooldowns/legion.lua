@@ -4,4 +4,4 @@ local Config = ns.Config
 ------------------------------------------------------------
 -- Legion
 ------------------------------------------------------------
-if (not ns.Filger.Legion) then return end
+if (not ns.Filger.isLegion) then return end

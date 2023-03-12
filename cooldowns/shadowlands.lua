@@ -4,7 +4,7 @@ local Config = ns.Config
 ------------------------------------------------------------
 -- Shadowlands
 ------------------------------------------------------------
-if (not ns.Filger.Shadowlands) then return end
+if (not ns.Filger.isShadowlands) then return end
 
 local Cooldowns = {
     ["ALL"] = {

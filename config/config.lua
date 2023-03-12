@@ -242,20 +242,21 @@ Config["Cooldowns"] = {
     }
 }
 
-function ns.Config.Cooldowns:import(tbl)
+function ns.Config.importCooldowns(tbl)
     for class, spells in pairs(tbl) do
-        if (not self[class]) then
-            self[class] = spells
+        if (not Config["Cooldowns"][class]) then
+            Config["Cooldowns"][class] = spells
         elseif (#spells > 0) then
             for i, spell in ipairs(spells) do
-                table.insert(self[class], spell)
+                table.insert(Config["Cooldowns"][class], spell)
             end
         end
     end
 end
 
-function ns.Config.BlackList:import(spells)
-    for spellID, check in pairs(spells) do
-        self[spellID] = check
-    end
-end
+-- function ns.Config.BlackList:import(spells)
+--     for spellID, check in pairs(spells) do
+--         print(spellID, check)
+--         -- self[spellID] = check
+--     end
+-- end
