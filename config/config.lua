@@ -155,6 +155,7 @@ Config["Panels"] = {
         caster = nil
     }, -- [5]
 
+    -- CENTRAL
     {
         enabled = true,
         name = "BOSS_DEBUFFS",
@@ -174,9 +175,7 @@ Config["Panels"] = {
             canApply, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3 = ...
             return isBossDebuff
         end
-    },
-
-    -- CENTRAL
+    }, -- [6]
     {
         enabled = true,
         name = "PLAYER_COOLDOWNS",
@@ -192,7 +191,7 @@ Config["Panels"] = {
         filter = "COOLDOWN",
         unit = "player",
         caster = "player"
-    } -- [6]
+    } -- [7]
 }
 
 -- List of spells that do not need to be displayed
