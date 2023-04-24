@@ -15,6 +15,12 @@ local Cooldowns = {
         { spellID = 50334, check = true },              -- Berserke
         { spellID = 61336, check = true },              -- Survival Instincts
     },
+    ["MAGE"] = {
+        -- Talents
+        { spellID = 45438, check = true },              -- Ice Block
+
+        -- Frost
+    },
     ["MONK"] = {
         -- Talents
         { spellID = 115313, check = true },             -- Summon Jade Serpent Statue
@@ -58,11 +64,11 @@ local Cooldowns = {
         { spellID = 1022, check = true },               -- Blessing of Protection
         { spellID = 1044, check = true },               -- Blessing of Freedom
         { spellID = 6940, check = true },               -- Blessing of Sacrifice
-        { spellID = 31884, check = true },              -- Sanctified Wrath
         { spellID = 96231, check = true },              -- Rebuke
         { spellID = 105809, check = true },             -- Holy Avenger
         { spellID = 152262, check = true },             -- Seraphim
         { spellID = 190784, check = true },             -- Divine Steed
+        { spellID = 389539, check = true },             -- Sanctified Wrath
 
         -- Protection
         { spellID = 31850, check = true },              -- Ardent Defender
@@ -146,6 +152,24 @@ local Cooldowns = {
         { spellID = 385952, check = true },             -- Shield Charge
     },
     ["ALL"] = {}
+}
+
+ns.SpellList = {
+    ["DRUID"] = {
+
+    },
+    ["MAGE"] = {
+
+    },
+    ["MONK"] = {
+
+    },
+    ["PALADIN"] = {
+
+    },
+    ["PRIEST"] = {
+
+    }
 }
 
 ns.Config.importCooldowns(Cooldowns)

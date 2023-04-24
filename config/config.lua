@@ -28,8 +28,42 @@ Config["Plugins"] = {
     ["Tracer"] = false,                              -- enables aura tracer plugins.
 }
 
+--[[
+    * filter    -- list of filters, separated by spaces or pipes. "HELPFUL" by default.
+        -- "HELPFUL"                    : Buffs
+        -- "HARMFUL"                    : Debuffs
+        -- "PLAYER"                     : Auras Debuffs applied by the player
+        -- "RAID"                       : Buffs the player can apply and debuffs the player can dispell
+        -- "CANCELABLE"                 : Buffs that can be cancelled with /cancelaura or CancelUnitBuff()
+        -- "NOT_CANCELABLE"             : Buffs that cannot be cancelled
+        -- "INCLUDE_NAME_PLATE_ONLY"    : Auras that should be shown on nameplates
+        -- "MAW"                        : Torghast Anima Powers
+    * unit              -- unit whose auras to query. ("player", "target", "focus", etc.)
+    * caster            -- aura caster.
+    * showOnlyPlayer    --
+    * isDebuff          -- 
+    * hidePlayer        --
+]]
 Config["Panels"] = {
     -- LEFT
+    -- displays all debuffs on player
+    {
+        enabled = true,
+        name = "PLAYER_DEBUFFS",
+        anchor = { "RIGHT", UIParent, "CENTER", -xOffset, yOffset },
+        limit = 8,
+        size = Config["General"].IconSize,
+        spacing = Config["General"].IconSpacing,
+        initialAnchor = "BOTTOMRIGHT",
+        ["growth-x"] = "LEFT",
+        ["growth-y"] = "DOWN",
+
+        filter = "HARMFUL",
+        unit = "player",
+        caster = nil
+    }, -- [1]
+
+    -- displays all buffs casted by the player on itself.
     {
         enabled = true,
         name = "PLAYER_AURAS",
@@ -37,49 +71,74 @@ Config["Panels"] = {
         limit = 8,
         size = Config["General"].IconSize,
         spacing = Config["General"].IconSpacing,
-        initialAnchor = 'BOTTOMRIGHT',
-        ['growth-x'] = "LEFT",
-        ['growth-y'] = "DOWN",
+        initialAnchor = "BOTTOMRIGHT",
+        ["growth-x"] = "LEFT",
+        ["growth-y"] = "DOWN",
 
         filter = "PLAYER|HELPFUL",
         unit = "player",
-        caster = "player",
-        showOnlyPlayer = true
-    }, -- [1]
-    {
-        enabled = true,
-        name = "PLAYER_DEBUFFS",
-        anchor = { "RIGHT", UIParent, "CENTER", -xOffset, -yOffset },
-        limit = 8,
-        size = Config["General"].IconSize,
-        spacing = Config["General"].IconSpacing,
-        initialAnchor = 'BOTTOMRIGHT',
-        ['growth-x'] = "LEFT",
-        ['growth-y'] = "DOWN",
+        CustomFilter = function(element, ...)
+            local unit, aura, name, texture,
+            count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID,
+            canApply, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3 = ...
 
-        filter = "HARMFUL",
-        unit = "player",
-        caster = "all",
-        isDebuff = true
+            -- print(element.name, unit, name, spellID, caster, canApply, isBossDebuff, casterIsPlayer)
+            return (caster == "player" or caster == "vehicle" or caster == "pet")
+        end
     }, -- [2]
     {
         enabled = true,
         name = "PLAYER_BUFFS",
-        anchor = { "RIGHT", UIParent, "CENTER", -xOffset, yOffset },
+        anchor = { "RIGHT", UIParent, "CENTER", -xOffset, -yOffset },
         limit = 8,
         size = Config["General"].IconSize,
         spacing = Config["General"].IconSpacing,
-        initialAnchor = 'BOTTOMRIGHT',
-        ['growth-x'] = "LEFT",
-        ['growth-y'] = "DOWN",
+        initialAnchor = "BOTTOMRIGHT",
+        ["growth-x"] = "LEFT",
+        ["growth-y"] = "DOWN",
 
         filter = "HELPFUL",
         unit = "player",
         caster = "all",
-        hidePlayer = true
+        hidePlayer = true,
+        CustomFilter = function(element, ...)
+            local unit, aura, name, texture,
+            count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID,
+            canApply, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3 = ...
+
+            -- return (not canApply)
+            if (aura.isPlayer) then
+                return false
+            end
+            
+            return true
+        end
     }, -- [3]
 
     -- RIGHT
+    {
+        enabled = true,
+        name = "TARGET_DEBUFFS",
+        anchor = { "LEFT", UIParent, "CENTER", xOffset, yOffset },
+        limit = 8,
+        size = Config["General"].IconSize,
+        spacing = Config["General"].IconSpacing,
+        initialAnchor = "BOTTOMLEFT",
+        ["growth-x"] = "RIGHT",
+        ["growth-y"] = "DOWN",
+
+        filter = "HARMFUL",
+        unit = "target",
+        CustomFilter = function(element, ...)
+            local unit, aura, name, texture,
+            count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID,
+            canApply, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3 = ...
+            -- if target is player itself
+            -- local targetIsPlayer = (UnitGUID(unit) == UnitGUID("player"))
+            local isPlayerDebuff = ((caster == "player") or (caster == "vehicle") or (caster == "pet"))
+            return (isPlayerDebuff) or (isBossDebuff)
+        end
+    }, -- [4]
     {
         enabled = true,
         name = "TARGET_AURAS",
@@ -87,31 +146,37 @@ Config["Panels"] = {
         limit = 8,
         size = Config["General"].IconSize,
         spacing = Config["General"].IconSpacing,
-        initialAnchor = 'BOTTOMLEFT',
-        ['growth-x'] = "RIGHT",
-        ['growth-y'] = "DOWN",
+        initialAnchor = "BOTTOMLEFT",
+        ["growth-x"] = "RIGHT",
+        ["growth-y"] = "DOWN",
 
         filter = "HELPFUL",
         unit = "target",
-        caster = "player",
-        showOnlyPlayer = false
-    }, -- [4]
+        caster = nil
+    }, -- [5]
+
     {
         enabled = true,
-        name = "TARGET_DEBUFFS",
-        anchor = { "LEFT", UIParent, "CENTER", xOffset, -yOffset },
-        limit = 8,
-        size = Config["General"].IconSize,
+        name = "BOSS_DEBUFFS",
+        anchor = { "CENTER", UIParent, "CENTER", 0, 160 },
+        limit = 1,
+        size = (2 * Config["General"].IconSize),
         spacing = Config["General"].IconSpacing,
-        initialAnchor = 'BOTTOMLEFT',
-        ['growth-x'] = "RIGHT",
-        ['growth-y'] = "DOWN",
+        initialAnchor = "BOTTOMLEFT",
+        ["growth-x"] = "RIGHT",
+        ["growth-y"] = "DOWN",
 
         filter = "HARMFUL",
-        unit = "target",
-        caster = "player",
-        isDebuff = true
-    }, -- [5]
+        unit = "player",
+        CustomFilter = function(element, ...)
+            local unit, aura, name, texture,
+            count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID,
+            canApply, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3 = ...
+            return isBossDebuff
+        end
+    },
+
+    -- CENTRAL
     {
         enabled = true,
         name = "PLAYER_COOLDOWNS",
@@ -121,8 +186,8 @@ Config["Panels"] = {
         max_size = 40,
         spacing = 3,
         initialAnchor = "CENTER",
-        ['growth-x'] = "CENTER",
-        ['growth-y'] = "CENTER",
+        ["growth-x"] = "CENTER",
+        ["growth-y"] = "CENTER",
 
         filter = "COOLDOWN",
         unit = "player",
@@ -133,32 +198,26 @@ Config["Panels"] = {
 -- List of spells that do not need to be displayed
 Config["BlackList"] = {
 
-    ------------------------------------------------------------
+    -- Druid
+    [1126] = true,                  -- Mark of the Wild
+
     -- Mage
-    ------------------------------------------------------------
     [1459] = true,                  -- Arcane Intellect
 
-    ------------------------------------------------------------
-    -- Monk
-    ------------------------------------------------------------
-    [389684] = true,                -- Close to Heart
+    -- -- Monk
+    -- [389684] = true,                -- Close to Heart
 
-    ------------------------------------------------------------
     -- Priest
-    ------------------------------------------------------------
     [21562] = true,                 -- Power Word: Fortitude
+    [232698] = true,                -- Shadowform
 
-    ------------------------------------------------------------
-    -- Paladin
-    ------------------------------------------------------------
-    [465] = true,                   -- Power Word: Fortitude
+    -- -- Paladin
+    [465] = true,                   -- Devotion Aura
+    [32223] = true,                 -- Crusader Aura
+    [183435] = true,                -- Retribution Aura
+    [317920] = true,                -- Concentration Aura
 
-    ------------------------------------------------------------
-    -- General
-    ------------------------------------------------------------
     -- World Buffs
-    [72221] = true,                 -- Luck of the Draw
-
     [186401] = true,                -- Sign of the Skirmisher
     [186403] = true,                -- Sign of Battle
     [186406] = true,                -- Sign of the Critter
@@ -171,36 +230,43 @@ Config["BlackList"] = {
     [335151] = true,                -- Sign of the Mists
     [335152] = true,                -- Sign of Iron
     [359082] = true,                -- Sign of the Legion
-    [347600] = true,                -- Infused Ruby Tracking
-    [360954] = true,                -- Ride Along
-    [388598] = true,                -- Ride Along
-    [388588] = true,                -- Ride Along
-    [388600] = true,                -- Ride Along
     [397734] = true,                -- Word of a Worthy Ally
-
-    [245686] = true,                -- Fashionable!
-
-    -- Shrine of two Moons
-    [131526] = true,                -- Cyclonic Inspiration
+    [394006] = true,                -- Rockin' Mining Gear
+    
+    -- Mounts
+    ["Ride Along"] = true,
+    [297871] = true,                -- Anglers' Water Stiders
+    [388376] = true,                -- Dragonrider's Compassion
 
     -- Food
-    [257427] = true,                -- Food & Drink
+    ["Well Fed"] = true,
 
     -- Costumes
-    [93095] = true,                 -- Burgy Blackheart's Handsome Hat
-    [160331] = true,                -- Blood Elf Illusion
-    [331462] = true,                -- Stinky
-    [134522] = true,                -- Dressed to Kill
-    [96312] = true,                 -- Kalytha's Haunted Locked
-    [16739] = true,                 -- Orb of Deception
     [8219] = true,                  -- Flip Out
+    [16739] = true,                 -- Orb of Deception
+    [58501] = true,                 -- Iron Boot Flask
+    [61340] = true,                 -- Frenzyheart Brew
+    [75532] = true,                 -- Darkspear Pride
+    [74589] = true,                 -- Identity Crisis
+    [93095] = true,                 -- Burgy Blackheart's Handsome Hat
+    [96312] = true,                 -- Kalytha's Haunted Locked
+    [101185] = true,                -- Levara's Locket
+    [127315] = true,                -- Skymirror Image
+    [129023] = true,                -- Surgical Alterations
+    [134522] = true,                -- Dressed to Kill
+    [149229] = true,                -- Celestial Defender
+    [160331] = true,                -- Blood Elf Illusion
+    [165185] = true,                -- Bloodclaw Charm
+    [289184] = true,                -- Dark Banner's Spare Cowl
+    [399502] = true,                -- Atomically Recalibrated
+    [328906] = true,                -- Envious Glimmer
 
-    -- Mounts
-    [297871] = true,                -- Anglers' Water Striders
+    -- Gear
+    [331462] = true,                -- Stinky
 
-    -- Toys
-    [355462] = true,                -- Reliquary Sight
-    [329289] = true                 -- Music of Bastion
+    -- War Mode
+    [269083] = true,                -- Enlisted
+    [282559] = true                 -- Enlisted
 }
 
 Config["Cooldowns"] = {
@@ -254,9 +320,8 @@ function ns.Config.importCooldowns(tbl)
     end
 end
 
--- function ns.Config.BlackList:import(spells)
---     for spellID, check in pairs(spells) do
---         print(spellID, check)
---         -- self[spellID] = check
---     end
--- end
+function ns.Config.importBlackList(tbl)
+    for spellID, check in pairs(tbl) do
+        table.insert(Config["BlackList"], { [spellID] = check })
+    end
+end

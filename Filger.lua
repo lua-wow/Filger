@@ -209,15 +209,18 @@ local function CustomFilter(element, unit, aura, ...)
         timeMod, effect1, effect2, effect3 = ...
 
     -- hide unecessary auras (Fortitude, Intellect, etc.)
-    if (BlackList[spellID]) then return end
+    -- if (BlackList[spellID]) then return end
 
-    if (Config.General["HideWellFed"] and name == "Well Fed") then return end
+    -- if (Config.General["HideWellFed"] and name == "Well Fed") then return end
 
     -- show only auras casted by the player
-    if (element.showOnlyPlayer and (not aura.isPlayer)) then return end
+    -- if (element.showOnlyPlayer and (not aura.isPlayer)) then return end
 
     -- show only auras not casted by the player
-    if (element.hidePlayer and aura.isPlayer) then return end
+    -- if (element.hidePlayer and aura.isPlayer) then return end
+
+    -- show only auras casted by the player
+    -- if (element.caster == "player" and not aura.isPlayer) then return end
 
     return true
 end
@@ -291,6 +294,10 @@ local function UpdateAura(element, unit, index, offset, filter, isDebuff, visibl
     aura.duration = duration
     aura.start = expiration - duration
     aura.first = true
+
+    if (BlackList[spellID] or BlackList[name]) then
+        return HIDDEN
+    end
 
     --[[ CustomFilter(unit, button, ...)
         Defines a custom filter that controls if the aura should be shown.
@@ -531,6 +538,7 @@ end)
 function Filger:ADDON_LOADED(addon)
     if (addon ~= "Filger") then return end
     self.unit = "player"
+    self.guid = UnitGUID(self.unit)
 end
 
 function Filger:PLAYER_LOGIN()
@@ -580,13 +588,13 @@ function Filger:Spawn(index, data)
     frame["growth-x"] = data["growth-x"] or "LEFT"
     frame["growth-y"] = data["growth-y"] or "DOWN"
 
+    frame.filter = data.filter or "HELPFUL"
     frame.unit = data.unit or "player"
     frame.caster = data.caster
-    frame.showOnlyPlayer = data.showOnlyPlayer or false
-    frame.hidePlayer = data.hidePlayer or false
-
-    frame.filter = data.filter
-    frame.isDebuff = data.isDebuff or false
+    frame.isDebuff = string.find(frame.filter, "HARMFUL") and true or false
+    -- frame.showOnlyPlayer = data.showOnlyPlayer or false
+    -- frame.hidePlayer = data.hidePlayer or false
+    frame.CustomFilter = data.CustomFilter
 
     frame.createdAuras = 0
 
@@ -610,8 +618,9 @@ function Filger:Spawn(index, data)
         frame.text:Hide()
     end
 
-    frame:SetAttribute("unit", data.unit)
-    frame:SetAttribute("caster", data.caster)
+    frame:SetAttribute("filter", frame.filter)
+    frame:SetAttribute("unit", frame.unit)
+    -- frame:SetAttribute("caster", data.caster)
 
     if (frame.filter == "COOLDOWN") then
         frame:RegisterEvent("SPELL_UPDATE_COOLDOWN")
@@ -631,5 +640,6 @@ function Filger:Spawn(index, data)
 
     frame:SetScript("OnEvent", OnEvent)
 
-    return frame
+    self[index] = frame
+    -- return frame
 end

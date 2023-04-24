@@ -158,12 +158,14 @@ end
 -- filter black list by removing unknown spells
 function Filger.BuildBlackList()
     for spellID, check in pairs(BlackList) do
-        local name = GetSpellInfo(spellID)
-        if (not check or not name) then
-            if (not name) then
-                Filger.Debug("spellID (" .. spellID .. ") is invalid.")
+        if (type(spellID) == "number") then
+            local name = GetSpellInfo(spellID)
+            if (not check or not name) then
+                if (not name) then
+                    Filger.Debug("spellID (" .. spellID .. ") is invalid.")
+                end
+                table.remove_key(BlackList, spellID)
             end
-            table.remove_key(BlackList, spellID)
         end
     end
 end

@@ -1,4 +1,4 @@
-## Interface: 100005
+## Interface: 100007
 ## Author: Luaerror
 ## Credits: Nils Ruesch, Shestak, Affli, Garagar, hidekki, FourOne, Tukz
 ## Version: 4.0
