@@ -5,6 +5,13 @@ It allows you to keep track of any buffs/debuffs of all units (player, target, f
 
 <a href="https://i.imgur.com/58wcJx1.jpg"><img src="https://i.imgur.com/58wcJx1.jpg" alt="Filger" width="800px" border="1px solid #ddddd" /></a>
 
+## Dependencies
+
+-   Classic 
+    -   CallbackHanlder-1.0
+    -   (LibStub)[https://legacy.curseforge.com/wow/addons/libstub]
+    -   (LibClassicDurations)[https://github.com/rgd87/LibClassicDurations.git]
+
 ## License:
 
 Please see [LICENSE](https://github.com/PedroZC90/Filger/blob/master/LICENSE) file.

@@ -11,4 +11,25 @@
 ## X-LuaUI-ProjectID: 1
 ## X-LuaUI-ProjectFolders: Filger
 
-Filger.xml
+## init
+core\init.lua
+
+## medias
+medias\medias.lua
+
+## spells
+spells\retail.lua
+
+## configuration
+config\config.lua
+
+## core
+core\functions.lua
+core\commands.lua
+core\development.lua
+core\talents.lua
+
+## plugins
+plugins\tracer.lua
+
+Filger.lua

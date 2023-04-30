@@ -2,18 +2,30 @@ local _, ns = ...
 local Filger = ns.Filger
 local Config = ns.Config
 local Panels = Config.Panels
-local BlackList = Config.BlackList
+local BlackList = ns.BlackList
 
 local VISIBLE = 1
 local HIDDEN = 0
 
 -- WoW API
-local CreateFrame = CreateFrame
-local UnitAura, UnitIsEnemy, GameTooltip = UnitAura, UnitIsEnemy, GameTooltip
-local GetSpellInfo, IsSpellKnown = GetSpellInfo, IsSpellKnown
-local GetSpellCooldown, GetSpellBaseCooldown = GetSpellCooldown, GetSpellBaseCooldown
-local GetInventoryItemLink, GetInventoryItemCooldown, GetInventorySlotInfo = GetInventoryItemLink, GetInventoryItemCooldown, GetInventorySlotInfo
-local GetItemInfo, GetItemCooldown = GetItemInfo, GetItemCooldown
+local CreateFrame = _G.CreateFrame
+local UnitAura = _G.UnitAura
+local UnitIsEnemy = _G.UnitIsEnemy
+local GameTooltip = _G.GameTooltip
+local GetSpellInfo = _G.GetSpellInfo
+local IsSpellKnown = _G.IsSpellKnown
+local GetSpellCooldown = _G.GetSpellCooldown
+local GetSpellBaseCooldown = _G.GetSpellBaseCooldown
+local GetInventoryItemLink = _G.GetInventoryItemLink
+local GetInventoryItemCooldown = _G.GetInventoryItemCooldown
+local GetInventorySlotInfo = _G.GetInventorySlotInfo
+local GetItemInfo = _G.GetItemInfo
+local GetItemCooldown = _G.GetItemCooldown
+
+local LibClassicDurations = ns.Filger.LibClassicDurations
+if (LibClassicDurations) then
+    UnitAura = LibClassicDurations.UnitAuraWrapper
+end
 
 ------------------------------------------------------------
 -- Filger
@@ -43,7 +55,14 @@ local BorderColor = Config["General"].BorderColor
 local function onEnter(self)
 	if (not self:IsVisible()) then return end
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-	GameTooltip:AddDoubleLine(self.name, self.spellID)
+	GameTooltip:AddLine(self.name)
+    GameTooltip:AddLine(self.description)
+    GameTooltip:AddDoubleLine("SpellID:", self.spellID)
+    GameTooltip:AddDoubleLine("unit:", self.caster or "???")
+    if (self.caster) then
+        local name, _ = UnitName(self.caster)
+        GameTooltip:AddDoubleLine("caster:", name or "UNKNOWN")
+    end
 	GameTooltip:SetClampedToScreen(true)
 	GameTooltip:Show()
 end
@@ -543,7 +562,10 @@ end
 
 function Filger:PLAYER_LOGIN()
     self:RegisterEvent("PLAYER_ENTERING_WORLD")
-    self:RegisterEvent("PLAYER_TALENT_UPDATE")
+
+    if (not self.isClassic) then
+        self:RegisterEvent("PLAYER_TALENT_UPDATE")
+    end
     -- self:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED")
     self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
 

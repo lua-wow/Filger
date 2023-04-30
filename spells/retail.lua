@@ -1,12 +1,97 @@
 local _, ns = ...
-local Config = ns.Config
 
 ------------------------------------------------------------
--- Dragonflight
+-- Retail
 ------------------------------------------------------------
-if (not ns.Filger.isRetail) then return end
+ns.BlackList = {
+    -- Druid
+    [1126] = true,                  -- Mark of the Wild
 
-local Cooldowns = {
+    -- Mage
+    [1459] = true,                  -- Arcane Intellect
+
+    -- -- Monk
+    [389684] = true,                -- Close to Heart
+
+    -- Priest
+    [21562] = true,                 -- Power Word: Fortitude
+    [232698] = true,                -- Shadowform
+
+    -- -- Paladin
+    [465] = true,                   -- Devotion Aura
+    [32223] = true,                 -- Crusader Aura
+    [183435] = true,                -- Retribution Aura
+    [317920] = true,                -- Concentration Aura
+
+    -- World Buffs
+    [186401] = true,                -- Sign of the Skirmisher
+    [186403] = true,                -- Sign of Battle
+    [186406] = true,                -- Sign of the Critter
+    [225787] = true,                -- Sign of the Warrior
+    [225788] = true,                -- Sign of the Emissary
+    [331079] = true,                -- Trainee
+    [335148] = true,                -- Sign of the Twisting Nether
+    [335149] = true,                -- Sign of the Scourge
+    [335150] = true,                -- Sign of the Destroyer
+    [335151] = true,                -- Sign of the Mists
+    [335152] = true,                -- Sign of Iron
+    [359082] = true,                -- Sign of the Legion
+    [397734] = true,                -- Word of a Worthy Ally
+    [394006] = true,                -- Rockin' Mining Gear
+    
+    -- Mounts
+    ["Ride Along"] = true,
+    [297871] = true,                -- Anglers' Water Stiders
+    [388376] = true,                -- Dragonrider's Compassion
+
+    -- Food
+    ["Well Fed"] = true,
+
+    -- Costumes
+    [8219] = true,                  -- Flip Out
+    [16739] = true,                 -- Orb of Deception
+    [58501] = true,                 -- Iron Boot Flask
+    [61340] = true,                 -- Frenzyheart Brew
+    [75532] = true,                 -- Darkspear Pride
+    [74589] = true,                 -- Identity Crisis
+    [93095] = true,                 -- Burgy Blackheart's Handsome Hat
+    [96312] = true,                 -- Kalytha's Haunted Locked
+    [101185] = true,                -- Levara's Locket
+    [127315] = true,                -- Skymirror Image
+    [129023] = true,                -- Surgical Alterations
+    [134522] = true,                -- Dressed to Kill
+    [149229] = true,                -- Celestial Defender
+    [160331] = true,                -- Blood Elf Illusion
+    [165185] = true,                -- Bloodclaw Charm
+    [289184] = true,                -- Dark Banner's Spare Cowl
+    [399502] = true,                -- Atomically Recalibrated
+    [328906] = true,                -- Envious Glimmer
+
+    -- Gear
+    [331462] = true,                -- Stinky
+
+    -- War Mode
+    [269083] = true,                -- Enlisted
+    [282559] = true,                -- Enlisted
+
+    -- Forbiden Reach
+    [405261] = true,                -- Dragonscale's Favor
+    [405263] = true,                -- Iskaara's Favor
+    [405264] = true,                -- Maruukai's Favor
+    [405265] = true,                -- Valdrakken's Favor
+
+    -- Legion
+    [227723] = true,                -- Mana Diving Stone
+
+    -- Mythic
+    [206151] = true,                -- Challenger's Burden
+
+    -- Dungeon: Court of Stars
+    [213213] = true,                -- Masquerade
+}
+
+-- Config.importBlackList(BlackList)
+ns.Cooldowns = {
     ["DRUID"] = {
         -- General
         { spellID = 22812, check = true },              -- Barkskin
@@ -151,25 +236,40 @@ local Cooldowns = {
         { spellID = 228920, check = true },             -- Ravager
         { spellID = 385952, check = true },             -- Shield Charge
     },
-    ["ALL"] = {}
-}
+    ["ALL"] = {
+        -- Horde Racials
+        { spellID = 7744, check = true },                       -- Will of the Forsaken (Undead)
+        { spellID = 20549, check = true },                      -- War Stomp (Tauren)
+        { spellID = 20572, check = true },                      -- Blood Fury (Orc)
+        { spellID = 26297, check = true },                      -- Berserking (Troll)
+        { spellID = 28730, check = (not Filger.isClassic) },    -- Arcane Torrent (Blood Elf)
+        { spellID = 255654, check = (not Filger.isClassic) },   -- Bull Rush (Highmountain Tauren)
 
-ns.SpellList = {
-    ["DRUID"] = {
+        -- Alliance Racials
+        { spellID = 20594, check = true },                      -- Stoneform (Dwarf)
+        { spellID = 265221, check = (not Filger.isClassic) },   -- Fireblood Fury (Dark Iron Dwarf)
 
-    },
-    ["MAGE"] = {
+        -- Kyrian
+        { spellID = 324739, check = false },                    -- Summon Steward
 
-    },
-    ["MONK"] = {
+        -- Ventyr
+        { spellID = 323673, check = (not Filger.isClassic) },   -- Mindgames
+        { spellID = 300728, check = (not Filger.isClassic) },   -- Door of Shadows
 
-    },
-    ["PALADIN"] = {
+        -- Necrolords
+        { spellID = 324143, check = (not Filger.isClassic) },   -- Conqueror's Banner
+        { spellID = 324631, check = (not Filger.isClassic) },   -- Fleshcraft
 
-    },
-    ["PRIEST"] = {
+        -- Gear
+        { slotID = 2, check = true },                   -- Neck
+        { slotID = 6, check = true },                   -- Waist
+        { slotID = 13, check = true },                  -- Trinket 1
+        { slotID = 14, check = true },                  -- Trinket 2
 
+        -- Potions
+        { itemID = 76089, check = true },               -- Virmen's Bite
+        { itemID = 127834, check = true },              -- Acient Healing Potion
+        { itemID = 163225, check = true },              -- Battle Potion of Stamina
+        { itemID = 180318, check = true },              -- Soulful Mana Potion
     }
 }
-
-ns.Config.importCooldowns(Cooldowns)

@@ -1,12 +1,11 @@
 local _, ns = ...
-local Config = ns.Config
 
 ------------------------------------------------------------
 -- Shadowlands
 ------------------------------------------------------------
 if (not ns.Filger.isShadowlands) then return end
 
-local Cooldowns = {
+ns.Cooldowns = {
     ["ALL"] = {
         -- Kyrian
         { spellID = 324739, check = false },            -- Summon Steward
@@ -20,5 +19,3 @@ local Cooldowns = {
         { spellID = 324631, check = true },             -- Fleshcraft
     }
 }
-
-Config.Cooldowns:import(Cooldowns)

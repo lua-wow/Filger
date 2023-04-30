@@ -2,7 +2,7 @@
 ## Author: Luaerror
 ## Credits: Nils Ruesch, Shestak, Affli, Garagar, hidekki, FourOne, Tukz
 ## Version: 4.0
-## Title: |cffb3ff19Filger|r
+## Title: |cffb3ff19Filger - Classic|r
 ## Notes: Minimal buff/debuff tracker
 ## Website: https://github.com/PedroZC90/Filger/tree/master
 ## RequiredDeps: Tukui
@@ -12,4 +12,28 @@
 ## X-LuaUI-ProjectID: 1
 ## X-LuaUI-ProjectFolders: Filger
 
-Filger.xml
+## libs
+libs\init.xml
+
+## init
+core\init.lua
+
+## medias
+medias\medias.lua
+
+## spells
+spells\classic.lua
+
+## configurations
+config\config.lua
+
+## core
+core\functions.lua
+core\commands.lua
+core\development.lua
+core\talents.lua
+
+# plugins
+# plugins\tracer.lua
+
+Filger.lua

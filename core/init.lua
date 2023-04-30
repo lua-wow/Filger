@@ -1,4 +1,5 @@
 local addon, ns = ...
+local LibStub = LibStub
 
 -- Blizzard
 local GetAddOnMetadata, GetRealmName = GetAddOnMetadata, GetRealmName
@@ -8,7 +9,8 @@ local Interface = select(4, GetBuildInfo())
 ns.Filger = CreateFrame("Frame", "Filger", UIParent)
 ns.Config = {}
 ns.SpellList = {}
-ns.Instances = {}
+ns.BlackList = {}
+ns.Cooldowns = {}
 
 function ns:unpack()
 	return self[1], self[2], self[3], self[4]
@@ -17,7 +19,7 @@ end
 -- Interface
 ns.Filger.Interface = Interface
 ns.Filger.isRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
-ns.Filger.isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+ns.Filger.isClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
 ns.Filger.isTBC = (Interface >= 20000 and Interface < 30000)
 ns.Filger.isWOTLK = (Interface >= 30000 and Interface < 40000)
 ns.Filger.isCataclysm = (Interface >= 40000 and Interface < 50000)
@@ -43,3 +45,11 @@ ns.Filger.MyFaction = select(2, UnitFactionGroup("player"))
 ns.Filger.MyRace = select(2, UnitRace("player"))
 ns.Filger.MyRealm = GetRealmName()
 ns.Filger.Dummy = function() end
+
+if (ns.Filger.isClassic) then
+	local LibClassicDurations = LibStub("LibClassicDurations", true)
+	if (LibClassicDurations) then
+		LibClassicDurations:Register("Filger")
+		ns.Filger.LibClassicDurations = LibClassicDurations
+	end
+end

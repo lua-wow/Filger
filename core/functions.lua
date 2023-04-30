@@ -1,8 +1,8 @@
 local _, ns = ...
 local Filger = ns.Filger
 local Config = ns.Config
-local Cooldowns = Config.Cooldowns
-local BlackList = Config.BlackList
+local Cooldowns = ns.Cooldowns
+local BlackList = ns.BlackList
 
 -- WoW API
 local GetTime = GetTime
@@ -113,7 +113,7 @@ local validadeSpellTable = function(unit, spells, spell_table)
                 if (name) then
                     table.insert(spell_table, v)
                 else
-                    Filger.Debug("spellID (" .. v.spellID .. ") is invalid.")
+                    Filger.Debug("[SPELLTABLE] spellID (" .. v.spellID .. ") is invalid.")
                 end
             elseif (v.slotID) then
                 -- local itemLink = GetInventoryItemLink(unit, v.slotID)
@@ -121,7 +121,7 @@ local validadeSpellTable = function(unit, spells, spell_table)
                 if (v.slotID >= 0 and v.slotID <= 19) then
                     table.insert(spell_table, v)
                 else
-                    Filger.Debug("Invalid slotID (" .. v.slotID .. ").")
+                    Filger.Debug("[SPELLTABLE] slotID (" .. v.slotID .. ") is invalid.")
                 end
             elseif (v.itemID) then
                 -- method GetItemInfo may not return item information when the games starts
@@ -131,7 +131,7 @@ local validadeSpellTable = function(unit, spells, spell_table)
                 if (itemID) then
                     table.insert(spell_table, v)
                 else
-                    Filger.Debug("Invalid itemID (" .. v.itemID .. ").")
+                    Filger.Debug("[SPELLTABLE] itemID (" .. v.itemID .. ") is invalid.")
                 end
             end
         end
@@ -162,7 +162,7 @@ function Filger.BuildBlackList()
             local name = GetSpellInfo(spellID)
             if (not check or not name) then
                 if (not name) then
-                    Filger.Debug("spellID (" .. spellID .. ") is invalid.")
+                    Filger.Debug("[BLACKLIST] spellID (" .. spellID .. ") is invalid.")
                 end
                 table.remove_key(BlackList, spellID)
             end

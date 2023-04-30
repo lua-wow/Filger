@@ -46,7 +46,6 @@ Config["Plugins"] = {
 ]]
 Config["Panels"] = {
     -- LEFT
-    -- displays all debuffs on player
     {
         enabled = true,
         name = "PLAYER_DEBUFFS",
@@ -62,8 +61,6 @@ Config["Panels"] = {
         unit = "player",
         caster = nil
     }, -- [1]
-
-    -- displays all buffs casted by the player on itself.
     {
         enabled = true,
         name = "PLAYER_AURAS",
@@ -81,8 +78,6 @@ Config["Panels"] = {
             local unit, aura, name, texture,
             count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID,
             canApply, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3 = ...
-
-            -- print(element.name, unit, name, spellID, caster, canApply, isBossDebuff, casterIsPlayer)
             return (caster == "player" or caster == "vehicle" or caster == "pet")
         end
     }, -- [2]
@@ -105,12 +100,9 @@ Config["Panels"] = {
             local unit, aura, name, texture,
             count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID,
             canApply, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3 = ...
-
-            -- return (not canApply)
             if (aura.isPlayer) then
                 return false
             end
-            
             return true
         end
     }, -- [3]
@@ -133,10 +125,8 @@ Config["Panels"] = {
             local unit, aura, name, texture,
             count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID,
             canApply, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3 = ...
-            -- if target is player itself
-            -- local targetIsPlayer = (UnitGUID(unit) == UnitGUID("player"))
-            local isPlayerDebuff = ((caster == "player") or (caster == "vehicle") or (caster == "pet"))
-            return (isPlayerDebuff) or (isBossDebuff)
+            local isMine = ((caster == "player") or (caster == "vehicle") or (caster == "pet"))
+            return (isMine) or (isBossDebuff) or (caster == nil and not casterIsPlayer)
         end
     }, -- [4]
     {
@@ -157,7 +147,7 @@ Config["Panels"] = {
 
     -- CENTRAL
     {
-        enabled = true,
+        enabled = false,
         name = "BOSS_DEBUFFS",
         anchor = { "CENTER", UIParent, "CENTER", 0, 160 },
         limit = 1,
@@ -173,7 +163,7 @@ Config["Panels"] = {
             local unit, aura, name, texture,
             count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID,
             canApply, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3 = ...
-            return isBossDebuff
+            return isBossDebuff or (not casterIsPlayer) or (caster == nil)
         end
     }, -- [6]
     {
@@ -193,134 +183,3 @@ Config["Panels"] = {
         caster = "player"
     } -- [7]
 }
-
--- List of spells that do not need to be displayed
-Config["BlackList"] = {
-
-    -- Druid
-    [1126] = true,                  -- Mark of the Wild
-
-    -- Mage
-    [1459] = true,                  -- Arcane Intellect
-
-    -- -- Monk
-    -- [389684] = true,                -- Close to Heart
-
-    -- Priest
-    [21562] = true,                 -- Power Word: Fortitude
-    [232698] = true,                -- Shadowform
-
-    -- -- Paladin
-    [465] = true,                   -- Devotion Aura
-    [32223] = true,                 -- Crusader Aura
-    [183435] = true,                -- Retribution Aura
-    [317920] = true,                -- Concentration Aura
-
-    -- World Buffs
-    [186401] = true,                -- Sign of the Skirmisher
-    [186403] = true,                -- Sign of Battle
-    [186406] = true,                -- Sign of the Critter
-    [225787] = true,                -- Sign of the Warrior
-    [225788] = true,                -- Sign of the Emissary
-    [331079] = true,                -- Trainee
-    [335148] = true,                -- Sign of the Twisting Nether
-    [335149] = true,                -- Sign of the Scourge
-    [335150] = true,                -- Sign of the Destroyer
-    [335151] = true,                -- Sign of the Mists
-    [335152] = true,                -- Sign of Iron
-    [359082] = true,                -- Sign of the Legion
-    [397734] = true,                -- Word of a Worthy Ally
-    [394006] = true,                -- Rockin' Mining Gear
-    
-    -- Mounts
-    ["Ride Along"] = true,
-    [297871] = true,                -- Anglers' Water Stiders
-    [388376] = true,                -- Dragonrider's Compassion
-
-    -- Food
-    ["Well Fed"] = true,
-
-    -- Costumes
-    [8219] = true,                  -- Flip Out
-    [16739] = true,                 -- Orb of Deception
-    [58501] = true,                 -- Iron Boot Flask
-    [61340] = true,                 -- Frenzyheart Brew
-    [75532] = true,                 -- Darkspear Pride
-    [74589] = true,                 -- Identity Crisis
-    [93095] = true,                 -- Burgy Blackheart's Handsome Hat
-    [96312] = true,                 -- Kalytha's Haunted Locked
-    [101185] = true,                -- Levara's Locket
-    [127315] = true,                -- Skymirror Image
-    [129023] = true,                -- Surgical Alterations
-    [134522] = true,                -- Dressed to Kill
-    [149229] = true,                -- Celestial Defender
-    [160331] = true,                -- Blood Elf Illusion
-    [165185] = true,                -- Bloodclaw Charm
-    [289184] = true,                -- Dark Banner's Spare Cowl
-    [399502] = true,                -- Atomically Recalibrated
-    [328906] = true,                -- Envious Glimmer
-
-    -- Gear
-    [331462] = true,                -- Stinky
-
-    -- War Mode
-    [269083] = true,                -- Enlisted
-    [282559] = true                 -- Enlisted
-}
-
-Config["Cooldowns"] = {
-    ["ALL"] = {
-        -- Horde Racials
-        { spellID = 7744, check = true },               -- Will of the Forsaken (Undead)
-        { spellID = 20549, check = true },              -- War Stomp (Tauren)
-        { spellID = 20572, check = true },              -- Blood Fury (Orc)
-        { spellID = 26297, check = true },              -- Berserking (Troll)
-        { spellID = 28730, check = true },              -- Arcane Torrent (Blood Elf)
-        { spellID = 255654, check = true },             -- Bull Rush (Highmountain Tauren)
-
-        -- Alliance Racials
-        { spellID = 20594, check = true },              -- Stoneform (Dwarf)
-        { spellID = 265221, check = true },             -- Fireblood Fury (Dark Iron Dwarf)
-
-        -- Kyrian
-        { spellID = 324739, check = false },            -- Summon Steward
-
-        -- Ventyr
-        { spellID = 323673, check = true },             -- Mindgames
-        { spellID = 300728, check = true },             -- Door of Shadows
-
-        -- Necrolords
-        { spellID = 324143, check = true },             -- Conqueror's Banner
-        { spellID = 324631, check = true },             -- Fleshcraft
-
-        -- Gear
-        { slotID = 2, check = true },                   -- Neck
-        { slotID = 6, check = true },                   -- Waist
-        { slotID = 13, check = true },                  -- Trinket 1
-        { slotID = 14, check = true },                  -- Trinket 2
-
-        -- Potions
-        -- { itemID = 76089, check = true },               -- Virmen's Bite
-        -- { itemID = 127834, check = true },              -- Acient Healing Potion
-        -- { itemID = 163225, check = true },              -- Battle Potion of Stamina
-        -- { itemID = 180318, check = true },              -- Soulful Mana Potion
-    }
-}
-
-function ns.Config.importCooldowns(tbl)
-    for class, spells in pairs(tbl) do
-        if (not Config["Cooldowns"][class]) then
-            Config["Cooldowns"][class] = spells
-        elseif (#spells > 0) then
-            for i, spell in ipairs(spells) do
-                table.insert(Config["Cooldowns"][class], spell)
-            end
-        end
-    end
-end
-
-function ns.Config.importBlackList(tbl)
-    for spellID, check in pairs(tbl) do
-        table.insert(Config["BlackList"], { [spellID] = check })
-    end
-end

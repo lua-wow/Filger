@@ -43,6 +43,15 @@ SlashCmdList["FILGER"] = function(cmd)
         print(STRING_COLOR:format("reset"), "Reset saved variables.")
         print(STRING_COLOR:format("tracer"), "Start/Stop filger aura tracer.")
         print(" ")
+    elseif (arg1 == "blacklist") then
+        for spellID, check in pairs(ns.BlackList) do
+            if (type(spellID) == "number") then
+                local name = GetSpellInfo(spellID)
+                Filger.Print("blacklist spell (" .. spellID .. ") = " .. name)
+            else
+                Filger.Print("blacklist spell (???) - " .. spellID)
+            end
+        end
     elseif (AddOnCommands[arg1]) then
         AddOnCommands[arg1](arg2)
     end

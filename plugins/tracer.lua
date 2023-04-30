@@ -5,7 +5,7 @@ local SpellList = ns.SpellList
 local Instances = ns.Instances
 
 ------------------------------------------------------------
--- Filger Tracer
+--[[ Filger Tracer
 ------------------------------------------------------------
 if (not Config["Plugins"].Tracer) then return end
 
@@ -230,3 +230,4 @@ Filger.AddOnCommands["reset"] = function(arg2)
         Tracer:Reset()
     end
 end
+]]--
