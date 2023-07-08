@@ -1,11 +1,6 @@
 local addon, ns = ...
 local LibStub = LibStub
 
--- Blizzard
-local GetAddOnMetadata, GetRealmName = GetAddOnMetadata, GetRealmName
-local UnitClass, UnitName, UnitLevel, UnitRace, UnitFactionGroup = UnitClass, UnitName, UnitLevel, UnitRace, UnitFactionGroup
-local Interface = select(4, GetBuildInfo())
-
 ns.Filger = CreateFrame("Frame", "Filger", UIParent)
 ns.Config = {}
 ns.SpellList = {}
@@ -16,25 +11,35 @@ function ns:unpack()
 	return self[1], self[2], self[3], self[4]
 end
 
+-- Blizzard
+local GetAddOnMetadata = _G.GetAddOnMetadata
+local GetRealmName = _G.GetRealmName
+local UnitClass = _G.UnitClass
+local UnitName = _G.UnitName
+local UnitLevel = _G.UnitLevel
+local UnitRace = _G.UnitRace
+local UnitFactionGroup = _G.UnitFactionGroup
+local Interface = select(4, GetBuildInfo())
+
 -- Interface
 ns.Filger.Interface = Interface
 ns.Filger.isRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
 ns.Filger.isClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
-ns.Filger.isTBC = (Interface >= 20000 and Interface < 30000)
-ns.Filger.isWOTLK = (Interface >= 30000 and Interface < 40000)
+ns.Filger.isTBC = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC) or (Interface >= 20000 and Interface < 30000)
+ns.Filger.isWotLK = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC) or (Interface >= 30000 and Interface < 40000)
 ns.Filger.isCataclysm = (Interface >= 40000 and Interface < 50000)
 ns.Filger.isMoP = (Interface >= 50000 and Interface < 60000)
 ns.Filger.isWoD = (Interface >= 60000 and Interface < 70000)
 ns.Filger.isLegion = (Interface >= 70000 and Interface < 80000)
 ns.Filger.isBFA = (Interface >= 80000 and Interface < 90000)
 ns.Filger.isShadowlands = (Interface >= 90000 and Interface < 100000)
-ns.Filger.isDragonflight = (Interface >= 100000 and Interface < 110000)
+ns.Filger.isDragonfligth = (Interface >= 100000 and Interface < 110000)
 
 -- Addon
-ns.Filger.Title = GetAddOnMetadata(addon, 'Title')
-ns.Filger.Version = GetAddOnMetadata(addon, 'Version')
+ns.Filger.Title = GetAddOnMetadata(addon, "Title")
+ns.Filger.Version = GetAddOnMetadata(addon, "Version")
 ns.Filger.VersionNumber = tonumber(ns.Filger.Version)
-ns.Filger.Description = GetAddOnMetadata(addon, 'Notes')
+ns.Filger.Description = GetAddOnMetadata(addon, "Notes")
 ns.Filger.WelcomeMessage = string.format("|cffb3ff19Filger %s|r - /filger help", ns.Filger.VersionNumber)
 
 -- Character

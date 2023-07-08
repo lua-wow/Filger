@@ -74,19 +74,22 @@ ns.BlackList = {
     [269083] = true,                -- Enlisted
     [282559] = true,                -- Enlisted
 
+    -- Mythic
+    [206151] = true,                -- Challenger's Burden
+
     -- Forbiden Reach
     [405261] = true,                -- Dragonscale's Favor
     [405263] = true,                -- Iskaara's Favor
     [405264] = true,                -- Maruukai's Favor
     [405265] = true,                -- Valdrakken's Favor
 
+    --Zaralek Cavern
+    [411060] = true,                -- New Niffen No-Sniffin' Tonic
+
     -- Legion
     [227723] = true,                -- Mana Diving Stone
 
-    -- Mythic
-    [206151] = true,                -- Challenger's Burden
-
-    -- Dungeon: Court of Stars
+    -- Court of Stars
     [213213] = true,                -- Masquerade
 }
 

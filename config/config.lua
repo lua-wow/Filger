@@ -144,6 +144,27 @@ Config["Panels"] = {
         unit = "target",
         caster = nil
     }, -- [5]
+    -- RIGHT
+    {
+        enabled = true,
+        name = "FOCUS_DEBUFFS",
+        anchor = { "LEFT", UIParent, "CENTER", xOffset, -yOffset },
+        limit = 8,
+        size = Config["General"].IconSize,
+        spacing = Config["General"].IconSpacing,
+        initialAnchor = "BOTTOMLEFT",
+        ["growth-x"] = "RIGHT",
+        ["growth-y"] = "DOWN",
+
+        filter = "HARMFUL",
+        unit = "focus",
+        CustomFilter = function(element, ...)
+            local unit, aura, name, texture,
+            count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID,
+            canApply, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3 = ...
+            return not UnitIsPlayer(caster or "none")
+        end
+    }, 
 
     -- CENTRAL
     {
