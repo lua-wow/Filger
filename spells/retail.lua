@@ -154,7 +154,6 @@ ns.Cooldowns = {
         { spellID = 6940, check = true },               -- Blessing of Sacrifice
         { spellID = 96231, check = true },              -- Rebuke
         { spellID = 105809, check = true },             -- Holy Avenger
-        { spellID = 152262, check = true },             -- Seraphim
         { spellID = 190784, check = true },             -- Divine Steed
         { spellID = 389539, check = true },             -- Sanctified Wrath
 

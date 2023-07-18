@@ -1,4 +1,4 @@
-## Interface: 100100
+## Interface: 100105
 ## Author: Luaerror
 ## Credits: Nils Ruesch, Shestak, Affli, Garagar, hidekki, FourOne, Tukz
 ## Version: 4.1
