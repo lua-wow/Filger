@@ -395,8 +395,11 @@ function Filger:Inspect()
     self.talents = {}
 
     local configID = C_ClassTalents.GetActiveConfigID()
+    if (not configID) then return end
 
     local configInfo = C_Traits.GetConfigInfo(configID)
+    if (not configInfo) then return end
+
     for _, treeID in ipairs(configInfo.treeIDs) do
         local nodeIDs = C_Traits.GetTreeNodes(treeID)
         for _, nodeID in ipairs(nodeIDs) do
