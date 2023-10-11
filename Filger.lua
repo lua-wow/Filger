@@ -55,7 +55,11 @@ local BorderColor = Config["General"].BorderColor
 local function onEnter(self)
 	if (not self:IsVisible()) then return end
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-	GameTooltip:AddLine(self.name)
+    if (self.rank ~= nil) then
+        GameTooltip:AddLine(self.name .. " (Rank " .. self.rank .. ")")
+    else
+	    GameTooltip:AddLine(self.name)
+    end
     GameTooltip:AddLine(self.description)
     GameTooltip:AddDoubleLine("SpellID:", self.spellID)
     GameTooltip:AddDoubleLine("unit:", self.caster or "???")
@@ -372,8 +376,19 @@ local function UpdateCooldown(element, unit, index, spellID, slotID, itemID, off
     local name, icon, start, duration, expiration, itemType
 
     if (spellID) then
-        name, _, icon, _, _, _, _ = GetSpellInfo(spellID)
+        -- skip unknown spells
+        if (not IsSpellKnown(spellID)) then
+            return HIDDEN
+        end
+        name, rank, icon, _, _, _, _ = GetSpellInfo(spellID)
         start, duration, _, _ = GetSpellCooldown(spellID)
+
+        -- hidden spells
+        for i, row in ipairs(element) do
+            if (row.name == name and row.spellID ~= spellID) then
+                return HIDDEN
+            end
+        end
     elseif (slotID) then
         local itemLink = GetInventoryItemLink(unit, slotID)
         if (not itemLink) then
@@ -404,6 +419,7 @@ local function UpdateCooldown(element, unit, index, spellID, slotID, itemID, off
     end
 
     aura.name = name
+    aura.rank = rank or 1
     aura.spellID = spellID
     aura.slotID = slotID
     aura.itemID = itemID

@@ -152,6 +152,19 @@ function Filger.BuildCooldownList(unit)
     validadeSpellTable(unit, Cooldowns[class], cooldowns)
     validadeSpellTable(unit, Cooldowns["ALL"], cooldowns)
 
+    -- decrescent order of spellIDs
+    table.sort(cooldowns, function(a, b)
+        if (a.spellID and b.spellID) then
+            return a.spellID > b.spellID
+        elseif (a.slotID and b.slotID) then
+            return a.slotID > b.slotID
+        elseif (a.itemID and b.itemID) then
+            return a.itemID > b.itemID
+        end
+        -- return (a.spellID ~= nil) or (a.slotID ~= nil) or false
+        return false
+    end)
+
     return cooldowns
 end
 

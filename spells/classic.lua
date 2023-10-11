@@ -4,11 +4,22 @@ local _, ns = ...
 -- Classic
 ------------------------------------------------------------
 ns.BlackList = {
+    -- DRUID
+    [1126] = true,                                      -- Mark of the Wild (Rank 1)
+    [5232] = true,                                      -- Mark of the Wild (Rank 2)
+    [6756] = true,                                      -- Mark of the Wild (Rank 3)
+
+    [467] = true,                                      -- Thorns (Rank 1)
+    [782] = true,                                      -- Thorns (Rank 2)
+
     -- MAGE
-    [1459] = true,                                      -- Arcane Intellect
+    [1459] = true,                                      -- Arcane Intellect (Rankj 1)
+    [1460] = true,                                      -- Arcane Intellect (Rank 2)
 
     -- PRIEST
     [1243] = true,                                      -- Power Word: Fortitude (Rank 1)
+    [1244] = true,                                      -- Power Word: Fortitude (Rank 2)
+    [1245] = true,                                      -- Power Word: Fortitude (Rank 3)
 
     -- WARLOCK
     [687] = true,                                       -- Demon Skin
@@ -16,6 +27,8 @@ ns.BlackList = {
 
     -- Others
     [8091] = true,                                      -- Armor (Scroll fo Protection)
+    [8112] = true,                                      -- Spirit Magic (Scroll fo Protection)
+    [8113] = true,                                      -- Spirit Magic (Scroll fo Protection)
 }
 
 ns.Cooldowns = {
