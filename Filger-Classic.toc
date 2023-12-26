@@ -1,4 +1,4 @@
-## Interface: 11404
+## Interface: 11500
 ## Author: Luaerror
 ## Credits: Nils Ruesch, Shestak, Affli, Garagar, hidekki, FourOne, Tukz
 ## Version: 4.2
