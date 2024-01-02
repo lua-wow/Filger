@@ -49,6 +49,7 @@ ns.BlackList = {
 
     -- Costumes
     [8219] = true,                  -- Flip Out
+    [8222] = true,                  -- Yaaarrrr
     [16739] = true,                 -- Orb of Deception
     [58501] = true,                 -- Iron Boot Flask
     [61340] = true,                 -- Frenzyheart Brew

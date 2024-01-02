@@ -4,8 +4,7 @@
 ## Version: 4.2
 ## Title: |cffb3ff19Filger|r
 ## Notes: Minimal buff/debuff tracker
-## Website: https://github.com/PedroZC90/Filger/tree/master
-## IconTexture: Interface\Icons\Spell_priest_power_of_the_darkness
+## Website: https://github.com/pedroZC90/Filger
 ## RequiredDeps: Tukui
 ## SavedVariables: FilgerData
 ## X-Maintainer: pedrozc90
@@ -29,8 +28,5 @@ core\functions.lua
 core\commands.lua
 core\development.lua
 core\talents.lua
-
-## plugins
-plugins\tracer.lua
 
 Filger.lua

@@ -1,0 +1,32 @@
+name: Release
+on:
+    push:
+        tags:
+            - 'v*'
+jobs:
+    release:
+        runs-on: ubuntu-latest
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_FILE: "Filger.zip"
+        steps:
+          - name: Checkout
+            uses: actions/checkout@v4
+
+          - name: Build
+            run: make zip FILENAME=${{ env.RELEASE_FILE }}
+          
+          - name: Create Release
+            run: |
+              gh release create \
+                --repo ${{ github.repository }} \
+                --title ${{ github.ref_name }} \
+                --generate-notes \
+                ${{ github.ref_name }}
+
+          - name: Upload Zip File
+            run: |
+              gh release upload \
+                --clobber "${{ github.ref_name }}" \
+                --repo ${{ github.repository }} \
+                ${{ env.RELEASE_FILE }}

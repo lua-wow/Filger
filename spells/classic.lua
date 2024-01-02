@@ -29,6 +29,14 @@ ns.BlackList = {
     [8091] = true,                                      -- Armor (Scroll fo Protection)
     [8112] = true,                                      -- Spirit Magic (Scroll fo Protection)
     [8113] = true,                                      -- Spirit Magic (Scroll fo Protection)
+
+    --------------------------------------------------
+    -- Season of Discovery
+    --------------------------------------------------
+    [410935] = true,                                    -- Meditation on the Light
+    [417316] = true,                                    -- Meditation on the Loa
+    [418459] = true,                                    -- Meditation on Undeath
+    [419307] = true                                     -- Meditation on Elune
 }
 
 ns.Cooldowns = {

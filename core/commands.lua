@@ -10,7 +10,7 @@ local tinsert, tsort = table.insert, table.sort
 local strsplit = string.strsplit
 
 -- string formats
-local STRING_COLOR = "|cffb3ff19%s|r"   --"|cff00ff96%s|r"
+local STRING_COLOR = "|cffb3ff19%s|r"
 
 local AddOnCommands = {}
 
@@ -41,7 +41,6 @@ SlashCmdList["FILGER"] = function(cmd)
         print(STRING_COLOR:format("show:"), "Display Frames.")
         print(STRING_COLOR:format("hide:"), "Hide Frames.")
         print(STRING_COLOR:format("reset"), "Reset saved variables.")
-        print(STRING_COLOR:format("tracer"), "Start/Stop filger aura tracer.")
         print(" ")
     elseif (arg1 == "blacklist") then
         for spellID, check in pairs(ns.BlackList) do
