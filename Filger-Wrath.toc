@@ -1,7 +1,7 @@
 ## Interface: 30403
 ## Author: Luaerror
 ## Credits: Nils Ruesch, Shestak, Affli, Garagar, hidekki, FourOne, Tukz
-## Version: 4.3.0
+## Version: 4.3.1
 ## Title: |cffb3ff19Filger - Wrath|r
 ## Notes: Minimal buff/debuff tracker
 ## Website: https://github.com/pedroZC90/Filger

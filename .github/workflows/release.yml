@@ -13,7 +13,8 @@ jobs:
           - name: Checkout
             uses: actions/checkout@v4
             with:
-             submodules: true
+             submodules: recursive
+             token: ${{ secrets.GH_PAT }}
 
           - name: Build
             run: make zip FILENAME=${{ env.RELEASE_FILE }}

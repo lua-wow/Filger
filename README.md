@@ -17,7 +17,7 @@ It allows you to keep track of any buffs/debuffs of all units (player, target, f
 ## Configuration
 
 Currently, the addon configuration is done by editing directly the [config.lua](config/config.lua).
-So if you want to move the PLAYER_BUFF frame, you will need to set the coordinates (X, Y) in the lua file.
+So, for example, if you want to move the PLAYER_BUFF frame, you will need to set the coordinates (X, Y) in the lua file.
 
 ## License:
 
