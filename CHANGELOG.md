@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+-   Adding `LibStub` as git submodule
+-   Adding `CallbackHandler-1.0` as git submodule
+-   Adding `LibClassicDurations` as git submodule
+
 ## [4.3.0] - 2024-01-13
 
 ### Changed

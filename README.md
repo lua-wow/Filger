@@ -4,15 +4,21 @@ Filger is a minimal aura tracker addon for [World of Warcraft](https://worldofwa
 
 It allows you to keep track of any buffs/debuffs of all units (player, target, focus, etc.) and player's items/spells cooldown.
 
-<a href="https://i.imgur.com/58wcJx1.jpg"><img src="https://i.imgur.com/58wcJx1.jpg" alt="Filger" width="800px" border="1px solid #ddddd" /></a>
+<p align="center">
+    <img src="docs/screenshot.png" alt="Filger" title="Filger example" width="800" />
+</p>
 
 ## Dependencies
 
--   Classic 
-    -   CallbackHanlder-1.0
-    -   (LibStub)[https://legacy.curseforge.com/wow/addons/libstub]
-    -   (LibClassicDurations)[https://github.com/rgd87/LibClassicDurations.git]
+-   Required: `None`
+-   Optional:
+    -   [Tukui](https://github.com/tukui-org/Tukui)
+
+## Configuration
+
+Currently, the addon configuration is done by editing directly the [config.lua](config/config.lua).
+So if you want to move the PLAYER_BUFF frame, you will need to set the coordinates (X, Y) in the lua file.
 
 ## License:
 
-Please see [LICENSE](https://github.com/PedroZC90/Filger/blob/master/LICENSE) file.
+Please see [LICENSE](./LICENSE) file.
