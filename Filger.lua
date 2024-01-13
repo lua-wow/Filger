@@ -247,11 +247,10 @@ function Filger:PostUpdateAura(element, unit, aura, index, position, duration, e
     -- 1. dispel harmful effects from friendly target.
     -- 2. dispell beneficial effects from enemy target.
     local isDispellable = (not aura.casterIsPlayer) and IsDispelable(debuffType, aura.isPlayer, targetIsEnemy, isDebuff, spellID)
-    local isPlayerDebuff = (unit == "player") and isDebuff
 
     -- set border color by aura type, if it's dispelable.
-    local color = (isDebuff) and debuffColor[debuffType or "none"] or debuffColor[debuffType]
-    if (color and (isDispellable or isStealable or isPlayerDebuff)) then
+    local color = debuffColor[debuffType]
+    if (color and (isDispellable or isStealable)) then
         aura.Backdrop:SetBorderColor(unpack(color))
     else
         aura.Backdrop:SetBorderColor(unpack(BorderColor))

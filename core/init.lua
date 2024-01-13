@@ -38,9 +38,8 @@ ns.Filger.isDragonfligth = (Interface >= 100000 and Interface < 110000)
 -- Addon
 ns.Filger.Title = GetAddOnMetadata(addon, "Title")
 ns.Filger.Version = GetAddOnMetadata(addon, "Version")
-ns.Filger.VersionNumber = tonumber(ns.Filger.Version)
 ns.Filger.Description = GetAddOnMetadata(addon, "Notes")
-ns.Filger.WelcomeMessage = string.format("|cffb3ff19Filger %s|r - /filger help", ns.Filger.VersionNumber)
+ns.Filger.WelcomeMessage = string.format("|cffb3ff19Filger %s|r - /filger help", ns.Filger.Version)
 
 -- Character
 ns.Filger.MyName = UnitName("player")
