@@ -4,6 +4,9 @@ local _, ns = ...
 -- Retail
 ------------------------------------------------------------
 ns.BlackList = {
+    -- Evoker
+    [403295] = true,                -- Black Attunement
+
     -- Druid
     [1126] = true,                  -- Mark of the Wild
 

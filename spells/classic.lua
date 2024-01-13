@@ -36,7 +36,9 @@ ns.BlackList = {
     [410935] = true,                                    -- Meditation on the Light
     [417316] = true,                                    -- Meditation on the Loa
     [418459] = true,                                    -- Meditation on Undeath
-    [419307] = true                                     -- Meditation on Elune
+    [419307] = true,                                    -- Meditation on Elune
+    
+    [430947] = true,                                    -- Boon of Blackfathom (World Buff)
 }
 
 ns.Cooldowns = {
