@@ -5,7 +5,7 @@
 ## Title: |cffb3ff19Filger - TBC|r
 ## Notes: Minimal buff/debuff tracker
 ## Website: https://github.com/pedroZC90/Filger
-## RequiredDeps: Tukui
+## OptionalDeps: Tukui
 ## SavedVariables: FilgerData
 ## X-Maintainer: pedrozc90
 ## X-LuaUI-ProjectID: 1
@@ -25,6 +25,7 @@ config\config.lua
 
 ## core
 core\functions.lua
+core\api.lua
 core\commands.lua
 core\development.lua
 core\talents.lua

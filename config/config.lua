@@ -7,7 +7,6 @@ local Config = ns.Config
 local xOffset, yOffset = 200, 39
 
 Config["General"] = {
-
     ["ConfigMode"] = false,                         -- enables config mode for help on position frames.
 
     ["IconSize"] = 35,                              -- sets icons size.
@@ -19,6 +18,7 @@ Config["General"] = {
     ["ClassColor"] = true,                          -- sets status bar color by class.
 
     ["HideWellFed"] = true,                         -- enabled filter to hide well fed buff (too many spells with this name)
+    ["Gametoolip"] = true,                          -- enabled tooltips
 
     ["BackdropColor"] = { .05, .05, .05 },
     ["BorderColor"] = { .125, .125, .125 },

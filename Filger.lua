@@ -53,30 +53,26 @@ local BorderColor = Config["General"].BorderColor
 
 -- Tooltips
 local function onEnter(self)
-	if (not self:IsVisible()) then return end
+	if GameTooltip:IsForbidden() or (not self:IsVisible()) or (not Config.General.Gametoolip) then return end
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    if (self.rank ~= nil) then
-        GameTooltip:AddLine(self.name .. " (Rank " .. self.rank .. ")")
-    else
-	    GameTooltip:AddLine(self.name)
+    if self.auraInstanceID then
+        if self.isHarmful then
+            GameTooltip:SetUnitDebuffByAuraInstanceID(unit, self.auraInstanceID)
+        else
+            GameTooltip:SetUnitBuffByAuraInstanceID(unit, self.auraInstanceID)
+        end
+    elseif (self.index) then
+        GameTooltip:SetUnitAura(self.unit, self.index, self.filter)
     end
-    GameTooltip:AddLine(self.description)
-    GameTooltip:AddDoubleLine("SpellID:", self.spellID)
-    GameTooltip:AddDoubleLine("unit:", self.caster or "???")
-    if (self.caster) then
-        local name, _ = UnitName(self.caster)
-        GameTooltip:AddDoubleLine("caster:", name or "UNKNOWN")
-    end
-	GameTooltip:SetClampedToScreen(true)
-	GameTooltip:Show()
 end
 
 local function onLeave()
+    if GameTooltip:IsForbidden() then return end
 	GameTooltip:Hide()
 end
 
 local function onMouseDown(self)
-    print(self.spellID, " - ", self.name, self.debuffType)
+    Filger.Print("[" .. (self.isDebuff and "Debuff" or "Buff") .. "]", self.spellID, " - ", self.name, " - ", self.debuffType)
 end
 
 function Filger:SetPosition(element, from, to)
@@ -304,6 +300,8 @@ local function UpdateAura(element, unit, index, offset, filter, isDebuff, visibl
         debuffType = nil
     end
 
+    aura.index = index
+    aura.unit = unit
     aura.caster = caster
     aura.isPlayer = (caster == "player" or caster == "vehicle" or caster == "pet")
     aura.isBossDebuff = isBossDebuff
@@ -311,7 +309,7 @@ local function UpdateAura(element, unit, index, offset, filter, isDebuff, visibl
 
     aura.name = name
     aura.spellID = spellID
-    aura.debuffType = debuffType
+    aura.debuffType = debuffType or "none"
 
     aura.expiration = expiration or 0
     aura.duration = duration
@@ -574,6 +572,11 @@ function Filger:ADDON_LOADED(addon)
     if (addon ~= "Filger") then return end
     self.unit = "player"
     self.guid = UnitGUID(self.unit)
+
+    -- Filger stand alone
+    if (self.EnableAPI) then
+        self:EnableAPI()
+    end
 end
 
 function Filger:PLAYER_LOGIN()
@@ -644,7 +647,7 @@ function Filger:Spawn(index, data)
     do
         -- frame
         frame:CreateBackdrop()
-        frame.Backdrop:SetTemplate("Transparent", nil, "Triple")
+        frame.Backdrop:CreateBackdrop("Transparent", nil, "Triple")
         frame.Backdrop:Hide()
 
         -- name
