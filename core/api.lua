@@ -112,37 +112,69 @@ API.SetInside = function(self, Anchor, OffsetX, OffsetY)
 	self:SetPoint("BOTTOMRIGHT", Anchor, "BOTTOMRIGHT", -OffsetX, OffsetY)
 end
 
-API.CreateBackdrop = function(self, template)
-	local BackdropColorR, BackdropColorG, BackdropColorB, BackdropColorA = unpack(Config.General.BackdropColor)
-	local BorderColorR, BorderColorG, BorderColorB = unpack(Config.General.BorderColor)
-	local BackgroundAlpha = (template == "Transparent") and 0.75 or BackdropColorA or 1
-	local Texture = Config.Medias.Blank
+API.SetBorderColor = function(self, R, G, B, Alpha)
+    if self.BorderTop then
+		self.BorderTop:SetColorTexture(R, G, B, Alpha)
+	end
 
-	local Backdrop = {
-		bgFile = Texture,
-		edgeFile = Texture,
-		edgeSize = Scale(1),
-		insets = {
-			top = 0,
-			left = 0,
-			bottom = 0,
-			right = 0
-		}
-	}
+	if self.BorderBottom then
+		self.BorderBottom:SetColorTexture(R, G, B, Alpha)
+	end
+
+	if self.BorderRight then
+		self.BorderRight:SetColorTexture(R, G, B, Alpha)
+	end
+
+	if self.BorderLeft then
+		self.BorderLeft:SetColorTexture(R, G, B, Alpha)
+	end
+end
+
+API.CreateBackdrop = function(self, template)
+    if (self.Backdrop) then return end
 
 	self.Backdrop = CreateFrame("Frame", nil, self, "BackdropTemplate")
 	self.Backdrop:SetAllPoints()
-	-- self.Backdrop:SetOutside(self, 2, 2)
 	self.Backdrop:SetFrameLevel(self:GetFrameLevel())
-	self.Backdrop:SetBackdrop(Backdrop)
-	self.Backdrop:SetBackdropColor(BackdropColorR, BackdropColorG, BackdropColorB, BackgroundAlpha)
-	self.Backdrop:SetBackdropBorderColor(BorderColorR, BorderColorG, BorderColorB)
-end
 
-API.SetBorderColor = function(self, R, G, B, Alpha)
-    if (self.Backdrop) then
-        self.Backdrop:SetBackdropBorderColor(R, G, B, Alpha or 1)
-    end
+	local BorderR, BorderG, BorderB = unpack(Config.General.BorderColor)
+	local BackdropR, BackdropG, BackdropB, BackdropA = unpack(Config.General.BackdropColor)
+	local BackgroundAlpha = (template == "Transparent") and 0.75 or BackdropA or 1
+	local BorderSize = Scale(1)
+    local Texture = Config.Medias.Blank
+
+	self.Backdrop:SetBackdrop({ bgFile = Texture })
+	self.Backdrop:SetBackdropColor(BackdropR, BackdropG, BackdropB, BackgroundAlpha)
+
+	self.Backdrop.BorderTop = self.Backdrop:CreateTexture(nil, "BORDER", nil, 1)
+	self.Backdrop.BorderTop:SetSize(BorderSize, BorderSize)
+	self.Backdrop.BorderTop:SetPoint("TOPLEFT", self.Backdrop, "TOPLEFT", 0, 0)
+	self.Backdrop.BorderTop:SetPoint("TOPRIGHT", self.Backdrop, "TOPRIGHT", 0, 0)
+	self.Backdrop.BorderTop:SetSnapToPixelGrid(false)
+	self.Backdrop.BorderTop:SetTexelSnappingBias(0)
+
+	self.Backdrop.BorderBottom = self.Backdrop:CreateTexture(nil, "BORDER", nil, 1)
+	self.Backdrop.BorderBottom:SetSize(BorderSize, BorderSize)
+	self.Backdrop.BorderBottom:SetPoint("BOTTOMLEFT", self.Backdrop, "BOTTOMLEFT", 0, 0)
+	self.Backdrop.BorderBottom:SetPoint("BOTTOMRIGHT", self.Backdrop, "BOTTOMRIGHT", 0, 0)
+	self.Backdrop.BorderBottom:SetSnapToPixelGrid(false)
+	self.Backdrop.BorderBottom:SetTexelSnappingBias(0)
+
+	self.Backdrop.BorderLeft = self.Backdrop:CreateTexture(nil, "BORDER", nil, 1)
+	self.Backdrop.BorderLeft:SetSize(BorderSize, BorderSize)
+	self.Backdrop.BorderLeft:SetPoint("TOPLEFT", self.Backdrop, "TOPLEFT", 0, 0)
+	self.Backdrop.BorderLeft:SetPoint("BOTTOMLEFT", self.Backdrop, "BOTTOMLEFT", 0, 0)
+	self.Backdrop.BorderLeft:SetSnapToPixelGrid(false)
+	self.Backdrop.BorderLeft:SetTexelSnappingBias(0)
+
+	self.Backdrop.BorderRight = self.Backdrop:CreateTexture(nil, "BORDER", nil, 1)
+	self.Backdrop.BorderRight:SetSize(BorderSize, BorderSize)
+	self.Backdrop.BorderRight:SetPoint("TOPRIGHT", self.Backdrop, "TOPRIGHT", 0, 0)
+	self.Backdrop.BorderRight:SetPoint("BOTTOMRIGHT", self.Backdrop, "BOTTOMRIGHT", 0, 0)
+	self.Backdrop.BorderRight:SetSnapToPixelGrid(false)
+	self.Backdrop.BorderRight:SetTexelSnappingBias(0)
+
+	self.Backdrop:SetBorderColor(BorderR, BorderG, BorderB, BorderA)
 end
 
 function Filger:EnableAPI()

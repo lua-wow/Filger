@@ -78,6 +78,12 @@ ns.BlackList = {
     [269083] = true,                -- Enlisted
     [282559] = true,                -- Enlisted
 
+    -- Legion
+    [227723] = true,                -- Mana Diving Stone
+
+    -- Court of Stars
+    [213213] = true,                -- Masquerade
+
     -- Mythic
     [206151] = true,                -- Challenger's Burden
 
@@ -87,14 +93,12 @@ ns.BlackList = {
     [405264] = true,                -- Maruukai's Favor
     [405265] = true,                -- Valdrakken's Favor
 
-    --Zaralek Cavern
+    -- Zaralek Cavern
     [411060] = true,                -- New Niffen No-Sniffin' Tonic
 
-    -- Legion
-    [227723] = true,                -- Mana Diving Stone
-
-    -- Court of Stars
-    [213213] = true,                -- Masquerade
+    -- Dreamsourge
+    [419239] = true,                -- Dreaming Winds
+    [418656] = true,                -- Dreamsurge Magpies
 }
 
 -- Config.importBlackList(BlackList)

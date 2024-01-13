@@ -28,6 +28,7 @@ config\config.lua
 
 ## core
 core\functions.lua
+core\colors.lua
 core\api.lua
 core\commands.lua
 core\development.lua

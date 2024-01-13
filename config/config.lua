@@ -20,8 +20,8 @@ Config["General"] = {
     ["HideWellFed"] = true,                         -- enabled filter to hide well fed buff (too many spells with this name)
     ["Gametoolip"] = true,                          -- enabled tooltips
 
-    ["BackdropColor"] = { .05, .05, .05 },
-    ["BorderColor"] = { .125, .125, .125 },
+    ["BackdropColor"] = { .08, .08, .08 },
+    ["BorderColor"] = { .01, .01, .01 }
 }
 
 Config["Plugins"] = {

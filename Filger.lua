@@ -33,14 +33,7 @@ end
 -- player info
 local class = Filger.MyClass
 local classColor = RAID_CLASS_COLORS[class]
-
-local DebuffTypeColors = {
-    ["Curse"]   = { 0.60, 0.00, 1.00 },
-    ["Disease"] = { 0.60, 0.40, 0.00 },
-    ["Magic"]   = { 0.20, 0.60, 1.00 },
-    ["Poison"]  = { 0.00, 0.60, 0.00 },
-    ["Unknown"]  = { 0.80, 0.00, 0.00 }
-}
+local debuffColor = Filger.Colors
 
 -- import
 local tinsert, tremove, tsort, wipe = table.insert, table.remove, table.sort, table.wipe
@@ -254,10 +247,11 @@ function Filger:PostUpdateAura(element, unit, aura, index, position, duration, e
     -- 1. dispel harmful effects from friendly target.
     -- 2. dispell beneficial effects from enemy target.
     local isDispellable = (not aura.casterIsPlayer) and IsDispelable(debuffType, aura.isPlayer, targetIsEnemy, isDebuff, spellID)
+    local isPlayerDebuff = (unit == "player") and isDebuff
 
     -- set border color by aura type, if it's dispelable.
-    local color = DebuffTypeColors[debuffType]
-    if ((isDispellable or isStealable) and color) then
+    local color = (isDebuff) and debuffColor[debuffType or "none"] or debuffColor[debuffType]
+    if (color and (isDispellable or isStealable or isPlayerDebuff)) then
         aura.Backdrop:SetBorderColor(unpack(color))
     else
         aura.Backdrop:SetBorderColor(unpack(BorderColor))
