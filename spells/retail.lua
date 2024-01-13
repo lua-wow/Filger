@@ -73,6 +73,11 @@ ns.BlackList = {
 
     -- Gear
     [331462] = true,                -- Stinky
+    
+    -- Tabards
+    [93827] = true,                 -- Darkspear Champion
+    [94462] = true,                 -- Undercity Champion
+    [97341] = true,                 -- Guild Champion
 
     -- War Mode
     [269083] = true,                -- Enlisted
@@ -99,6 +104,10 @@ ns.BlackList = {
     -- Dreamsourge
     [419239] = true,                -- Dreaming Winds
     [418656] = true,                -- Dreamsurge Magpies
+
+    [426647] = true,                -- Best Friends with Pip
+    [426672] = true,                -- Best Friends with Urctos
+    [426676] = true,                -- Best Friends with Aerwynn
 }
 
 -- Config.importBlackList(BlackList)
