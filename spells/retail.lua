@@ -13,8 +13,9 @@ ns.BlackList = {
     -- Mage
     [1459] = true,                  -- Arcane Intellect
 
-    -- -- Monk
+    -- Monk
     [389684] = true,                -- Close to Heart
+    [389685] = true,                -- Generous Pour
 
     -- Priest
     [21562] = true,                 -- Power Word: Fortitude
@@ -108,6 +109,12 @@ ns.BlackList = {
     [426647] = true,                -- Best Friends with Pip
     [426672] = true,                -- Best Friends with Urctos
     [426676] = true,                -- Best Friends with Aerwynn
+    [419079] = true,                -- Dreamsurge Defenders
+    [419081] = true,                -- Dreamsurge Defenders
+
+    -- Raid
+    [426262] = true,                -- Loradar's Fiery Reverie
+    [415603] = true,                -- Encapsulated Destiny
 }
 
 -- Config.importBlackList(BlackList)
