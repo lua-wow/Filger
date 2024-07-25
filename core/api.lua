@@ -1,12 +1,28 @@
 local _, ns = ...
 local Filger = ns.Filger
-local Config = ns.Config
+local config = Filger.config
+local fonts = Filger.fonts
+local textures = Filger.textures
 
 -- blizzard
 local IsAddOnLoaded = _G.IsAddOnLoaded
 
 -- skip it if Tukui exists
-if IsAddOnLoaded("Tukui") then return end
+if IsAddOnLoaded("Tainted") then 
+	function Filger.SetBorderColor(frame, color)
+		if frame.Backdrop then
+			frame.Backdrop:SetBackdropBorderColor(color.r, color.g, color.b, color.a or 1)
+		end
+	end
+
+	return
+elseif IsAddOnLoaded("Tukui") then 
+	function Filger.SetBorderColor(frame, color)
+		frame:SetBorderColor(color.r, color.g, color.b, color.a or 1)
+	end
+
+	return
+end
 
 ---------------------------------------------------
 -- Functions
@@ -30,155 +46,88 @@ end
 ---------------------------------------------------
 local API = {}
 
-local Resolution = select(1, GetPhysicalScreenSize()).."x"..select(2, GetPhysicalScreenSize())
-local PixelPerfectScale = 768 / string.match(Resolution, "%d+x(%d+)")
 local Scale = function(size)
-	-- Little protection just in case
-	if size == "" then
-		size = 1
+	-- Ensure 'size' is a valid number, default to 1 if not
+	size = tonumber(size) or 1
+
+	-- Retrieve the UI scale value and ensure it is valid
+	-- Default to 1 if 'uiScale' is not a valid number
+	local uiScale = tonumber(GetCVar("uiScale"))
+	if not uiScale then
+		uiScale = 1
 	end
 
-	local Mult = PixelPerfectScale / GetCVar("uiScale")
-	local Value = Mult * math.floor(size / Mult + .5)
+	-- Calculate the scaling multiplier
+    local mult = Filger.pixelPerfectScale / uiScale
 
-	return Value
+	-- Return the scaled size, rounded to the nearest integer
+    return mult * math.floor(size / mult + 0.5)
 end
 
-API.Kill = function(self)
-    if (self.UnregisterAllEvents) then
-        self:UnregisterAllEvents()
-        self:SetParent()
-    else
-        self.Show = self.Hide
-    end
-    self:Hide()
-end
+API.SetOutside = function(self, anchor, xOffset, yOffset)
+	xOffset = xOffset and Scale(xOffset) or Scale(1)
+	yOffset = yOffset and Scale(yOffset) or Scale(1)
 
-API.StripTexts = function(self, Kill)
-	for i = 1, self:GetNumRegions() do
-		local Region = select(i, self:GetRegions())
-		if (Region and Region:GetObjectType() == "FontString") then
-			if (Kill and type(Kill) == "boolean") then
-				Region:Kill()
-			else
-				Region:SetText("")
-			end
-		end
-	end
-end
-
-API.StripTextures = function(self, Kill)
-	for i = 1, self:GetNumRegions() do
-		local Region = select(i, self:GetRegions())
-		if (Region and Region:GetObjectType() == "Texture") then
-			if (Kill and type(Kill) == "boolean") then
-				Region:Kill()
-			elseif (Region:GetDrawLayer() == Kill) then
-				Region:SetTexture(nil)
-			elseif (Kill and type(Kill) == "string" and Region:GetTexture() ~= Kill) then
-				Region:SetTexture(nil)
-			else
-				Region:SetTexture(nil)
-			end
-		end
-	end
-end
-
-API.SetOutside = function(self, Anchor, OffsetX, OffsetY)
-	OffsetX = OffsetX and Scale(OffsetX) or Scale(1)
-	OffsetY = OffsetY and Scale(OffsetY) or Scale(1)
-
-	Anchor = Anchor or self:GetParent()
+	anchor = anchor or self:GetParent()
 
 	if self:GetPoint() then
 		self:ClearAllPoints()
 	end
 
-	self:SetPoint("TOPLEFT", Anchor, "TOPLEFT", -OffsetX, OffsetY)
-	self:SetPoint("BOTTOMRIGHT", Anchor, "BOTTOMRIGHT", OffsetX, -OffsetY)
+	self:SetPoint("TOPLEFT", anchor, "TOPLEFT", -xOffset, yOffset)
+	self:SetPoint("BOTTOMRIGHT", anchor, "BOTTOMRIGHT", xOffset, -yOffset)
 end
 
-API.SetInside = function(self, Anchor, OffsetX, OffsetY)
-	OffsetX = OffsetX and Scale(OffsetX) or Scale(1)
-	OffsetY = OffsetY and Scale(OffsetY) or Scale(1)
+API.SetInside = function(self, anchor, xOffset, yOffset)
+	xOffset = xOffset and Scale(xOffset) or Scale(1)
+	yOffset = yOffset and Scale(yOffset) or Scale(1)
 
-	Anchor = Anchor or self:GetParent()
+	anchor = anchor or self:GetParent()
 
 	if self:GetPoint() then
 		self:ClearAllPoints()
 	end
 
-	self:SetPoint("TOPLEFT", Anchor, "TOPLEFT", OffsetX, -OffsetY)
-	self:SetPoint("BOTTOMRIGHT", Anchor, "BOTTOMRIGHT", -OffsetX, OffsetY)
-end
-
-API.SetBorderColor = function(self, R, G, B, Alpha)
-    if self.BorderTop then
-		self.BorderTop:SetColorTexture(R, G, B, Alpha)
-	end
-
-	if self.BorderBottom then
-		self.BorderBottom:SetColorTexture(R, G, B, Alpha)
-	end
-
-	if self.BorderRight then
-		self.BorderRight:SetColorTexture(R, G, B, Alpha)
-	end
-
-	if self.BorderLeft then
-		self.BorderLeft:SetColorTexture(R, G, B, Alpha)
-	end
+	self:SetPoint("TOPLEFT", anchor, "TOPLEFT", xOffset, -yOffset)
+	self:SetPoint("BOTTOMRIGHT", anchor, "BOTTOMRIGHT", -xOffset, yOffset)
 end
 
 API.CreateBackdrop = function(self, template)
-    if (self.Backdrop) then return end
+	if not self.Backdrop then
+		local backdropTexture = textures.blank
+		local backdropColor = config.general.backdrop.color
+		local backdropAlpha = (template == "transparent") and 0.70 or 1
+		
+		local borderTexture = textures.blank
+		local borderColor = config.general.border.color
 
-	self.Backdrop = CreateFrame("Frame", nil, self, "BackdropTemplate")
-	self.Backdrop:SetAllPoints()
-	self.Backdrop:SetFrameLevel(self:GetFrameLevel())
+		local inset = Scale(config.general.border.size or 1)
+		local backdrop = {
+			bgFile = backdropTexture
+		}
 
-	local BorderR, BorderG, BorderB = unpack(Config.General.BorderColor)
-	local BackdropR, BackdropG, BackdropB, BackdropA = unpack(Config.General.BackdropColor)
-	local BackgroundAlpha = (template == "Transparent") and 0.75 or BackdropA or 1
-	local BorderSize = Scale(1)
-    local Texture = Config.Medias.Blank
+		if (template ~= "solid") then
+			backdrop.edgeFile = borderTexture
+			backdrop.edgeSize = inset
+			backdrop.insets = { top = inset, left = inset, bottom = inset, right = inset }
+		end
+		
+		local level = self:GetFrameLevel() or 1
 
-	self.Backdrop:SetBackdrop({ bgFile = Texture })
-	self.Backdrop:SetBackdropColor(BackdropR, BackdropG, BackdropB, BackgroundAlpha)
-
-	self.Backdrop.BorderTop = self.Backdrop:CreateTexture(nil, "BORDER", nil, 1)
-	self.Backdrop.BorderTop:SetSize(BorderSize, BorderSize)
-	self.Backdrop.BorderTop:SetPoint("TOPLEFT", self.Backdrop, "TOPLEFT", 0, 0)
-	self.Backdrop.BorderTop:SetPoint("TOPRIGHT", self.Backdrop, "TOPRIGHT", 0, 0)
-	self.Backdrop.BorderTop:SetSnapToPixelGrid(false)
-	self.Backdrop.BorderTop:SetTexelSnappingBias(0)
-
-	self.Backdrop.BorderBottom = self.Backdrop:CreateTexture(nil, "BORDER", nil, 1)
-	self.Backdrop.BorderBottom:SetSize(BorderSize, BorderSize)
-	self.Backdrop.BorderBottom:SetPoint("BOTTOMLEFT", self.Backdrop, "BOTTOMLEFT", 0, 0)
-	self.Backdrop.BorderBottom:SetPoint("BOTTOMRIGHT", self.Backdrop, "BOTTOMRIGHT", 0, 0)
-	self.Backdrop.BorderBottom:SetSnapToPixelGrid(false)
-	self.Backdrop.BorderBottom:SetTexelSnappingBias(0)
-
-	self.Backdrop.BorderLeft = self.Backdrop:CreateTexture(nil, "BORDER", nil, 1)
-	self.Backdrop.BorderLeft:SetSize(BorderSize, BorderSize)
-	self.Backdrop.BorderLeft:SetPoint("TOPLEFT", self.Backdrop, "TOPLEFT", 0, 0)
-	self.Backdrop.BorderLeft:SetPoint("BOTTOMLEFT", self.Backdrop, "BOTTOMLEFT", 0, 0)
-	self.Backdrop.BorderLeft:SetSnapToPixelGrid(false)
-	self.Backdrop.BorderLeft:SetTexelSnappingBias(0)
-
-	self.Backdrop.BorderRight = self.Backdrop:CreateTexture(nil, "BORDER", nil, 1)
-	self.Backdrop.BorderRight:SetSize(BorderSize, BorderSize)
-	self.Backdrop.BorderRight:SetPoint("TOPRIGHT", self.Backdrop, "TOPRIGHT", 0, 0)
-	self.Backdrop.BorderRight:SetPoint("BOTTOMRIGHT", self.Backdrop, "BOTTOMRIGHT", 0, 0)
-	self.Backdrop.BorderRight:SetSnapToPixelGrid(false)
-	self.Backdrop.BorderRight:SetTexelSnappingBias(0)
-
-	self.Backdrop:SetBorderColor(BorderR, BorderG, BorderB, BorderA)
+		self.Backdrop = CreateFrame("Frame", nil, self, "BackdropTemplate")
+		self.Backdrop:SetPoint("TOPLEFT", -inset, inset)
+		self.Backdrop:SetPoint("BOTTOMRIGHT", inset, -inset)
+		self.Backdrop:SetFrameLevel(level - 1)
+		self.Backdrop:SetBackdrop(backdrop)
+		self.Backdrop:SetBackdropColor(backdropColor.r, backdropColor.g, backdropColor.b, backdropAlpha)
+		self.Backdrop:SetBackdropBorderColor(borderColor.r, borderColor.g, borderColor.b)
+	end
 end
 
-function Filger:EnableAPI()
-    -- Merge JasjeUI API with WOW API
+--------------------------------------------------
+-- Merge Filger API with WoW API
+--------------------------------------------------
+function Filger:MergeAPI()
     local AddAPI = function(obj)
         local mt = getmetatable(obj).__index
         for name, func in pairs(API) do
