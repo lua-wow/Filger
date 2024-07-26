@@ -1,0 +1,16 @@
+.git*
+.github*
+*.gitignore
+*.gitattributes
+*.gitmodules
+docs/*
+Makefile
+exclude.lst
+
+**/.git
+**/.gitignore
+**/.gitattributes
+**/.gitmodules
+**/.github/*
+**/.pkgmeta
+**/.luacheckrc
