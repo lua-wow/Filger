@@ -1,10 +1,10 @@
 [submodule "libs/LibStub"]
 	path = libs/LibStub
-	url = git@github.com:pedrozc90/LibStub.git
+	url = https://github.com/lua-wow/LibStub.git
 	branch = master
 [submodule "libs/CallbackHandler-1.0"]
 	path = libs/CallbackHandler-1.0
-	url = git@github.com:pedrozc90/CallbackHandler-1.0.git
+	url = https://github.com/lua-wow/CallbackHandler-1.0.git
 	branch = master
 [submodule "libs/LibClassicDurations"]
 	path = libs/LibClassicDurations
