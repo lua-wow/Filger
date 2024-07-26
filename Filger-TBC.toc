@@ -4,12 +4,12 @@
 ## Version: 4.3.1
 ## Title: |cffb3ff19Filger - TBC|r
 ## Notes: Minimal buff/debuff tracker
-## Website: https://github.com/pedroZC90/Filger
+## IconTexture: Interface\ICONS\Spell_Shadow_Shadowwordpain
 ## OptionalDeps: Tukui
 ## SavedVariables: FilgerData
-## X-Maintainer: pedrozc90
-## X-LuaUI-ProjectID: 1
-## X-LuaUI-ProjectFolders: Filger
+
+## X-Website: https://github.com/pedrozc90/Filger
+## X-Maintainer: Luaerror
 
 ## init
 core\init.lua
@@ -32,4 +32,3 @@ core\development.lua
 core\talents.lua
 
 Filger.lua
-
