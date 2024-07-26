@@ -1,0 +1,15 @@
+## Interface: 20504, 30403, 40400, 100207, 110000
+## Author: Luaerror
+## Credits: Nils Ruesch, Shestak, Affli, Garagar, hidekki, FourOne, Tukz
+## Version: 4.3.1
+## Title: |cffff8000Filger|r
+## Notes: Minimal buff/debuff tracker
+## IconTexture: Interface\ICONS\Spell_Shadow_Shadowwordpain
+## OptionalDeps: Tainted, Tukui
+## SavedVariables: FilgerData
+
+## X-Website: https://github.com/pedrozc    90/Filger
+## X-Maintainer: pedrozc90
+
+core\init.xml
+Filger.lua

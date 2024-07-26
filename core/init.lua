@@ -1,59 +1,51 @@
 local addon, ns = ...
-local LibStub = LibStub
 
-ns.Filger = CreateFrame("Frame", "Filger", UIParent)
-ns.Config = {}
-ns.SpellList = {}
-ns.BlackList = {}
-ns.Cooldowns = {}
+local frame = CreateFrame("Frame", "Filger", UIParent)
 
-function ns:unpack()
-	return self[1], self[2], self[3], self[4]
-end
+-- global
+_G[addon] = frame
 
--- Blizzard
-local GetAddOnMetadata = _G.GetAddOnMetadata
-local GetRealmName = _G.GetRealmName
-local UnitClass = _G.UnitClass
-local UnitName = _G.UnitName
-local UnitLevel = _G.UnitLevel
-local UnitRace = _G.UnitRace
-local UnitFactionGroup = _G.UnitFactionGroup
-local Interface = select(4, GetBuildInfo())
+-- blizzard
+local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or _G.GetAddOnMetadata
 
--- Interface
-ns.Filger.Interface = Interface
-ns.Filger.isRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
-ns.Filger.isClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
-ns.Filger.isTBC = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC) or (Interface >= 20000 and Interface < 30000)
-ns.Filger.isWotLK = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC) or (Interface >= 30000 and Interface < 40000)
-ns.Filger.isCataclysm = (Interface >= 40000 and Interface < 50000)
-ns.Filger.isMoP = (Interface >= 50000 and Interface < 60000)
-ns.Filger.isWoD = (Interface >= 60000 and Interface < 70000)
-ns.Filger.isLegion = (Interface >= 70000 and Interface < 80000)
-ns.Filger.isBFA = (Interface >= 80000 and Interface < 90000)
-ns.Filger.isShadowlands = (Interface >= 90000 and Interface < 100000)
-ns.Filger.isDragonfligth = (Interface >= 100000 and Interface < 110000)
+local windowed = Display_DisplayModeDropDown and Display_DisplayModeDropDown:windowedmode() or false
+local fullscreen = Display_DisplayModeDropDown and Display_DisplayModeDropDown:fullscreenmode() or false
+local physicalScreenWidth, physicalScreenHeight = GetPhysicalScreenSize()
 
--- Addon
-ns.Filger.Title = GetAddOnMetadata(addon, "Title")
-ns.Filger.Version = GetAddOnMetadata(addon, "Version")
-ns.Filger.Description = GetAddOnMetadata(addon, "Notes")
-ns.Filger.WelcomeMessage = string.format("|cffb3ff19Filger %s|r - /filger help", ns.Filger.Version)
+-- System
+frame.windowed = windowed
+frame.fullscreen = fullscreen
+frame.screenWidth = physicalScreenWidth
+frame.screenHeight = physicalScreenHeight
+frame.pixelPerfectScale = math.min(1, math.max(0.3, 768 / physicalScreenHeight))
 
--- Character
-ns.Filger.MyName = UnitName("player")
-ns.Filger.MyClass = select(2, UnitClass("player"))
-ns.Filger.MyLevel = UnitLevel("player")
-ns.Filger.MyFaction = select(2, UnitFactionGroup("player"))
-ns.Filger.MyRace = select(2, UnitRace("player"))
-ns.Filger.MyRealm = GetRealmName()
-ns.Filger.Dummy = function() end
+-- addon
+frame.title = GetAddOnMetadata(addon, "Title")
+frame.version = GetAddOnMetadata(addon, "Version")
+frame.description = GetAddOnMetadata(addon, "Notes")
+frame.WelcomeMessage = ("|cffff8000Filger %s|r - /filger help"):format(frame.version)
 
-if (ns.Filger.isClassic) then
+-- interface
+-- https://wowpedia.fandom.com/wiki/WOW_PROJECT_ID
+local interface = select(4, GetBuildInfo())
+frame.interface = interface
+frame.isRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
+frame.isClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
+frame.isBCC = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC)
+frame.isWotLK = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC)
+frame.isCataclysm = (WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC)
+
+-- player
+frame.name = UnitName("player")
+frame.class = select(2, UnitClass("player"))
+
+if (frame.isClassic) then
+	local LibStub = _G.LibStub
 	local LibClassicDurations = LibStub("LibClassicDurations", true)
 	if (LibClassicDurations) then
-		LibClassicDurations:Register("Filger")
-		ns.Filger.LibClassicDurations = LibClassicDurations
+		LibClassicDurations:Register(addon)
+		frame.LibClassicDurations = LibClassicDurations
 	end
 end
+
+ns.Filger = frame
