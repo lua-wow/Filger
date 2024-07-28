@@ -39,7 +39,6 @@ local import = function(source, dest)
     end
 end
 
-
 --------------------------------------------------
 -- Black List
 --------------------------------------------------
@@ -257,14 +256,18 @@ if interface >= 100000 then
         [415603] = true,                -- Encapsulated Destiny
 
         -- Dreamsourge
-        [419239] = true,                -- Dreaming Winds
+        [415275] = true,                -- Dreamsurge Hibernation
+        [416101] = true,                -- Dreamsurge Dreamfall
+        [418652] = true,                -- Dreamsurge Wrathbloom
         [418656] = true,                -- Dreamsurge Magpies
+        [418810] = true,                -- Dreamsurge Lone Wolves
+        [418813] = true,                -- Self Sufficient
+        [419079] = true,                -- Dreamsurge Defenders
+        [419081] = true,                -- Dreamsurge Defenders
+        [419239] = true,                -- Dreaming Winds
         [426647] = true,                -- Best Friends with Pip
         [426672] = true,                -- Best Friends with Urctos
         [426676] = true,                -- Best Friends with Aerwynn
-        [419079] = true,                -- Dreamsurge Defenders
-        [419081] = true,                -- Dreamsurge Defenders
-
         [430666] = true,                -- Sign of Awakened Storms
         [430668] = true,                -- Sign of Awakened Embers
         [430669] = true,                -- Sign of Awakened Dreams

@@ -1,59 +1,35 @@
 local _, ns = ...
 local Filger = ns.Filger
-local Config = ns.Config
 
 ------------------------------------------------------------
--- Commands
+-- Slash Commands
 ------------------------------------------------------------
--- imports
-local tinsert, tsort = table.insert, table.sort
-local strsplit = string.strsplit
-
--- string formats
-local STRING_COLOR = "|cffb3ff19%s|r"
-
-local AddOnCommands = {}
-
-local function CmdSplit(cmd)
-    if (cmd:find("%s")) then
-        return strsplit(" ", cmd)
-    end
-    return cmd
-end
+local commands = {}
 
 SLASH_FILGER1 = "/filger"
 SlashCmdList["FILGER"] = function(cmd)
-    local arg1, arg2 = CmdSplit(cmd)
-
-    if (arg1 == "show") then
-        for index, frame in ipairs(Filger) do
-            frame.Backdrop:Show()
-            frame.text:Show()
-        end
-    elseif (arg1 == "hide") then
-        for index, frame in ipairs(Filger) do
-            frame.Backdrop:Hide()
-            frame.text:Hide()
-        end
-    elseif (arg1 == "") or (arg1 == "help") then
-        print(" ")
-        print(STRING_COLOR:format("Filger Commands:"))
-        print(STRING_COLOR:format("show:"), "Display Frames.")
-        print(STRING_COLOR:format("hide:"), "Hide Frames.")
-        print(STRING_COLOR:format("reset"), "Reset saved variables.")
-        print(" ")
-    elseif (arg1 == "blacklist") then
-        for spellID, check in pairs(ns.BlackList) do
-            if (type(spellID) == "number") then
-                local name = GetSpellInfo(spellID)
-                Filger.Print("blacklist spell (" .. spellID .. ") = " .. name)
-            else
-                Filger.Print("blacklist spell (???) - " .. spellID)
-            end
-        end
-    elseif (AddOnCommands[arg1]) then
-        AddOnCommands[arg1](arg2)
+    local msg = cmd:gsub("^ +", "")
+    local command, arg = string.split(" ", msg, 2)
+    arg = arg and arg:gsub(" ", "")
+    
+    if commands[command] then
+        commands[command].func(arg)
     end
 end
 
-Filger.AddOnCommands = AddOnCommands
+function Filger:AddCommand(command, handler, description)
+    commands[command] = {
+        func = handler,
+        description = description
+    }
+end
+
+local help = function()
+    for cmd, v in next, commands do
+        if (v.description) then
+            print(Filger.title, "|cffff8000" .. cmd .. "|r", "-", v.description)
+        end
+    end
+end
+
+Filger:AddCommand("help", help)

@@ -10,5 +10,4 @@
     <Script file="api.lua"/>
     <Script file="commands.lua"/>
     <Script file="development.lua"/>
-    <Script file="talents.lua"/>
 </Ui>

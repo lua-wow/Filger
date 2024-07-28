@@ -37,3 +37,39 @@ function Filger.FormatTime(s)
 
 	return format("%.1f", v)
 end
+
+function Filger.GetSpellInfo(spellID)
+	if C_Spell then
+		return C_Spell.GetSpellInfo(spellID)
+	else
+		local name, rank, icon, castTime, minRange, maxRange, spellID, originalIcon = _G.GetSpellInfo(spellID)
+		if name then
+			return {
+				name = name,
+				iconID = icon,
+				originalIconID = originalIcon,
+				castTime = castTime,
+				minRange = minRange,
+				maxRange = maxRange,
+				spellID = spellID,
+				rank = rank
+			}
+		end
+	end
+end
+
+function Filger.GetSpellCooldown(spellID)
+	if C_Spell then
+		return C_Spell.GetSpellCooldown(spellID)
+	else
+		local start, duration, enabled, modRate = _G.GetSpellCooldown(spellID)
+		if name then
+			return {
+				startTime = startTime,
+				duration = duration,
+				isEnabled = enabled,
+				modRate = modRate
+			}
+		end
+	end
+end

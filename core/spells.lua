@@ -22,7 +22,7 @@ local import = function(source, dest)
     end
 end
 
-local CreateSpellPriority = function(priority)
+function Filger:CreateSpellPriority(priority)
     if not tonumber(priority) then
         priority = 0
     end
@@ -114,45 +114,45 @@ end
 if Filger.isRetail then
     local data = {
         ["DRUID"] = {
-            [22812] = CreateSpellPriority(2),       -- Barkskin
+            [22812] = Filger:CreateSpellPriority(2),       -- Barkskin
 
             -- Balance
-            [48517] = CreateSpellPriority(5),       -- Elipse (Solar)
-            [48518] = CreateSpellPriority(5),       -- Elipse (Lunar)
-            [191034] = CreateSpellPriority(2),      -- Starfall
+            [48517] = Filger:CreateSpellPriority(5),       -- Elipse (Solar)
+            [48518] = Filger:CreateSpellPriority(5),       -- Elipse (Lunar)
+            [191034] = Filger:CreateSpellPriority(2),      -- Starfall
         },
         ["MONK"] = {
             -- Brewmaster
-            [120954] = CreateSpellPriority(1),      -- Fortifying Brew
-            [122278] = CreateSpellPriority(1),      -- Dampen Harm
-            [122283] = CreateSpellPriority(1),      -- Diffuse Magic
-            [322507] = CreateSpellPriority(3),      -- Celestial Brew
-            [325092] = CreateSpellPriority(10),     -- Purified Chi
+            [120954] = Filger:CreateSpellPriority(1),      -- Fortifying Brew
+            [122278] = Filger:CreateSpellPriority(1),      -- Dampen Harm
+            [122783] = Filger:CreateSpellPriority(1),      -- Diffuse Magic
+            [322507] = Filger:CreateSpellPriority(3),      -- Celestial Brew
+            [325092] = Filger:CreateSpellPriority(10),     -- Purified Chi
         },
         ["PALADIN"] = {
             -- Holy
-            [216331] = CreateSpellPriority(1),       -- Avenging Crusader
-            [388007] = CreateSpellPriority(1),       -- Blessing of Summer
-            [388010] = CreateSpellPriority(1),       -- Blessing of Autumn
-            [388011] = CreateSpellPriority(1),       -- Blessing of Winter
-            [388013] = CreateSpellPriority(1),       -- Blessing of Spring
-            [414204] = CreateSpellPriority(1),       -- Rising Sunlight
-            [414273] = CreateSpellPriority(1),       -- Hand of Divinity
+            [216331] = Filger:CreateSpellPriority(1),       -- Avenging Crusader
+            [388007] = Filger:CreateSpellPriority(1),       -- Blessing of Summer
+            [388010] = Filger:CreateSpellPriority(1),       -- Blessing of Autumn
+            [388011] = Filger:CreateSpellPriority(1),       -- Blessing of Winter
+            [388013] = Filger:CreateSpellPriority(1),       -- Blessing of Spring
+            [414204] = Filger:CreateSpellPriority(1),       -- Rising Sunlight
+            [414273] = Filger:CreateSpellPriority(1),       -- Hand of Divinity
         },
         ["PRIEST"] = {
             -- Talent
-            [10060] = CreateSpellPriority(3),       -- Power Infusion
+            [10060] = Filger:CreateSpellPriority(3),       -- Power Infusion
 
             -- Discipline
-            [198069] = CreateSpellPriority(3),      -- Power of the Dark Side
-            [322105] = CreateSpellPriority(3),      -- Shadow Covenant
+            [198069] = Filger:CreateSpellPriority(3),      -- Power of the Dark Side
+            [322105] = Filger:CreateSpellPriority(3),      -- Shadow Covenant
 
             -- Holy
-            [200183] = CreateSpellPriority(3),      -- Apotheosis
+            [200183] = Filger:CreateSpellPriority(3),      -- Apotheosis
             
             -- Shadow
-            [47585] = CreateSpellPriority(1),       -- Dispersion
-            [194249] = CreateSpellPriority(8),      -- Voidform
+            [47585] = Filger:CreateSpellPriority(1),       -- Dispersion
+            [194249] = Filger:CreateSpellPriority(8),      -- Voidform
         }
     }
     import(data, spells)

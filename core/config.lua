@@ -53,7 +53,12 @@ Filger.config = {
             spacing = spacing,
             initialAnchor = "BOTTOMRIGHT",
             ["growth-x"] = "LEFT",
-            ["growth-y"] = "DOWN"
+            ["growth-y"] = "DOWN",
+            spells = {
+                [124275] = { enabled = true, priority = 3 },    -- Light Stagger
+                [124274] = { enabled = true, priority = 3 },    -- Moderate Stagger
+                [124273] = { enabled = true, priority = 3 }     -- Heavy Stagger
+            }
         },
         ["PLAYER_AURAS"] = {
             enabled = true,
@@ -69,7 +74,7 @@ Filger.config = {
             spells = spells[class]
         },
         ["PLAYER_BUFFS"] = {
-            enabled = false,
+            enabled = true,
             unit = "player",
             filter = "HELPFUL",
             caster = "all",
@@ -97,7 +102,10 @@ Filger.config = {
             ["growth-x"] = "RIGHT",
             ["growth-y"] = "DOWN",
             FilterAura = function(element, unit, data)
-                return data.isPlayerAura
+                if UnitCanAttack(unit, "player") then
+                    return data.isPlayerAura
+                end
+                return not data.isPlayerAura
             end,
             SortAuras = function(a, b)
                 if (a.expirationTime ~= b.expirationTime) then
@@ -112,7 +120,7 @@ Filger.config = {
             end
         },
         ["TARGET_AURAS"] = {
-            enabled = false,
+            enabled = true,
             unit = "target",
             filter = "HELPFUL",
             anchor = { "LEFT", UIParent, "CENTER", xOffset, 0 },
@@ -124,7 +132,7 @@ Filger.config = {
             ["growth-y"] = "DOWN"
         },
         ["FOCUS_DEBUFFS"] = {
-            enabled = false,
+            enabled = true,
             unit = "focus",
             filter = "HARMFUL",
             anchor = { "LEFT", UIParent, "CENTER", xOffset, -yOffset },
@@ -144,13 +152,13 @@ Filger.config = {
             filter = "HARMFUL",
             anchor = { "CENTER", UIParent, "CENTER", 0, 160 },
             limit = 1,
-            size = (2 * size),
+            size = math.floor(1.5 * size),
             spacing = spacing,
             initialAnchor = "BOTTOMLEFT",
             ["growth-x"] = "RIGHT",
             ["growth-y"] = "DOWN",
             FilterAura = function(element, unit, data)
-                return data.isBossAura or (data.sourceUnit == nil) or not data.isFromPlayerOrPlayerPet
+                return data.isBossAura or (data.sourceUnit == nil) -- or not data.isFromPlayerOrPlayerPet
             end
         },
         ["PLAYER_COOLDOWNS"] = {

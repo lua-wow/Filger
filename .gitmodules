@@ -10,3 +10,7 @@
 	path = libs/LibClassicDurations
 	url = https://github.com/rgd87/LibClassicDurations.git
 	branch = master
+[submodule "libs/LibDispel"]
+	path = libs/LibDispel
+	url = https://github.com/lua-wow/LibDispel.git
+	branch = master

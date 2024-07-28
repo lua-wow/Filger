@@ -416,144 +416,144 @@ if Filger.isDF then
     local data = {
         ["DRUID"] = {
             -- General
-            CreateSpellCooldown(22812),        -- Barkskin
+            CreateSpellCooldown(22812),         -- Barkskin
 
             -- Guardian
-            CreateSpellCooldown(50334),        -- Berserke
-            CreateSpellCooldown(61336),        -- Survival Instincts
+            CreateSpellCooldown(50334),         -- Berserke
+            CreateSpellCooldown(61336),         -- Survival Instincts
         },
         ["MAGE"] = {
             -- Talents
-            CreateSpellCooldown(45438),        -- Ice Block
+            CreateSpellCooldown(45438),         -- Ice Block
         },
         ["MONK"] = {
             -- Talents
-            CreateSpellCooldown(115313),       -- Summon Jade Serpent Statue
-            CreateSpellCooldown(115315),       -- Summon Bloack Ox Statue
-            CreateSpellCooldown(116841),       -- Tiger Lust
-            CreateSpellCooldown(116844),       -- Ring of Peace
-            CreateSpellCooldown(388686),       -- Summon White Tiger Statue
-            CreateSpellCooldown(322101, false),      -- Expel Harm
-            CreateSpellCooldown(322109),       -- Touch of Death
+            CreateSpellCooldown(115313),        -- Summon Jade Serpent Statue
+            CreateSpellCooldown(115315),        -- Summon Bloack Ox Statue
+            CreateSpellCooldown(116841),        -- Tiger Lust
+            CreateSpellCooldown(116844),        -- Ring of Peace
+            CreateSpellCooldown(388686),        -- Summon White Tiger Statue
+            CreateSpellCooldown(322101, false), -- Expel Harm
+            CreateSpellCooldown(322109),        -- Touch of Death
 
             -- Mistweaver
-            CreateSpellCooldown(115310),       -- Revival
-            CreateSpellCooldown(116849),       -- Life Cocoon
-            CreateSpellCooldown(116680),       -- Thunder Focus Tea
-            CreateSpellCooldown(191837),       -- Essence Font
-            CreateSpellCooldown(197908),       -- Mana Tea
-            CreateSpellCooldown(325197),       -- Invoke Chi-ji, The Red Crane
-            CreateSpellCooldown(388193),       -- Faeline Stomp
-            CreateSpellCooldown(388615),       -- Restoral
+            CreateSpellCooldown(115310),        -- Revival
+            CreateSpellCooldown(116849),        -- Life Cocoon
+            CreateSpellCooldown(116680),        -- Thunder Focus Tea
+            CreateSpellCooldown(191837),        -- Essence Font
+            CreateSpellCooldown(197908),        -- Mana Tea
+            CreateSpellCooldown(325197),        -- Invoke Chi-ji, The Red Crane
+            CreateSpellCooldown(388193),        -- Faeline Stomp
+            CreateSpellCooldown(388615),        -- Restoral
 
             -- Brewmaster
-            CreateSpellCooldown(115203),       -- Fortifying Brew
-            CreateSpellCooldown(122278),       -- Dumpen Harm
-            CreateSpellCooldown(122783),       -- Diffuse Magic
-            CreateSpellCooldown(119582),       -- Purifiying Brew
-            CreateSpellCooldown(132578),       -- Invoke Niuzao, the Black Ox
-            CreateSpellCooldown(322507),       -- Celestial Brew
-            CreateSpellCooldown(324312),       -- Clash
-            CreateSpellCooldown(325153),       -- Exploding Keg
-            CreateSpellCooldown(386276),       -- Bonedust Brew
-            CreateSpellCooldown(387184),       -- Weapons of Order
+            CreateSpellCooldown(115203),        -- Fortifying Brew
+            CreateSpellCooldown(122278),        -- Dumpen Harm
+            CreateSpellCooldown(122783),        -- Diffuse Magic
+            CreateSpellCooldown(119582),        -- Purifiying Brew
+            CreateSpellCooldown(132578),        -- Invoke Niuzao, the Black Ox
+            CreateSpellCooldown(322507),        -- Celestial Brew
+            CreateSpellCooldown(324312),        -- Clash
+            CreateSpellCooldown(325153),        -- Exploding Keg
+            CreateSpellCooldown(386276),        -- Bonedust Brew
+            CreateSpellCooldown(387184),        -- Weapons of Order
         },
         ["PALADIN"] = {
-            CreateSpellCooldown(853),          -- Hammer of Justice
-            CreateSpellCooldown(391054),       -- Intercession
+            CreateSpellCooldown(853),           -- Hammer of Justice
+            CreateSpellCooldown(391054),        -- Intercession
 
             -- Talents
-            CreateSpellCooldown(498),          -- Divine Protection
-            CreateSpellCooldown(642),          -- Divine Shield
-            CreateSpellCooldown(633),          -- Lay on Hands
-            CreateSpellCooldown(1022),         -- Blessing of Protection
-            CreateSpellCooldown(1044),         -- Blessing of Freedom
-            CreateSpellCooldown(6940),         -- Blessing of Sacrifice
-            CreateSpellCooldown(96231),        -- Rebuke
-            CreateSpellCooldown(105809),       -- Holy Avenger
-            CreateSpellCooldown(190784),       -- Divine Steed
-            CreateSpellCooldown(389539),       -- Sanctified Wrath
+            CreateSpellCooldown(498),           -- Divine Protection
+            CreateSpellCooldown(642),           -- Divine Shield
+            CreateSpellCooldown(633),           -- Lay on Hands
+            CreateSpellCooldown(1022),          -- Blessing of Protection
+            CreateSpellCooldown(1044),          -- Blessing of Freedom
+            CreateSpellCooldown(6940),          -- Blessing of Sacrifice
+            CreateSpellCooldown(96231),         -- Rebuke
+            CreateSpellCooldown(105809),        -- Holy Avenger
+            CreateSpellCooldown(190784),        -- Divine Steed
+            CreateSpellCooldown(389539),        -- Sanctified Wrath
 
             -- Protection
-            CreateSpellCooldown(31850),        -- Ardent Defender
-            CreateSpellCooldown(31884),        -- Avenging Wrath: Might
-            CreateSpellCooldown(86659),        -- Guardian of Ancient Kings
-            CreateSpellCooldown(204018),       -- Blessing of Spellwarding
-            CreateSpellCooldown(327193),       -- Moment of Glory
-            CreateSpellCooldown(375576),       -- Divine Toll
-            CreateSpellCooldown(378974),       -- Bastion of Light
-            CreateSpellCooldown(389539),       -- Sentinel
-            CreateSpellCooldown(387174),       -- Eye of Tyr
+            CreateSpellCooldown(31850),         -- Ardent Defender
+            CreateSpellCooldown(31884),         -- Avenging Wrath: Might
+            CreateSpellCooldown(86659),         -- Guardian of Ancient Kings
+            CreateSpellCooldown(204018),        -- Blessing of Spellwarding
+            CreateSpellCooldown(327193),        -- Moment of Glory
+            CreateSpellCooldown(375576),        -- Divine Toll
+            CreateSpellCooldown(378974),        -- Bastion of Light
+            CreateSpellCooldown(389539),        -- Sentinel
+            CreateSpellCooldown(387174),        -- Eye of Tyr
         },
         ["PRIEST"] = {
             -- Talents
-            CreateSpellCooldown(10060),        -- Power Infusion
-            CreateSpellCooldown(19236),        -- Desperate Prayer
-            CreateSpellCooldown(34433),        -- Shadowfiendn
-            CreateSpellCooldown(73325),        -- Leap of Faith
-            CreateSpellCooldown(373481),       -- Power Word: Life
+            CreateSpellCooldown(10060),         -- Power Infusion
+            CreateSpellCooldown(19236),         -- Desperate Prayer
+            CreateSpellCooldown(34433),         -- Shadowfiendn
+            CreateSpellCooldown(73325),         -- Leap of Faith
+            CreateSpellCooldown(373481),        -- Power Word: Life
 
             -- Disciplie
-            CreateSpellCooldown(33206),        -- Pain Suppression
-            CreateSpellCooldown(47536),        -- Rapture
-            CreateSpellCooldown(62618),        -- Power Word: Barrier
-            CreateSpellCooldown(109964),       -- Spirit Shell
-            CreateSpellCooldown(120517),       -- Halo
-            CreateSpellCooldown(194509),       -- Power Word: Radiance
-            CreateSpellCooldown(246287),       -- Evangelism
+            CreateSpellCooldown(33206),         -- Pain Suppression
+            CreateSpellCooldown(47536),         -- Rapture
+            CreateSpellCooldown(62618),         -- Power Word: Barrier
+            CreateSpellCooldown(109964),        -- Spirit Shell
+            CreateSpellCooldown(120517),        -- Halo
+            CreateSpellCooldown(194509),        -- Power Word: Radiance
+            CreateSpellCooldown(246287),        -- Evangelism
 
             -- Holy
-            CreateSpellCooldown(2050),         -- Holy Word: Serenity
-            CreateSpellCooldown(64901),        -- Symbol of Hope
-            CreateSpellCooldown(34861),        -- Holy Word: Sanctify
-            CreateSpellCooldown(33076),        -- Prayer of Mending
-            CreateSpellCooldown(47788),        -- Guardian Spirit
-            CreateSpellCooldown(64843),        -- Divine Hymn
-            CreateSpellCooldown(200183),       -- Apotheosis
-            CreateSpellCooldown(204883, false),      -- Circle of Healing
+            CreateSpellCooldown(2050),          -- Holy Word: Serenity
+            CreateSpellCooldown(64901),         -- Symbol of Hope
+            CreateSpellCooldown(34861),         -- Holy Word: Sanctify
+            CreateSpellCooldown(33076),         -- Prayer of Mending
+            CreateSpellCooldown(47788),         -- Guardian Spirit
+            CreateSpellCooldown(64843),         -- Divine Hymn
+            CreateSpellCooldown(200183),        -- Apotheosis
+            CreateSpellCooldown(204883, false), -- Circle of Healing
 
             -- Shadow
-            CreateSpellCooldown(15286),        -- Vampiric Embrace
-            CreateSpellCooldown(15487),        -- Silence
-            CreateSpellCooldown(47585),        -- Dispersion
-            CreateSpellCooldown(108920),       -- Void Tendrils
-            CreateSpellCooldown(108968),       -- Void Shift
-            CreateSpellCooldown(200174),       -- Mindbender
-            CreateSpellCooldown(228260),       -- Void Eruption
-            CreateSpellCooldown(205385),       -- Shadow Crash
-            CreateSpellCooldown(263165),       -- Void Torrent
-            CreateSpellCooldown(120644),       -- Halo
-            CreateSpellCooldown(205369),       -- Mind Bomb
-            CreateSpellCooldown(375901),       -- Mindgames
+            CreateSpellCooldown(15286),         -- Vampiric Embrace
+            CreateSpellCooldown(15487),         -- Silence
+            CreateSpellCooldown(47585),         -- Dispersion
+            CreateSpellCooldown(108920),        -- Void Tendrils
+            CreateSpellCooldown(108968),        -- Void Shift
+            CreateSpellCooldown(200174),        -- Mindbender
+            CreateSpellCooldown(228260),        -- Void Eruption
+            CreateSpellCooldown(205385),        -- Shadow Crash
+            CreateSpellCooldown(263165),        -- Void Torrent
+            CreateSpellCooldown(120644),        -- Halo
+            CreateSpellCooldown(205369),        -- Mind Bomb
+            CreateSpellCooldown(375901),        -- Mindgames
         },
         ["WARRIOR"] = {
             -- Talents
-            CreateSpellCooldown(1161),         -- Challenging Shout
-            CreateSpellCooldown(2565, false),        -- Shield Block
-            CreateSpellCooldown(5246),         -- Intimidating Shout
-            CreateSpellCooldown(3411),         -- Intervene
-            CreateSpellCooldown(6544),         -- Heroic Leap
-            CreateSpellCooldown(18499),        -- Berserker Rage
-            CreateSpellCooldown(46968),        -- Shockwave
-            CreateSpellCooldown(97462),        -- Rallying Cry
-            CreateSpellCooldown(376079),       -- Spear of Bastion
-            CreateSpellCooldown(383762),       -- Bitter Immunity
-            CreateSpellCooldown(384318),       -- Thunderous Roar
-            CreateSpellCooldown(384100),       -- Berserker Shout
-            CreateSpellCooldown(401150),       -- Avatar
+            CreateSpellCooldown(1161),          -- Challenging Shout
+            CreateSpellCooldown(2565, false),   -- Shield Block
+            CreateSpellCooldown(5246),          -- Intimidating Shout
+            CreateSpellCooldown(3411),          -- Intervene
+            CreateSpellCooldown(6544),          -- Heroic Leap
+            CreateSpellCooldown(18499),         -- Berserker Rage
+            CreateSpellCooldown(46968),         -- Shockwave
+            CreateSpellCooldown(97462),         -- Rallying Cry
+            CreateSpellCooldown(376079),        -- Spear of Bastion
+            CreateSpellCooldown(383762),        -- Bitter Immunity
+            CreateSpellCooldown(384318),        -- Thunderous Roar
+            CreateSpellCooldown(384100),        -- Berserker Shout
+            CreateSpellCooldown(401150),        -- Avatar
 
             -- Protection
-            CreateSpellCooldown(871),          -- Shield Wall
-            CreateSpellCooldown(1160),         -- Demoralizing Shout
-            CreateSpellCooldown(12975),        -- Last Stand
-            CreateSpellCooldown(23920),        -- Spell Reflection
-            CreateSpellCooldown(107570),       -- Storm Bolt
-            CreateSpellCooldown(190456),       -- Ignore Pain
-            CreateSpellCooldown(316834),       -- Shield Wall
-            CreateSpellCooldown(386071),       -- Disrupting Shout
-            CreateSpellCooldown(392966),       -- Spell Block
-            CreateSpellCooldown(228920),       -- Ravager
-            CreateSpellCooldown(385952),       -- Shield Charge
+            CreateSpellCooldown(871),           -- Shield Wall
+            CreateSpellCooldown(1160),          -- Demoralizing Shout
+            CreateSpellCooldown(12975),         -- Last Stand
+            CreateSpellCooldown(23920),         -- Spell Reflection
+            CreateSpellCooldown(107570),        -- Storm Bolt
+            CreateSpellCooldown(190456),        -- Ignore Pain
+            CreateSpellCooldown(316834),        -- Shield Wall
+            CreateSpellCooldown(386071),        -- Disrupting Shout
+            CreateSpellCooldown(392966),        -- Spell Block
+            CreateSpellCooldown(228920),        -- Ravager
+            CreateSpellCooldown(385952),        -- Shield Charge
         }
     }
 
@@ -564,179 +564,179 @@ if Filger.isRetail then
     local data = {
         ["DRUID"] = {
             -- General
-            CreateSpellCooldown(20484),        -- Rebirth
-            CreateSpellCooldown(22812),        -- Barkskin
+            CreateSpellCooldown(20484),         -- Rebirth
+            CreateSpellCooldown(22812),         -- Barkskin
             
             -- Talents
-            CreateSpellCooldown(29166),        -- Innervate
-            CreateSpellCooldown(102359),       -- Mass Entanglement
-            CreateSpellCooldown(102793),       -- Ursol's Vortex
-            CreateSpellCooldown(108238),       -- Renewal
-            CreateSpellCooldown(124974),       -- Mature's Vigil
+            CreateSpellCooldown(29166),         -- Innervate
+            CreateSpellCooldown(102359),        -- Mass Entanglement
+            CreateSpellCooldown(102793),        -- Ursol's Vortex
+            CreateSpellCooldown(108238),        -- Renewal
+            CreateSpellCooldown(124974),        -- Mature's Vigil
 
             -- All
-            CreateSpellCooldown(391528),       -- Convoke the Spirits
+            CreateSpellCooldown(391528),        -- Convoke the Spirits
 
             -- Balance
-            CreateSpellCooldown(78675),        -- Solar Beam
-            CreateSpellCooldown(102560),       -- Incarnation: Chosen of Elune
-            CreateSpellCooldown(194223),       -- Celestial Alignment
-            CreateSpellCooldown(202425, false),      -- Warrior of Elune
-            CreateSpellCooldown(202770),       -- Fury of Elune
-            CreateSpellCooldown(205636),       -- Force of Nature
+            CreateSpellCooldown(78675),         -- Solar Beam
+            CreateSpellCooldown(102560),        -- Incarnation: Chosen of Elune
+            CreateSpellCooldown(194223),        -- Celestial Alignment
+            CreateSpellCooldown(202425, false), -- Warrior of Elune
+            CreateSpellCooldown(202770),        -- Fury of Elune
+            CreateSpellCooldown(205636),        -- Force of Nature
             
             -- Feral
             
             -- Guardian
-            CreateSpellCooldown(50334),        -- Berserkl: Ravage
-            CreateSpellCooldown(61336),        -- Survival Instincts
-            CreateSpellCooldown(80313),        -- Pulverize
-            CreateSpellCooldown(102558),       -- Incarnation: Guardian of Ursoc
-            CreateSpellCooldown(200851),       -- Rage of the Sleeper
-            CreateSpellCooldown(204066),       -- Lunar Beam
+            CreateSpellCooldown(50334),         -- Berserkl: Ravage
+            CreateSpellCooldown(61336),         -- Survival Instincts
+            CreateSpellCooldown(80313),         -- Pulverize
+            CreateSpellCooldown(102558),        -- Incarnation: Guardian of Ursoc
+            CreateSpellCooldown(200851),        -- Rage of the Sleeper
+            CreateSpellCooldown(204066),        -- Lunar Beam
             
             -- Restoration
-            CreateSpellCooldown(740),          -- Tranquility
-            CreateSpellCooldown(33891),        -- Incarnation: Tree of Life
-            CreateSpellCooldown(102342),       -- Ironbark
-            CreateSpellCooldown(132158),       -- Nature's Swiftness
-            CreateSpellCooldown(203651),       -- Overgrowth
+            CreateSpellCooldown(740),           -- Tranquility
+            CreateSpellCooldown(33891),         -- Incarnation: Tree of Life
+            CreateSpellCooldown(102342),        -- Ironbark
+            CreateSpellCooldown(132158),        -- Nature's Swiftness
+            CreateSpellCooldown(203651),        -- Overgrowth
         },
         ["MAGE"] = {
             -- Talents
-            CreateSpellCooldown(45438),        -- Ice Block
-            CreateSpellCooldown(80353),        -- Time Warp
-            CreateSpellCooldown(110959),       -- Greater Invisibilty
-            CreateSpellCooldown(382440),       -- Shifting Power
-            CreateSpellCooldown(55342),        -- Mirror Image
-            CreateSpellCooldown(414660),       -- Mass Barrier
+            CreateSpellCooldown(45438),         -- Ice Block
+            CreateSpellCooldown(80353),         -- Time Warp
+            CreateSpellCooldown(110959),        -- Greater Invisibilty
+            CreateSpellCooldown(382440),        -- Shifting Power
+            CreateSpellCooldown(55342),         -- Mirror Image
+            CreateSpellCooldown(414660),        -- Mass Barrier
             
             -- Frost
-            CreateSpellCooldown(12472),        -- Icy Veins
-            CreateSpellCooldown(84714),        -- Frozen Orb
-            CreateSpellCooldown(235219),       -- Cold Snap
+            CreateSpellCooldown(12472),         -- Icy Veins
+            CreateSpellCooldown(84714),         -- Frozen Orb
+            CreateSpellCooldown(235219),        -- Cold Snap
         },
         ["MONK"] = {
             -- Talents
-            CreateSpellCooldown(115203),       -- Fortifying Brew
-            CreateSpellCooldown(116705),       -- Spear Hand Strike
-            CreateSpellCooldown(116841, false),      -- Tiger Lust
-            CreateSpellCooldown(116844),       -- Ring of Peace
-            CreateSpellCooldown(122278),       -- Dumpen Harm
-            CreateSpellCooldown(122783),       -- Diffuse Magic
-            CreateSpellCooldown(123986, false),      -- Chi Burst
-            CreateSpellCooldown(322109),       -- Touch of Death
-            CreateSpellCooldown(324312, false),      -- Clash
-            -- CreateSpellCooldown(115313),             -- Summon Jade Serpent Statue
-            -- CreateSpellCooldown(115315),             -- Summon Bloack Ox Statue
-            -- CreateSpellCooldown(388686),             -- Summon White Tiger Statue
-            -- CreateSpellCooldown(322101, false),            -- Expel Harm
+            CreateSpellCooldown(115203),        -- Fortifying Brew
+            CreateSpellCooldown(116705),        -- Spear Hand Strike
+            CreateSpellCooldown(116841, false), -- Tiger Lust
+            CreateSpellCooldown(116844),        -- Ring of Peace
+            CreateSpellCooldown(122278),        -- Dumpen Harm
+            CreateSpellCooldown(122783),        -- Diffuse Magic
+            CreateSpellCooldown(123986, false), -- Chi Burst
+            CreateSpellCooldown(322109),        -- Touch of Death
+            CreateSpellCooldown(324312, false), -- Clash
+            -- CreateSpellCooldown(115313),         -- Summon Jade Serpent Statue
+            -- CreateSpellCooldown(115315),         -- Summon Bloack Ox Statue
+            -- CreateSpellCooldown(388686),         -- Summon White Tiger Statue
+            -- CreateSpellCooldown(322101, false),  -- Expel Harm
 
             -- Mistweaver
-            -- CreateSpellCooldown(115310),             -- Revival
-            -- CreateSpellCooldown(116849),             -- Life Cocoon
-            -- CreateSpellCooldown(116680),             -- Thunder Focus Tea
-            -- CreateSpellCooldown(191837),             -- Essence Font
-            -- CreateSpellCooldown(197908),             -- Mana Tea
-            -- CreateSpellCooldown(325197),             -- Invoke Chi-ji, The Red Crane
-            -- CreateSpellCooldown(388193),             -- Faeline Stomp
-            -- CreateSpellCooldown(388615),             -- Restoral
+            -- CreateSpellCooldown(115310),         -- Revival
+            -- CreateSpellCooldown(116849),         -- Life Cocoon
+            -- CreateSpellCooldown(116680),         -- Thunder Focus Tea
+            -- CreateSpellCooldown(191837),         -- Essence Font
+            -- CreateSpellCooldown(197908),         -- Mana Tea
+            -- CreateSpellCooldown(325197),         -- Invoke Chi-ji, The Red Crane
+            -- CreateSpellCooldown(388193),         -- Faeline Stomp
+            -- CreateSpellCooldown(388615),         -- Restoral
 
             -- Brewmaster
-            CreateSpellCooldown(119582, false),      -- Purifiying Brew
-            CreateSpellCooldown(132578),       -- Invoke Niuzao, the Black Ox
-            CreateSpellCooldown(322507),       -- Celestial Brew
-            CreateSpellCooldown(115176),       -- Zen Meditation
-            CreateSpellCooldown(325153),       -- Exploding Keg
-            CreateSpellCooldown(387184),       -- Weapons of Order
+            CreateSpellCooldown(119582, false), -- Purifiying Brew
+            CreateSpellCooldown(132578),        -- Invoke Niuzao, the Black Ox
+            CreateSpellCooldown(322507),        -- Celestial Brew
+            CreateSpellCooldown(115176),        -- Zen Meditation
+            CreateSpellCooldown(325153),        -- Exploding Keg
+            CreateSpellCooldown(387184),        -- Weapons of Order
         },
         ["PALADIN"] = {
-            CreateSpellCooldown(633),          -- Lay on Hands
-            CreateSpellCooldown(642),          -- Divine Shield
-            CreateSpellCooldown(853),          -- Hammer of Justice
-            CreateSpellCooldown(391054),       -- Intercession
+            CreateSpellCooldown(633),           -- Lay on Hands
+            CreateSpellCooldown(642),           -- Divine Shield
+            CreateSpellCooldown(853),           -- Hammer of Justice
+            CreateSpellCooldown(391054),        -- Intercession
 
             -- Talents
-            CreateSpellCooldown(1022),         -- Blessing of Protection
-            CreateSpellCooldown(1044),         -- Blessing of Freedom
-            CreateSpellCooldown(6940),         -- Blessing of Sacrifice
-            CreateSpellCooldown(31884),        -- Avenging Wrath (Holy)
-            CreateSpellCooldown(96231, false),       -- Rebuke
-            CreateSpellCooldown(115750),       -- Blinding Light
-            CreateSpellCooldown(375576),       -- Divine Toll
+            CreateSpellCooldown(1022),          -- Blessing of Protection
+            CreateSpellCooldown(1044),          -- Blessing of Freedom
+            CreateSpellCooldown(6940),          -- Blessing of Sacrifice
+            CreateSpellCooldown(31884),         -- Avenging Wrath (Holy)
+            CreateSpellCooldown(96231, false),  -- Rebuke
+            CreateSpellCooldown(115750),        -- Blinding Light
+            CreateSpellCooldown(375576),        -- Divine Toll
             
             -- Holy
-            CreateSpellCooldown(498),          -- Divine Protection
-            CreateSpellCooldown(85222),        -- Aura Mastery
-            CreateSpellCooldown(114165, false),      -- Holy Prism
-            CreateSpellCooldown(148039, false),      -- Barrier of Faith
-            CreateSpellCooldown(200025, false),      -- Beacon of Virtue
-            CreateSpellCooldown(200672),       -- Tyr's Deliverance
-            CreateSpellCooldown(388007),       -- Blessim of Summer
-            CreateSpellCooldown(414273),       -- Hand of Divinity
+            CreateSpellCooldown(498),           -- Divine Protection
+            CreateSpellCooldown(85222),         -- Aura Mastery
+            CreateSpellCooldown(114165, false), -- Holy Prism
+            CreateSpellCooldown(148039, false), -- Barrier of Faith
+            CreateSpellCooldown(200025, false), -- Beacon of Virtue
+            CreateSpellCooldown(200672),        -- Tyr's Deliverance
+            CreateSpellCooldown(388007),        -- Blessim of Summer
+            CreateSpellCooldown(414273),        -- Hand of Divinity
             
             -- Protection
-            CreateSpellCooldown(31850),        -- Ardent Defender
-            CreateSpellCooldown(86659),        -- Guardian of Ancient Kings
-            CreateSpellCooldown(204018),       -- Blessing of Spellwarding
-            CreateSpellCooldown(327193),       -- Moment of Glory
-            CreateSpellCooldown(378974),       -- Bastion of Light
-            CreateSpellCooldown(31884),        -- Sanctified Wrath
-            CreateSpellCooldown(389539),       -- Sentinel
-            CreateSpellCooldown(387174),       -- Eye of Tyr
+            CreateSpellCooldown(31850),         -- Ardent Defender
+            CreateSpellCooldown(86659),         -- Guardian of Ancient Kings
+            CreateSpellCooldown(204018),        -- Blessing of Spellwarding
+            CreateSpellCooldown(327193),        -- Moment of Glory
+            CreateSpellCooldown(378974),        -- Bastion of Light
+            CreateSpellCooldown(31884),         -- Sanctified Wrath
+            CreateSpellCooldown(389539),        -- Sentinel
+            CreateSpellCooldown(387174),        -- Eye of Tyr
             
             -- Retribution
-            CreateSpellCooldown(403876),       -- Divine Protection
-            CreateSpellCooldown(31884),        -- Avenging Wrath: Might
-            CreateSpellCooldown(255937, false),      -- Wake of Ashes
-            CreateSpellCooldown(343721),       -- Final Reckoning
-            CreateSpellCooldown(343527, false),      -- Execution Sentence
+            CreateSpellCooldown(403876),        -- Divine Protection
+            CreateSpellCooldown(31884),         -- Avenging Wrath: Might
+            CreateSpellCooldown(255937, false), -- Wake of Ashes
+            CreateSpellCooldown(343721),        -- Final Reckoning
+            CreateSpellCooldown(343527, false), -- Execution Sentence
         },
         ["PRIEST"] = {
             -- All
-            CreateSpellCooldown(586, false),         -- Fade
-            CreateSpellCooldown(8122, false),        -- Psychic Scream
-            CreateSpellCooldown(19236),        -- Desperate Prayer
+            CreateSpellCooldown(586, false),    -- Fade
+            CreateSpellCooldown(8122, false),   -- Psychic Scream
+            CreateSpellCooldown(19236),         -- Desperate Prayer
 
             -- Talents
-            CreateSpellCooldown(10060),        -- Power Infusion
-            CreateSpellCooldown(15286),        -- Vampiric Embrace
-            CreateSpellCooldown(32375),        -- Mass Dispel
-            CreateSpellCooldown(34433),        -- Shadowfiennd
-            CreateSpellCooldown(73325),        -- Leap of Faith
-            CreateSpellCooldown(108920),       -- Void Tendrils
-            CreateSpellCooldown(108968),       -- Void Shift
-            CreateSpellCooldown(120517),       -- Halo (Disciple / Holy)
-            CreateSpellCooldown(120644),       -- Halo (Shadow)
-            CreateSpellCooldown(205364),       -- Dominate Mind
-            CreateSpellCooldown(373481, false),      -- Power Word: Life
+            CreateSpellCooldown(10060),         -- Power Infusion
+            CreateSpellCooldown(15286),         -- Vampiric Embrace
+            CreateSpellCooldown(32375),         -- Mass Dispel
+            CreateSpellCooldown(34433),         -- Shadowfiennd
+            CreateSpellCooldown(73325),         -- Leap of Faith
+            CreateSpellCooldown(108920),        -- Void Tendrils
+            CreateSpellCooldown(108968),        -- Void Shift
+            CreateSpellCooldown(120517),        -- Halo (Disciple / Holy)
+            CreateSpellCooldown(120644),        -- Halo (Shadow)
+            CreateSpellCooldown(205364),        -- Dominate Mind
+            CreateSpellCooldown(373481, false), -- Power Word: Life
 
             -- Discipline
-            CreateSpellCooldown(33206),        -- Pain Suppression
-            CreateSpellCooldown(47536),        -- Rapture
-            CreateSpellCooldown(62618),        -- Power Word: Barrier
-            CreateSpellCooldown(271466),       -- Luminous Barrier
-            CreateSpellCooldown(123040),       -- Mind Bender
-            CreateSpellCooldown(246287),       -- Evangelism
+            CreateSpellCooldown(33206),         -- Pain Suppression
+            CreateSpellCooldown(47536),         -- Rapture
+            CreateSpellCooldown(62618),         -- Power Word: Barrier
+            CreateSpellCooldown(271466),        -- Luminous Barrier
+            CreateSpellCooldown(123040),        -- Mind Bender
+            CreateSpellCooldown(246287),        -- Evangelism
 
             -- Holy
-            CreateSpellCooldown(2050),         -- Holy Word: Serenity
-            CreateSpellCooldown(34861),        -- Holy Word: Sanctify
-            CreateSpellCooldown(47788),        -- Guardian Spirit
-            CreateSpellCooldown(64843),        -- Divine Hymn
-            CreateSpellCooldown(64901),        -- Symbol of Hope
-            CreateSpellCooldown(88625),        -- Holy Word: Chastise
-            CreateSpellCooldown(200183),       -- Apotheosis
-            CreateSpellCooldown(372760),       -- Divine Word
-            CreateSpellCooldown(372835),       -- Light Well
+            CreateSpellCooldown(2050),          -- Holy Word: Serenity
+            CreateSpellCooldown(34861),         -- Holy Word: Sanctify
+            CreateSpellCooldown(47788),         -- Guardian Spirit
+            CreateSpellCooldown(64843),         -- Divine Hymn
+            CreateSpellCooldown(64901),         -- Symbol of Hope
+            CreateSpellCooldown(88625),         -- Holy Word: Chastise
+            CreateSpellCooldown(200183),        -- Apotheosis
+            CreateSpellCooldown(372760),        -- Divine Word
+            CreateSpellCooldown(372835),        -- Light Well
 
             -- Shadow
-            CreateSpellCooldown(15487),        -- Silence
-            CreateSpellCooldown(47585),        -- Dispersion
-            CreateSpellCooldown(64044),        -- Psychic Horror
-            CreateSpellCooldown(200174),       -- Mindbender
-            CreateSpellCooldown(228260),       -- Void Eruption
-            CreateSpellCooldown(391109),       -- Dark Ascension
+            CreateSpellCooldown(15487),         -- Silence
+            CreateSpellCooldown(47585),         -- Dispersion
+            CreateSpellCooldown(64044),         -- Psychic Horror
+            CreateSpellCooldown(200174),        -- Mindbender
+            CreateSpellCooldown(228260),        -- Void Eruption
+            CreateSpellCooldown(391109),        -- Dark Ascension
         }
     }
 

@@ -1,21 +1,17 @@
 local _, ns = ...
 local Filger = ns.Filger
--- local Config = ns.Config
--- local Panels = Config.Panels
+
+local LibDispel = LibStub("LibDispel")
+assert(LibDispel, "Filger requires LibDispel")
 
 local blacklist = ns.Filger.blacklist or {}
 local cooldowns = ns.Filger.cooldowns or {}
 local spells = ns.Filger.spells or {}
 
-local VISIBLE = 1
-local HIDDEN = 0
-
 -- WoW API
 local CreateFrame = _G.CreateFrame
-local C_UnitAuras = _G.C_UnitAuras
 local UnitIsUnit = _G.UnitIsUnit
 local UnitIsOwnerOrControllerOfUnit = _G.UnitIsOwnerOrControllerOfUnit
-
 local IsSpellKnown = _G.IsSpellKnown
 local GetSpellInfo = C_Spell and C_Spell.GetSpellInfo or _G.GetSpellInfo
 local GetSpellName = C_Spell and C_Spell.GetSpellName or _G.GetSpellInfo
@@ -24,22 +20,15 @@ local GetInventoryItemLink = _G.GetInventoryItemLink
 local GetItemInfo = _G.GetItemInfo
 local GetInventoryItemCooldown = _G.GetInventoryItemCooldown
 
-local LibClassicDurations = ns.Filger.LibClassicDurations
-if (LibClassicDurations) then
-    UnitAura = LibClassicDurations.UnitAuraWrapper
-end
+-- local LibClassicDurations = ns.Filger.LibClassicDurations
+-- if (LibClassicDurations) then
+--     UnitAura = LibClassicDurations.UnitAuraWrapper
+-- end
 
 ------------------------------------------------------------
 -- Filger
 ------------------------------------------------------------
 local isInit = false
-local class = Filger.class
-local debuffColor = Filger.colors
-
--- resources
-local BlankTex = Filger.textures.blank
-local Font, FontSize, FontStyle = Filger.fonts.normal, 12, "OUTLINE"
-local BorderColor = Filger.config.general.border.color
 
 --------------------------------------------------
 -- BUTTONS
@@ -109,6 +98,9 @@ do
 	* button - the button used to represent the aura (Button)
     --]]
     function Filger:CreateButton(element, index)
+        -- resources
+        local font, fontSize, fontStyle = Filger.fonts.normal, 12, "OUTLINE"
+
         local button = Mixin(CreateFrame("Frame", element:GetName() .. "Aura" .. index, element), button_proto)
         button:SetWidth(element.size)
         button:SetHeight(element.size)
@@ -135,14 +127,14 @@ do
 
         local count = overlay:CreateFontString("$parentCount", "OVERLAY")
         count:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 0, 0)
-        count:SetFont(Font, FontSize, FontStyle)
+        count:SetFont(font, fontSize, fontStyle)
         count:SetJustifyH("RIGHT")
         count:SetTextColor(0.84, 0.75, 0.65)
         button.Count = count
 
         local time = overlay:CreateFontString("$parentTime", "OVERLAY")
         time:SetPoint("CENTER", button, "CENTER", 0, 0)
-        time:SetFont(Font, 24, FontStyle)
+        time:SetFont(font, 20, fontStyle)
         time:SetJustifyH("CENTER")
         time:SetTextColor(0.84, 0.75, 0.65)
         button.Time = time
@@ -177,30 +169,6 @@ local aura_proto = {
 }
 
 do
-    --[[ Callback: button:IsDispelable(unit, data)
-    Validate if a aura is dispelable by the player.
-
-    * self  - the widget holding the aura buttons
-    * unit  - the unit on which the aura is cast (string)
-    * data  - the [UnitAuraInfo](https://wowpedia.fandom.com/wiki/Struct_UnitAuraInfo) object (table)
-    * index - the actual position of the aura button (number)
-    ]]--
-    function aura_proto:IsDispelable(unit, data)
-        if not data.name then return end
-
-        local dispelName = data.dispelName or "none"
-
-        if UnitIsEnemy(unit, "player") then
-            if data.isHelpful or data.isStealable then
-                return Filger.DispelFilter["ENEMY"][dispelName] or false
-            end
-        elseif data.isHarmful then
-            return Filger.DispelFilter["FRIENDLY"][dispelName] or false
-        end
-
-        return false
-    end
-
     --[[ Callback: button:UpdateColor(button, unit, data)
     Called after the aura button has been updated.
 
@@ -211,13 +179,13 @@ do
     * index  - the actual position of the aura button (number)
     ]]--
     function aura_proto:UpdateColor(button, unit, data)
-        -- return true or false if aura can be dispeled by the player
-        -- 1. dispel harmful effects from friendly target.
-        -- 2. dispell beneficial effects from enemy target.
-        local isDispelable = self:IsDispelable(unit, data)
-
-        if isDispelable then
-            local color = Filger.colors[data.dispelName or "none"]
+        -- dispel harmful effects from friendly target.
+        -- dispell beneficial effects from enemy target.
+        local dispelType = LibDispel:GetDispelType(data.spellId, data.dispelName)
+        local isDispelable = LibDispel:IsDispelable(unit, data.spellId, dispelType, data.isHarmful)
+        
+        if (data.isHarmful and UnitCanAssist("player", unit)) or (data.isHelpful and UnitCanAttack(unit, "player")) then
+            local color = Filger.colors[dispelType]
             if button.Backdrop then
                 button.Backdrop:SetBackdropBorderColor(color.r, color.g, color.b, color.a or 1)
             end
@@ -233,7 +201,7 @@ do
         end
 
         if button.Animation then
-            if isDispelable then
+            if isDispelable or data.isStealable then
                 button.Animation:Play()
                 button.Animation.playing = true
             else
@@ -593,8 +561,17 @@ do
 
         if data.spellId then
             index = "SPELL_" .. data.spellId
-            name, rank, icon, _, _, _, _ = GetSpellInfo(data.spellId)
-            start, duration, enabled, _ = GetSpellCooldown(data.spellId)
+            local info = Filger.GetSpellInfo(data.spellId)
+            if info then
+                name = info.name
+                icon = info.iconID
+            end
+            local cdInfo = Filger.GetSpellCooldown(data.spellId)
+            if cdInfo then
+                start = cdInfo.startTime
+                duration = cdInfo.duration
+                enabled = cdInfo.enabled
+            end
         elseif data.slotId then
             index = "SLOT_" .. data.slotId
             local itemLink = GetInventoryItemLink(unit, data.slotId)
@@ -765,15 +742,13 @@ do
         element:SetHeight(element.size)
         -- element:CreateBackdrop()
     
-        do
-            -- name
-            element.text = element:CreateFontString(nil, "OVERLAY")
-            element.text:SetPoint("CENTER", element, "CENTER", 0, 1)
-            element.text:SetFont(Font, FontSize, FontStyle)
-            element.text:SetText(element:GetName())
-            element.text:SetJustifyH("CENTER")
-            element.text:Hide()
-        end
+        -- local text = element:CreateFontString(nil, "OVERLAY")
+        -- text:SetPoint("CENTER", element, "CENTER", 0, 1)
+        -- text:SetFont(Font, FontSize, FontStyle)
+        -- text:SetText(element:GetName())
+        -- text:SetJustifyH("CENTER")
+        -- text:Hide()
+        -- element.text = text
     
         if (element.filter == "COOLDOWN") then
             element = Mixin(element, cooldown_proto)
@@ -835,14 +810,7 @@ end
 
 function Filger:PLAYER_LOGIN()
     if not isInit then
-        self:RegisterEvent("PLAYER_ENTERING_WORLD")
-
-        if self.isRetail then
-            -- self:RegisterUnitEvent("PLAYER_SPECIALIZATION_CHANGED", self.unit)
-            self:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", self.unit)
-        else
-            self:RegisterEvent("PLAYER_TALENT_UPDATE")
-        end
+        -- self:RegisterEvent("PLAYER_ENTERING_WORLD")
 
         -- create panels based on spell list
         for _, data in pairs(self.config.frames) do
@@ -854,30 +822,5 @@ function Filger:PLAYER_LOGIN()
         end
 
         isInit = true
-    end
-end
-
-function Filger:PLAYER_ENTERING_WORLD(isLogin, isReload)
-    if (not isLogin) and (not isReload) then return end
-    self:UpdateDispelFilter()
-end
-
--- Talents
-function Filger:PLAYER_TALENT_UPDATE()
-    self:UpdateDispelFilter()
-end
-
-function Filger:PLAYER_SPECIALIZATION_CHANGED(unit, guid, spellId)
-    self:Inspect()
-end
-
-local spells = {
-    [200749] = true,        -- Activating Specialization
-    [384255] = true,        -- Changing Talents
-}
-
-function Filger:UNIT_SPELLCAST_SUCCEEDED(unit, guid, spellId)
-    if (unit == self.unit and spells[spellId]) then
-        self:Inspect()
     end
 end

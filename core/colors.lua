@@ -39,7 +39,9 @@ function Filger:CreateColor(r, g, b, a)
 end
 
 local colors = {
-	["Stealable"] = Filger:CreateColor(0.93, 0.91, 0.55)
+	["Stealable"] = Filger:CreateColor(0.93, 0.91, 0.55),
+	["Bleed"] = Filger:CreateColor(0.90, 0.10, 0.10),
+	["Enrage"] = Filger:CreateColor(0.78, 0.25, 0.25)
 }
 
 for debuffType, color in next, _G.DebuffTypeColor do

@@ -11,7 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Complete rework
 -   Update `UNIT_AURA` event to use `UnitAuraInfo`
--   Using `C_Spell` namespace
+-   Update API to use `C_Spell` namespace.
+-   Added new lib `LibDispel`.
+-   Fixed aura colors and dispelable/stealable animation.
 
 ## [4.3.2] - 2024-07-26
 
