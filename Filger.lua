@@ -179,29 +179,22 @@ do
     * index  - the actual position of the aura button (number)
     ]]--
     function aura_proto:UpdateColor(button, unit, data)
-        -- dispel harmful effects from friendly target.
-        -- dispell beneficial effects from enemy target.
-        local dispelType = LibDispel:GetDispelType(data.spellId, data.dispelName)
-        local isDispelable = LibDispel:IsDispelable(unit, data.spellId, dispelType, data.isHarmful)
-        
-        if (data.isHarmful and UnitCanAssist("player", unit)) or (data.isHelpful and UnitCanAttack(unit, "player")) then
-            local color = Filger.colors[dispelType]
-            if button.Backdrop then
+        if button.Backdrop then
+            if (data.isHarmful and UnitCanAssist("player", unit)) or (data.isHelpful and UnitCanAttack(unit, "player") and UnitCanAttack("player", unit)) then
+                local color = Filger.colors[data.dispelName]
                 button.Backdrop:SetBackdropBorderColor(color.r, color.g, color.b, color.a or 1)
-            end
-        else
-            local color = Filger.config.general.backdrop.color
-            if button.Backdrop then
+            else
+                local color = Filger.config.general.backdrop.color
                 button.Backdrop:SetBackdropBorderColor(color.r, color.g, color.b, color.a or 1)
             end
         end
 
-        if button.Icon then
+        if button.Icon and self.desaturated == true then
             button.Icon:SetDesaturated(data.isHarmful and not data.isPlayerAura and not UnitIsUnit(unit, "player"))
         end
 
         if button.Animation then
-            if isDispelable or data.isStealable then
+            if data.isDispelable or data.isStealable then
                 button.Animation:Play()
                 button.Animation.playing = true
             else
@@ -331,8 +324,11 @@ do
 
         data.isPlayerAura = data.sourceUnit and (UnitIsUnit("player", data.sourceUnit) or UnitIsOwnerOrControllerOfUnit("player", data.sourceUnit))
 
+        data.dispelName = LibDispel:GetDispelType(data.spellId, data.dispelName)
+        data.isDispelable = LibDispel:IsDispelable(unit, data.spellId, data.dispelName, data.isHarmful)
+
         local spell = self.spells[data.spellId]
-        data.isSpell = spell and spell.enabled or false
+        data.enabled = spell and spell.enabled or false
         data.priority = spell and spell.priority or 0
 
         return data
@@ -669,11 +665,9 @@ do
         self:UpdateCooldowns("SPELL_UPDATE_COOLDOWN", self.unit)
     end
 
+    -- register which spell the player cast
     function cooldown_proto:UNIT_SPELLCAST_SUCCEEDED(unit, guid, spellId)
-        local name = GetSpellName(spellId)
-        if name then
-            self.casted[spellId] = true
-        end
+        self.casted[spellId] = true
     end
 end
 
