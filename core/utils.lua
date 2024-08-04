@@ -39,7 +39,7 @@ function Filger.FormatTime(s)
 end
 
 function Filger.GetSpellInfo(spellID)
-	if C_Spell then
+	if C_Spell and C_Spell.GetSpellInfo then
 		return C_Spell.GetSpellInfo(spellID)
 	else
 		local name, rank, icon, castTime, minRange, maxRange, spellID, originalIcon = _G.GetSpellInfo(spellID)
@@ -59,17 +59,15 @@ function Filger.GetSpellInfo(spellID)
 end
 
 function Filger.GetSpellCooldown(spellID)
-	if C_Spell then
+	if C_Spell and C_Spell.GetSpellCooldown then
 		return C_Spell.GetSpellCooldown(spellID)
 	else
 		local start, duration, enabled, modRate = _G.GetSpellCooldown(spellID)
-		if name then
-			return {
-				startTime = startTime,
-				duration = duration,
-				isEnabled = enabled,
-				modRate = modRate
-			}
-		end
+		return {
+			startTime = start,
+			duration = duration,
+			isEnabled = enabled,
+			modRate = modRate
+		}
 	end
 end
