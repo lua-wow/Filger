@@ -32,8 +32,8 @@ frame.interface = interface
 frame.isRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
 frame.isClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
 frame.isBCC = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC)
-frame.isWotLK = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC)
-frame.isCataclysm = (WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC)
+frame.isWrath = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC)
+frame.isCata = (WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC)
 
 -- player
 frame.name = UnitName("player")

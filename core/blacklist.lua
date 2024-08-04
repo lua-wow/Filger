@@ -4,23 +4,25 @@ local Filger = ns.Filger
 -- Blizzard
 local GetSpellInfo = C_Spell and C_Spell.GetSpellInfo or _G.GetSpellInfo
 
+local expansion = _G.LE_EXPANSION_LEVEL_CURRENT
+local LE_EXPANSION_CLASSIC = _G.LE_EXPANSION_CLASSIC or 0
+local LE_EXPANSION_BURNING_CRUSADE = _G.LE_EXPANSION_BURNING_CRUSADE or 1
+local LE_EXPANSION_WRATH_OF_THE_LICH_KING = _G.LE_EXPANSION_WRATH_OF_THE_LICH_KING or 2
+local LE_EXPANSION_CATACLYSM = _G.LE_EXPANSION_CATACLYSM or 3
+local LE_EXPANSION_MISTS_OF_PANDARIA = _G.LE_EXPANSION_MISTS_OF_PANDARIA or 4
+local LE_EXPANSION_WARLORDS_OF_DRAENOR = _G.LE_EXPANSION_WARLORDS_OF_DRAENOR or 5
+local LE_EXPANSION_LEGION = _G.LE_EXPANSION_LEGION or 6
+local LE_EXPANSION_BATTLE_FOR_AZEROTH = _G.LE_EXPANSION_BATTLE_FOR_AZEROTH or 7
+local LE_EXPANSION_SHADOWLANDS = _G.LE_EXPANSION_SHADOWLANDS or 8
+local LE_EXPANSION_DRAGONFLIGHT = _G.LE_EXPANSION_DRAGONFLIGHT or 9
+local LE_EXPANSION_WAR_WITHIN = _G.LE_EXPANSION_WAR_WITHIN or 10
+
 -- Mine
 local interface = Filger.interface
 local isClassic = Filger.isClassic
 local isBCC = Filger.isBCC
-local isWotLK = Filger.isWotLK
+local isWrath = Filger.isWrath
 local isCata = Filger.isCata
-
-local CLASSIC = 10000
-local BURNING_CRUSADE = 20000
-local WRATH_LICH_KING = 30000
-local CATACLYSM = 40000
-local MISTS_PANDARIA = 50000
-local WARLODS_DRAENOR = 60000
-local LEGION = 70000
-local BATTLE_AZEROTH = 80000
-local SHADOWLANDS = 90000
-local DRAGONFLIGHT = 100000
 
 local import = function(source, dest)
     for spellId, enabled in next, source do
@@ -48,17 +50,30 @@ local general = {
     ["Well Fed"] = true,
     ["Drink"] = true,
     ["Food"] = true,
-    
+ 
+    -- Lust
+    [57723] = true,                                             -- Exhaustion (Heroism)
+    [57724] = true,                                             -- Sated (Bloodlust)
+    [80354] = true,                                             -- Temporal Displacement (Mage)
+    [264689] = (expansion >= LE_EXPANSION_SHADOWLANDS),         -- Fatigued (Hunter)
+    [390435] = (expansion >= LE_EXPANSION_DRAGONFLIGHT),        -- Exhaustion (Evoker - Fury of the Aspects)
+
     -- DRUID
     ["Mark of the Wild"] = true,
-    [1126] = true,                                          -- Mark of the Wild
-    [768] = true,                                           -- Cat Form
-    [5487] = true,                                          -- Bear Form
-    [24858] = true,                                         -- Moonkin Form
-    [114282] = (interface >= MISTS_PANDARIA),               -- Treant Form
+    [1126] = true,                                              -- Mark of the Wild
+    [768] = true,                                               -- Cat Form
+    [5487] = true,                                              -- Bear Form
+    [24858] = true,                                             -- Moonkin Form
+    [114282] = (expansion >= LE_EXPANSION_MISTS_OF_PANDARIA),   -- Treant Form
 
     -- MAGE
     ["Arcane Intellect"] = true,
+
+    -- PALADIN
+    [7294] = (expansion <= LE_EXPANSION_CATACLYSM),             -- Retribution Aura
+    [19746] = (expansion <= LE_EXPANSION_CATACLYSM),            -- Concentration Aura
+    [19891] = (expansion <= LE_EXPANSION_CATACLYSM),            -- Resistance Aura
+    [32223] = true,                                             -- Crusader Aura
 
     -- PRIEST
     ["Power Word: Fortitude"] = true,
@@ -73,42 +88,42 @@ do
     local data = {
         -- DRUID
         [1126] = true,                                      -- Mark of the Wild (Rank 1)
-        [5232] = isClassic or isBCC or isWotLK,             -- Mark of the Wild (Rank 2)
-        [6756] = isClassic or isBCC or isWotLK,             -- Mark of the Wild (Rank 3)
-        [5234] = isClassic or isBCC or isWotLK,             -- Mark of the Wild (Rank 4)
-        [8907] = isClassic or isBCC or isWotLK,             -- Mark of the Wild (Rank 5)
-        [9884] = isClassic or isBCC or isWotLK,             -- Mark of the Wild (Rank 6)
-        [9885] = isClassic or isBCC or isWotLK,             -- Mark of the Wild (Rank 7)
-        [26990] = isBCC or isWotLK,                         -- Mark of the Wild (Rank 8)
-        [48469] = isWotLK,                                  -- Mark of the Wild (Rank 9)
+        [5232] = isClassic or isBCC or isWrath,             -- Mark of the Wild (Rank 2)
+        [6756] = isClassic or isBCC or isWrath,             -- Mark of the Wild (Rank 3)
+        [5234] = isClassic or isBCC or isWrath,             -- Mark of the Wild (Rank 4)
+        [8907] = isClassic or isBCC or isWrath,             -- Mark of the Wild (Rank 5)
+        [9884] = isClassic or isBCC or isWrath,             -- Mark of the Wild (Rank 6)
+        [9885] = isClassic or isBCC or isWrath,             -- Mark of the Wild (Rank 7)
+        [26990] = isBCC or isWrath,                         -- Mark of the Wild (Rank 8)
+        [48469] = isWrath,                                  -- Mark of the Wild (Rank 9)
 
-        [467] = (interface < DRAGONFLIGHT),                 -- Thorns (Rank 1)
-        [782] = isClassic or isBCC or isWotLK,              -- Thorns (Rank 2)
-        [1075] = isClassic or isBCC or isWotLK,             -- Thorns (Rank 3)
-        [8914] = isClassic or isBCC or isWotLK,             -- Thorns (Rank 4)
-        [9756] = isClassic or isBCC or isWotLK,             -- Thorns (Rank 5)
-        [9910] = isClassic or isBCC or isWotLK,             -- Thorns (Rank 6)
-        [26992] = isBCC or isWotLK,                         -- Thorns (Rank 7)
-        [53307] = isWotLK,                                  -- Thorns (Rank 8)
+        [467] = (expansion < LE_EXPANSION_DRAGONFLIGHT),    -- Thorns (Rank 1)
+        [782] = isClassic or isBCC or isWrath,              -- Thorns (Rank 2)
+        [1075] = isClassic or isBCC or isWrath,             -- Thorns (Rank 3)
+        [8914] = isClassic or isBCC or isWrath,             -- Thorns (Rank 4)
+        [9756] = isClassic or isBCC or isWrath,             -- Thorns (Rank 5)
+        [9910] = isClassic or isBCC or isWrath,             -- Thorns (Rank 6)
+        [26992] = isBCC or isWrath,                         -- Thorns (Rank 7)
+        [53307] = isWrath,                                  -- Thorns (Rank 8)
 
         -- MAGE
         [1459] = true,                                      -- Arcane Intellect (Rank 1)
-        [1460] = isClassic or isBCC or isWotLK,             -- Arcane Intellect (Rank 2)
-        [1461] = isClassic or isBCC or isWotLK,             -- Arcane Intellect (Rank 3)
-        [10156] = isClassic or isBCC or isWotLK,            -- Arcane Intellect (Rank 4)
-        [10157] = isClassic or isBCC or isWotLK,            -- Arcane Intellect (Rank 5)
-        [27126] = isBCC or isWotLK,                         -- Arcane Intellect (Rank 6)
-        [42995] = isWotLK,                                  -- Arcane Intellect (Rank 7)
+        [1460] = isClassic or isBCC or isWrath,             -- Arcane Intellect (Rank 2)
+        [1461] = isClassic or isBCC or isWrath,             -- Arcane Intellect (Rank 3)
+        [10156] = isClassic or isBCC or isWrath,            -- Arcane Intellect (Rank 4)
+        [10157] = isClassic or isBCC or isWrath,            -- Arcane Intellect (Rank 5)
+        [27126] = isBCC or isWrath,                         -- Arcane Intellect (Rank 6)
+        [42995] = isWrath,                                  -- Arcane Intellect (Rank 7)
 
         -- PRIEST
-        [1243] = isClassic or isBCC or isWotLK,             -- Power Word: Fortitude (Rank 1)
-        [1244] = isClassic or isBCC or isWotLK,             -- Power Word: Fortitude (Rank 2)
-        [1245] = isClassic or isBCC or isWotLK,             -- Power Word: Fortitude (Rank 3)
-        [2791] = isClassic or isBCC or isWotLK,             -- Power Word: Fortitude (Rank 4)
-        [10937] = isClassic or isBCC or isWotLK,            -- Power Word: Fortitude (Rank 5)
-        [10938] = isClassic or isBCC or isWotLK,            -- Power Word: Fortitude (Rank 6)
-        [25389] = isBCC or isWotLK,                         -- Power Word: Fortitude (Rank 7)
-        [48161] = isWotLK,                                  -- Power Word: Fortitude (Rank 8)
+        [1243] = isClassic or isBCC or isWrath,             -- Power Word: Fortitude (Rank 1)
+        [1244] = isClassic or isBCC or isWrath,             -- Power Word: Fortitude (Rank 2)
+        [1245] = isClassic or isBCC or isWrath,             -- Power Word: Fortitude (Rank 3)
+        [2791] = isClassic or isBCC or isWrath,             -- Power Word: Fortitude (Rank 4)
+        [10937] = isClassic or isBCC or isWrath,            -- Power Word: Fortitude (Rank 5)
+        [10938] = isClassic or isBCC or isWrath,            -- Power Word: Fortitude (Rank 6)
+        [25389] = isBCC or isWrath,                         -- Power Word: Fortitude (Rank 7)
+        [48161] = isWrath,                                  -- Power Word: Fortitude (Rank 8)
         
         [21562] = isClassic,                                -- Prayer of Fortitude (Rank 1)
         [21564] = isClassic,                                -- Prayer of Fortitude (Rank 2)
@@ -116,16 +131,16 @@ do
         [27681] = isClassic,                                -- Prayer of Spirit
 
         -- WARLOCK
-        [687] = isClassic or isBCC or isWotLK or isCata,    -- Demon Skin (Rank 1)
-        [696] = isClassic or isBCC or isWotLK,              -- Demon Skin (Rank 2)
+        [687] = isClassic or isBCC or isWrath or isCata,    -- Demon Skin (Rank 1)
+        [696] = isClassic or isBCC or isWrath,              -- Demon Skin (Rank 2)
 
-        [6307] = isClassic or isBCC or isWotLK or isCata,   -- Blood Pact (Rank 1)
-        [7804] = isClassic or isBCC or isWotLK,             -- Blood Pact (Rank 2)
-        [7805] = isClassic or isBCC or isWotLK,             -- Blood Pact (Rank 3)
-        [11766] = isClassic or isBCC or isWotLK,            -- Blood Pact (Rank 4)
-        [11787] = isClassic or isBCC or isWotLK,            -- Blood Pact (Rank 5)
-        [27267] = isBCC or isWotLK,                         -- Blood Pact (Rank 6)
-        [47982] = isWotLK,                                  -- Blood Pact (Rank 7)
+        [6307] = isClassic or isBCC or isWrath or isCata,   -- Blood Pact (Rank 1)
+        [7804] = isClassic or isBCC or isWrath,             -- Blood Pact (Rank 2)
+        [7805] = isClassic or isBCC or isWrath,             -- Blood Pact (Rank 3)
+        [11766] = isClassic or isBCC or isWrath,            -- Blood Pact (Rank 4)
+        [11787] = isClassic or isBCC or isWrath,            -- Blood Pact (Rank 5)
+        [27267] = isBCC or isWrath,                         -- Blood Pact (Rank 6)
+        [47982] = isWrath,                                  -- Blood Pact (Rank 7)
 
         -- Scrolls
         [8091] = isClassic,                                 -- Armor (Scroll fo Protection)
@@ -166,15 +181,13 @@ end
 --------------------------------------------------
 -- Wrath of the Lich King
 --------------------------------------------------
-do
-    local isWotLK = Filger.isWotLK
-    local exists = (interface >= 30000)
+if Filger.isWrath then
     
     local data  = {
         -- PRIEST
-        [48040] = isWotLK,                  -- Inner Fire (Rank 8)
-        [48168] = isWotLK,                  -- Inner Fire (Rank 9)
-        [48074] = isWotLK,                  -- Prayer of Spirit (Rank 3)
+        [48040] = isWrath,                  -- Inner Fire (Rank 8)
+        [48168] = isWrath,                  -- Inner Fire (Rank 9)
+        [48074] = isWrath,                  -- Prayer of Spirit (Rank 3)
     }
 
     import(data, blacklist)
@@ -183,15 +196,25 @@ end
 --------------------------------------------------
 -- Cataclysm
 --------------------------------------------------
-if Filger.isCata and interface >= 40000 then
-    local data = {}
+if Filger.isCata then
+    local data = {
+        -- PALADIN
+        [79102] = true,                     -- Blessing of Might
+        [20165] = true,                     -- Seal of Insight
+
+        -- PRIEST
+        [588] = true,                       -- Inner Fire
+        [79107] = true,                     -- Shadow Protection
+        [73413] = true,                     -- Inner Will
+    }
+
     import(data, blacklist)
 end
 
 --------------------------------------------------
 -- Mists of Pandaria
 --------------------------------------------------
-if interface >= 50000 then
+if expansion >= LE_EXPANSION_MISTS_OF_PANDARIA then
     local data = {
         [297871] = true,                -- Anglers' Water Striders
     }
@@ -201,7 +224,7 @@ end
 --------------------------------------------------
 -- Warlords of Draenor
 --------------------------------------------------
-if interface >= 60000 then
+if expansion >= LE_EXPANSION_WARLORDS_OF_DRAENOR then
     local data = {
         [186403] = true,                -- Sign of Battle
     }
@@ -211,7 +234,7 @@ end
 --------------------------------------------------
 -- Legion
 --------------------------------------------------
-if interface >= 70000 then
+if expansion >= LE_EXPANSION_LEGION then
     local data = {
         [227723] = true,                -- Mana Diving Stone
     }
@@ -221,7 +244,7 @@ end
 --------------------------------------------------
 -- Battle for Azeroth
 --------------------------------------------------
-if interface >= 80000 then
+if expansion >= LE_EXPANSION_BATTLE_FOR_AZEROTH then
     local data = {}
     import(data, blacklist)
 end
@@ -229,7 +252,7 @@ end
 --------------------------------------------------
 -- Shadowlands
 --------------------------------------------------
-if interface >= 90000 then
+if expansion >= LE_EXPANSION_SHADOWLANDS then
     local data = {}
     import(data, blacklist)
 end
@@ -237,11 +260,32 @@ end
 --------------------------------------------------
 -- Dragonflight
 --------------------------------------------------
-if interface >= 100000 then
+if expansion >= LE_EXPANSION_DRAGONFLIGHT then
     local data = {
+        -- DEATHKNIGHT
+        
+        -- MONK
+        [166646] = true,                -- Windwalking
+
+        -- PALADIN
+        [465] = true,                   -- Devotion Aura
+        [32223] = true,                 -- Crusader Aura
+
         -- PRIEST
         [21562] = true,                 -- Power Word: Fortitude
         [280398] = true,                -- Sins of the Many
+
+        -- SHAMAN
+        [395197] = true,                -- Mana Spring
+
+        -- WARRIOR
+        [6673] = true,                  -- Battle Shout
+        [202602] = true,                -- Into the Fray
+
+        -- Dragons Island
+        [385081] = true,                -- Unstable Blink
+        [390493] = true,                -- Cobalt Boost
+        [394258] = true,                -- Cobalt Cutthroat
 
         -- Forbiden Reach
         [405261] = true,                -- Dragonscale's Favor
@@ -256,24 +300,39 @@ if interface >= 100000 then
         [415603] = true,                -- Encapsulated Destiny
 
         -- Dreamsourge
+        [415216] = true,                -- Dreamsurge Heartbloom
         [415275] = true,                -- Dreamsurge Hibernation
         [416101] = true,                -- Dreamsurge Dreamfall
+        [418630] = true,                -- Dreamsurge Thunderbounce
         [418652] = true,                -- Dreamsurge Wrathbloom
         [418656] = true,                -- Dreamsurge Magpies
+        [418694] = true,                -- Dreamsurge Helpers
+        [418744] = true,                -- Dreamsurge Learnings
+        [418769] = true,                -- Dreamsurge Greenwalker
         [418810] = true,                -- Dreamsurge Lone Wolves
         [418813] = true,                -- Self Sufficient
+        [418842] = true,                -- Dreamsurge Pack Hunters
         [419079] = true,                -- Dreamsurge Defenders
         [419081] = true,                -- Dreamsurge Defenders
         [419239] = true,                -- Dreaming Winds
+        [419530] = true,                -- Dreamsurge Thorncloak
         [426647] = true,                -- Best Friends with Pip
         [426672] = true,                -- Best Friends with Urctos
         [426676] = true,                -- Best Friends with Aerwynn
         [430666] = true,                -- Sign of Awakened Storms
         [430668] = true,                -- Sign of Awakened Embers
         [430669] = true,                -- Sign of Awakened Dreams
+        
+        [420511] = true,                -- Going Green
+
+        [225787] = true,                -- Sign of of Warrior
+
+        -- Professions
+        [382093] = true,                -- Alchemically Inspired
 
         -- Items
         [401518] = true,                -- Bronze Resonance (Ominous Chromatic Essence)
+        [399502] = true,                -- Automically Recalibrated
 
         -- Tier Set
         [426262] = true,                -- Larodar's Fiery Reverie (Priest Discipline / Holy)
@@ -282,6 +341,15 @@ if interface >= 100000 then
 
         -- Extras
         [182422] = true,                -- Training Gear
+        [391594] = true,                -- Lemon Silverleaf Tea
+
+        -- WoW Remix
+        [424143] = true,                -- WoW Remix: Mists of Pandaria
+        [440393] = true,                -- Timerunner's Advantage
+        [459337] = true,                -- Timerunner's Mastery
+
+        -- Mythic+
+        [206151] = true,                -- Challenger's Burden
     }
 
     import(data, blacklist)
@@ -290,15 +358,26 @@ end
 --------------------------------------------------
 -- Retail
 --------------------------------------------------
-if Filger.isRetail or interface >= 110000 then
+if Filger.isRetail then
     local data = {
+        -- DRUID
+        [400734] = true,                -- After the Wildfire
+
         -- MONK
         [383733] = true,                -- Training of Niuzao
+        [450552] = true,                -- Jade Walk
         [450572] = true,                -- Flow of Chi
         [450574] = true,                -- Flow of Chi
 
         -- PRIEST
         [21562] = true,                 -- Power Word: Fortitude
+
+        -- Mount
+        [404464] = true,                -- Flight Style: Skyriding
+        [404468] = true,                -- Flight Style: Steady
+
+        -- Mythic+
+        [206150] = true,              -- Challenger's Might
     }
 
     import(data, blacklist)

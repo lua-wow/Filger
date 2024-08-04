@@ -3,7 +3,9 @@ local Filger = ns.Filger
 
 local class = Filger.class
 local cooldowns = Filger.cooldowns or {}
+local blacklist = Filger.blacklist or {}
 local spells = Filger.spells or {}
+local all = Filger.all or {}
 
 ------------------------------------------------------------
 -- Config
@@ -87,6 +89,7 @@ Filger.config = {
             ["growth-x"] = "LEFT",
             ["growth-y"] = "DOWN",
             FilterAura = function(element, unit, data)
+                if blacklist[data.spellId] or blacklist[data.name] then return false end
                 return not data.isPlayerAura
             end
         },
@@ -101,13 +104,19 @@ Filger.config = {
             initialAnchor = "BOTTOMLEFT",
             ["growth-x"] = "RIGHT",
             ["growth-y"] = "DOWN",
+            spells = all,
             FilterAura = function(element, unit, data)
+                if blacklist[data.spellId] or blacklist[data.name] then return false end
                 if UnitCanAttack(unit, "player") then
                     return data.isPlayerAura
                 end
                 return not data.isPlayerAura
             end,
             SortAuras = function(a, b)
+                if (a.priority ~= b.priority) then
+                    return a.priority < b.priority
+                end
+
                 if (a.expirationTime ~= b.expirationTime) then
                     return a.expirationTime < b.expirationTime
                 end
@@ -129,7 +138,8 @@ Filger.config = {
             spacing = spacing,
             initialAnchor = "BOTTOMLEFT",
             ["growth-x"] = "RIGHT",
-            ["growth-y"] = "DOWN"
+            ["growth-y"] = "DOWN",
+            spells = all
         },
         ["FOCUS_DEBUFFS"] = {
             enabled = true,
@@ -142,7 +152,9 @@ Filger.config = {
             initialAnchor = "BOTTOMLEFT",
             ["growth-x"] = "RIGHT",
             ["growth-y"] = "DOWN",
+            desaturated = false,
             FilterAura = function(element, unit, data)
+                if blacklist[data.spellId] or blacklist[data.name] then return false end
                 return data.isBossAura or (data.sourceUnit == nil) or not data.isFromPlayerOrPlayerPet
             end
         }, 
@@ -158,6 +170,7 @@ Filger.config = {
             ["growth-x"] = "RIGHT",
             ["growth-y"] = "DOWN",
             FilterAura = function(element, unit, data)
+                if blacklist[data.spellId] or blacklist[data.name] then return false end
                 return data.isBossAura or (data.sourceUnit == nil) -- or not data.isFromPlayerOrPlayerPet
             end
         },

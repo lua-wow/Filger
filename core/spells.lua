@@ -42,7 +42,7 @@ end
 --------------------------------------------------
 -- The Burning Crusade
 --------------------------------------------------
-if Filger.isBCC or interface >= 20000 then
+if Filger.isBCC then
     local data = {}
     import(data, spells)
 end
@@ -50,7 +50,7 @@ end
 --------------------------------------------------
 -- Wrath of the Lich King
 --------------------------------------------------
-if Filger.isWotLK and interface >= 30000 then
+if Filger.isWrath then
     local data = {}
     import(data, spells)
 end
@@ -58,76 +58,74 @@ end
 --------------------------------------------------
 -- Cataclysm
 --------------------------------------------------
-if Filger.isCata and interface >= 40000 then
-    local data = {}
-    import(data, spells)
-end
+if Filger.isCata then
+    local data = {
+        ["DEATHKNIGHT"] = {
+            -- Blood
+            [49222] = Filger:CreateSpellPriority(8),       -- Bone Shield
+        },
+        ["PALADIN"] = {
+            -- Holy
+            [82327] = Filger:CreateSpellPriority(5),       -- Holy Radiance
+            [86273] = Filger:CreateSpellPriority(5),       -- Illuminated Healing
+            
+            -- Protection
+            [20925] = Filger:CreateSpellPriority(7),       -- Holy Shield
+        },
+        ["PRIEST"] = {
+            -- Discipline
+            [81660] = Filger:CreateSpellPriority(8),       -- Evangelism (Rank 1)
+            [81661] = Filger:CreateSpellPriority(8),       -- Evangelism (Rank 2)
+            [59887] = Filger:CreateSpellPriority(7),       -- Borrowed Time (Rank 1)
+            [59888] = Filger:CreateSpellPriority(7),       -- Borrowed Time (Rank 2)
+            [59889] = Filger:CreateSpellPriority(7),       -- Borrowed Time (Rank 3)
+        }
+    }
 
---------------------------------------------------
--- Mists of Pandaria
---------------------------------------------------
-if interface >= 50000 then
-    local data = {}
-    import(data, spells)
-end
-
---------------------------------------------------
--- Warlords of Draenor
---------------------------------------------------
-if interface >= 60000 then
-    local data = {}
-    import(data, spells)
-end
-
---------------------------------------------------
--- Legion
---------------------------------------------------
-if interface >= 70000 then
-    local data = {}
-    import(data, spells)
-end
-
---------------------------------------------------
--- Battle for Azeroth
---------------------------------------------------
-if interface >= 80000 then
-    local data = {}
-    import(data, spells)
-end
-
---------------------------------------------------
--- Shadowlands
---------------------------------------------------
-if interface >= 90000 then
-    local data = {}
-    import(data, spells)
-end
-
---------------------------------------------------
--- Dragonflight
---------------------------------------------------
-if interface >= 100000 then
-    local data = {}
     import(data, spells)
 end
 
 if Filger.isRetail then
     local data = {
+        ["DEMONHUNTER"] = {
+            -- Vengeance
+            [263648] = Filger:CreateSpellPriority(7),       -- Soul Barrier
+            [203720] = Filger:CreateSpellPriority(6),       -- Demon Spike
+        },
+        ["DEATHKNIGHT"] = {
+            -- Blood
+            [48743] = Filger:CreateSpellPriority(5),        -- Death Pact
+            [195181] = Filger:CreateSpellPriority(8),       -- Bone Shield
+            [219809] = Filger:CreateSpellPriority(8),       -- Tombstone
+            [194679] = Filger:CreateSpellPriority(8),       -- Rune Tap
+        },
         ["DRUID"] = {
+            -- All
             [22812] = Filger:CreateSpellPriority(2),       -- Barkskin
 
             -- Balance
-            [48517] = Filger:CreateSpellPriority(5),       -- Elipse (Solar)
-            [48518] = Filger:CreateSpellPriority(5),       -- Elipse (Lunar)
-            [191034] = Filger:CreateSpellPriority(2),      -- Starfall
+            [48517] = Filger:CreateSpellPriority(5),        -- Elipse (Solar)
+            [48518] = Filger:CreateSpellPriority(5),        -- Elipse (Lunar)
+            [191034] = Filger:CreateSpellPriority(2),       -- Starfall
+            
+            -- Feral
+            
+            -- Guardian
+            [192081] = Filger:CreateSpellPriority(6),       -- Ironfur
+            
+            -- Restoration
+            [16870] = Filger:CreateSpellPriority(6),        -- Clearcasting
+            [117679] = Filger:CreateSpellPriority(8),       -- Incarnetion
+            [102342] = Filger:CreateSpellPriority(3),       -- Ironbark
+            [102351] = Filger:CreateSpellPriority(2),       -- Cenarion Ward
         },
         ["MONK"] = {
             -- Brewmaster
-            [120954] = Filger:CreateSpellPriority(1),      -- Fortifying Brew
-            [122278] = Filger:CreateSpellPriority(1),      -- Dampen Harm
-            [122783] = Filger:CreateSpellPriority(1),      -- Diffuse Magic
-            [322507] = Filger:CreateSpellPriority(3),      -- Celestial Brew
-            [325092] = Filger:CreateSpellPriority(10),     -- Purified Chi
+            [120954] = Filger:CreateSpellPriority(1),       -- Fortifying Brew
+            [122278] = Filger:CreateSpellPriority(1),       -- Dampen Harm
+            [122783] = Filger:CreateSpellPriority(1),       -- Diffuse Magic
+            [322507] = Filger:CreateSpellPriority(3),       -- Celestial Brew
+            [325092] = Filger:CreateSpellPriority(10),      -- Purified Chi
         },
         ["PALADIN"] = {
             -- Holy
@@ -140,22 +138,41 @@ if Filger.isRetail then
             [414273] = Filger:CreateSpellPriority(1),       -- Hand of Divinity
         },
         ["PRIEST"] = {
-            -- Talent
-            [10060] = Filger:CreateSpellPriority(3),       -- Power Infusion
+            -- All
+            [10060] = Filger:CreateSpellPriority(3),        -- Power Infusion
 
             -- Discipline
-            [198069] = Filger:CreateSpellPriority(3),      -- Power of the Dark Side
-            [322105] = Filger:CreateSpellPriority(3),      -- Shadow Covenant
+            [33206] = Filger:CreateSpellPriority(10),       -- Pain Suppression
+            [198069] = Filger:CreateSpellPriority(3),       -- Power of the Dark Side
+            [214621] = Filger:CreateSpellPriority(8),       -- Schism (Debuff)
+            [322105] = Filger:CreateSpellPriority(3),       -- Shadow Covenant
 
             -- Holy
-            [200183] = Filger:CreateSpellPriority(3),      -- Apotheosis
+            [47788] = Filger:CreateSpellPriority(10),       -- Guardian Spirit
+            [200183] = Filger:CreateSpellPriority(3),       -- Apotheosis
             
             -- Shadow
-            [47585] = Filger:CreateSpellPriority(1),       -- Dispersion
-            [194249] = Filger:CreateSpellPriority(8),      -- Voidform
+            [47585] = Filger:CreateSpellPriority(10),       -- Dispersion
+            [194249] = Filger:CreateSpellPriority(8),       -- Voidform
+        },
+        ["WARRIOR"] = {
+            -- Protection
+            [871] = Filger:CreateSpellPriority(1),          -- Shield Wall
+            [12975] = Filger:CreateSpellPriority(1),        -- Last Stand
+            [23920] = Filger:CreateSpellPriority(7),        -- Spell Reflect
+            [132404] = Filger:CreateSpellPriority(9),       -- Shield Block
+            [190456] = Filger:CreateSpellPriority(10),      -- Ignore Pain
         }
     }
+
     import(data, spells)
 end
 
 Filger.spells = spells
+Filger.all = {}
+
+for class, data in next, spells do
+    for spellID, value in next, data do
+        Filger.all[spellID] = data
+    end
+end
