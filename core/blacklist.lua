@@ -253,7 +253,9 @@ end
 -- Shadowlands
 --------------------------------------------------
 if expansion >= LE_EXPANSION_SHADOWLANDS then
-    local data = {}
+    local data = {
+        [359082] = true,                -- Sign of the Legion
+    }
     import(data, blacklist)
 end
 
@@ -331,8 +333,9 @@ if expansion >= LE_EXPANSION_DRAGONFLIGHT then
         [382093] = true,                -- Alchemically Inspired
 
         -- Items
-        [401518] = true,                -- Bronze Resonance (Ominous Chromatic Essence)
         [399502] = true,                -- Automically Recalibrated
+        [401518] = true,                -- Bronze Resonance (Ominous Chromatic Essence)
+        [410762] = true,                -- The Silent Star (Voice of the Silent Star)
 
         -- Tier Set
         [426262] = true,                -- Larodar's Fiery Reverie (Priest Discipline / Holy)

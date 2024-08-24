@@ -4,8 +4,8 @@ local config = Filger.config
 local fonts = Filger.fonts
 local textures = Filger.textures
 
--- blizzard
-local IsAddOnLoaded = _G.IsAddOnLoaded
+-- Blizzard
+local IsAddOnLoaded = C_AddOns and C_AddOns.IsAddOnLoaded or _G.IsAddOnLoaded
 
 -- skip it if Tukui exists
 if IsAddOnLoaded("Tainted") then 

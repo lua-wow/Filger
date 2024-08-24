@@ -1,4 +1,4 @@
-## Interface: 20504, 30403, 40400, 100207, 110000
+## Interface: 20504, 30403, 40400, 100207, 110002
 ## Author: Luaerror
 ## Credits: Nils Ruesch, Shestak, Affli, Garagar, hidekki, FourOne, Tukz
 ## Version: 5.1.0

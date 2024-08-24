@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+-  replace `_G.IsAddOnLoaded` with `C_AddOns.IsAddOnLoaded` (patch 11.0.2)
+
 ## [5.1.0] - 2024-08-04
 
 ### Changed

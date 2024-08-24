@@ -90,7 +90,9 @@ if Filger.isRetail then
         ["DEMONHUNTER"] = {
             -- Vengeance
             [263648] = Filger:CreateSpellPriority(7),       -- Soul Barrier
-            [203720] = Filger:CreateSpellPriority(6),       -- Demon Spike
+            [203718] = Filger:CreateSpellPriority(6),       -- Demon Spike
+            [212988] = Filger:CreateSpellPriority(8),       -- Painbringer
+            [391234] = Filger:CreateSpellPriority(8),       -- Soulmonger
         },
         ["DEATHKNIGHT"] = {
             -- Blood
@@ -118,6 +120,11 @@ if Filger.isRetail then
             [117679] = Filger:CreateSpellPriority(8),       -- Incarnetion
             [102342] = Filger:CreateSpellPriority(3),       -- Ironbark
             [102351] = Filger:CreateSpellPriority(2),       -- Cenarion Ward
+        },
+        ["HUNTER"] = {
+            -- Marksmanship
+            [260242] = Filger:CreateSpellPriority(7),       -- Precise Shot
+            [342076] = Filger:CreateSpellPriority(7),       -- Streamline
         },
         ["MONK"] = {
             -- Brewmaster
