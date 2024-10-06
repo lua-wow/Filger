@@ -541,7 +541,9 @@ if Filger.isRetail then
             -- General
             CreateSpellCooldown(187827),        -- Metamorphosis
             CreateSpellCooldown(196718),        -- Darkness
+            CreateSpellCooldown(204596),        -- Sigil of Flames
             CreateSpellCooldown(207684),        -- Sigil of Misery
+            CreateSpellCooldown(370965),        -- The Hunt
             CreateSpellCooldown(390163),        -- Sigil of Spite
 
             -- Havoc

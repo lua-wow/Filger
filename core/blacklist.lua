@@ -363,24 +363,77 @@ end
 --------------------------------------------------
 if Filger.isRetail then
     local data = {
-        -- DRUID
-        [400734] = true,                -- After the Wildfire
+        -- Classes
+            -- DEMONHUNTER
+            [452550] = true,                -- Monster Rising
+            [453314] = true,                -- Enduring Torment
 
-        -- MONK
-        [383733] = true,                -- Training of Niuzao
-        [450552] = true,                -- Jade Walk
-        [450572] = true,                -- Flow of Chi
-        [450574] = true,                -- Flow of Chi
+            -- DRUID
+            [400734] = true,                -- After the Wildfire
 
-        -- PRIEST
-        [21562] = true,                 -- Power Word: Fortitude
+            -- MONK
+            [383733] = true,                -- Training of Niuzao
+            [450552] = true,                -- Jade Walk
+            [450572] = true,                -- Flow of Chi
+            [450574] = true,                -- Flow of Chi
+
+            -- PRIEST
+            [21562] = true,                 -- Power Word: Fortitude
+
+            -- SHAMAN
+            [462854] = true,                -- Skyfury
+
+            -- WARRIOR
+            [386196] = true,                -- Berserker Stance
 
         -- Mount
         [404464] = true,                -- Flight Style: Skyriding
         [404468] = true,                -- Flight Style: Steady
 
         -- Mythic+
-        [206150] = true,              -- Challenger's Might
+        [206150] = true,                -- Challenger's Might
+
+        -- Items
+        [452226] = true,                -- Spiderling (Ara-Kara Sacbrood)
+            -- Tome of Light's Devotion
+            [450699] = true,                -- "The 50 Verses of Radiance"
+            [450696] = true,                -- "The 50 Verses of Radiance"
+            [450720] = true,                -- Inner Radiance
+            [450706] = false,               -- Inner Radiance
+
+        -- Warband
+        [430191] = true,                -- Warband Mentored Leveling
+        [225788] = true,                -- Sign of the Emissary
+        
+        [17619] = true,                 -- Alchemist Stone
+        [72968] = true,                 -- Precious's Ribbon
+        [203533] = true,                -- Black Icey Bling
+        [225788] = true,                -- Sign of the Emissary
+        [306600] = true,                -- Experience Eliminated
+        [347600] = true,                -- Infused Ruby Tracking
+        [397734] = true,                -- Word of a Worthy Ally
+        [456820] = true,                -- Ride Along
+        [417275] = true,                -- Greater Encapsulated Destiny
+
+        -- Factions
+        [442983] = true,                -- Vizier's Savvy
+        [462806] = true,                -- Vizier's Supremacy
+        [440645] = true,                -- Fire Flies
+        [443248] = true,                -- Azj-Kahet Pheromones
+
+        -- Weekly
+        [335148] = true,                -- Sign of the Twisting Nether
+        -- [452307] = true,                -- Sign of the Past
+        -- [455020] = true,                -- WoW's Anniversary
+        [471521] = true,                -- Sign of the Explorer
+
+        -- Costumes
+        [16739] = true,                 -- Orb of Deception
+        [96312] = true,                 -- Kalytha's Haunted Locket
+        [245686] = true,                -- Fashionable!
+
+        -- Professions
+        [442981] = true,                -- Weaver's Tutelage
     }
 
     import(data, blacklist)

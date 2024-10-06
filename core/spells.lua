@@ -89,9 +89,10 @@ if Filger.isRetail then
     local data = {
         ["DEMONHUNTER"] = {
             -- Vengeance
-            [263648] = Filger:CreateSpellPriority(7),       -- Soul Barrier
-            [203718] = Filger:CreateSpellPriority(6),       -- Demon Spike
+            [203719] = Filger:CreateSpellPriority(6),       -- Demon Spikes
             [212988] = Filger:CreateSpellPriority(8),       -- Painbringer
+            [258920] = Filger:CreateSpellPriority(8),       -- Immolation Aura
+            [263648] = Filger:CreateSpellPriority(7),       -- Soul Barrier
             [391234] = Filger:CreateSpellPriority(8),       -- Soulmonger
         },
         ["DEATHKNIGHT"] = {
@@ -125,6 +126,9 @@ if Filger.isRetail then
             -- Marksmanship
             [260242] = Filger:CreateSpellPriority(7),       -- Precise Shot
             [342076] = Filger:CreateSpellPriority(7),       -- Streamline
+        },
+        ["MAGE"] = {
+            [384267] = Filger:CreateSpellPriority(3),       -- Siphon Storm
         },
         ["MONK"] = {
             -- Brewmaster
