@@ -182,7 +182,6 @@ end
 -- Wrath of the Lich King
 --------------------------------------------------
 if Filger.isWrath then
-    
     local data  = {
         -- PRIEST
         [48040] = isWrath,                  -- Inner Fire (Rank 8)
@@ -190,6 +189,14 @@ if Filger.isWrath then
         [48074] = isWrath,                  -- Prayer of Spirit (Rank 3)
     }
 
+    import(data, blacklist)
+end
+
+if expansion >= LE_EXPANSION_WRATH_OF_THE_LICH_KING then
+    local data = {
+        -- Items
+        [72968] = true, -- Precious's Ribbon
+    }
     import(data, blacklist)
 end
 
@@ -211,6 +218,13 @@ if Filger.isCata then
     import(data, blacklist)
 end
 
+if expansion >= LE_EXPANSION_CATACLYSM then
+    local data = {
+        [17619] = true, -- Alchemist Stone
+    }
+    import(data, blacklist)
+end
+
 --------------------------------------------------
 -- Mists of Pandaria
 --------------------------------------------------
@@ -226,7 +240,9 @@ end
 --------------------------------------------------
 if expansion >= LE_EXPANSION_WARLORDS_OF_DRAENOR then
     local data = {
-        [186403] = true,                -- Sign of Battle
+        -- World Buffs
+        [186403] = true, -- Sign of Battle
+        [186406] = true, -- Sign of the Critter
     }
     import(data, blacklist)
 end
@@ -236,7 +252,12 @@ end
 --------------------------------------------------
 if expansion >= LE_EXPANSION_LEGION then
     local data = {
-        [227723] = true,                -- Mana Diving Stone
+        -- Items
+        [203533] = true, -- Black Icey Bling
+        [227723] = true, -- Mana Diving Stone
+
+        -- World Buffs
+        [225788] = true, -- Sign of the Emissary
     }
     import(data, blacklist)
 end
@@ -245,7 +266,14 @@ end
 -- Battle for Azeroth
 --------------------------------------------------
 if expansion >= LE_EXPANSION_BATTLE_FOR_AZEROTH then
-    local data = {}
+    local data = {
+        -- World Buffs
+        [335148] = true, -- Sign of the Twisting Nether
+        [335149] = true, -- Sign of the Scourge
+        [335150] = true, -- Sign of the Destroyer
+        [335151] = true, -- Sign of the Mists
+        [335152] = true, -- Sign of Iron
+    }
     import(data, blacklist)
 end
 
@@ -254,7 +282,9 @@ end
 --------------------------------------------------
 if expansion >= LE_EXPANSION_SHADOWLANDS then
     local data = {
-        [359082] = true,                -- Sign of the Legion
+        -- World Buffs
+        [347600] = true, -- Infused Ruby Tracking
+        [359082] = true, -- Sign of the Legion
     }
     import(data, blacklist)
 end
@@ -324,9 +354,10 @@ if expansion >= LE_EXPANSION_DRAGONFLIGHT then
         [430666] = true,                -- Sign of Awakened Storms
         [430668] = true,                -- Sign of Awakened Embers
         [430669] = true,                -- Sign of Awakened Dreams
-        
-        [420511] = true,                -- Going Green
 
+        -- World Buffs
+        [397734] = true,                -- Word of a Worthy Ally
+        [420511] = true,                -- Going Green
         [225787] = true,                -- Sign of of Warrior
 
         -- Professions
@@ -364,84 +395,75 @@ end
 if Filger.isRetail then
     local data = {
         -- Classes
-            -- DEMONHUNTER
-            [452550] = true,                -- Monster Rising
-            [453314] = true,                -- Enduring Torment
+        -- DEMONHUNTER
+        [452550] = true,                -- Monster Rising
+        [453314] = true,                -- Enduring Torment
 
-            -- DRUID
-            [400734] = true,                -- After the Wildfire
+        -- EVOKER
+        [369459] = true,                -- Source of Magic
+        [381753] = true,                -- Blessing of the Bronze
 
-            -- MONK
-            [383733] = true,                -- Training of Niuzao
-            [450552] = true,                -- Jade Walk
-            [450572] = true,                -- Flow of Chi
-            [450574] = true,                -- Flow of Chi
+        -- DRUID
+        [400734] = true,                -- After the Wildfire
 
-            -- PRIEST
-            [21562] = true,                 -- Power Word: Fortitude
+        -- MONK
+        [383733] = true,                -- Training of Niuzao
+        [450552] = true,                -- Jade Walk
+        [450572] = true,                -- Flow of Chi
+        [450574] = true,                -- Flow of Chi
 
-            -- SHAMAN
-            [462854] = true,                -- Skyfury
+        -- PRIEST
+        [21562] = true,                 -- Power Word: Fortitude
 
-            -- WARRIOR
-            [386196] = true,                -- Berserker Stance
+        -- SHAMAN
+        [462854] = true,                -- Skyfury
+
+        -- WARRIOR
+        [386196] = true,                -- Berserker Stance
 
         -- Mount
         [404464] = true,                -- Flight Style: Skyriding
         [404468] = true,                -- Flight Style: Steady
+        [456820] = true,                -- Ride Along
 
         -- Mythic+
         [206150] = true,                -- Challenger's Might
 
         -- Items
         [452226] = true,                -- Spiderling (Ara-Kara Sacbrood)
-            -- Tome of Light's Devotion
-            [450699] = true,                -- "The 50 Verses of Radiance"
-            [450696] = true,                -- "The 50 Verses of Radiance"
-            [450720] = true,                -- Inner Radiance
-            [450706] = false,               -- Inner Radiance
+        [450699] = true,                -- "The 50 Verses of Radiance" (Tome of Light's Devotion)
+        [450696] = true,                -- "The 50 Verses of Radiance" (Tome of Light's Devotion)
+        [450720] = true,                -- Inner Radiance (Tome of Light's Devotion)
+        [450706] = false,               -- Inner Radiance (Tome of Light's Devotion)
+        [457925] = true,                -- Venomous Potential (Seal of the Poisoned Pact)
+
+        -- World Buffs
+        [306600] = true,                -- Experience Eliminated
+        [417275] = true,                -- Greater Encapsulated Destiny
+        -- [452307] = true,                -- Sign of the Past
+        -- [455020] = true,                -- WoW's Anniversary
+        [471521] = true,                -- Sign of the Explorer
 
         -- Warband
         [430191] = true,                -- Warband Mentored Leveling
-        [225788] = true,                -- Sign of the Emissary
-        
-        [17619] = true,                 -- Alchemist Stone
-        [72968] = true,                 -- Precious's Ribbon
-        [203533] = true,                -- Black Icey Bling
-        [225788] = true,                -- Sign of the Emissary
-        [306600] = true,                -- Experience Eliminated
-        [347600] = true,                -- Infused Ruby Tracking
-        [397734] = true,                -- Word of a Worthy Ally
-        [456820] = true,                -- Ride Along
-        [417275] = true,                -- Greater Encapsulated Destiny
+
+        -- Costumes
+        [16739] = true,                 -- Orb of Deception
+        [96312] = true,                 -- Kalytha's Haunted Locket
+        [147728] = true,                -- Severed Crimsonscale Head
+        [245686] = true,                -- Fashionable!
+
+        -- Professions
+        [442981] = true,                -- Weaver's Tutelage
 
         -- Factions
         [442983] = true,                -- Vizier's Savvy
         [462806] = true,                -- Vizier's Supremacy
         [440645] = true,                -- Fire Flies
         [443248] = true,                -- Azj-Kahet Pheromones
-
-        -- Weekly
-        [335148] = true,                -- Sign of the Twisting Nether
-        -- [452307] = true,                -- Sign of the Past
-        -- [455020] = true,                -- WoW's Anniversary
-        [471521] = true,                -- Sign of the Explorer
-
-        -- Costumes
-        [16739] = true,                 -- Orb of Deception
-        [96312] = true,                 -- Kalytha's Haunted Locket
-        [245686] = true,                -- Fashionable!
-
-        -- Professions
-        [442981] = true,                -- Weaver's Tutelage
     }
 
     import(data, blacklist)
 end
-
--- for spellId, v in next, blacklist do
---     local data = C_Spell.GetSpellInfo(spellId)
---     print("blacklist", spellId, data.name)
--- end
 
 Filger.blacklist = blacklist
