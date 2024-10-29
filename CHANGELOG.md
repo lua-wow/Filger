@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+-   Update shaman enhancement spells and cooldowns
+-   Added items spells priority
+
+### Changed
+
+-   Update spell priority
+-   Update processing and filtering spells
+
 ## [5.1.1] - 2024-10-07
 
 ### Changed

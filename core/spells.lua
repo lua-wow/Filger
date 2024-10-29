@@ -5,7 +5,7 @@ local interface = Filger.interface
 -- Blizzard
 local GetSpellInfo = C_Spell and C_Spell.GetSpellInfo or _G.GetSpellInfo
 
-local import = function(source, dest)
+local import = function(dest, source)
     for class, spells in next, source do
         if not dest[class] then
             dest[class] = {}
@@ -16,17 +16,26 @@ local import = function(source, dest)
             if data then
                 dest[class][spellId] = info
             else
-                Filger.warn("SPELLS", "Spell " .. spellId .. " do not exists.")
+                Filger:warn("SPELLS", "Spell " .. spellId .. " do not exists.")
             end
         end
     end
 end
 
-function Filger:CreateSpellPriority(priority)
-    if not tonumber(priority) then
-        priority = 0
+function Filger:CreateSpellPriority(arg1, arg2)
+    local enabled, priority, stackThreshold = true, 0, 0
+
+    if type(arg1) == "boolean" then
+        enabled = arg1
+    elseif type(arg1) == "number" then
+        priority = arg1
     end
-    return { enabled = true, priority = priority }
+
+    if type(arg2) == "number" then
+        stackThreshold = arg2
+    end
+
+    return { enabled = enabled, priority = priority, stackThreshold = stackThreshold }
 end
 
 local spells = {}
@@ -36,7 +45,7 @@ local spells = {}
 --------------------------------------------------
 if Filger.isClassic then
     local data = {}
-    import(data, spells)
+    import(spells, data)
 end
 
 --------------------------------------------------
@@ -44,7 +53,7 @@ end
 --------------------------------------------------
 if Filger.isBCC then
     local data = {}
-    import(data, spells)
+    import(spells, data)
 end
 
 --------------------------------------------------
@@ -52,7 +61,7 @@ end
 --------------------------------------------------
 if Filger.isWrath then
     local data = {}
-    import(data, spells)
+    import(spells, data)
 end
 
 --------------------------------------------------
@@ -82,7 +91,7 @@ if Filger.isCata then
         }
     }
 
-    import(data, spells)
+    import(spells, data)
 end
 
 if Filger.isRetail then
@@ -131,6 +140,8 @@ if Filger.isRetail then
             [384267] = Filger:CreateSpellPriority(3),       -- Siphon Storm
         },
         ["MONK"] = {
+            -- Mistweaver
+
             -- Brewmaster
             [120954] = Filger:CreateSpellPriority(1),       -- Fortifying Brew
             [122278] = Filger:CreateSpellPriority(1),       -- Dampen Harm
@@ -147,16 +158,26 @@ if Filger.isRetail then
             [388013] = Filger:CreateSpellPriority(1),       -- Blessing of Spring
             [414204] = Filger:CreateSpellPriority(1),       -- Rising Sunlight
             [414273] = Filger:CreateSpellPriority(1),       -- Hand of Divinity
+
+            -- Protection
+            [642] = Filger:CreateSpellPriority(10),         -- Divine Shield
+            [31850] = Filger:CreateSpellPriority(10),       -- Ardent Defender
+            [86659] = Filger:CreateSpellPriority(10),       -- Guardian of Ancient Kings
+            [387174] = Filger:CreateSpellPriority(10),      -- Eye of Tyr (target)
+            [400745] = Filger:CreateSpellPriority(false),   -- Afterimage
+            [432607] = Filger:CreateSpellPriority(5),       -- Holy Bulwark
+            [433550] = Filger:CreateSpellPriority(false),   -- Afterimage
         },
         ["PRIEST"] = {
             -- All
+            [586] = Filger:CreateSpellPriority(10),         -- Fade
             [10060] = Filger:CreateSpellPriority(3),        -- Power Infusion
 
             -- Discipline
             [33206] = Filger:CreateSpellPriority(10),       -- Pain Suppression
             [198069] = Filger:CreateSpellPriority(3),       -- Power of the Dark Side
             [214621] = Filger:CreateSpellPriority(8),       -- Schism (Debuff)
-            [322105] = Filger:CreateSpellPriority(3),       -- Shadow Covenant
+            [322105] = Filger:CreateSpellPriority(10),      -- Shadow Covenant
 
             -- Holy
             [47788] = Filger:CreateSpellPriority(10),       -- Guardian Spirit
@@ -164,7 +185,31 @@ if Filger.isRetail then
             
             -- Shadow
             [47585] = Filger:CreateSpellPriority(10),       -- Dispersion
-            [194249] = Filger:CreateSpellPriority(8),       -- Voidform
+            [15286] = Filger:CreateSpellPriority(3),        -- Vampiric Embrace
+            [194249] = Filger:CreateSpellPriority(10),      -- Voidform
+            [391109] = Filger:CreateSpellPriority(10),      -- Dark Ascension
+            [391401] = Filger:CreateSpellPriority(7),       -- Mind Flay: Insanity
+            [391099] = Filger:CreateSpellPriority(8),       -- Dark Evangelism
+            [373204] = Filger:CreateSpellPriority(8),       -- Mind Devourer
+            [454638] = Filger:CreateSpellPriority(8),       -- Devouring Chorus
+        },
+        ["SHAMAN"] = {
+            -- General
+            [108270] = Filger:CreateSpellPriority(30),      -- Stone Bulwark Totem
+            [108271] = Filger:CreateSpellPriority(30),      -- Astral Shift
+            [381684] = Filger:CreateSpellPriority(false),   -- Brimming with Life
+
+            -- Enhancement
+            [333957] = Filger:CreateSpellPriority(20),      -- Feral Spirit
+            [384352] = Filger:CreateSpellPriority(20),      -- Doom Winds
+            [454015] = Filger:CreateSpellPriority(15),      -- Tempest
+            [470532] = Filger:CreateSpellPriority(12),      -- Arc Discharge
+            [201900] = Filger:CreateSpellPriority(10),      -- Hot Hand
+            [224127] = Filger:CreateSpellPriority(false),   -- Crackling Surge
+            [344179] = Filger:CreateSpellPriority(12),      -- Maelstrom Weapon
+            [384411] = Filger:CreateSpellPriority(10),      -- Static Accumulation
+            [455110] = Filger:CreateSpellPriority(10),      -- Supercharge
+            [469344] = Filger:CreateSpellPriority(10),      -- Molten Thunder
         },
         ["WARRIOR"] = {
             -- Protection
@@ -173,17 +218,27 @@ if Filger.isRetail then
             [23920] = Filger:CreateSpellPriority(7),        -- Spell Reflect
             [132404] = Filger:CreateSpellPriority(9),       -- Shield Block
             [190456] = Filger:CreateSpellPriority(10),      -- Ignore Pain
+        },
+        ["ALL"] = {
+            -- Items
+            [449578] = Filger:CreateSpellPriority(false),   -- Deliberate Incubation (Ovi'nax Mercurial Egg)
+            [449581] = Filger:CreateSpellPriority(false),   -- Reckless Incubation (Ovi'nax Mercurial Egg)
+            [452226] = Filger:CreateSpellPriority(false),   -- Spiderling (Ara-Kara Sacbrood)
+            [457925] = Filger:CreateSpellPriority(false),   -- Venomous Potential (Seal of the Poisoned Pact)
+            [462513] = Filger:CreateSpellPriority(8, 1),    -- Severed Strands (Spymaster's Web)
+            [449947] = Filger:CreateSpellPriority(20),      -- Realigning Nexus Convergence Divergence (Treacherous Transmitter)
+
+            -- Consumables
+            [431932] = Filger:CreateSpellPriority(5),       -- Tempered Potion
         }
     }
 
-    import(data, spells)
+    import(spells, data)
 end
 
 Filger.spells = spells
 Filger.all = {}
 
 for class, data in next, spells do
-    for spellID, value in next, data do
-        Filger.all[spellID] = data
-    end
+    Filger.all = Mixin(Filger.all, data or {})
 end

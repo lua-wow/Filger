@@ -7,15 +7,15 @@ local floor, ceil = math.floor, math.ceil
 ------------------------------------------------------------
 -- Functions
 ------------------------------------------------------------
-function Filger.print(...)
+function Filger:print(...)
     print("|cffff8000Filger|r", ...)
 end
 
-function Filger.warn(...)
+function Filger:warn(...)
     print("|cffffd100Filger WARNING|r", ...)
 end
 
-function Filger.error(...)
+function Filger:error(...)
     print("|cffffa1a1Filger ERROR|r", ...)
 end
 

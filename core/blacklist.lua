@@ -34,7 +34,7 @@ local import = function(source, dest)
                 if data then
                     dest[spellId] = true
                 else
-                    Filger.warn("BLACKLIST", "Spell " .. spellId .. " do not exists.")
+                    Filger:warn("BLACKLIST", "Spell " .. spellId .. " do not exists.")
                 end
             end
         end
@@ -241,6 +241,7 @@ end
 if expansion >= LE_EXPANSION_WARLORDS_OF_DRAENOR then
     local data = {
         -- World Buffs
+        [186401] = true, -- Sign of the Skirmisher
         [186403] = true, -- Sign of Battle
         [186406] = true, -- Sign of the Critter
     }
@@ -402,6 +403,7 @@ if Filger.isRetail then
         -- EVOKER
         [369459] = true,                -- Source of Magic
         [381753] = true,                -- Blessing of the Bronze
+        [372014] = true,                -- Visage
 
         -- DRUID
         [400734] = true,                -- After the Wildfire
@@ -436,18 +438,27 @@ if Filger.isRetail then
         [450720] = true,                -- Inner Radiance (Tome of Light's Devotion)
         [450706] = false,               -- Inner Radiance (Tome of Light's Devotion)
         [457925] = true,                -- Venomous Potential (Seal of the Poisoned Pact)
+        [447962] = true,                -- Stance - Surekian Flourish
+        [448036] = true,                -- Stance - Surekian Barrage
+        [447978] = true,                -- Stance - Surekian Decimation
+        [448433] = true,                -- Surekian Grace
 
         -- World Buffs
         [306600] = true,                -- Experience Eliminated
         [417275] = true,                -- Greater Encapsulated Destiny
-        -- [452307] = true,                -- Sign of the Past
-        -- [455020] = true,                -- WoW's Anniversary
+        [452307] = true,                -- Sign of the Past
+        [455020] = true,                -- WoW's Anniversary
         [471521] = true,                -- Sign of the Explorer
+        
+        -- Events
+        [44185] = true,                 -- Jack-o'-Lanterned!
+        [455050] = true,                -- Blessing of the brozen Drgonflight
 
         -- Warband
         [430191] = true,                -- Warband Mentored Leveling
 
         -- Costumes
+        [8222] = true,                  -- Yaaarrrr
         [16739] = true,                 -- Orb of Deception
         [96312] = true,                 -- Kalytha's Haunted Locket
         [147728] = true,                -- Severed Crimsonscale Head
@@ -455,6 +466,7 @@ if Filger.isRetail then
 
         -- Professions
         [442981] = true,                -- Weaver's Tutelage
+        [462810] = true,                -- Weaver's Prodigy
 
         -- Factions
         [442983] = true,                -- Vizier's Savvy

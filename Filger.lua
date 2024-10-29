@@ -302,8 +302,7 @@ do
     * show - indicates whether the aura button should be shown (boolean)
     --]]
     function aura_proto:FilterAura(unit, data)
-        if blacklist[data.spellId] or blacklist[data.name] then return false end
-        return true
+        return data.enabled and data.applications >= data.stackThreshold
     end
 
     --[[ Override: aura_proto:ProcessData(unit, data)
@@ -328,8 +327,19 @@ do
         data.isDispelable = LibDispel:IsDispelable(unit, data.spellId, data.dispelName, data.isHarmful)
 
         local spell = self.spells[data.spellId]
-        data.enabled = spell and spell.enabled or false
-        data.priority = spell and spell.priority or 0
+        if spell then
+            data.enabled = spell.enabled or false
+            data.priority = spell.priority or 0
+            data.stackThreshold = spell.stackThreshold or 0
+        else
+            data.enabled = true
+            data.priority = 0
+            data.stackThreshold = 0
+        end
+
+        if blacklist[data.spellId] or blacklist[data.name] then
+            data.enabled = false
+        end
 
         return data
     end

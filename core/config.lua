@@ -73,7 +73,7 @@ Filger.config = {
             initialAnchor = "BOTTOMRIGHT",
             ["growth-x"] = "LEFT",
             ["growth-y"] = "DOWN",
-            spells = spells[class]
+            spells = Mixin(spells[class] or {}, spells["ALL"] or {})
         },
         ["PLAYER_BUFFS"] = {
             enabled = true,
@@ -89,8 +89,7 @@ Filger.config = {
             ["growth-x"] = "LEFT",
             ["growth-y"] = "DOWN",
             FilterAura = function(element, unit, data)
-                if blacklist[data.spellId] or blacklist[data.name] then return false end
-                return not data.isPlayerAura
+                return data.enabled and not data.isPlayerAura
             end
         },
         ["TARGET_DEBUFFS"] = {
@@ -106,11 +105,10 @@ Filger.config = {
             ["growth-y"] = "DOWN",
             spells = all,
             FilterAura = function(element, unit, data)
-                if blacklist[data.spellId] or blacklist[data.name] then return false end
                 if UnitCanAttack(unit, "player") then
-                    return data.isPlayerAura
+                    return data.enabled and data.isPlayerAura
                 end
-                return not data.isPlayerAura
+                return data.enabled and not data.isPlayerAura
             end,
             SortAuras = function(a, b)
                 if (a.priority ~= b.priority) then
@@ -154,8 +152,7 @@ Filger.config = {
             ["growth-y"] = "DOWN",
             desaturated = false,
             FilterAura = function(element, unit, data)
-                if blacklist[data.spellId] or blacklist[data.name] then return false end
-                return data.isBossAura or (data.sourceUnit == nil) or not data.isFromPlayerOrPlayerPet
+                return data.enabled and data.isBossAura or (data.sourceUnit == nil) or not data.isFromPlayerOrPlayerPet
             end
         }, 
         ["BOSS_DEBUFFS"] = {
@@ -170,8 +167,7 @@ Filger.config = {
             ["growth-x"] = "RIGHT",
             ["growth-y"] = "DOWN",
             FilterAura = function(element, unit, data)
-                if blacklist[data.spellId] or blacklist[data.name] then return false end
-                return data.isBossAura or (data.sourceUnit == nil) -- or not data.isFromPlayerOrPlayerPet
+                return data.enabled and data.isBossAura or (data.sourceUnit == nil)
             end
         },
         ["PLAYER_COOLDOWNS"] = {

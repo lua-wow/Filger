@@ -26,7 +26,7 @@ local importData = function(dest, row)
         if data then
             table.insert(dest, row)
         else
-            Filger.warn("COOLDOWN", "Spell " .. row.spellId .. " do not exists.")
+            Filger:warn("COOLDOWN", "Spell " .. row.spellId .. " do not exists.")
         end
     end
 end
@@ -52,7 +52,7 @@ local import = function(source, dest)
 end
 
 local CreateSpellCooldown = function(spellId, enabled)
-    assert(tonumber(spellId), "Filger: Invalid cooldown spellId")
+    assert(type(spellId) == "number", "Filger: Invalid cooldown spellId")
     if (enabled == nil) then
         enabled = true
     end
@@ -764,19 +764,36 @@ if Filger.isRetail then
         ["SHAMAN"] = {
             -- General
             CreateSpellCooldown(8143),          -- Tremor Totem
+            CreateSpellCooldown(79206),         -- Spiritwalker's Grace
+            CreateSpellCooldown(108270),        -- Stone Bulwark Totem
             CreateSpellCooldown(108271),        -- Astral Shift
             CreateSpellCooldown(108281),        -- Ancestral Guidance
             CreateSpellCooldown(108285),        -- Totemic Recall
+            CreateSpellCooldown(192058),        -- Capacitator Totem
             CreateSpellCooldown(192077),        -- Wind Rush Totem
+            CreateSpellCooldown(198103),        -- Earth Elemental
+            CreateSpellCooldown(383013),        -- Poison Cleansing Totem
+
+            -- Elemental
+            CreateSpellCooldown(114050),        -- Ascendance
+            CreateSpellCooldown(191634),        -- Stormkeeper
+            CreateSpellCooldown(192249),        -- Storm Elemental
+            CreateSpellCooldown(198067),        -- Fire Elemental
 
             -- Restoration
             CreateSpellCooldown(16191),         -- Mana Tide Totem
             CreateSpellCooldown(98008),         -- Spirit Link Totem
             CreateSpellCooldown(108280),        -- Healing Tide Totem
-            CreateSpellCooldown(157153),        -- Cloudburst Totem
-            CreateSpellCooldown(198838),        -- Earth Wall Totem
-            CreateSpellCooldown(207399),        -- Ancestral Protection Totem
             CreateSpellCooldown(114052),        -- Ascendance
+            CreateSpellCooldown(157153),        -- Cloudburst Totem
+            CreateSpellCooldown(198838),        -- Eartheb Wall Totem
+            CreateSpellCooldown(207399),        -- Ancestral Protection Totem
+
+            -- Enhancement
+            CreateSpellCooldown(51533),         -- Feral Spirit
+            CreateSpellCooldown(114051),        -- Ascendance
+            CreateSpellCooldown(197214),        -- Sundering
+            CreateSpellCooldown(384352),        -- Doom Winds
         },
         ["WARRIOR"] = {
             -- Talent
