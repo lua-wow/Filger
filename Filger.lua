@@ -8,7 +8,7 @@ local blacklist = ns.Filger.blacklist or {}
 local cooldowns = ns.Filger.cooldowns or {}
 local spells = ns.Filger.spells or {}
 
--- WoW API
+-- Blizzard
 local CreateFrame = _G.CreateFrame
 local UnitIsUnit = _G.UnitIsUnit
 local UnitIsOwnerOrControllerOfUnit = _G.UnitIsOwnerOrControllerOfUnit
@@ -20,14 +20,9 @@ local GetInventoryItemLink = _G.GetInventoryItemLink
 local GetItemInfo = _G.GetItemInfo
 local GetInventoryItemCooldown = _G.GetInventoryItemCooldown
 
--- local LibClassicDurations = ns.Filger.LibClassicDurations
--- if (LibClassicDurations) then
---     UnitAura = LibClassicDurations.UnitAuraWrapper
--- end
-
-------------------------------------------------------------
+--------------------------------------------------
 -- Filger
-------------------------------------------------------------
+--------------------------------------------------
 local isInit = false
 
 --------------------------------------------------
@@ -41,23 +36,22 @@ do
 
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 
-        if Filger.isRetail then
-            if self.auraInstanceID then
-                if self.isHarmful then
-                    GameTooltip:SetUnitDebuffByAuraInstanceID(self.unit, self.auraInstanceID)
-                else
-                    GameTooltip:SetUnitBuffByAuraInstanceID(self.unit, self.auraInstanceID)
-                end
+        if self.auraIndex then
+            -- classic aura tooltip
+            GameTooltip:SetUnitAura(self.unit, self.auraIndex, self.isHarmful and "HARMFUL" or "HELPFUL")
+        elseif self.auraInstanceID then
+            -- retail aura tooltip
+            if self.isHarmful then
+                GameTooltip:SetUnitDebuffByAuraInstanceID(self.unit, self.auraInstanceID)
+            else
+                GameTooltip:SetUnitBuffByAuraInstanceID(self.unit, self.auraInstanceID)
             end
-        else
-            if self.spellId then
-                -- GameTooltip:SetUnitAura(self.unit, self.index, self.filter);
-                GameTooltip:SetSpellByID(self.spellId);
-            elseif self.itemId then
-                GameTooltip:SetItemByID(self.itemId);
-            elseif self.slotId then
-                GameTooltip:SetInventoryItem(self.slotId);
-            end
+        elseif self.itemId then
+            GameTooltip:SetItemByID(self.itemId)
+        elseif self.slotId then
+            GameTooltip:SetInventoryItem(self.slotId)
+        elseif self.spellId then
+            GameTooltip:SetSpellByID(self.spellId)
         end
     end
 
@@ -228,6 +222,7 @@ do
         button.unit = unit
         button.filter = self.filter
         button.auraInstanceID = data.auraInstanceID
+        button.auraIndex = data.auraIndex
         button.isHarmful = data.isHarmful
 
         -- timers
@@ -305,6 +300,20 @@ do
         return data.enabled and data.applications >= data.stackThreshold
     end
 
+    function aura_proto:GetAuraIndex(unit, auraInstanceID, filter)
+        local index = 1
+        repeat
+            local data = C_UnitAuras.GetAuraDataByIndex(unit, index, filter)
+            if not data then
+                return nil
+            elseif data.auraInstanceID == auraInstanceID then
+                return index
+            end
+            index = index + 1
+        until (not data)
+        return nil
+    end
+
     --[[ Override: aura_proto:ProcessData(unit, data)
     Add some custom value sto the UnitAuraInfo.
 
@@ -316,10 +325,8 @@ do
 
     * data - a custom 'UnitAuraInfo' object (table)
     --]]
-    function aura_proto:ProcessData(unit, data, index)
+    function aura_proto:ProcessData(unit, data)
         if not data then return end
-
-        data.index = index
 
         data.isPlayerAura = data.sourceUnit and (UnitIsUnit("player", data.sourceUnit) or UnitIsOwnerOrControllerOfUnit("player", data.sourceUnit))
 
@@ -339,6 +346,10 @@ do
 
         if blacklist[data.spellId] or blacklist[data.name] then
             data.enabled = false
+        end
+
+        if Filger.isClassic then
+            data.auraIndex = self:GetAuraIndex(unit, data.auraInstanceID, self.filter)
         end
 
         return data

@@ -34,7 +34,7 @@ local import = function(source, dest)
                 if data then
                     dest[spellId] = true
                 else
-                    Filger:warn("BLACKLIST", "Spell " .. spellId .. " do not exists.")
+                    Filger:warn("Blacklist", "Spell " .. spellId .. " do not exists.")
                 end
             end
         end
@@ -52,11 +52,11 @@ local general = {
     ["Food"] = true,
  
     -- Lust
-    [57723] = true,                                             -- Exhaustion (Heroism)
-    [57724] = true,                                             -- Sated (Bloodlust)
-    [80354] = true,                                             -- Temporal Displacement (Mage)
-    [264689] = (expansion >= LE_EXPANSION_SHADOWLANDS),         -- Fatigued (Hunter)
-    [390435] = (expansion >= LE_EXPANSION_DRAGONFLIGHT),        -- Exhaustion (Evoker - Fury of the Aspects)
+    [57723] = (expansion >= LE_EXPANSION_WRATH_OF_THE_LICH_KING),   -- Exhaustion (Heroism)
+    [57724] = (expansion >= LE_EXPANSION_WRATH_OF_THE_LICH_KING),   -- Sated (Bloodlust)
+    [80354] = (expansion >= LE_EXPANSION_MISTS_OF_PANDARIA),        -- Temporal Displacement (Mage)
+    [264689] = (expansion >= LE_EXPANSION_SHADOWLANDS),             -- Fatigued (Hunter)
+    [390435] = (expansion >= LE_EXPANSION_DRAGONFLIGHT),            -- Exhaustion (Evoker - Fury of the Aspects)
 
     -- DRUID
     ["Mark of the Wild"] = true,
@@ -73,7 +73,7 @@ local general = {
     [7294] = (expansion <= LE_EXPANSION_CATACLYSM),             -- Retribution Aura
     [19746] = (expansion <= LE_EXPANSION_CATACLYSM),            -- Concentration Aura
     [19891] = (expansion <= LE_EXPANSION_CATACLYSM),            -- Resistance Aura
-    [32223] = true,                                             -- Crusader Aura
+    [32223] = (expansion >= LE_EXPANSION_BURNING_CRUSADE),      -- Crusader Aura
 
     -- PRIEST
     ["Power Word: Fortitude"] = true,
