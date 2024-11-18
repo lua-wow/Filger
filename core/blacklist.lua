@@ -442,6 +442,7 @@ if Filger.isRetail then
         [448036] = true,                -- Stance - Surekian Barrage
         [447978] = true,                -- Stance - Surekian Decimation
         [448433] = true,                -- Surekian Grace
+        [345545] = true,                -- Flayedwing Toxin
 
         -- World Buffs
         [306600] = true,                -- Experience Eliminated
@@ -458,8 +459,10 @@ if Filger.isRetail then
         [430191] = true,                -- Warband Mentored Leveling
 
         -- Costumes
+        [8220] = true,                  -- Flip Out!
         [8222] = true,                  -- Yaaarrrr
         [16739] = true,                 -- Orb of Deception
+        [74589] = true,                 -- Identity Crisis
         [96312] = true,                 -- Kalytha's Haunted Locket
         [147728] = true,                -- Severed Crimsonscale Head
         [245686] = true,                -- Fashionable!
@@ -473,6 +476,20 @@ if Filger.isRetail then
         [462806] = true,                -- Vizier's Supremacy
         [440645] = true,                -- Fire Flies
         [443248] = true,                -- Azj-Kahet Pheromones
+        [462821] = true,                -- General's Bulwark
+
+        -- Consumables
+        ["Well Fed"] = true,
+        ["Hearty Well Fed"] = true,
+        [462210] = true,                -- Hearty Well Fed
+        [431973] = true,                -- Flask of Tempered Versatility
+
+        -- Delves
+        [459254] = true,                -- Loader Signal
+        [448868] = true,                -- Lucky Cursed Potion
+        [459058] = true,                -- Miniature
+        [459059] = true,                -- Massive
+        [423852] = true,                -- Dormouse Ecila
     }
 
     import(data, blacklist)

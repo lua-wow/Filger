@@ -160,24 +160,30 @@ if Filger.isRetail then
             [414273] = Filger:CreateSpellPriority(1),       -- Hand of Divinity
 
             -- Protection
-            [642] = Filger:CreateSpellPriority(10),         -- Divine Shield
-            [31850] = Filger:CreateSpellPriority(10),       -- Ardent Defender
-            [86659] = Filger:CreateSpellPriority(10),       -- Guardian of Ancient Kings
-            [387174] = Filger:CreateSpellPriority(10),      -- Eye of Tyr (target)
+            [642] = Filger:CreateSpellPriority(9),          -- Divine Shield
+            [31850] = Filger:CreateSpellPriority(9),        -- Ardent Defender
+            [86659] = Filger:CreateSpellPriority(9),        -- Guardian of Ancient Kings
+            [31884] = Filger:CreateSpellPriority(8),        -- Avenging Wrath
+            [132403] = Filger:CreateSpellPriority(8),       -- Shield of Righteous
+            [432502] = Filger:CreateSpellPriority(7),       -- Sacred Weapon
+            [432496] = Filger:CreateSpellPriority(7),       -- Holy Bulwark
+            [432607] = Filger:CreateSpellPriority(7),       -- Holy Bulwark
             [400745] = Filger:CreateSpellPriority(false),   -- Afterimage
-            [432607] = Filger:CreateSpellPriority(5),       -- Holy Bulwark
             [433550] = Filger:CreateSpellPriority(false),   -- Afterimage
+
+            [387174] = Filger:CreateSpellPriority(7),       -- Eye of Tyr (target)
         },
         ["PRIEST"] = {
             -- All
             [586] = Filger:CreateSpellPriority(10),         -- Fade
-            [10060] = Filger:CreateSpellPriority(3),        -- Power Infusion
+            [10060] = Filger:CreateSpellPriority(7),        -- Power Infusion
 
             -- Discipline
             [33206] = Filger:CreateSpellPriority(10),       -- Pain Suppression
-            [198069] = Filger:CreateSpellPriority(3),       -- Power of the Dark Side
+            [322105] = Filger:CreateSpellPriority(9),       -- Shadow Covenant
             [214621] = Filger:CreateSpellPriority(8),       -- Schism (Debuff)
-            [322105] = Filger:CreateSpellPriority(10),      -- Shadow Covenant
+            [455033] = Filger:CreateSpellPriority(7),       -- Darkness from Light
+            [198069] = Filger:CreateSpellPriority(9),       -- Power of the Dark Side
 
             -- Holy
             [47788] = Filger:CreateSpellPriority(10),       -- Guardian Spirit
@@ -195,21 +201,25 @@ if Filger.isRetail then
         },
         ["SHAMAN"] = {
             -- General
-            [108270] = Filger:CreateSpellPriority(30),      -- Stone Bulwark Totem
-            [108271] = Filger:CreateSpellPriority(30),      -- Astral Shift
+            [108270] = Filger:CreateSpellPriority(10),      -- Stone Bulwark Totem
+            [108271] = Filger:CreateSpellPriority(10),      -- Astral Shift
+            [192106] = Filger:CreateSpellPriority(false),   -- Lightning Shield
             [381684] = Filger:CreateSpellPriority(false),   -- Brimming with Life
 
             -- Enhancement
-            [333957] = Filger:CreateSpellPriority(20),      -- Feral Spirit
-            [384352] = Filger:CreateSpellPriority(20),      -- Doom Winds
-            [454015] = Filger:CreateSpellPriority(15),      -- Tempest
-            [470532] = Filger:CreateSpellPriority(12),      -- Arc Discharge
-            [201900] = Filger:CreateSpellPriority(10),      -- Hot Hand
+            [344179] = Filger:CreateSpellPriority(9),       -- Maelstrom Weapon
+            [454015] = Filger:CreateSpellPriority(9),       -- Tempest
+            [333957] = Filger:CreateSpellPriority(8),       -- Feral Spirit
+            [466772] = Filger:CreateSpellPriority(7),       -- Doom Winds
+            [470532] = Filger:CreateSpellPriority(7),       -- Arc Discharge
+            [375986] = Filger:CreateSpellPriority(7),       -- Primordial Wave
+            [187878] = Filger:CreateSpellPriority(7),       -- Crash Lightning
+            [470058] = Filger:CreateSpellPriority(1),       -- Vulcanic Blaze
+            [201900] = Filger:CreateSpellPriority(1),       -- Hot Hand
+            [384411] = Filger:CreateSpellPriority(1),       -- Static Accumulation
+            [455110] = Filger:CreateSpellPriority(1),       -- Supercharge
+            [469344] = Filger:CreateSpellPriority(1),       -- Molten Thunder
             [224127] = Filger:CreateSpellPriority(false),   -- Crackling Surge
-            [344179] = Filger:CreateSpellPriority(12),      -- Maelstrom Weapon
-            [384411] = Filger:CreateSpellPriority(10),      -- Static Accumulation
-            [455110] = Filger:CreateSpellPriority(10),      -- Supercharge
-            [469344] = Filger:CreateSpellPriority(10),      -- Molten Thunder
         },
         ["WARRIOR"] = {
             -- Protection
