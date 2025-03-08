@@ -161,6 +161,25 @@ if Filger.isClassic then
             CreateSpellCooldown(19278),         -- Devouring Plague(Rank 4)
             CreateSpellCooldown(19279),         -- Devouring Plague(Rank 5)
             CreateSpellCooldown(19280),         -- Devouring Plague(Rank 6)
+        },
+        ["WARRIOR"] = {
+            -- Arms
+            CreateSpellCooldown(6178),          -- Charge
+            CreateSpellCooldown(7400),          -- Mocking Blow
+            CreateSpellCooldown(20230),         -- Retaliation
+            
+            -- Fury
+            CreateSpellCooldown(1161),          -- Challenging Shout
+            CreateSpellCooldown(5246),          -- Intimidating Shout
+            CreateSpellCooldown(18499),         -- Berserker Rage
+            CreateSpellCooldown(20252),         -- Intercept
+
+            -- Protection
+            CreateSpellCooldown(355),           -- Taunt
+            CreateSpellCooldown(676),           -- Disarm
+            CreateSpellCooldown(871),           -- Shield Wall
+            CreateSpellCooldown(1671),          -- Shield Bash
+            CreateSpellCooldown(2687),          -- Bloodrage
         }
     }
     import(data, cooldowns)
