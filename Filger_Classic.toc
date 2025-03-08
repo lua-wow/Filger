@@ -1,7 +1,7 @@
 ## Interface: 11506
 ## Author: Luaerror
 ## Credits: Nils Ruesch, Shestak, Affli, Garagar, hidekki, FourOne, Tukz
-## Version: 5.1.0
+## Version: 5.2.1
 ## Title: |cffff8000Filger - Classic|r
 ## Notes: Minimal buff/debuff tracker
 ## IconTexture: Interface\ICONS\Spell_Shadow_Shadowwordpain
