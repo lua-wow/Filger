@@ -4,7 +4,7 @@ local Filger = ns.Filger
 -- Blizzard
 local GetSpellInfo = C_Spell and C_Spell.GetSpellInfo or _G.GetSpellInfo
 
-local expansion = _G.LE_EXPANSION_LEVEL_CURRENT
+local EXPANSION = _G.LE_EXPANSION_LEVEL_CURRENT or -1
 local LE_EXPANSION_CLASSIC = _G.LE_EXPANSION_CLASSIC or 0
 local LE_EXPANSION_BURNING_CRUSADE = _G.LE_EXPANSION_BURNING_CRUSADE or 1
 local LE_EXPANSION_WRATH_OF_THE_LICH_KING = _G.LE_EXPANSION_WRATH_OF_THE_LICH_KING or 2
@@ -52,11 +52,11 @@ local general = {
     ["Food"] = true,
  
     -- Lust
-    [57723] = (expansion >= LE_EXPANSION_WRATH_OF_THE_LICH_KING),   -- Exhaustion (Heroism)
-    [57724] = (expansion >= LE_EXPANSION_WRATH_OF_THE_LICH_KING),   -- Sated (Bloodlust)
-    [80354] = (expansion >= LE_EXPANSION_MISTS_OF_PANDARIA),        -- Temporal Displacement (Mage)
-    [264689] = (expansion >= LE_EXPANSION_SHADOWLANDS),             -- Fatigued (Hunter)
-    [390435] = (expansion >= LE_EXPANSION_DRAGONFLIGHT),            -- Exhaustion (Evoker - Fury of the Aspects)
+    [57723] = (EXPANSION >= LE_EXPANSION_WRATH_OF_THE_LICH_KING),   -- Exhaustion (Heroism)
+    [57724] = (EXPANSION >= LE_EXPANSION_WRATH_OF_THE_LICH_KING),   -- Sated (Bloodlust)
+    [80354] = (EXPANSION >= LE_EXPANSION_MISTS_OF_PANDARIA),        -- Temporal Displacement (Mage)
+    [264689] = (EXPANSION >= LE_EXPANSION_SHADOWLANDS),             -- Fatigued (Hunter)
+    [390435] = (EXPANSION >= LE_EXPANSION_DRAGONFLIGHT),            -- Exhaustion (Evoker - Fury of the Aspects)
 
     -- DRUID
     ["Mark of the Wild"] = true,
@@ -64,16 +64,16 @@ local general = {
     [768] = true,                                               -- Cat Form
     [5487] = true,                                              -- Bear Form
     [24858] = true,                                             -- Moonkin Form
-    [114282] = (expansion >= LE_EXPANSION_MISTS_OF_PANDARIA),   -- Treant Form
+    [114282] = (EXPANSION >= LE_EXPANSION_MISTS_OF_PANDARIA),   -- Treant Form
 
     -- MAGE
     ["Arcane Intellect"] = true,
 
     -- PALADIN
-    [7294] = (expansion <= LE_EXPANSION_CATACLYSM),             -- Retribution Aura
-    [19746] = (expansion <= LE_EXPANSION_CATACLYSM),            -- Concentration Aura
-    [19891] = (expansion <= LE_EXPANSION_CATACLYSM),            -- Resistance Aura
-    [32223] = (expansion >= LE_EXPANSION_BURNING_CRUSADE),      -- Crusader Aura
+    [7294] = (EXPANSION <= LE_EXPANSION_CATACLYSM),             -- Retribution Aura
+    [19746] = (EXPANSION <= LE_EXPANSION_CATACLYSM),            -- Concentration Aura
+    [19891] = (EXPANSION <= LE_EXPANSION_CATACLYSM),            -- Resistance Aura
+    [32223] = (EXPANSION >= LE_EXPANSION_BURNING_CRUSADE),      -- Crusader Aura
 
     -- PRIEST
     ["Power Word: Fortitude"] = true,
@@ -97,7 +97,7 @@ do
         [26990] = isBCC or isWrath,                         -- Mark of the Wild (Rank 8)
         [48469] = isWrath,                                  -- Mark of the Wild (Rank 9)
 
-        [467] = (expansion < LE_EXPANSION_DRAGONFLIGHT),    -- Thorns (Rank 1)
+        [467] = (EXPANSION < LE_EXPANSION_DRAGONFLIGHT),    -- Thorns (Rank 1)
         [782] = isClassic or isBCC or isWrath,              -- Thorns (Rank 2)
         [1075] = isClassic or isBCC or isWrath,             -- Thorns (Rank 3)
         [8914] = isClassic or isBCC or isWrath,             -- Thorns (Rank 4)
@@ -142,10 +142,88 @@ do
         [27267] = isBCC or isWrath,                         -- Blood Pact (Rank 6)
         [47982] = isWrath,                                  -- Blood Pact (Rank 7)
 
+        -- Consumables
+        [673] = true,                                       -- Elixir of Minor Defense
+        [2367] = true,                                      -- Elixir of Lion's Strength
+        [2374] = true,                                      -- Elixir of Minor Agility
+        [2378] = true,                                      -- Elixir of Minor Fortitude
+        [3160] = true,                                      -- Elixir of Lesser Agility
+        [3164] = true,                                      -- Elixir of Ogre's Strength
+        [3166] = true,                                      -- Elixir of Wisdom
+        [3220] = true,                                      -- Elixir of Defense
+        [3593] = true,                                      -- Elixir of Fortitude
+        [6512] = true,                                      -- Elixir of Detect Lesser Invisibility
+        [7178] = true,                                      -- Elixir of Water Breathing
+        [7844] = true,                                      -- Elixir of Fire Power
+        [8212] = true,                                      -- Elixir of Giant Growth
+        [11319] = true,                                     -- Elixir of Water Walking
+        [11328] = true,                                     -- Elixir of Agility
+        [11334] = true,                                     -- Elixir of Greater Agility
+        [11348] = true,                                     -- Elixir of Superior Defense
+        [11349] = true,                                     -- Elixir of Greater Defense
+        [11389] = true,                                     -- Elixir of Detect Undead
+        [11390] = true,                                     -- Arcane Elixir
+        [11396] = true,                                     -- Elixir of Greater Intellect
+        [11403] = true,                                     -- Elixir of Dream Vision
+        [11405] = true,                                     -- Elixir of the Giants
+        [11406] = true,                                     -- Elixir of Demonslaying
+        [11407] = true,                                     -- Elixir of Detect Demon
+        [11474] = true,                                     -- Elixir of Shadow Power
+        [12608] = true,                                     -- Catseye Elixir
+        [17535] = true,                                     -- Elixir of the Sages
+        [17537] = true,                                     -- Elixir of Brute Force
+        [17538] = true,                                     -- Elixir of the Mongoose
+        [17539] = true,                                     -- Greater Arcane Elixir
+        [21920] = true,                                     -- Elixir of Frost Power
+        [22807] = false,                                    -- Elixir Greater Water Breathing
+        [26276] = true,                                     -- Elixir of Greater Firepower
+        [26677] = true,                                     -- Elixir of Poison Resistance
+        
+        [17624] = false,                                    -- Flask of Petrification
+        [17626] = true,                                     -- Flask of the Titans
+        [17627] = true,                                     -- Flask of Distilled Wisdom
+        [17628] = true,                                     -- Flask od Supreme Power
+        [17629] = true,                                     -- Flask of Chromatic Resistance
+
         -- Scrolls
-        [8091] = isClassic,                                 -- Armor (Scroll fo Protection)
-        [8112] = isClassic,                                 -- Spirit Magic (Scroll fo Protection)
-        [8113] = isClassic,                                 -- Spirit Magic (Scroll fo Protection)
+        [8091] = isClassic,                                 -- Armor (Scroll of Protection)
+        [8094] = isClassic,                                 -- Armor (Scroll of Protection II)
+        [8095] = isClassic,                                 -- Armor (Scroll of Protection III) 
+        [12175] = isClassic,                                -- Armor (Scroll of Protection IV)
+        [33079] = isBCC,                                    -- Armor (Scroll of Protection V)
+        
+        [8096] = isClassic,                                 -- Intellect (Scroll of Intellect)
+        [8097] = isClassic,                                 -- Intellect (Scroll of Intellect II)
+        [8098] = isClassic,                                 -- Intellect (Scroll of Intellect III)
+        [12176] = isClassic,                                -- Intellect (Scroll of Intellect IV)
+        [33078] = isBCC,                                    -- Intellect (Scroll of Intellect V)
+        
+        [8099] = isClassic,                                 -- Stamina (Scroll of Stamina)
+        [8100] = isClassic,                                 -- Stamina (Scroll of Stamina II)
+        [8101] = isClassic,                                 -- Stamina (Scroll of Stamina III)
+        [12178] = isClassic,                                -- Stamina (Scroll of Stamina IV)
+        [33081] = isBCC,                                    -- Stamina (Scroll of Stamina V)
+        
+        [8112] = isClassic,                                 -- Spirit Magic (Scroll of Spirit)
+        [8113] = isClassic,                                 -- Spirit Magic (Scroll of Spirit II)
+        [8114] = isClassic,                                 -- Spirit Magic (Scroll of Spirit III)
+        [12177] = isClassic,                                -- Spirit Magic (Scroll of Spirit IV)
+        [33080] = isBCC,                                    -- Spirit Magic (Scroll of Spirit V)
+        
+        [8115] = isClassic,                                 -- Agility (Scroll of Agility)
+        [8116] = isClassic,                                 -- Agility (Scroll of Agility II)
+        [8117] = isClassic,                                 -- Agility (Scroll of Agility III)
+        [12174] = isClassic,                                -- Agility (Scroll of Agility IV)
+        [33077] = isBCC,                                    -- Agility (Scroll of Agility V)
+        
+        [8118] = isClassic,                                 -- Strength (Scroll of Strength)
+        [8119] = isClassic,                                 -- Strength (Scroll of Strength II)
+        [8120] = isClassic,                                 -- Strength (Scroll of Strength III)
+        [12179] = isClassic,                                -- Strength (Scroll of Strength IV)
+        [33082] = isBCC,                                    -- Strength (Scroll of Strength V)
+
+        -- Christimas
+        [26218] = isClassic,                                -- Mistletoe
 
         --------------------------------------------------
         -- Season of Discovery
@@ -192,7 +270,7 @@ if Filger.isWrath then
     import(data, blacklist)
 end
 
-if expansion >= LE_EXPANSION_WRATH_OF_THE_LICH_KING then
+if EXPANSION >= LE_EXPANSION_WRATH_OF_THE_LICH_KING then
     local data = {
         -- Items
         [72968] = true, -- Precious's Ribbon
@@ -218,7 +296,7 @@ if Filger.isCata then
     import(data, blacklist)
 end
 
-if expansion >= LE_EXPANSION_CATACLYSM then
+if EXPANSION >= LE_EXPANSION_CATACLYSM then
     local data = {
         [17619] = true, -- Alchemist Stone
     }
@@ -228,7 +306,7 @@ end
 --------------------------------------------------
 -- Mists of Pandaria
 --------------------------------------------------
-if expansion >= LE_EXPANSION_MISTS_OF_PANDARIA then
+if EXPANSION >= LE_EXPANSION_MISTS_OF_PANDARIA then
     local data = {
         [297871] = true,                -- Anglers' Water Striders
     }
@@ -238,7 +316,7 @@ end
 --------------------------------------------------
 -- Warlords of Draenor
 --------------------------------------------------
-if expansion >= LE_EXPANSION_WARLORDS_OF_DRAENOR then
+if EXPANSION >= LE_EXPANSION_WARLORDS_OF_DRAENOR then
     local data = {
         -- World Buffs
         [186401] = true, -- Sign of the Skirmisher
@@ -251,13 +329,14 @@ end
 --------------------------------------------------
 -- Legion
 --------------------------------------------------
-if expansion >= LE_EXPANSION_LEGION then
+if EXPANSION >= LE_EXPANSION_LEGION then
     local data = {
         -- Items
         [203533] = true, -- Black Icey Bling
         [227723] = true, -- Mana Diving Stone
 
         -- World Buffs
+        [225787] = true, -- Sign of of Warrior
         [225788] = true, -- Sign of the Emissary
     }
     import(data, blacklist)
@@ -266,7 +345,7 @@ end
 --------------------------------------------------
 -- Battle for Azeroth
 --------------------------------------------------
-if expansion >= LE_EXPANSION_BATTLE_FOR_AZEROTH then
+if EXPANSION >= LE_EXPANSION_BATTLE_FOR_AZEROTH then
     local data = {
         -- World Buffs
         [335148] = true, -- Sign of the Twisting Nether
@@ -281,7 +360,7 @@ end
 --------------------------------------------------
 -- Shadowlands
 --------------------------------------------------
-if expansion >= LE_EXPANSION_SHADOWLANDS then
+if EXPANSION >= LE_EXPANSION_SHADOWLANDS then
     local data = {
         -- World Buffs
         [347600] = true, -- Infused Ruby Tracking
@@ -293,7 +372,7 @@ end
 --------------------------------------------------
 -- Dragonflight
 --------------------------------------------------
-if expansion >= LE_EXPANSION_DRAGONFLIGHT then
+if EXPANSION >= LE_EXPANSION_DRAGONFLIGHT then
     local data = {
         -- DEATHKNIGHT
         
@@ -359,7 +438,6 @@ if expansion >= LE_EXPANSION_DRAGONFLIGHT then
         -- World Buffs
         [397734] = true,                -- Word of a Worthy Ally
         [420511] = true,                -- Going Green
-        [225787] = true,                -- Sign of of Warrior
 
         -- Professions
         [382093] = true,                -- Alchemically Inspired
