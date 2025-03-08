@@ -1,4 +1,4 @@
-## Interface: 11504
+## Interface: 11506
 ## Author: Luaerror
 ## Credits: Nils Ruesch, Shestak, Affli, Garagar, hidekki, FourOne, Tukz
 ## Version: 5.1.0

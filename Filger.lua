@@ -39,7 +39,7 @@ do
         if self.auraIndex then
             -- classic aura tooltip
             GameTooltip:SetUnitAura(self.unit, self.auraIndex, self.isHarmful and "HARMFUL" or "HELPFUL")
-        elseif self.auraInstanceID then
+        elseif self.auraInstanceID and GameTooltip.SetUnitDebuffByAuraInstanceID then
             -- retail aura tooltip
             if self.isHarmful then
                 GameTooltip:SetUnitDebuffByAuraInstanceID(self.unit, self.auraInstanceID)
@@ -49,7 +49,7 @@ do
         elseif self.itemId then
             GameTooltip:SetItemByID(self.itemId)
         elseif self.slotId then
-            GameTooltip:SetInventoryItem(self.slotId)
+            GameTooltip:SetInventoryItem(self.unit, self.slotId)
         elseif self.spellId then
             GameTooltip:SetSpellByID(self.spellId)
         end
