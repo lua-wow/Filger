@@ -183,7 +183,7 @@ do
         [17626] = true,                                     -- Flask of the Titans
         [17627] = true,                                     -- Flask of Distilled Wisdom
         [17628] = true,                                     -- Flask od Supreme Power
-        [17629] = true,                                     -- Flask of Chromatic Resistance
+        [17629] = isClassic or isBCC or isCata,             -- Flask of Chromatic Resistance
 
         -- Scrolls
         [8091] = isClassic,                                 -- Armor (Scroll of Protection)
@@ -544,6 +544,9 @@ if Filger.isRetail then
         [96312] = true,                 -- Kalytha's Haunted Locket
         [147728] = true,                -- Severed Crimsonscale Head
         [245686] = true,                -- Fashionable!
+
+        [465642] = true,                -- Blizzard Bling
+        [1215495] = true,               -- Cyrce's Circlet
 
         -- Professions
         [442981] = true,                -- Weaver's Tutelage

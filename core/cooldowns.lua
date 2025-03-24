@@ -534,7 +534,7 @@ if Filger.isDF then
             CreateSpellCooldown(383762),        -- Bitter Immunity
             CreateSpellCooldown(384318),        -- Thunderous Roar
             CreateSpellCooldown(384100),        -- Berserker Shout
-            CreateSpellCooldown(401150),        -- Avatar
+            -- CreateSpellCooldown(401150),        -- Avatar
 
             -- Protection
             CreateSpellCooldown(871),           -- Shield Wall
@@ -759,7 +759,7 @@ if Filger.isRetail then
             CreateSpellCooldown(62618),         -- Power Word: Barrier
             CreateSpellCooldown(271466),        -- Luminous Barrier
             CreateSpellCooldown(123040),        -- Mind Bender
-            CreateSpellCooldown(246287),        -- Evangelism
+            -- CreateSpellCooldown(246287),        -- Evangelism
 
             -- Holy
             CreateSpellCooldown(2050),          -- Holy Word: Serenity
@@ -817,7 +817,7 @@ if Filger.isRetail then
         ["WARRIOR"] = {
             -- Talent
             CreateSpellCooldown(97462),         -- Rallying Cry
-            CreateSpellCooldown(401150),        -- Avatar
+            -- CreateSpellCooldown(401150),        -- Avatar
             CreateSpellCooldown(384318),        -- Thunderous Roar
             CreateSpellCooldown(376079),        -- Champion's Spear
             
