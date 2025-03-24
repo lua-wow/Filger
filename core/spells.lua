@@ -185,6 +185,10 @@ if Filger.isRetail then
             [455033] = Filger:CreateSpellPriority(7),       -- Darkness from Light
             [198069] = Filger:CreateSpellPriority(9),       -- Power of the Dark Side
 
+            [428933] = Filger:CreateSpellPriority(10),      -- Premonition of Insight (-cooldown)
+            [428930] = Filger:CreateSpellPriority(10),      -- Premonition of Piety (+ healing)
+            [428934] = Filger:CreateSpellPriority(10),      -- Premonition of Solace (single heal to shield)
+
             -- Holy
             [47788] = Filger:CreateSpellPriority(10),       -- Guardian Spirit
             [200183] = Filger:CreateSpellPriority(3),       -- Apotheosis

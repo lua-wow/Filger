@@ -183,7 +183,7 @@ do
         [17626] = true,                                     -- Flask of the Titans
         [17627] = true,                                     -- Flask of Distilled Wisdom
         [17628] = true,                                     -- Flask od Supreme Power
-        [17629] = true,                                     -- Flask of Chromatic Resistance
+        [17629] = isClassic or isBCC or isCata,             -- Flask of Chromatic Resistance
 
         -- Scrolls
         [8091] = isClassic,                                 -- Armor (Scroll of Protection)
@@ -225,6 +225,11 @@ do
         -- Christimas
         [26218] = isClassic,                                -- Mistletoe
 
+        -- Costumes
+        [8220] = true,                                      -- Flip Out!
+        [8222] = true,                                      -- Yaaarrrr
+        [16739] = true,                 -- Orb of Deception
+
         --------------------------------------------------
         -- Season of Discovery
         --------------------------------------------------
@@ -249,8 +254,11 @@ do
 
     local data = {
         -- PRIEST
-        [25431] = isBCC,                    -- Inner Fire (Rank 7)
-        [32999] = isBCC,                    -- Prayer of Spirit (Rank 2)
+        [25431] = isBCC, -- Inner Fire (Rank 7)
+        [32999] = isBCC, -- Prayer of Spirit (Rank 2)
+
+        -- Events
+        [44185] = true, -- Jack-o'-Lanterned!
     }
 
     import(data, blacklist)
@@ -262,9 +270,9 @@ end
 if Filger.isWrath then
     local data  = {
         -- PRIEST
-        [48040] = isWrath,                  -- Inner Fire (Rank 8)
-        [48168] = isWrath,                  -- Inner Fire (Rank 9)
-        [48074] = isWrath,                  -- Prayer of Spirit (Rank 3)
+        [48040] = isWrath, -- Inner Fire (Rank 8)
+        [48168] = isWrath, -- Inner Fire (Rank 9)
+        [48074] = isWrath, -- Prayer of Spirit (Rank 3)
     }
 
     import(data, blacklist)
@@ -284,13 +292,13 @@ end
 if Filger.isCata then
     local data = {
         -- PALADIN
-        [79102] = true,                     -- Blessing of Might
-        [20165] = true,                     -- Seal of Insight
+        [79102] = true, -- Blessing of Might
+        [20165] = true, -- Seal of Insight
 
         -- PRIEST
-        [588] = true,                       -- Inner Fire
-        [79107] = true,                     -- Shadow Protection
-        [73413] = true,                     -- Inner Will
+        [588] = true, -- Inner Fire
+        [79107] = true, -- Shadow Protection
+        [73413] = true, -- Inner Will
     }
 
     import(data, blacklist)
@@ -299,6 +307,13 @@ end
 if EXPANSION >= LE_EXPANSION_CATACLYSM then
     local data = {
         [17619] = true, -- Alchemist Stone
+
+        -- Items
+        [93337] = true, -- Champion of Ramkahen
+
+        -- Customes
+        [74589] = true, -- Identity Crisis (Faded Wizard Hat)
+        [96312] = true, -- Kalytha's Haunted Locket
     }
     import(data, blacklist)
 end
@@ -308,7 +323,7 @@ end
 --------------------------------------------------
 if EXPANSION >= LE_EXPANSION_MISTS_OF_PANDARIA then
     local data = {
-        [297871] = true,                -- Anglers' Water Striders
+        [297871] = true, -- Anglers' Water Striders
     }
     import(data, blacklist)
 end
@@ -322,6 +337,9 @@ if EXPANSION >= LE_EXPANSION_WARLORDS_OF_DRAENOR then
         [186401] = true, -- Sign of the Skirmisher
         [186403] = true, -- Sign of Battle
         [186406] = true, -- Sign of the Critter
+
+        -- ???
+        [182422] = true, -- Training Gear
     }
     import(data, blacklist)
 end
@@ -331,13 +349,20 @@ end
 --------------------------------------------------
 if EXPANSION >= LE_EXPANSION_LEGION then
     local data = {
+        -- PvP
+        [282559] = true, -- Enlisted
+
         -- Items
         [203533] = true, -- Black Icey Bling
         [227723] = true, -- Mana Diving Stone
+        [245686] = true, -- Fashionable!
 
         -- World Buffs
         [225787] = true, -- Sign of of Warrior
         [225788] = true, -- Sign of the Emissary
+
+        -- Mythic+
+        [206151] = true, -- Challenger's Burden
     }
     import(data, blacklist)
 end
@@ -353,6 +378,44 @@ if EXPANSION >= LE_EXPANSION_BATTLE_FOR_AZEROTH then
         [335150] = true, -- Sign of the Destroyer
         [335151] = true, -- Sign of the Mists
         [335152] = true, -- Sign of Iron
+
+        --------------------------------------------------
+        -- Patch 8.1.0
+        --------------------------------------------------
+        [147728] = true, -- Severed Crimsonscale Head
+
+        --------------------------------------------------
+        -- Patch 8.2.0
+        --------------------------------------------------
+        [306600] = true, -- Experience Eliminated
+
+        --------------------------------------------------
+        -- Patch 8.3.0
+        --------------------------------------------------
+        -- Horric Visions
+        [291295] = true, -- Mind Protected
+
+        [307518] = true, -- Vision Hunter
+        [312583] = true, -- Vision Hunter
+        [312585] = true, -- Vision Hunter
+
+        [305380] = true, -- Experimental Destabilization
+        [305381] = true, -- Experimental Destabilization
+        [305385] = true, -- Experimental Destabilization
+        [312620] = true, -- Experimental Destabilization
+        [312621] = true, -- Experimental Destabilization
+
+        [304852] = true, -- Singular Sanitation Expertise
+        [312545] = true, -- Singular Sanitation Expertise
+        [312544] = true, -- Singular Sanitation Expertise
+        [304853] = true, -- Singular Sanitation Expertise
+
+        [312629] = true, -- Clear Sight
+        [307519] = true, -- Clear Sight
+        [312628] = true, -- Clear Sight
+
+        [312456] = true, -- Elite Extermination
+        [310720] = true, -- Elite Extermination
     }
     import(data, blacklist)
 end
@@ -365,6 +428,9 @@ if EXPANSION >= LE_EXPANSION_SHADOWLANDS then
         -- World Buffs
         [347600] = true, -- Infused Ruby Tracking
         [359082] = true, -- Sign of the Legion
+
+        -- Items
+        [345545] = true, -- Flayedwing Toxin
     }
     import(data, blacklist)
 end
@@ -377,92 +443,111 @@ if EXPANSION >= LE_EXPANSION_DRAGONFLIGHT then
         -- DEATHKNIGHT
         
         -- MONK
-        [166646] = true,                -- Windwalking
+        [166646] = true, -- Windwalking
 
         -- PALADIN
-        [465] = true,                   -- Devotion Aura
-        [32223] = true,                 -- Crusader Aura
+        [465] = true, -- Devotion Aura
+        [32223] = true,  -- Crusader Aura
 
         -- PRIEST
-        [21562] = true,                 -- Power Word: Fortitude
-        [280398] = true,                -- Sins of the Many
+        [21562] = true, -- Power Word: Fortitude
+        [280398] = true, -- Sins of the Many
 
         -- SHAMAN
-        [395197] = true,                -- Mana Spring
+        [395197] = true, -- Mana Spring
 
         -- WARRIOR
-        [6673] = true,                  -- Battle Shout
-        [202602] = true,                -- Into the Fray
+        [6673] = true, -- Battle Shout
+        [202602] = true, -- Into the Fray
 
         -- Dragons Island
-        [385081] = true,                -- Unstable Blink
-        [390493] = true,                -- Cobalt Boost
-        [394258] = true,                -- Cobalt Cutthroat
+        [385081] = true, -- Unstable Blink
+        [390493] = true, -- Cobalt Boost
+        [394258] = true, -- Cobalt Cutthroat
 
         -- Forbiden Reach
-        [405261] = true,                -- Dragonscale's Favor
-        [405263] = true,                -- Iskaara's Favor
-        [405264] = true,                -- Maruukai's Favor
-        [405265] = true,                -- Valdrakken's Favor
+        [405261] = true, -- Dragonscale's Favor
+        [405263] = true, -- Iskaara's Favor
+        [405264] = true, -- Maruukai's Favor
+        [405265] = true, -- Valdrakken's Favor
 
         -- Zaralek Cavern
-        [411060] = true,                -- New Niffen No-Sniffin' Tonic
-
-        -- Rifts
-        [415603] = true,                -- Encapsulated Destiny
-
-        -- Dreamsourge
-        [415216] = true,                -- Dreamsurge Heartbloom
-        [415275] = true,                -- Dreamsurge Hibernation
-        [416101] = true,                -- Dreamsurge Dreamfall
-        [418630] = true,                -- Dreamsurge Thunderbounce
-        [418652] = true,                -- Dreamsurge Wrathbloom
-        [418656] = true,                -- Dreamsurge Magpies
-        [418694] = true,                -- Dreamsurge Helpers
-        [418744] = true,                -- Dreamsurge Learnings
-        [418769] = true,                -- Dreamsurge Greenwalker
-        [418810] = true,                -- Dreamsurge Lone Wolves
-        [418813] = true,                -- Self Sufficient
-        [418842] = true,                -- Dreamsurge Pack Hunters
-        [419079] = true,                -- Dreamsurge Defenders
-        [419081] = true,                -- Dreamsurge Defenders
-        [419239] = true,                -- Dreaming Winds
-        [419530] = true,                -- Dreamsurge Thorncloak
-        [426647] = true,                -- Best Friends with Pip
-        [426672] = true,                -- Best Friends with Urctos
-        [426676] = true,                -- Best Friends with Aerwynn
-        [430666] = true,                -- Sign of Awakened Storms
-        [430668] = true,                -- Sign of Awakened Embers
-        [430669] = true,                -- Sign of Awakened Dreams
-
-        -- World Buffs
-        [397734] = true,                -- Word of a Worthy Ally
-        [420511] = true,                -- Going Green
+        [411060] = true, -- New Niffen No-Sniffin' Tonic
 
         -- Professions
-        [382093] = true,                -- Alchemically Inspired
+        [382093] = true, -- Alchemically Inspired
 
         -- Items
-        [399502] = true,                -- Automically Recalibrated
-        [401518] = true,                -- Bronze Resonance (Ominous Chromatic Essence)
-        [410762] = true,                -- The Silent Star (Voice of the Silent Star)
+        [399502] = true, -- Automically Recalibrated
+        [401518] = true, -- Bronze Resonance (Ominous Chromatic Essence)
+        [410762] = true, -- The Silent Star (Voice of the Silent Star)
+        [391594] = true, -- Lemon Silverleaf Tea
 
         -- Tier Set
-        [426262] = true,                -- Larodar's Fiery Reverie (Priest Discipline / Holy)
-        [426341] = true,                -- Tindral's Fowl Fantasia (Priest Shadow)
-        [426288] = true,                -- Smolderon's Delusions of Gradeour
-
-        -- Extras
-        [182422] = true,                -- Training Gear
-        [391594] = true,                -- Lemon Silverleaf Tea
+        [426262] = true, -- Larodar's Fiery Reverie (Priest Discipline / Holy)
+        [426341] = true, -- Tindral's Fowl Fantasia (Priest Shadow)
+        [426288] = true, -- Smolderon's Delusions of Gradeour
 
         -- WoW Remix
-        [424143] = true,                -- WoW Remix: Mists of Pandaria
-        [440393] = true,                -- Timerunner's Advantage
-        [459337] = true,                -- Timerunner's Mastery
+        [424143] = true, -- WoW Remix: Mists of Pandaria
+        [440393] = true, -- Timerunner's Advantage
+        [459337] = true, -- Timerunner's Mastery
 
-        -- Mythic+
-        [206151] = true,                -- Challenger's Burden
+        --------------------------------------------------
+        -- Patch 10.0.2
+        --------------------------------------------------
+        -- World Buffs
+        [397734] = true, -- Word of a Worthy Ally
+
+        -- Professions
+        [394006] = true, -- Rockin' Mining Gear
+
+        --------------------------------------------------
+        -- Patch 10.1.5
+        --------------------------------------------------
+        -- World Buffs
+        [417275] = true, -- Greater Encapsulated Destiny
+
+        -- Rifts
+        [415603] = true, -- Encapsulated Destiny
+
+        --------------------------------------------------
+        -- Patch 10.1.7
+        --------------------------------------------------
+        -- Dreamsourge
+        [415216] = true, -- Dreamsurge Heartbloom
+        [415275] = true, -- Dreamsurge Hibernation
+        [416101] = true, -- Dreamsurge Dreamfall
+        [418630] = true, -- Dreamsurge Thunderbounce
+        [418652] = true, -- Dreamsurge Wrathbloom
+        [418656] = true, -- Dreamsurge Magpies
+        [418694] = true, -- Dreamsurge Helpers
+        [418744] = true, -- Dreamsurge Learnings
+        [418769] = true, -- Dreamsurge Greenwalker
+        [418810] = true, -- Dreamsurge Lone Wolves
+        [418813] = true, -- Self Sufficient
+        [418842] = true, -- Dreamsurge Pack Hunters
+        [419079] = true, -- Dreamsurge Defenders
+        [419081] = true, -- Dreamsurge Defenders
+        [419239] = true, -- Dreaming Winds
+        [419530] = true, -- Dreamsurge Thorncloak
+        [426647] = true, -- Best Friends with Pip
+        [426672] = true, -- Best Friends with Urctos
+        [426676] = true, -- Best Friends with Aerwynn
+
+        --------------------------------------------------
+        -- Patch 10.2.0
+        --------------------------------------------------
+        -- World Buffs
+        [420511] = true, -- Going Green
+
+        --------------------------------------------------
+        -- Patch 10.2.6
+        --------------------------------------------------
+        -- World Buffs
+        [430666] = true, -- Sign of Awakened Storms
+        [430668] = true, -- Sign of Awakened Embers
+        [430669] = true, -- Sign of Awakened Dreams
     }
 
     import(data, blacklist)
@@ -475,99 +560,183 @@ if Filger.isRetail then
     local data = {
         -- Classes
         -- DEMONHUNTER
-        [452550] = true,                -- Monster Rising
-        [453314] = true,                -- Enduring Torment
+        [452550] = true, -- Monster Rising
+        [453314] = true, -- Enduring Torment
+        [1214887] = true, -- Cycle of Hatred
 
         -- EVOKER
-        [369459] = true,                -- Source of Magic
-        [381753] = true,                -- Blessing of the Bronze
-        [372014] = true,                -- Visage
+        [369459] = true, -- Source of Magic
+        [381753] = true, -- Blessing of the Bronze
+        [372014] = true, -- Visage
 
         -- DRUID
-        [400734] = true,                -- After the Wildfire
+        [400734] = true, -- After the Wildfire
 
         -- MONK
-        [383733] = true,                -- Training of Niuzao
-        [450552] = true,                -- Jade Walk
-        [450572] = true,                -- Flow of Chi
-        [450574] = true,                -- Flow of Chi
+        [383733] = true, -- Training of Niuzao
+        [450552] = true, -- Jade Walk
+        [450572] = true, -- Flow of Chi
+        [450574] = true, -- Flow of Chi
+        [443574] = true, -- Ox Stance
+        [443575] = true, -- Tiger Stance
+        [166646] = true, -- Windwalking
+        [129914] = true, -- Combat Wisdom
+        [450380] = true, -- Chi Wave
 
         -- PRIEST
-        [21562] = true,                 -- Power Word: Fortitude
+        [21562] = true,   -- Power Word: Fortitude
 
         -- SHAMAN
-        [462854] = true,                -- Skyfury
+        [462854] = true, -- Skyfury
 
         -- WARRIOR
-        [386196] = true,                -- Berserker Stance
+        [386196] = true, -- Berserker Stance
 
         -- Mount
-        [404464] = true,                -- Flight Style: Skyriding
-        [404468] = true,                -- Flight Style: Steady
-        [456820] = true,                -- Ride Along
+        [404464] = true, -- Flight Style: Skyriding
+        [404468] = true, -- Flight Style: Steady
+        [456820] = true, -- Ride Along
 
         -- Mythic+
-        [206150] = true,                -- Challenger's Might
+        [206150] = true, -- Challenger's Might
 
         -- Items
-        [452226] = true,                -- Spiderling (Ara-Kara Sacbrood)
-        [450699] = true,                -- "The 50 Verses of Radiance" (Tome of Light's Devotion)
-        [450696] = true,                -- "The 50 Verses of Radiance" (Tome of Light's Devotion)
-        [450720] = true,                -- Inner Radiance (Tome of Light's Devotion)
-        [450706] = false,               -- Inner Radiance (Tome of Light's Devotion)
-        [457925] = true,                -- Venomous Potential (Seal of the Poisoned Pact)
-        [447962] = true,                -- Stance - Surekian Flourish
-        [448036] = true,                -- Stance - Surekian Barrage
-        [447978] = true,                -- Stance - Surekian Decimation
-        [448433] = true,                -- Surekian Grace
-        [345545] = true,                -- Flayedwing Toxin
-
-        -- World Buffs
-        [306600] = true,                -- Experience Eliminated
-        [417275] = true,                -- Greater Encapsulated Destiny
-        [452307] = true,                -- Sign of the Past
-        [455020] = true,                -- WoW's Anniversary
-        [471521] = true,                -- Sign of the Explorer
-        
-        -- Events
-        [44185] = true,                 -- Jack-o'-Lanterned!
-        [455050] = true,                -- Blessing of the brozen Drgonflight
-
-        -- Warband
-        [430191] = true,                -- Warband Mentored Leveling
+        [447962] = true, -- Stance - Surekian Flourish
+        [447978] = true, -- Stance - Surekian Decimation
+        [448036] = true, -- Stance - Surekian Barrage
+        [448433] = true, -- Surekian Grace
+        [450696] = true, -- "The 50 Verses of Radiance" (Tome of Light's Devotion)
+        [450699] = true, -- "The 50 Verses of Radiance" (Tome of Light's Devotion)
+        [450706] = false, -- Inner Radiance (Tome of Light's Devotion)
+        [450720] = true, -- Inner Radiance (Tome of Light's Devotion)
+        [452226] = true, -- Spiderling (Ara-Kara Sacbrood)
+        [457925] = true, -- Venomous Potential (Seal of the Poisoned Pact)
+        [451369] = true, -- Empowering Darkness
 
         -- Costumes
-        [8220] = true,                  -- Flip Out!
-        [8222] = true,                  -- Yaaarrrr
-        [16739] = true,                 -- Orb of Deception
-        [74589] = true,                 -- Identity Crisis
-        [96312] = true,                 -- Kalytha's Haunted Locket
-        [147728] = true,                -- Severed Crimsonscale Head
-        [245686] = true,                -- Fashionable!
+        [452533] = true, -- Magical Mischief
+
+        -- Warband
+        [430191] = true, -- Warband Mentored Leveling
 
         -- Professions
-        [442981] = true,                -- Weaver's Tutelage
-        [462810] = true,                -- Weaver's Prodigy
+        [442981] = true, -- Weaver's Tutelage
+        [462810] = true, -- Weaver's Prodigy
 
         -- Factions
-        [442983] = true,                -- Vizier's Savvy
-        [462806] = true,                -- Vizier's Supremacy
-        [440645] = true,                -- Fire Flies
-        [443248] = true,                -- Azj-Kahet Pheromones
-        [462821] = true,                -- General's Bulwark
+        [442983] = true, -- Vizier's Savvy
+        [462806] = true, -- Vizier's Supremacy
+        [440645] = true, -- Fire Flies
+        [443248] = true, -- Azj-Kahet Pheromones
+        [462821] = true, -- General's Bulwark
 
         -- Consumables
         ["Well Fed"] = true,
         ["Hearty Well Fed"] = true,
-        [462210] = true,                -- Hearty Well Fed
-        [431973] = true,                -- Flask of Tempered Versatility
+        [454188] = true, -- Hearty Well Fed
+        [462180] = true, -- Hearty Well Fed
+        [462181] = true, -- Hearty Well Fed
+        [462182] = true, -- Hearty Well Fed
+        [462183] = true, -- Hearty Well Fed
+        [462184] = true, -- Hearty Well Fed
+        [462185] = true, -- Hearty Well Fed
+        [462186] = true, -- Hearty Well Fed
+        [462187] = true, -- Hearty Well Fed
+        [462188] = true, -- Hearty Well Fed
+        [462189] = true, -- Hearty Well Fed
+        [462190] = true, -- Hearty Well Fed
+        [462191] = true, -- Hearty Well Fed
+        [462192] = true, -- Hearty Well Fed
+        [462193] = true, -- Hearty Well Fed
+        [462194] = true, -- Hearty Well Fed
+        [462195] = true, -- Hearty Well Fed
+        [462196] = true, -- Hearty Well Fed
+        [462197] = true, -- Hearty Well Fed
+        [462198] = true, -- Hearty Well Fed
+        [462199] = true, -- Hearty Well Fed
+        [462200] = true, -- Hearty Well Fed
+        [462201] = true, -- Hearty Well Fed
+        [462202] = true, -- Hearty Well Fed
+        [462203] = true, -- Hearty Well Fed
+        [462204] = true, -- Hearty Well Fed
+        [462205] = true, -- Hearty Well Fed
+        [462206] = true, -- Hearty Well Fed
+        [462207] = true, -- Hearty Well Fed
+        [462208] = true, -- Hearty Well Fed
+        [462209] = true, -- Hearty Well Fed
+        [462210] = true, -- Hearty Well Fed
 
+        [431971] = true, -- Flask of Tempered Aggression
+        [431972] = true, -- Flask of Tempered Swiftness
+        [431973] = true, -- Flask of Tempered Versatility
+        [431974] = true, -- Flask of Tempered Mastery
+
+        --------------------------------------------------
+        -- Patch 11.0.0
+        --------------------------------------------------
         -- Delves
-        [459254] = true,                -- Loader Signal
-        [448868] = true,                -- Lucky Cursed Potion
-        [459058] = true,                -- Miniature
-        [459059] = true,                -- Massive
-        [423852] = true,                -- Dormouse Ecila
+        [423852] = true, -- Dormouse Ecila
+        [448868] = true, -- Lucky Cursed Potion
+        [459058] = true, -- Miniature
+        [459059] = true, -- Massive
+        [459254] = true, -- Loader Signal
+
+        --------------------------------------------------
+        -- Patch 11.0.2
+        --------------------------------------------------
+        -- World Buffs
+        [471521] = true, -- Sign of the Explorer
+
+        --------------------------------------------------
+        -- Patch 11.0.5
+        --------------------------------------------------
+        -- World Buffs
+        [452307] = true, -- Sign of the Past
+        [455020] = true, -- WoW's Anniversary
+
+        -- Events
+        [455050] = true, -- Blessing of the Brozen Drgonflight
+
+        -- Items
+        [465642] = true, -- Blizzard Bling
+
+        --------------------------------------------------
+        -- Patch 11.0.7
+        --------------------------------------------------
+        -- Items
+        [1215495] = true, -- Cyrce's Circlet
+
+        --------------------------------------------------
+        -- Patch 11.1.5
+        --------------------------------------------------
+        -- World Buffs
+        [1214848] = true, -- Winds of Mysterious Fortune
+        [1227124] = true, -- Sacred Flame's Ward
+
+        -- Horric Visions
+        [472265] = true, -- Vision Hunter
+        [472266] = true, -- Vision Hunter
+        [472267] = true, -- Vision Hunter
+        [472261] = true, -- Experimental Destabilization
+        [472263] = true, -- Experimental Destabilization
+        [472264] = true, -- Experimental Destabilization
+        [1215082] = true, -- Experimental Destabilization
+        [471497] = true, -- Singular Sanitation Expertise
+        [472160] = true, -- Singular Sanitation Expertise
+        [472152] = true, -- Singular Sanitation Expertise
+        [472238] = true, -- Clear Sight
+        [472248] = true, -- Clear Sight
+        [472246] = true, -- Clear Sight
+        [472241] = true, -- Elite Extermination
+        [1215782] = true, -- Elite Extermination
+        [1215783] = true, -- Elite Extermination
+        [471317] = true, -- Steeled Mind
+        [471318] = true, -- Steeled Mind
+        [471320] = true, -- Steeled Mind
+        [471321] = true, -- Steeled Mind
+        [471322] = true, -- Steeled Mind
+        [1216153] = true, -- Steeled Mind
+        [1221899] = true, -- Tattered Wold Rider Gear
     }
 
     import(data, blacklist)
