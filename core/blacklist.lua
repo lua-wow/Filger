@@ -97,7 +97,7 @@ do
         [26990] = isBCC or isWrath,                         -- Mark of the Wild (Rank 8)
         [48469] = isWrath,                                  -- Mark of the Wild (Rank 9)
 
-        [467] = (EXPANSION < LE_EXPANSION_DRAGONFLIGHT),    -- Thorns (Rank 1)
+        [467] = (EXPANSION < LE_EXPANSION_CATACLYSM),       -- Thorns (Rank 1)
         [782] = isClassic or isBCC or isWrath,              -- Thorns (Rank 2)
         [1075] = isClassic or isBCC or isWrath,             -- Thorns (Rank 3)
         [8914] = isClassic or isBCC or isWrath,             -- Thorns (Rank 4)
@@ -248,15 +248,18 @@ end
 --------------------------------------------------
 -- The Burning Crusade
 --------------------------------------------------
-do
-    local isBCC = Filger.isBCC
-    local exists = (interface >= 20000)
-
+if Filger.isBCC then
     local data = {
         -- PRIEST
-        [25431] = isBCC, -- Inner Fire (Rank 7)
-        [32999] = isBCC, -- Prayer of Spirit (Rank 2)
+        [25431] = true, -- Inner Fire (Rank 7)
+        [32999] = true, -- Prayer of Spirit (Rank 2)
+    }
 
+    import(data, blacklist)
+end
+
+if EXPANSION >= LE_EXPANSION_BURNING_CRUSADE then
+    local data = {
         -- Events
         [44185] = true, -- Jack-o'-Lanterned!
     }
@@ -310,6 +313,7 @@ if EXPANSION >= LE_EXPANSION_CATACLYSM then
 
         -- Items
         [93337] = true, -- Champion of Ramkahen
+        [93795] = true, -- Stormwind Champion
 
         -- Customes
         [74589] = true, -- Identity Crisis (Faded Wizard Hat)
@@ -323,7 +327,11 @@ end
 --------------------------------------------------
 if EXPANSION >= LE_EXPANSION_MISTS_OF_PANDARIA then
     local data = {
-        [297871] = true, -- Anglers' Water Striders
+        -- Items
+        [126434] = true, -- Tushui Champion
+
+        -- Factions
+        [119966] = true, -- Blessing of the Pearlfin
     }
     import(data, blacklist)
 end
@@ -356,6 +364,7 @@ if EXPANSION >= LE_EXPANSION_LEGION then
         [203533] = true, -- Black Icey Bling
         [227723] = true, -- Mana Diving Stone
         [245686] = true, -- Fashionable!
+        [297871] = true, -- Anglers' Water Striders
 
         -- World Buffs
         [225787] = true, -- Sign of of Warrior
@@ -572,6 +581,9 @@ if Filger.isRetail then
         -- DRUID
         [400734] = true, -- After the Wildfire
 
+        -- MAGE
+        [1217242] = true, -- Enlightened
+
         -- MONK
         [383733] = true, -- Training of Niuzao
         [450552] = true, -- Jade Walk
@@ -737,6 +749,21 @@ if Filger.isRetail then
         [471322] = true, -- Steeled Mind
         [1216153] = true, -- Steeled Mind
         [1221899] = true, -- Tattered Wold Rider Gear
+
+        --------------------------------------------------
+        -- Patch 11.1.7
+        --------------------------------------------------
+        -- World Buffs
+        [1223878] = true, -- Sign of Azeroth
+        
+        [1250683] = true, -- Collector's Bounty
+        [1250685] = true, -- Greedy Emisarry
+
+        [1229050] = true, -- Mastery of Timeways
+        [1220736] = true, -- Mysterious Revivification
+        [1218497] = true, -- Mysterious Tenacity
+        [1218388] = true, -- Mysterious Celerity
+        [1218454] = true, -- Mysterious Swiftstrike
     }
 
     import(data, blacklist)

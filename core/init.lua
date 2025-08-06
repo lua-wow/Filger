@@ -26,7 +26,7 @@ frame.description = GetAddOnMetadata(addon, "Notes")
 frame.WelcomeMessage = ("|cffff8000Filger %s|r - /filger help"):format(frame.version)
 
 -- interface
--- https://wowpedia.fandom.com/wiki/WOW_PROJECT_ID
+-- reference: https://warcraft.wiki.gg/wiki/WOW_PROJECT_ID
 local interface = select(4, GetBuildInfo())
 frame.interface = interface
 frame.isRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
@@ -34,6 +34,7 @@ frame.isClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
 frame.isBCC = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC)
 frame.isWrath = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC)
 frame.isCata = (WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC)
+frame.isMoP = (WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC)
 
 -- player
 frame.name = UnitName("player")

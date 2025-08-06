@@ -94,6 +94,30 @@ if Filger.isCata then
     import(spells, data)
 end
 
+--------------------------------------------------
+-- Mists of Pandaria
+--------------------------------------------------
+if Filger.isMoP then
+    local data = {
+        ["PRIEST"] = {
+            
+        },
+        ["MONK"] = {
+            [129914] = Filger:CreateSpellPriority(false), -- Power Strike
+            [117666] = Filger:CreateSpellPriority(false), -- Legacy of the Emperor
+            [121125] = Filger:CreateSpellPriority(false), -- Touch of Death
+
+            -- Brewmaster
+            [123402] = Filger:CreateSpellPriority(10), -- Guard
+            [128636] = Filger:CreateSpellPriority(8), -- Power Guard
+            [128939] = Filger:CreateSpellPriority(9), -- Elusive Brew
+            [125359] = Filger:CreateSpellPriority(8), -- Tiger Power
+        }
+    }
+
+    import(spells, data)
+end
+
 if Filger.isRetail then
     local data = {
         ["DEMONHUNTER"] = {
@@ -141,6 +165,8 @@ if Filger.isRetail then
         },
         ["MONK"] = {
             -- Mistweaver
+            [432180] = Filger:CreateSpellPriority(false),   -- Dance of the Wind
+            [388193] = Filger:CreateSpellPriority(10),      -- Jadefire Stomp
 
             -- Brewmaster
             [120954] = Filger:CreateSpellPriority(1),       -- Fortifying Brew

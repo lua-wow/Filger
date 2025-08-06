@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+-   patch 5.5.0
+-   Added spells for Mists of Pandaria Classic
+
 ## [5.2.1] - 2025-03-08
 
 ### Added
