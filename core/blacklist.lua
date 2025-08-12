@@ -106,6 +106,11 @@ do
         [26992] = isBCC or isWrath,                         -- Thorns (Rank 7)
         [53307] = isWrath,                                  -- Thorns (Rank 8)
 
+        [24907] = true,                                     -- Moonkin Aura
+
+        -- HUNTER
+        [19506] = true,                                     -- Trueshot Aura
+
         -- MAGE
         [1459] = true,                                      -- Arcane Intellect (Rank 1)
         [1460] = isClassic or isBCC or isWrath,             -- Arcane Intellect (Rank 2)
@@ -141,6 +146,9 @@ do
         [11787] = isClassic or isBCC or isWrath,            -- Blood Pact (Rank 5)
         [27267] = isBCC or isWrath,                         -- Blood Pact (Rank 6)
         [47982] = isWrath,                                  -- Blood Pact (Rank 7)
+
+        -- SHAMAN
+        [30809] = true,                                     -- Unleashed Rage
 
         -- Consumables
         [673] = true,                                       -- Elixir of Minor Defense
@@ -228,7 +236,10 @@ do
         -- Costumes
         [8220] = true,                                      -- Flip Out!
         [8222] = true,                                      -- Yaaarrrr
-        [16739] = true,                 -- Orb of Deception
+        [16739] = true,                                     -- Orb of Deception
+
+        -- Items
+        [17619] = true,                                     -- Alchemist Stone
 
         --------------------------------------------------
         -- Season of Discovery
@@ -283,8 +294,21 @@ end
 
 if EXPANSION >= LE_EXPANSION_WRATH_OF_THE_LICH_KING then
     local data = {
+        -- DEATHKNIGHT
+        [55610] = true, -- Unholy Aura
+
+        -- PRIEST
+        [49868] = true, -- Mind Quickening
+
+        -- SHAMAN
+        [51470] = true, -- Elemental Oath
+
         -- Items
         [72968] = true, -- Precious's Ribbon
+        
+
+        -- Dungeons
+        [72221] = true, -- Luck of the Draw
     }
     import(data, blacklist)
 end
@@ -309,11 +333,21 @@ end
 
 if EXPANSION >= LE_EXPANSION_CATACLYSM then
     local data = {
-        [17619] = true, -- Alchemist Stone
+        -- MAGE
+        [61316] = true, -- Dalaran Brilliance
+
+        -- SHAMAN
+        [77747] = true, -- Burning Wrath (Shaman)
+
+        -- WARLOCK
+        [109773] = true, -- Dark Intent
+        [108503] = true, -- Grimoire of Sacrifice
 
         -- Items
         [93337] = true, -- Champion of Ramkahen
+        [93806] = true, -- Darnassus Champion
         [93795] = true, -- Stormwind Champion
+        [97341] = true, -- Guild Champion
 
         -- Customes
         [74589] = true, -- Identity Crisis (Faded Wizard Hat)
@@ -327,11 +361,31 @@ end
 --------------------------------------------------
 if EXPANSION >= LE_EXPANSION_MISTS_OF_PANDARIA then
     local data = {
+        -- MONK
+        [117666] = true, -- Legacy of the Emperor
+
+        -- ROGUE
+        [113742] = true, -- Swiftblade's Cunning
+
+        -- SHAMAN
+        [116956] = true, -- Grace of Air
+
         -- Items
         [126434] = true, -- Tushui Champion
+        [105689] = true, -- Flask of Spring Blossoms
+        [105691] = true, -- Flask of the Warn Sun
+        [105694] = true, -- Flask of the Earth
+        [105696] = true, -- Flask of Winter's Bite
 
         -- Factions
         [119966] = true, -- Blessing of the Pearlfin
+
+        -- World Buff
+        [130609] = true, -- Valor of the Ancients
+
+        -- Others
+        [131493] = true, -- B.F.F
+        [134522] = true, -- Dressed to Kill
     }
     import(data, blacklist)
 end
