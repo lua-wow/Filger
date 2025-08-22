@@ -106,10 +106,10 @@ do
         [26992] = isBCC or isWrath,                         -- Thorns (Rank 7)
         [53307] = isWrath,                                  -- Thorns (Rank 8)
 
-        [24907] = true,                                     -- Moonkin Aura
+        [24907] = (EXPANSION <= LE_EXPANSION_MISTS_OF_PANDARIA), -- Moonkin Aura
 
         -- HUNTER
-        [19506] = true,                                     -- Trueshot Aura
+        [19506] = (EXPANSION <= LE_EXPANSION_MISTS_OF_PANDARIA), -- Trueshot Aura
 
         -- MAGE
         [1459] = true,                                      -- Arcane Intellect (Rank 1)
@@ -119,6 +119,9 @@ do
         [10157] = isClassic or isBCC or isWrath,            -- Arcane Intellect (Rank 5)
         [27126] = isBCC or isWrath,                         -- Arcane Intellect (Rank 6)
         [42995] = isWrath,                                  -- Arcane Intellect (Rank 7)
+
+        -- PALADIN
+        [19740] = (EXPANSION <= LE_EXPANSION_MISTS_OF_PANDARIA), -- Blessing of Might
 
         -- PRIEST
         [1243] = isClassic or isBCC or isWrath,             -- Power Word: Fortitude (Rank 1)
@@ -146,9 +149,6 @@ do
         [11787] = isClassic or isBCC or isWrath,            -- Blood Pact (Rank 5)
         [27267] = isBCC or isWrath,                         -- Blood Pact (Rank 6)
         [47982] = isWrath,                                  -- Blood Pact (Rank 7)
-
-        -- SHAMAN
-        [30809] = true,                                     -- Unleashed Rage
 
         -- Consumables
         [673] = true,                                       -- Elixir of Minor Defense
@@ -283,10 +283,21 @@ end
 --------------------------------------------------
 if Filger.isWrath then
     local data  = {
+        -- DEATHKNIGHT
+        [55610] = true, -- Improved Icy Talons
+
+        -- MAGE
+        [61316] = true, -- Dalaran Brilliance
+
         -- PRIEST
-        [48040] = isWrath, -- Inner Fire (Rank 8)
-        [48168] = isWrath, -- Inner Fire (Rank 9)
-        [48074] = isWrath, -- Prayer of Spirit (Rank 3)
+        [48040] = true, -- Inner Fire (Rank 8)
+        [48168] = true, -- Inner Fire (Rank 9)
+        [48074] = true, -- Prayer of Spirit (Rank 3)
+        [49868] = true, -- Mind Quickening
+
+        -- SHAMAN
+        [30809] = true, -- Unleashed Rage
+        [51470] = true, -- Elemental Oath
     }
 
     import(data, blacklist)
@@ -294,21 +305,14 @@ end
 
 if EXPANSION >= LE_EXPANSION_WRATH_OF_THE_LICH_KING then
     local data = {
-        -- DEATHKNIGHT
-        [55610] = true, -- Unholy Aura
-
-        -- PRIEST
-        [49868] = true, -- Mind Quickening
-
-        -- SHAMAN
-        [51470] = true, -- Elemental Oath
-
         -- Items
         [72968] = true, -- Precious's Ribbon
-        
 
         -- Dungeons
         [72221] = true, -- Luck of the Draw
+
+        -- World Buffs
+        [57940] = true, -- Essence of Wintergrasp
     }
     import(data, blacklist)
 end
@@ -318,14 +322,26 @@ end
 --------------------------------------------------
 if Filger.isCata then
     local data = {
+        -- DEATHKNIGHT
+        [55610] = true, -- Improved Icy Talons
+
+        -- MAGE
+        [61316] = true, -- Dalaran Brilliance
+
         -- PALADIN
         [79102] = true, -- Blessing of Might
         [20165] = true, -- Seal of Insight
 
         -- PRIEST
         [588] = true, -- Inner Fire
+        [49868] = true, -- Mind Quickening
         [79107] = true, -- Shadow Protection
         [73413] = true, -- Inner Will
+
+        -- SHAMAN
+        [30809] = true, -- Unleashed Rage
+        [51470] = true, -- Elemental Oath
+        [77747] = true, -- Totemic Wrath
     }
 
     import(data, blacklist)
@@ -333,14 +349,7 @@ end
 
 if EXPANSION >= LE_EXPANSION_CATACLYSM then
     local data = {
-        -- MAGE
-        [61316] = true, -- Dalaran Brilliance
-
-        -- SHAMAN
-        [77747] = true, -- Burning Wrath (Shaman)
-
         -- WARLOCK
-        [109773] = true, -- Dark Intent
         [108503] = true, -- Grimoire of Sacrifice
 
         -- Items
@@ -359,8 +368,14 @@ end
 --------------------------------------------------
 -- Mists of Pandaria
 --------------------------------------------------
-if EXPANSION >= LE_EXPANSION_MISTS_OF_PANDARIA then
+if Filger.isMoP then 
     local data = {
+        -- DEATHKNIGHT
+        [55610] = true, -- Unholy Aura
+
+        -- MAGE
+        [61316] = true, -- Dalaran Brilliance
+
         -- MONK
         [117666] = true, -- Legacy of the Emperor
 
@@ -368,14 +383,26 @@ if EXPANSION >= LE_EXPANSION_MISTS_OF_PANDARIA then
         [113742] = true, -- Swiftblade's Cunning
 
         -- SHAMAN
+        [30809] = true, -- Unleashed Rage
+        [51470] = true, -- Elemental Oath
+        [77747] = true, -- Burning Wrath
         [116956] = true, -- Grace of Air
 
+        -- WARLOCK
+        [109773] = true, -- Dark Intent
+    }
+    import(data, blacklist)
+end
+
+if EXPANSION >= LE_EXPANSION_MISTS_OF_PANDARIA then
+    local data = {
         -- Items
-        [126434] = true, -- Tushui Champion
         [105689] = true, -- Flask of Spring Blossoms
         [105691] = true, -- Flask of the Warn Sun
         [105694] = true, -- Flask of the Earth
         [105696] = true, -- Flask of Winter's Bite
+        [126434] = true, -- Tushui Champion
+        [127230] = true, -- Visions of Insanity
 
         -- Factions
         [119966] = true, -- Blessing of the Pearlfin
@@ -386,6 +413,8 @@ if EXPANSION >= LE_EXPANSION_MISTS_OF_PANDARIA then
         -- Others
         [131493] = true, -- B.F.F
         [134522] = true, -- Dressed to Kill
+        [114800] = true, -- Polyformic Acid Potion
+        [110880] = true, -- 1st Place
     }
     import(data, blacklist)
 end
