@@ -108,10 +108,11 @@ if Filger.isMoP then
             [121125] = Filger:CreateSpellPriority(false), -- Touch of Death
 
             -- Brewmaster
-            [123402] = Filger:CreateSpellPriority(10), -- Guard
+            [123402] = Filger:CreateSpellPriority(9), -- Guard
+            [125359] = Filger:CreateSpellPriority(8), -- Tiger   Power
             [128636] = Filger:CreateSpellPriority(8), -- Power Guard
             [128939] = Filger:CreateSpellPriority(9), -- Elusive Brew
-            [125359] = Filger:CreateSpellPriority(8), -- Tiger Power
+            [132365] = Filger:CreateSpellPriority(10), -- Vengeance
         }
     }
 
