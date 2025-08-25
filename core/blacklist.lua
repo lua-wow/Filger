@@ -378,6 +378,10 @@ if Filger.isMoP then
 
         -- MONK
         [117666] = true, -- Legacy of the Emperor
+        [116781] = true, -- Legacy of the White Tiger
+
+        -- PRIEST
+        [49868] = true, -- Mind Quickening
 
         -- ROGUE
         [113742] = true, -- Swiftblade's Cunning
