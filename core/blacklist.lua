@@ -19,6 +19,7 @@ local LE_EXPANSION_WAR_WITHIN = _G.LE_EXPANSION_WAR_WITHIN or 10
 
 -- Mine
 local interface = Filger.interface
+local isRetail = Filger.isRetail
 local isClassic = Filger.isClassic
 local isBCC = Filger.isBCC
 local isWrath = Filger.isWrath
@@ -138,6 +139,11 @@ do
         
         [27681] = isClassic,                                -- Prayer of Spirit
 
+        -- ROGUE
+        [1784] = false,                                     -- Stealth
+        [2823] = true,                                      -- Deadly Poison
+        [3408] = true,                                      -- Crippling Poison
+
         -- WARLOCK
         [687] = isClassic or isBCC or isWrath or isCata,    -- Demon Skin (Rank 1)
         [696] = isClassic or isBCC or isWrath,              -- Demon Skin (Rank 2)
@@ -244,13 +250,13 @@ do
         --------------------------------------------------
         -- Season of Discovery
         --------------------------------------------------
-        [349981] = isClassic,                           -- Supercharged Chronoboon
-        [410935] = isClassic,                           -- Meditation on the Light
-        [417316] = isClassic,                           -- Meditation on the Loa
-        [418459] = isClassic,                           -- Meditation on Undeath
-        [419307] = isClassic,                           -- Meditation on Elune
-        [430947] = isClassic,                           -- Boon of Blackfathom (World Buff)
-        [436412] = isClassic,                           -- Discoverer's Delight
+        [349981] = not isRetail,                            -- Supercharged Chronoboon Displacer
+        [410935] = isClassic,                               -- Meditation on the Light
+        [417316] = isClassic,                               -- Meditation on the Loa
+        [418459] = isClassic,                               -- Meditation on Undeath
+        [419307] = isClassic,                               -- Meditation on Elune
+        [430947] = isClassic,                               -- Boon of Blackfathom (World Buff)
+        [436412] = isClassic,                               -- Discoverer's Delight
     }
 
     import(data, blacklist)
@@ -325,6 +331,9 @@ if Filger.isCata then
         -- DEATHKNIGHT
         [55610] = true, -- Improved Icy Talons
 
+        -- HUNTER
+        [77769] = true, -- Trap Launcher
+
         -- MAGE
         [61316] = true, -- Dalaran Brilliance
 
@@ -373,6 +382,9 @@ if Filger.isMoP then
         -- DEATHKNIGHT
         [55610] = true, -- Unholy Aura
 
+        -- HUNTER
+        [77769] = true, -- Trap Launcher
+
         -- MAGE
         [61316] = true, -- Dalaran Brilliance
 
@@ -385,6 +397,9 @@ if Filger.isMoP then
 
         -- ROGUE
         [113742] = true, -- Swiftblade's Cunning
+        [112942] = true, -- Shadow Focus
+        
+
 
         -- SHAMAN
         [30809] = true, -- Unleashed Rage
@@ -400,6 +415,9 @@ end
 
 if EXPANSION >= LE_EXPANSION_MISTS_OF_PANDARIA then
     local data = {
+        -- HUNTER
+        [109260] = true, -- Aspect of the Iron Hawk
+
         -- Items
         [105689] = true, -- Flask of Spring Blossoms
         [105691] = true, -- Flask of the Warn Sun
@@ -410,6 +428,16 @@ if EXPANSION >= LE_EXPANSION_MISTS_OF_PANDARIA then
 
         -- Factions
         [119966] = true, -- Blessing of the Pearlfin
+
+        -- Klaxxi
+        [124529] = true, -- Iron Mantid (Enhancement)
+        [123075] = true, -- Angel of Death (Enhancement)
+        [127382] = true, -- Silent Lucidity (Enhancement)
+        [127794] = true, -- Children of the Grave (Enhancement)
+        [127375] = true, -- Speed King (Augmentation)
+        [123219] = true, -- Battle Hymn (Augmentation)
+        [123211] = true, -- Pain Killer (Augmentation)
+        [127351] = true, -- Master of Puppets (Augmentation)
 
         -- World Buff
         [130609] = true, -- Valor of the Ancients
@@ -851,6 +879,12 @@ if Filger.isRetail then
         [1218497] = true, -- Mysterious Tenacity
         [1218388] = true, -- Mysterious Celerity
         [1218454] = true, -- Mysterious Swiftstrike
+
+        --------------------------------------------------
+        -- Patch 11.2.0
+        --------------------------------------------------
+        [1244018] = true, -- Tazavesh, the Vailed Market, Hard Mode
+        [1246366] = true, -- Stree Smart
     }
 
     import(data, blacklist)

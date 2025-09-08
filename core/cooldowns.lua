@@ -434,6 +434,7 @@ if Filger.isMoP then
             CreateSpellCooldown(115213), -- Avert Harm
             CreateSpellCooldown(115308), -- Elusive Brew
             CreateSpellCooldown(115315), -- Summon Black Ox Statue
+            CreateSpellCooldown(115399), -- Chi Brew
             CreateSpellCooldown(122057), -- Clash
             CreateSpellCooldown(123402), -- Guard
 
@@ -835,10 +836,12 @@ if Filger.isRetail then
             -- Brewmaster
             CreateSpellCooldown(119582, false), -- Purifiying Brew
             CreateSpellCooldown(132578),        -- Invoke Niuzao, the Black Ox
+            CreateSpellCooldown(115399),        -- Black Ox Brew
             CreateSpellCooldown(322507),        -- Celestial Brew
             CreateSpellCooldown(115176),        -- Zen Meditation
             CreateSpellCooldown(325153),        -- Exploding Keg
             CreateSpellCooldown(387184),        -- Weapons of Order
+            CreateSpellCooldown(1241059),       -- Celestial Infusion
         },
         ["PALADIN"] = {
             CreateSpellCooldown(633),           -- Lay on Hands
