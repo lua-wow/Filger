@@ -5,17 +5,12 @@ local LibDispel = LibStub("LibDispel")
 assert(LibDispel, "Filger requires LibDispel")
 
 local blacklist = ns.Filger.blacklist or {}
-local cooldowns = ns.Filger.cooldowns or {}
-local spells = ns.Filger.spells or {}
 
 -- Blizzard
 local CreateFrame = _G.CreateFrame
 local UnitIsUnit = _G.UnitIsUnit
 local UnitIsOwnerOrControllerOfUnit = _G.UnitIsOwnerOrControllerOfUnit
 local IsSpellKnown = _G.IsSpellKnown
-local GetSpellInfo = C_Spell and C_Spell.GetSpellInfo or _G.GetSpellInfo
-local GetSpellName = C_Spell and C_Spell.GetSpellName or _G.GetSpellInfo
-local GetSpellCooldown = _G.GetSpellCooldown
 local GetInventoryItemLink = _G.GetInventoryItemLink
 local GetItemInfo = _G.GetItemInfo
 local GetInventoryItemCooldown = _G.GetInventoryItemCooldown
@@ -427,7 +422,7 @@ do
 
             table.sort(self.sorted, self.SortAuras)
 
-            numVisible = math.min(self.limit, #self.sorted)
+            local numVisible = math.min(self.limit, #self.sorted)
 
             for i = 1, numVisible do
                 self:Update(unit, self.sorted[i], i)
@@ -600,7 +595,7 @@ do
             end
         elseif data.itemId then
             index = "ITEM_" .. data.itemId
-            name, _, _, _, _, itemType, _, _, _, icon, _, _, _, _, _, _, _ = GetItemInfo(data.itemId)
+            name, _, _, _, _, _, _, _, _, icon, _, _, _, _, _, _, _ = GetItemInfo(data.itemId)
             start, duration, enabled = GetItemCooldown(data.itemId)
         end
 
@@ -650,7 +645,7 @@ do
 
             table.sort(self.sorted, self.SortCooldowns)
 
-            numVisible = math.min(self.limit, #self.sorted)
+            local numVisible = math.min(self.limit, #self.sorted)
 
             for i = 1, numVisible do
                 self:Update(unit, self.sorted[i], i)

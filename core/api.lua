@@ -1,7 +1,6 @@
 local _, ns = ...
 local Filger = ns.Filger
 local config = Filger.config
-local fonts = Filger.fonts
 local textures = Filger.textures
 
 -- Blizzard
@@ -22,23 +21,6 @@ elseif IsAddOnLoaded("Tukui") then
 	end
 
 	return
-end
-
----------------------------------------------------
--- Functions
----------------------------------------------------
-local Resolution = select(1, GetPhysicalScreenSize()).."x"..select(2, GetPhysicalScreenSize())
-local PixelPerfectScale = 768 / string.match(Resolution, "%d+x(%d+)")
-local Scale = function(size)
-	-- Little protection just in case
-	if size == "" then
-		size = 1
-	end
-
-	local Mult = PixelPerfectScale / GetCVar("uiScale")
-	local Value = Mult * math.floor(size / Mult + .5)
-
-	return Value
 end
 
 ---------------------------------------------------
@@ -148,9 +130,9 @@ function Filger:MergeAPI()
 
     while (Object) do
         local t = Object:GetObjectType()
-        if (not Object:IsForbidden() and not Handled[Object:GetObjectType()]) then
+        if (not Object:IsForbidden() and not Handled[t]) then
             AddAPI(Object)
-            Handled[Object:GetObjectType()] = true
+            Handled[t] = true
         end
         Object = EnumerateFrames(Object)
     end

@@ -1,6 +1,5 @@
 local _, ns = ...
 local Filger = ns.Filger
-local interface = Filger.interface
 
 -- Blizzard
 local GetSpellInfo = C_Spell and C_Spell.GetSpellInfo or _G.GetSpellInfo

@@ -9,6 +9,7 @@ unused_secondaries = false -- e.g. local name, _, itemLevel = GetItemInfo(...)
 exclude_files = {
     '.claude/**',
     'docs/**',
+    'core/development.lua', -- dev-only helpers
     'libs/**', -- submodules
 }
 
@@ -22,6 +23,10 @@ ignore = {
     '614', -- trailing whitespace in comment
     '631', -- line is too long
 }
+
+-- data files keep the full expansion ladder for authoring entries
+files['core/blacklist.lua'] = { ignore = { '211/LE_EXPANSION_.*' } }
+files['core/cooldowns.lua'] = { ignore = { '211/LE_EXPANSION_.*' } }
 
 -- globals Filger is allowed to set or mutate
 globals = {
@@ -49,6 +54,7 @@ read_globals = {
     'WOW_PROJECT_WRATH_CLASSIC',
 
     -- API and FrameXML
+    'AuraUtil',
     'CreateColor',
     'CreateFrame',
     'Display_DisplayModeDropDown',

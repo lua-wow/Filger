@@ -3,7 +3,6 @@ local Filger = ns.Filger
 
 local class = Filger.class
 local cooldowns = Filger.cooldowns or {}
-local blacklist = Filger.blacklist or {}
 local spells = Filger.spells or {}
 local all = Filger.all or {}
 

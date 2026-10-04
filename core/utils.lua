@@ -42,7 +42,7 @@ function Filger.GetSpellInfo(spellID)
 	if C_Spell and C_Spell.GetSpellInfo then
 		return C_Spell.GetSpellInfo(spellID)
 	else
-		local name, rank, icon, castTime, minRange, maxRange, spellID, originalIcon = _G.GetSpellInfo(spellID)
+		local name, rank, icon, castTime, minRange, maxRange, id, originalIcon =_G.GetSpellInfo(spellID)
 		if name then
 			return {
 				name = name,
@@ -51,7 +51,7 @@ function Filger.GetSpellInfo(spellID)
 				castTime = castTime,
 				minRange = minRange,
 				maxRange = maxRange,
-				spellID = spellID,
+				spellID = id,
 				rank = rank
 			}
 		end
