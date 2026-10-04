@@ -1,6 +1,8 @@
 local _, ns = ...
 local Filger = ns.Filger
 
+ns.data.Finalize()
+
 local class = Filger.class
 local cooldowns = Filger.cooldowns or {}
 local spells = Filger.spells or {}

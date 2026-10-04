@@ -7,19 +7,7 @@ local textures = Filger.textures
 local IsAddOnLoaded = C_AddOns and C_AddOns.IsAddOnLoaded or _G.IsAddOnLoaded
 
 -- skip it if Tukui exists
-if IsAddOnLoaded("Tainted") then 
-	function Filger.SetBorderColor(frame, color)
-		if frame.Backdrop then
-			frame.Backdrop:SetBackdropBorderColor(color.r, color.g, color.b, color.a or 1)
-		end
-	end
-
-	return
-elseif IsAddOnLoaded("Tukui") then 
-	function Filger.SetBorderColor(frame, color)
-		frame:SetBorderColor(color.r, color.g, color.b, color.a or 1)
-	end
-
+if IsAddOnLoaded("Tainted") or IsAddOnLoaded("Tukui") then
 	return
 end
 

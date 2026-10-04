@@ -1,9 +1,9 @@
 local _, ns = ...
 local Filger = ns.Filger
-local class = Filger.class
 
--- Blizzard
-local GetSpellInfo = C_Spell and C_Spell.GetSpellInfo or _G.GetSpellInfo
+local CreateSpellCooldown = ns.data.CreateSpellCooldown
+local CreateSlotCooldown = ns.data.CreateSlotCooldown
+local AddCooldowns = ns.data.AddCooldowns
 
 local expansion = _G.LE_EXPANSION_LEVEL_CURRENT
 local LE_EXPANSION_CLASSIC = _G.LE_EXPANSION_CLASSIC or 0
@@ -18,55 +18,6 @@ local LE_EXPANSION_SHADOWLANDS = _G.LE_EXPANSION_SHADOWLANDS or 8
 local LE_EXPANSION_DRAGONFLIGHT = _G.LE_EXPANSION_DRAGONFLIGHT or 9
 local LE_EXPANSION_WAR_WITHIN = _G.LE_EXPANSION_WAR_WITHIN or 10
 local LE_EXPANSION_MIDNIGHT = _G.LE_EXPANSION_MIDNIGHT or 11
-
-local cooldowns = {}
-
-local importData = function(dest, row)
-    if row.enabled then
-        local data = GetSpellInfo(row.spellId)
-        if data then
-            table.insert(dest, row)
-        else
-            Filger:warn("COOLDOWN", "Spell " .. row.spellId .. " do not exists.")
-        end
-    end
-end
-
-local import = function(source, dest)
-    for class, spells in next, source do
-        if not dest[class] then
-            dest[class] = {}
-        end
-        
-        for _, row in next, spells do
-            importData(dest[class], row)
-            -- if row.enabled then
-            --     local data = GetSpellInfo(row.spellId)
-            --     if data then
-            --         table.insert(dest[class], row)
-            --     else
-            --         Filger.warn("COOLDOWN", "Spell " .. row.spellId .. " do not exists.")
-            --     end
-            -- end
-        end
-    end
-end
-
-local CreateSpellCooldown = function(spellId, enabled)
-    assert(type(spellId) == "number", "Filger: Invalid cooldown spellId")
-    if (enabled == nil) then
-        enabled = true
-    end
-    return { spellId = spellId, enabled = enabled }
-end
-
-local CreateSlotCooldown = function(slotId, enabled)
-    assert(tonumber(slotId), "Filger: Invalid slotId")
-    if (enabled == nil) then
-        enabled = true
-    end
-    return { slotId = slotId, enabled = enabled }
-end
 
 local racials = {
     -- Horde
@@ -183,7 +134,7 @@ if Filger.isClassic then
             CreateSpellCooldown(2687),          -- Bloodrage
         }
     }
-    import(data, cooldowns)
+    AddCooldowns(data)
 end
 
 --------------------------------------------------
@@ -249,7 +200,7 @@ if Filger.isBCC then
             CreateSpellCooldown(19280),         -- Devouring Plague(Rank 6)
         }
     }
-    import(data, cooldowns)
+    AddCooldowns(data)
 end
 
 --------------------------------------------------
@@ -304,7 +255,7 @@ if Filger.isWrath then
             CreateSpellCooldown(19280),         -- Devouring Plague(Rank 6)
         }
     }
-    import(data, cooldowns)
+    AddCooldowns(data)
 end
 
 --------------------------------------------------
@@ -379,7 +330,7 @@ if Filger.isCata then
         }
     }
 
-    import(data, cooldowns)
+    AddCooldowns(data)
 end
 
 --------------------------------------------------
@@ -528,7 +479,7 @@ if Filger.isMoP then
         }
     }
 
-    import(data, cooldowns)
+    AddCooldowns(data)
 end
 
 --------------------------------------------------
@@ -550,7 +501,7 @@ if Filger.Shadowlands then
         }
     }
 
-    import(data, cooldowns)
+    AddCooldowns(data)
 end
 
 --------------------------------------------------
@@ -701,7 +652,7 @@ if Filger.isDF then
         }
     }
 
-    import(data, cooldowns)
+    AddCooldowns(data)
 end
 
 if Filger.isRetail then
@@ -982,22 +933,9 @@ if Filger.isRetail then
         }
     }
 
-    import(data, cooldowns)
+    AddCooldowns(data)
 end
 
--- make sure the player class cooldown exists, even if empty
-if not cooldowns[class] then
-    cooldowns[class] = {}
-end
-
--- insert racials spells
-for i = 1, #racials do
-    importData(cooldowns[class], racials[i])
-end
-
--- insert gear slots
-for i = 1, #gear do
-    table.insert(cooldowns[class], gear[i])
-end
-
-Filger.cooldowns = cooldowns[class]
+-- racials and gear slots go after the player class cooldowns
+AddCooldowns({ ["ALL"] = racials })
+AddCooldowns({ ["ALL"] = gear })

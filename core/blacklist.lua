@@ -1,8 +1,7 @@
 local _, ns = ...
 local Filger = ns.Filger
 
--- Blizzard
-local GetSpellInfo = C_Spell and C_Spell.GetSpellInfo or _G.GetSpellInfo
+local AddBlacklist = ns.data.AddBlacklist
 
 local EXPANSION = _G.LE_EXPANSION_LEVEL_CURRENT or -1
 local LE_EXPANSION_CLASSIC = _G.LE_EXPANSION_CLASSIC or 0
@@ -25,28 +24,9 @@ local isBCC = Filger.isBCC
 local isWrath = Filger.isWrath
 local isCata = Filger.isCata
 
-local import = function(source, dest)
-    for spellId, enabled in next, source do
-        if enabled then
-            if type(spellId) == "string" then
-                dest[spellId] = true
-            else
-                local data = GetSpellInfo(spellId)
-                if data then
-                    dest[spellId] = true
-                else
-                    Filger:warn("Blacklist", "Spell " .. spellId .. " do not exists.")
-                end
-            end
-        end
-    end
-end
-
 --------------------------------------------------
 -- Black List
 --------------------------------------------------
-local blacklist = {}
-
 local general = {
     ["Well Fed"] = true,
     ["Drink"] = true,
@@ -80,7 +60,7 @@ local general = {
     ["Power Word: Fortitude"] = true,
 }
 
-import(general, blacklist)
+AddBlacklist(general)
 
 --------------------------------------------------
 -- Classic
@@ -259,7 +239,7 @@ do
         [436412] = isClassic,                               -- Discoverer's Delight
     }
 
-    import(data, blacklist)
+    AddBlacklist(data)
 end
 
 --------------------------------------------------
@@ -272,7 +252,7 @@ if Filger.isBCC then
         [32999] = true, -- Prayer of Spirit (Rank 2)
     }
 
-    import(data, blacklist)
+    AddBlacklist(data)
 end
 
 if EXPANSION >= LE_EXPANSION_BURNING_CRUSADE then
@@ -281,7 +261,7 @@ if EXPANSION >= LE_EXPANSION_BURNING_CRUSADE then
         [44185] = true, -- Jack-o'-Lanterned!
     }
 
-    import(data, blacklist)
+    AddBlacklist(data)
 end
 
 --------------------------------------------------
@@ -306,7 +286,7 @@ if Filger.isWrath then
         [51470] = true, -- Elemental Oath
     }
 
-    import(data, blacklist)
+    AddBlacklist(data)
 end
 
 if EXPANSION >= LE_EXPANSION_WRATH_OF_THE_LICH_KING then
@@ -320,7 +300,7 @@ if EXPANSION >= LE_EXPANSION_WRATH_OF_THE_LICH_KING then
         -- World Buffs
         [57940] = true, -- Essence of Wintergrasp
     }
-    import(data, blacklist)
+    AddBlacklist(data)
 end
 
 --------------------------------------------------
@@ -353,7 +333,7 @@ if Filger.isCata then
         [77747] = true, -- Totemic Wrath
     }
 
-    import(data, blacklist)
+    AddBlacklist(data)
 end
 
 if EXPANSION >= LE_EXPANSION_CATACLYSM then
@@ -373,7 +353,7 @@ if EXPANSION >= LE_EXPANSION_CATACLYSM then
         [74589] = true, -- Identity Crisis (Faded Wizard Hat)
         [96312] = true, -- Kalytha's Haunted Locket
     }
-    import(data, blacklist)
+    AddBlacklist(data)
 end
 
 --------------------------------------------------
@@ -412,7 +392,7 @@ if Filger.isMoP then
         -- WARLOCK
         [109773] = true, -- Dark Intent
     }
-    import(data, blacklist)
+    AddBlacklist(data)
 end
 
 if EXPANSION >= LE_EXPANSION_MISTS_OF_PANDARIA then
@@ -450,7 +430,7 @@ if EXPANSION >= LE_EXPANSION_MISTS_OF_PANDARIA then
         [114800] = true, -- Polyformic Acid Potion
         [110880] = true, -- 1st Place
     }
-    import(data, blacklist)
+    AddBlacklist(data)
 end
 
 --------------------------------------------------
@@ -466,7 +446,7 @@ if EXPANSION >= LE_EXPANSION_WARLORDS_OF_DRAENOR then
         -- ???
         [182422] = true, -- Training Gear
     }
-    import(data, blacklist)
+    AddBlacklist(data)
 end
 
 --------------------------------------------------
@@ -490,7 +470,7 @@ if EXPANSION >= LE_EXPANSION_LEGION then
         -- Mythic+
         [206151] = true, -- Challenger's Burden
     }
-    import(data, blacklist)
+    AddBlacklist(data)
 end
 
 --------------------------------------------------
@@ -543,7 +523,7 @@ if EXPANSION >= LE_EXPANSION_BATTLE_FOR_AZEROTH then
         [312456] = true, -- Elite Extermination
         [310720] = true, -- Elite Extermination
     }
-    import(data, blacklist)
+    AddBlacklist(data)
 end
 
 --------------------------------------------------
@@ -560,7 +540,7 @@ if EXPANSION >= LE_EXPANSION_SHADOWLANDS then
         [368510] = true, -- So'leash's Secret Technique
         [368512] = true, -- So'leash's Secret Technique
     }
-    import(data, blacklist)
+    AddBlacklist(data)
 end
 
 --------------------------------------------------
@@ -678,7 +658,7 @@ if EXPANSION >= LE_EXPANSION_DRAGONFLIGHT then
         [430669] = true, -- Sign of Awakened Dreams
     }
 
-    import(data, blacklist)
+    AddBlacklist(data)
 end
 
 --------------------------------------------------
@@ -905,7 +885,5 @@ if Filger.isRetail then
         
     }
 
-    import(data, blacklist)
+    AddBlacklist(data)
 end
-
-Filger.blacklist = blacklist

@@ -20,5 +20,14 @@
 ## X-Maintainer: pedrozc90
 
 libs\init.xml
+core\data.lua
+data\shared.lua
+data\vanilla.lua [AllowLoadGameType vanilla, camelot] [ExcludeLoadGameType tbc, wrath, cata, mists, standard]
+data\forever.lua [AllowLoadGameType camelot] [ExcludeLoadGameType standard, classic]
+data\tbc.lua [AllowLoadGameType tbc]
+data\wrath.lua [AllowLoadGameType wrath]
+data\cata.lua [AllowLoadGameType cata]
+data\mists.lua [AllowLoadGameType mists]
+data\retail.lua [AllowLoadGameType standard]
 core\init.xml
 Filger.lua

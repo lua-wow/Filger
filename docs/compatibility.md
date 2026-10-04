@@ -25,9 +25,15 @@ A single `Filger.toc` serves every supported client (`## Interface: 11509, 16001
 ## TOC rules
 
 - Do not add client-specific TOCs (`Filger_*.toc`); a suffixed TOC overrides `Filger.toc` on its client.
-- Every file currently loads on every client. If a client-specific file is needed, tag its line
-  with `[AllowLoadGameType ...]`, using the family (`mainline`, `classic`) or game types
-  (`vanilla`, `tbc`, `wrath`, `cata`, `mists`). Keep one ordered list.
+- Untagged lines load on every client. Client-specific files are tagged with
+  `[AllowLoadGameType ...]`, using the family (`mainline`, `classic`) or game types
+  (`standard`, `camelot`, `vanilla`, `tbc`, `wrath`, `cata`, `mists`). Keep one ordered list.
+- Client-specific data lives in `data/`, one file per client, loaded before `core\init.xml`:
+  `shared` (untagged), `vanilla` (Era + Forever), `forever`, `tbc`, `wrath`, `cata`, `mists`,
+  `retail`. Retail uses `standard`, not `mainline`: the `mainline` family includes `camelot`.
+- Lines allowing `camelot` also exclude every other client by its own token
+  (e.g. `[ExcludeLoadGameType tbc, wrath, cata, mists, standard]`), because only Forever is known
+  to recognize `camelot`.
 - A condition whose tokens the client doesn't recognize is treated as satisfied. A `camelot`-only
   line would therefore also need `[ExcludeLoadGameType standard, classic]`.
 - Per-game metadata (`## Title`) uses the same `[AllowLoadGameType ...]` suffix.
