@@ -28,9 +28,12 @@ A single `Filger.toc` serves every supported client (`## Interface: 11509, 16001
 - Untagged lines load on every client. Client-specific files are tagged with
   `[AllowLoadGameType ...]`, using the family (`mainline`, `classic`) or game types
   (`standard`, `camelot`, `vanilla`, `tbc`, `wrath`, `cata`, `mists`). Keep one ordered list.
-- Client-specific data lives in `data/`, one file per client, loaded before `core\init.xml`:
-  `shared` (untagged), `vanilla` (Era + Forever), `forever`, `tbc`, `wrath`, `cata`, `mists`,
-  `retail`. Retail uses `standard`, not `mainline`: the `mainline` family includes `camelot`.
+- Data lives in `data/`, loaded before `core\init.xml` through the TOC `[Game]` variable
+  (`data\[Game]\spells.lua`, …), which expands to the client's game type folder: `Standard`,
+  `Camelot`, `Vanilla`, `TBC`, `Wrath`, `Cata`, `Mists`. Every folder must contain every listed
+  file (stubs are fine). `data/shared/` holds data for every client, gated by
+  `LE_EXPANSION_LEVEL_CURRENT`. `[Family]` (`Mainline`/`Classic`) is too coarse for spell data.
+- Retail is `standard`, not `mainline`: the `mainline` family includes `camelot`.
 - Lines allowing `camelot` also exclude every other client by its own token
   (e.g. `[ExcludeLoadGameType tbc, wrath, cata, mists, standard]`), because only Forever is known
   to recognize `camelot`.
@@ -46,8 +49,8 @@ A single `Filger.toc` serves every supported client (`## Interface: 11509, 16001
 
 ## Runtime client checks
 
-Flags from `WOW_PROJECT_ID` in `core/init.lua`: `Filger.isRetail`, `Filger.isClassic`,
-`Filger.isBCC`, `Filger.isWrath`, `Filger.isCata`, `Filger.isMoP`.
+Flags from `WOW_PROJECT_ID` in `core/init.lua`: `Filger.isStandard`, `Filger.isVanilla`,
+`Filger.isTBC`, `Filger.isWrath`, `Filger.isCata`, `Filger.isMists`.
 
 - There is no Classic Forever flag. Forever sets `WOW_PROJECT_ID = WOW_PROJECT_CAMELOT` (18)
   (`Blizzard_ProjectConstants/Camelot/ProjectConstants.lua`), so every flag is false there.

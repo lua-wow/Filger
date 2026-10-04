@@ -343,7 +343,7 @@ do
             data.enabled = false
         end
 
-        if Filger.isClassic then
+        if Filger.isVanilla then
             data.auraIndex = self:GetAuraIndex(unit, data.auraInstanceID, self.filter)
         end
 

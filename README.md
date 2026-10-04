@@ -27,7 +27,7 @@ It also track player's spells cooldown and item cooldowns.
 
 ## Configuration
 
-The addon configuration can be done by editing the [config.lua](./core/config.lua) file.
+The addon configuration can be done by editing the [config.lua](./config.lua) file.
 
 ```lua
 local config = {

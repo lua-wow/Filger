@@ -25,8 +25,8 @@ ignore = {
 }
 
 -- data files keep the full expansion ladder for authoring entries
-files['core/blacklist.lua'] = { ignore = { '211/LE_EXPANSION_.*' } }
-files['core/cooldowns.lua'] = { ignore = { '211/LE_EXPANSION_.*' } }
+files['data/shared/blacklist.lua'] = { ignore = { '211/LE_EXPANSION_.*' } }
+files['data/shared/cooldowns.lua'] = { ignore = { '211/LE_EXPANSION_.*' } }
 
 -- globals Filger is allowed to set or mutate
 globals = {
@@ -46,6 +46,7 @@ read_globals = {
 
     -- constants
     'WOW_PROJECT_BURNING_CRUSADE_CLASSIC',
+    'WOW_PROJECT_CAMELOT',
     'WOW_PROJECT_CATACLYSM_CLASSIC',
     'WOW_PROJECT_CLASSIC',
     'WOW_PROJECT_ID',

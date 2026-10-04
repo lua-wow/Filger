@@ -1,6 +1,5 @@
 local _, ns = ...
 local Filger = ns.Filger
-local config = Filger.config
 local textures = Filger.textures
 
 -- Blizzard
@@ -65,13 +64,13 @@ end
 API.CreateBackdrop = function(self, template)
 	if not self.Backdrop then
 		local backdropTexture = textures.blank
-		local backdropColor = config.general.backdrop.color
+		local backdropColor = Filger.config.general.backdrop.color
 		local backdropAlpha = (template == "transparent") and 0.70 or 1
 		
 		local borderTexture = textures.blank
-		local borderColor = config.general.border.color
+		local borderColor = Filger.config.general.border.color
 
-		local inset = Scale(config.general.border.size or 1)
+		local inset = Scale(Filger.config.general.border.size or 1)
 		local backdrop = {
 			bgFile = backdropTexture
 		}

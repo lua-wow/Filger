@@ -11,9 +11,8 @@ APIs and by secret values. Don't assume existing code is correct.
 
 **No configuration.** No options UI, slash-command configuration (`/filger` is help/dev only),
 profiles, per-character or per-client settings, and no SavedVariables added just to make
-something configurable. Decisions are made in code and constants (`core/config.lua`,
-`core/spells.lua`, `core/cooldowns.lua`, `core/blacklist.lua`). The declared SavedVariable
-(`FilgerData`) is currently unused. If a feature genuinely needs new persistent state, explain
+something configurable. Decisions are made in code and constants (`config.lua`, `data/`).
+The declared SavedVariable (`FilgerData`) is currently unused. If a feature genuinely needs new persistent state, explain
 why before adding it.
 
 **Minimalism.** No frameworks, abstractions, compatibility layers, helper systems or
