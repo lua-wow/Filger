@@ -1,12 +1,20 @@
-## Interface: 20504, 30403, 40400, 110205
+## Interface: 11509, 16001, 20506, 38002, 40402, 50504, 120100
+## Version: 5.2.2
 ## Author: Luaerror
 ## Credits: Nils Ruesch, Shestak, Affli, Garagar, hidekki, FourOne, Tukz
-## Version: 5.2.1
-## Title: |cffff8000Filger|r
-## Notes: Minimal buff/debuff tracker
-## IconTexture: Interface\ICONS\Spell_Shadow_Shadowwordpain
+
 ## OptionalDeps: Tainted, Tukui
 ## SavedVariables: FilgerData
+
+## Notes: Minimal buff/debuff tracker
+## Title: |cffff8000Filger|r [AllowLoadGameType mainline]
+## Title: |cffff8000Filger|r - Classic [AllowLoadGameType vanilla]
+## Title: |cffff8000Filger|r - TBC [AllowLoadGameType tbc]
+## Title: |cffff8000Filger|r - Wrath [AllowLoadGameType wrath]
+## Title: |cffff8000Filger|r - Cataclysm [AllowLoadGameType cata]
+## Title: |cffff8000Filger|r - Mists of Pandaria [AllowLoadGameType mists]
+
+## IconTexture: Interface\ICONS\Spell_Shadow_Shadowwordpain
 
 ## X-Website: https://github.com/wow-lua/Filger
 ## X-Maintainer: pedrozc90

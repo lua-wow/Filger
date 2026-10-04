@@ -1,0 +1,15 @@
+{
+    "permissions": {
+        "deny": [
+            "Bash(git push:*)",
+            "Bash(git commit:*)",
+            "Bash(git add:*)",
+            "Bash(git submodule update:*)",
+            "Bash(gh:*)",
+            "Edit(~/.github/addons/refs/**)"
+        ],
+        "additionalDirectories": [
+            "../refs"
+        ]
+    }
+}
