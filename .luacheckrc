@@ -41,7 +41,10 @@ read_globals = {
 
     -- namespaces
     'C_AddOns',
+    'C_Container',
+    'C_Item',
     'C_Spell',
+    'C_SpellBook',
     'C_UnitAuras',
 
     -- constants
@@ -63,7 +66,6 @@ read_globals = {
     'GameTooltip',
     'GetBuildInfo',
     'GetCVar',
-    'GetItemCooldown',
     'GetPhysicalScreenSize',
     'GetTime',
     'LibStub',
