@@ -1,60 +1,124 @@
 # Filger
 
-Filger is a minimalistic aura tracker addon for [World of Warcraft](https://worldofwarcraft.com/en-us/).
+## Description
 
-It allows you to keep track of any buffs/debuffs of all units (`player`, `target`, `focus`, etc.)
+**Filger** is a minimalistic buff/debuff tracker for **World of Warcraft**.
+A single addon folder serves every supported client and should look the same on all of them.
 
-It also track player's spells cooldown and item cooldowns.
+> Filger is being revived after a long break. Most of it is still **pending in-game verification**.
 
 <p align="center">
     <img src="docs/screenshot.png" alt="Filger" title="Filger example" width="800" />
 </p>
 
+## Supported clients
+
+| Client                | Interface |
+|:----------------------|:----------|
+| Retail (Midnight)     | `120105`  |
+| Classic Forever       | `16001`   |
+| Classic Era           | `11509`   |
+| Classic TBC           | `20506`   |
+| Classic WotLK (Titan) | `38002`   |
+| Classic MoP           | `50504`   |
+
+Cataclysm is not supported.
+
+## Frames
+
+| Frame              | Unit     | Tracks                                  |
+|:-------------------|:---------|:----------------------------------------|
+| `PLAYER_DEBUFFS`   | `player` | Debuffs                                 |
+| `PLAYER_AURAS`     | `player` | Buffs cast by the player                |
+| `PLAYER_BUFFS`     | `player` | Buffs                                   |
+| `TARGET_DEBUFFS`   | `target` | Debuffs                                 |
+| `TARGET_AURAS`     | `target` | Buffs                                   |
+| `FOCUS_DEBUFFS`    | `focus`  | Debuffs                                 |
+| `BOSS_DEBUFFS`     | `player` | Debuffs applied by bosses               |
+| `PLAYER_COOLDOWNS` | `player` | Spell and item cooldowns                |
+
+Spells shown or hidden per client are listed in [data/](./data).
+
+> On Retail, while auras and cooldowns are restricted (secret values), only listed spells
+> are tracked and timers use Blizzard's countdown numbers.
+
+## Usage
+
+### Commands
+
+-   `/filger help` - List all available commands.
+
+## Configuration
+
+There is no in-game configuration. Frames are defined in [config.lua](./config.lua).
+
+Please report Lua errors as [issues](https://github.com/lua-wow/Filger/issues).
+
 ## Dependencies
 
--   Required: `None`
--   Optional:
-    -   [Tainted](https://github.com/lua-wow/Tainted)
-    -   [Tukui](https://github.com/tukui-org/Tukui)
+-   Required: none.
+-   Optional: [Tainted](https://github.com/lua-wow/Tainted) or [Tukui](https://github.com/tukui-org/Tukui).
+    When either is loaded, Filger uses its API instead of its own.
 
 ## Installation
 
 1.  Download the latest version of [**Filger**](https://github.com/lua-wow/Filger/releases)
 2.  Backup your **Interface** and **WTF** folders.
-3.  Delete **Cache** and **WTF** folders for a clean install.
-4.  Copy/Paste **Filger** folder into WoW interface folder (`World of Warcraft/_retail_/Interface/AddOns`)
-5.  Now you are ready to start World of Warcraft.
+3.  Delete the **Cache** and **WTF** folders for a clean install.
+4.  Copy the **Filger** folder into the client's AddOns folder.
+    - `World of Warcraft/_retail_/Interface/AddOns`
+    - `World of Warcraft/_classic_era_/Interface/AddOns`
+5.  Now you're ready to launch World of Warcraft.
 
-## Configuration
+To install from git, clone **with submodules**: the bundled libraries in `libs/` are git
+submodules, and the addon won't load without them.
 
-The addon configuration can be done by editing the [config.lua](./config.lua) file.
+## Development Setup
 
-```lua
-local config = {
-    frames = {
-        ["PLAYER_COOLDOWNS"] = {
-            enabled = true,
-            unit = "player",
-            filter = "COOLDOWN",
-            caster = "player",
-            anchor = { "CENTER", UIParent, "BOTTOM", 0, 259 },
-            limit = 8,
-            size = 38,
-            max_size = 40,
-            spacing = 3,
-            initialAnchor = "CENTER",
-            ["growth-x"] = "CENTER",
-            ["growth-y"] = "CENTER",
-            spells = {
-                { spellId = 586, enabled = true },      -- Fade (Rank 1)
-            }
-        }
-    }
-}
+### Method 1
+
+```bash
+# clone the repository along with submodules
+git clone --recurse-submodules git@github.com:lua-wow/Filger.git
 ```
 
-> **obs.:** The addon do not have a in-game configuration.
+### Method 2
 
-## License:
+```bash
+# clone just the main repository
+git clone git@github.com:lua-wow/Filger.git
+
+# initialize/clone submodules
+git submodule update --init --recursive
+```
+
+### Linting
+
+Static analysis uses [luacheck](https://github.com/lunarmodules/luacheck), configured in [.luacheckrc](./.luacheckrc).
+
+Requirements: **Lua 5.1**, **LuaRocks** and **luacheck** (`luarocks install luacheck`).
+
+```bash
+# list available make commands
+make help
+
+# lint the whole addon (submodules under libs/ are excluded)
+make check
+
+# lint a directory or a single file, showing warning codes
+luacheck core/
+luacheck Filger.lua --codes
+```
+
+When using a new WoW API function, frame or constant, add it to `read_globals` in `.luacheckrc`.
+Globals the addon intentionally sets or mutates go in `globals`.
+
+## Credits
+
+-   Nils Ruesch, Shestak, Affli, Garagar, hidekki, FourOne and Tukz.
+-   [Tukui](https://www.tukui.org) by Tukz, the visual reference.
+-   [LibStub](https://www.curseforge.com/wow/addons/libstub) by Kaelten.
+
+## License
 
 Please, see [LICENSE](./LICENSE) file.
