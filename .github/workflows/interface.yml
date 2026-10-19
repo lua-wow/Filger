@@ -1,0 +1,38 @@
+name: Interface
+
+on:
+    schedule:
+        - cron: '0 6 1 * *'
+    workflow_dispatch:
+
+jobs:
+    bump:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+            pull-requests: write
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v7
+
+            - name: Update TOC
+              uses: p3lim/toc-interface-updater@v4
+              with:
+                  depth: '1' # only Filger.toc, not submodule TOCs
+                  # written in this order, unsorted: keep it matching Filger.toc
+                  flavor: |
+                      vanilla
+                      tbc
+                      wrath
+                      mists
+                      retail
+                      forever
+
+            - name: Create PR
+              uses: peter-evans/create-pull-request@v8
+              with:
+                  branch: toc-bump
+                  delete-branch: true
+                  commit-message: 'toc: update interface'
+                  title: 'toc: update interface'
+                  body: Live client versions changed. Test in-game before merging.

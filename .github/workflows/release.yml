@@ -1,35 +1,22 @@
 name: Release
+
 on:
     push:
         tags:
             - 'v*'
+
 jobs:
     release:
         runs-on: ubuntu-latest
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_FILE: "Filger.zip"
+        permissions:
+            contents: write
         steps:
-          - name: Checkout
-            uses: actions/checkout@v4
-            with:
-             submodules: recursive
-             token: ${{ secrets.GH_PAT }}
+            - name: Checkout
+              uses: actions/checkout@v7
+              with:
+                  submodules: recursive
 
-          - name: Build
-            run: make zip FILENAME=${{ env.RELEASE_FILE }}
-          
-          - name: Create Release
-            run: |
-              gh release create \
-                --repo ${{ github.repository }} \
-                --title ${{ github.ref_name }} \
-                --generate-notes \
-                ${{ github.ref_name }}
-
-          - name: Upload Zip File
-            run: |
-              gh release upload \
-                --clobber "${{ github.ref_name }}" \
-                --repo ${{ github.repository }} \
-                ${{ env.RELEASE_FILE }}
+            - name: Package
+              uses: lua-wow/packager@v1
+              with:
+                  check-version: true

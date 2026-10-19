@@ -3,7 +3,6 @@
 SHELL := bash
 .SHELLFLAGS := -eu -o pipefail -c
 
-FILENAME := repository.zip
 LUACHECK ?= luacheck
 
 # -- help ---------------------
@@ -18,18 +17,3 @@ help: ## Show available commands
 .PHONY: check
 check: ## Run static analysis (see .luacheckrc)
 	@$(LUACHECK) .
-
-# -- publish ------------------
-
-.PHONY: zip
-zip: ## Create the .zip archive
-	@echo "Creating $(FILENAME)..."
-	@rm -f $(FILENAME)
-	@zip -r $(FILENAME) . -x@exclude.lst
-	@echo "$(FILENAME) created."
-
-.PHONY: clean
-clean: ## Remove the .zip archive
-	@echo "Cleaning up..."
-	@rm -f $(FILENAME)
-	@echo "Cleaned."

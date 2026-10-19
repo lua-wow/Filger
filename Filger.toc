@@ -1,4 +1,4 @@
-## Interface: 11509, 16001, 20506, 38002, 40402, 50504, 120100
+## Interface: 11509, 20506, 38002, 50504, 120105, 16001
 ## Version: 5.2.2
 ## Author: Luaerror
 ## Credits: Nils Ruesch, Shestak, Affli, Garagar, hidekki, FourOne, Tukz
