@@ -39,7 +39,7 @@ A single `Filger.toc` serves every supported client (`## Interface: 11509, 16001
   to recognize `camelot`.
 - A condition whose tokens the client doesn't recognize is treated as satisfied. A `camelot`-only
   line would therefore also need `[ExcludeLoadGameType standard, classic]`.
-- Per-game metadata (`## Title`) uses the same `[AllowLoadGameType ...]` suffix.
+- `## Title` is a single untagged line: the same on every client.
 
 ## Libraries
 

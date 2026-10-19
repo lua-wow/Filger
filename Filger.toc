@@ -7,12 +7,7 @@
 ## SavedVariables: FilgerData
 
 ## Notes: Minimal buff/debuff tracker
-## Title: |cffff8000Filger|r [AllowLoadGameType mainline]
-## Title: |cffff8000Filger|r - Classic [AllowLoadGameType vanilla]
-## Title: |cffff8000Filger|r - TBC [AllowLoadGameType tbc]
-## Title: |cffff8000Filger|r - Wrath [AllowLoadGameType wrath]
-## Title: |cffff8000Filger|r - Cataclysm [AllowLoadGameType cata]
-## Title: |cffff8000Filger|r - Mists of Pandaria [AllowLoadGameType mists]
+## Title: |cffff8000Filger|r
 
 ## IconTexture: Interface\ICONS\Spell_Shadow_Shadowwordpain
 
