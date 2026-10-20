@@ -18,3 +18,5 @@ CLAUDE.md
 **/.github/*
 **/.pkgmeta
 **/.luacheckrc
+**/UPSTREAM_REVISION
+libs/LibStub/tests/*
