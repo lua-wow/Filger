@@ -1,5 +1,5 @@
 ## Interface: 11509, 20506, 38002, 50504, 120105, 16001
-## Version: 5.2.2
+## Version: 5.3.0
 ## Author: Luaerror
 ## Credits: Nils Ruesch, Shestak, Affli, Garagar, hidekki, FourOne, Tukz
 

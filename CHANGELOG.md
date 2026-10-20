@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.3.0] - 2026-10-19
+
 ### Added
 
 -   Support for Midnight (12.0) secret values: restricted auras are looked up by listed spell ids, secret cooldowns use duration objects
