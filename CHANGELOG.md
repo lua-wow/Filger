@@ -7,10 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+-   Support for Midnight (12.0) secret values: restricted auras are looked up by listed spell ids, secret cooldowns use duration objects
+-   Support for Classic Forever, TBC Anniversary and Titan WotLK clients
+-   Spells for Mists of Pandaria Classic
+-   CI: luacheck lint, interface version bump, packager release
+
 ### Changed
 
--   patch 5.5.0
--   Added spells for Mists of Pandaria Classic
+-   Single `Filger.toc` for every client; removed `Filger_Classic.toc` and `Filger_Mists.toc`
+-   Spell data split into per-client `data/` folders, loaded through the TOC `[Game]` variable
+-   Replaced deprecated item/spell globals with `C_Item`, `C_Container`, `C_SpellBook` and `C_Spell`
+-   Debuff colors from `AuraUtil`
+-   Updated libraries (LibStub, CallbackHandler-1.0, LibDispel)
+
+### Removed
+
+-   Cataclysm Classic from the TOC
+
+### Fixed
+
+-   luacheck warnings, leaked `numVisible` and `itemType` globals
 
 ## [5.2.1] - 2025-03-08
 

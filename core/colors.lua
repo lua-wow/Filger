@@ -44,8 +44,10 @@ local colors = {
 	["Enrage"] = Filger:CreateColor(0.78, 0.25, 0.25)
 }
 
-for debuffType, color in next, _G.DebuffTypeColor do
-	colors[debuffType] = CreateColor(color.r, color.g, color.b)
+for debuffType, info in next, AuraUtil.GetDebuffDisplayInfoTable() do
+	if not colors[debuffType] then
+		colors[debuffType] = CreateColor(info.color.r, info.color.g, info.color.b)
+	end
 end
 
 Filger.colors = colors

@@ -1,16 +1,26 @@
-## Interface: 20504, 30403, 40400, 110205
+## Interface: 11509, 20506, 38002, 50504, 120105, 16001
+## Version: 5.2.2
 ## Author: Luaerror
 ## Credits: Nils Ruesch, Shestak, Affli, Garagar, hidekki, FourOne, Tukz
-## Version: 5.2.1
-## Title: |cffff8000Filger|r
-## Notes: Minimal buff/debuff tracker
-## IconTexture: Interface\ICONS\Spell_Shadow_Shadowwordpain
+
 ## OptionalDeps: Tainted, Tukui
 ## SavedVariables: FilgerData
+
+## Notes: Minimal buff/debuff tracker
+## Title: |cffff8000Filger|r
+
+## IconTexture: Interface\ICONS\Spell_Shadow_Shadowwordpain
 
 ## X-Website: https://github.com/wow-lua/Filger
 ## X-Maintainer: pedrozc90
 
 libs\init.xml
+core\data.lua
+data\[Game]\blacklist.lua
+data\[Game]\cooldowns.lua
+data\[Game]\spells.lua
+data\shared\blacklist.lua
+data\shared\cooldowns.lua
 core\init.xml
+config.lua
 Filger.lua

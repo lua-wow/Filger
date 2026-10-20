@@ -5,20 +5,18 @@ local LibDispel = LibStub("LibDispel")
 assert(LibDispel, "Filger requires LibDispel")
 
 local blacklist = ns.Filger.blacklist or {}
-local cooldowns = ns.Filger.cooldowns or {}
-local spells = ns.Filger.spells or {}
 
 -- Blizzard
 local CreateFrame = _G.CreateFrame
 local UnitIsUnit = _G.UnitIsUnit
 local UnitIsOwnerOrControllerOfUnit = _G.UnitIsOwnerOrControllerOfUnit
-local IsSpellKnown = _G.IsSpellKnown
-local GetSpellInfo = C_Spell and C_Spell.GetSpellInfo or _G.GetSpellInfo
-local GetSpellName = C_Spell and C_Spell.GetSpellName or _G.GetSpellInfo
-local GetSpellCooldown = _G.GetSpellCooldown
+local IsSpellKnown = C_SpellBook.IsSpellKnown
 local GetInventoryItemLink = _G.GetInventoryItemLink
-local GetItemInfo = _G.GetItemInfo
+local GetItemInfo = C_Item.GetItemInfo
+local GetItemCooldown = C_Container.GetItemCooldown
 local GetInventoryItemCooldown = _G.GetInventoryItemCooldown
+local C_Secrets = _G.C_Secrets
+local issecretvalue = _G.issecretvalue
 
 --------------------------------------------------
 -- Filger
@@ -52,6 +50,17 @@ do
             GameTooltip:SetInventoryItem(self.unit, self.slotId)
         elseif self.spellId then
             GameTooltip:SetSpellByID(self.spellId)
+        end
+    end
+
+    -- secret durations can't drive the OnUpdate timer text, Blizzard countdown numbers are used instead
+    function button_proto:SetSecret(isSecret)
+        if self.isSecret == isSecret then return end
+        self.isSecret = isSecret
+        self.Cooldown:SetHideCountdownNumbers(not isSecret)
+        if isSecret then
+            self:SetScript("OnUpdate", nil)
+            self.Time:SetText("")
         end
     end
 
@@ -328,7 +337,12 @@ do
     function aura_proto:ProcessData(unit, data)
         if not data then return end
 
-        data.isPlayerAura = data.sourceUnit and (UnitIsUnit("player", data.sourceUnit) or UnitIsOwnerOrControllerOfUnit("player", data.sourceUnit))
+        if self.restricted then
+            -- unit comparisons may be secret while restricted
+            data.isPlayerAura = data.isFromPlayerOrPlayerPet
+        else
+            data.isPlayerAura = data.sourceUnit and (UnitIsUnit("player", data.sourceUnit) or UnitIsOwnerOrControllerOfUnit("player", data.sourceUnit))
+        end
 
         data.dispelName = LibDispel:GetDispelType(data.spellId, data.dispelName)
         data.isDispelable = LibDispel:IsDispelable(unit, data.spellId, data.dispelName, data.isHarmful)
@@ -348,17 +362,41 @@ do
             data.enabled = false
         end
 
-        if Filger.isClassic then
+        if Filger.isVanilla then
             data.auraIndex = self:GetAuraIndex(unit, data.auraInstanceID, self.filter)
         end
 
         return data
     end
 
+    -- Retail: while auras are secret, tainted code can't list them; only spells whose aura
+    -- isn't secret can be looked up one by one, so only listed spells are shown.
+    function aura_proto:ScanSpellAuras(unit)
+        local isHarmful = self.filter:find("HARMFUL") ~= nil
+        local isPlayer = self.filter:find("PLAYER") ~= nil
+
+        for spellId in next, self.spells do
+            if not C_Secrets.ShouldSpellAuraBeSecret(spellId) then
+                local data = C_UnitAuras.GetUnitAuraBySpellID(unit, spellId)
+                if data and data.isHarmful == isHarmful and (not isPlayer or data.isFromPlayerOrPlayerPet) then
+                    data = self:ProcessData(unit, data)
+                    self.all[data.auraInstanceID] = data
+
+                    if self:FilterAura(unit, data) then
+                        self.actives[data.auraInstanceID] = true
+                    end
+                end
+            end
+        end
+    end
+
     function aura_proto:UpdateAuras(event, unit, updateInfo)
         if (self.unit ~= unit) then return end
 
-	    local isFullUpdate = not updateInfo or updateInfo.isFullUpdate
+        local isRestricted = C_Secrets and C_Secrets.ShouldAurasBeSecret()
+        -- updateInfo is secret while restricted; cached auras are stale right after it
+	    local isFullUpdate = isRestricted or self.restricted or not updateInfo or updateInfo.isFullUpdate
+        self.restricted = isRestricted
 
         local changed = false
 
@@ -367,13 +405,17 @@ do
             self.actives = table.wipe(self.actives or {})
             changed = true
 
-            local slots = { C_UnitAuras.GetAuraSlots(unit, self.filter) }
-            for i = 2, #slots do -- #1 return is continuationToken, we don't care about it
-                local data = self:ProcessData(unit, C_UnitAuras.GetAuraDataBySlot(unit, slots[i]))
-                self.all[data.auraInstanceID] = data
+            if isRestricted then
+                self:ScanSpellAuras(unit)
+            else
+                local slots = { C_UnitAuras.GetAuraSlots(unit, self.filter) }
+                for i = 2, #slots do -- #1 return is continuationToken, we don't care about it
+                    local data = self:ProcessData(unit, C_UnitAuras.GetAuraDataBySlot(unit, slots[i]))
+                    self.all[data.auraInstanceID] = data
 
-                if self:FilterAura(unit, data) then
-                    self.actives[data.auraInstanceID] = true
+                    if self:FilterAura(unit, data) then
+                        self.actives[data.auraInstanceID] = true
+                    end
                 end
             end
         else
@@ -427,7 +469,7 @@ do
 
             table.sort(self.sorted, self.SortAuras)
 
-            numVisible = math.min(self.limit, #self.sorted)
+            local numVisible = math.min(self.limit, #self.sorted)
 
             for i = 1, numVisible do
                 self:Update(unit, self.sorted[i], i)
@@ -504,6 +546,8 @@ do
             self.createdButtons = self.createdButtons + 1
         end
 
+        button:SetSecret(data.durationObject ~= nil)
+
         -- tooltips
         button.unit = unit
         button.spellId = data.spellId
@@ -517,7 +561,10 @@ do
         button.expirationTime = data.expirationTime or GetTime()
 
         if button.Cooldown then
-            if data.duration and data.duration > 0 then
+            if data.durationObject then
+                button.Cooldown:SetCooldownFromDurationObject(data.durationObject)
+                button.Cooldown:Show()
+            elseif data.duration and data.duration > 0 then
                 button.Cooldown:SetCooldown(data.expirationTime - data.duration, data.duration, data.timeMod)
                 button.Cooldown:Show()
             else
@@ -553,7 +600,11 @@ do
     --]]
     function cooldown_proto:FilterCooldown(data)
         if not data.name then return end
-        return data.name 
+        -- secret cooldown: already known to be active and off GCD; casts can't be recorded while restricted
+        if data.durationObject then
+            return data.enabled and data.isKnown
+        end
+        return data.name
             and data.enabled
             and data.isKnown
             and data.casted
@@ -574,7 +625,7 @@ do
     end
 
     function cooldown_proto:ProcessCooldownData(unit, data)
-        local index, name, icon, start, duration, enabled
+        local index, name, icon, start, duration, enabled, durationObject
 
         if data.spellId then
             index = "SPELL_" .. data.spellId
@@ -585,8 +636,15 @@ do
             end
             local cdInfo = Filger.GetSpellCooldown(data.spellId)
             if cdInfo then
-                start = cdInfo.startTime
-                duration = cdInfo.duration
+                if C_Secrets and C_Secrets.ShouldSpellCooldownBeSecret(data.spellId) then
+                    -- startTime/duration are secret; isActive/isOnGCD never are
+                    if cdInfo.isActive and not cdInfo.isOnGCD then
+                        durationObject = C_Spell.GetSpellCooldownDuration(data.spellId)
+                    end
+                else
+                    start = cdInfo.startTime
+                    duration = cdInfo.duration
+                end
                 enabled = cdInfo.enabled
             end
         elseif data.slotId then
@@ -600,7 +658,7 @@ do
             end
         elseif data.itemId then
             index = "ITEM_" .. data.itemId
-            name, _, _, _, _, itemType, _, _, _, icon, _, _, _, _, _, _, _ = GetItemInfo(data.itemId)
+            name, _, _, _, _, _, _, _, _, icon, _, _, _, _, _, _, _ = GetItemInfo(data.itemId)
             start, duration, enabled = GetItemCooldown(data.itemId)
         end
 
@@ -617,6 +675,7 @@ do
             start = start,
             duration = duration,
             expirationTime = start + duration,
+            durationObject = durationObject,
             enabled = (enabled ~= 0),
             casted = (not data.spellId) and true or self.casted[data.spellId],
             isKnown = (not data.spellId) and true or IsSpellKnown(data.spellId)
@@ -650,7 +709,7 @@ do
 
             table.sort(self.sorted, self.SortCooldowns)
 
-            numVisible = math.min(self.limit, #self.sorted)
+            local numVisible = math.min(self.limit, #self.sorted)
 
             for i = 1, numVisible do
                 self:Update(unit, self.sorted[i], i)
@@ -688,6 +747,7 @@ do
 
     -- register which spell the player cast
     function cooldown_proto:UNIT_SPELLCAST_SUCCEEDED(unit, guid, spellId)
+        if issecretvalue and issecretvalue(spellId) then return end
         self.casted[spellId] = true
     end
 end

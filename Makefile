@@ -1,21 +1,19 @@
-# Makefile to create a .zip archive of the repository
+.DEFAULT_GOAL := help
 
-# Name of the zip file
-FILENAME := repository.zip
+SHELL := bash
+.SHELLFLAGS := -eu -o pipefail -c
 
-# Default target
-zip: $(FILENAME)
+LUACHECK ?= luacheck
 
-# Create the .zip archive
-$(FILENAME):
-	@echo "Creating $(FILENAME)..."
-	@zip -r $(FILENAME) . -x@exclude.lst
-	@echo "$(FILENAME) created."
+# -- help ---------------------
 
-# Clean target to remove the .zip file
-clean:
-	@echo "Cleaning up..."
-	@rm -f $(FILENAME)
-	@echo "Cleaned."
+.PHONY: help
+help: ## Show available commands
+	@grep -E '^[a-zA-Z_-]+:.*## .*$$' $(MAKEFILE_LIST) \
+		| awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
-.PHONY: zip
+# -- luacheck -----------------
+
+.PHONY: check
+check: ## Run static analysis (see .luacheckrc)
+	@$(LUACHECK) .

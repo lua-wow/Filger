@@ -3,10 +3,6 @@
     <Script file="colors.lua"/>
     <Script file="medias.lua"/>
     <Script file="utils.lua"/>
-    <Script file="blacklist.lua"/>
-    <Script file="cooldowns.lua"/>
-    <Script file="spells.lua"/>
-    <Script file="config.lua"/>
     <Script file="api.lua"/>
     <Script file="commands.lua"/>
     <Script file="development.lua"/>

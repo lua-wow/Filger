@@ -1,44 +1,13 @@
 local _, ns = ...
 local Filger = ns.Filger
-local config = Filger.config
-local fonts = Filger.fonts
 local textures = Filger.textures
 
 -- Blizzard
 local IsAddOnLoaded = C_AddOns and C_AddOns.IsAddOnLoaded or _G.IsAddOnLoaded
 
 -- skip it if Tukui exists
-if IsAddOnLoaded("Tainted") then 
-	function Filger.SetBorderColor(frame, color)
-		if frame.Backdrop then
-			frame.Backdrop:SetBackdropBorderColor(color.r, color.g, color.b, color.a or 1)
-		end
-	end
-
+if IsAddOnLoaded("Tainted") or IsAddOnLoaded("Tukui") then
 	return
-elseif IsAddOnLoaded("Tukui") then 
-	function Filger.SetBorderColor(frame, color)
-		frame:SetBorderColor(color.r, color.g, color.b, color.a or 1)
-	end
-
-	return
-end
-
----------------------------------------------------
--- Functions
----------------------------------------------------
-local Resolution = select(1, GetPhysicalScreenSize()).."x"..select(2, GetPhysicalScreenSize())
-local PixelPerfectScale = 768 / string.match(Resolution, "%d+x(%d+)")
-local Scale = function(size)
-	-- Little protection just in case
-	if size == "" then
-		size = 1
-	end
-
-	local Mult = PixelPerfectScale / GetCVar("uiScale")
-	local Value = Mult * math.floor(size / Mult + .5)
-
-	return Value
 end
 
 ---------------------------------------------------
@@ -95,13 +64,13 @@ end
 API.CreateBackdrop = function(self, template)
 	if not self.Backdrop then
 		local backdropTexture = textures.blank
-		local backdropColor = config.general.backdrop.color
+		local backdropColor = Filger.config.general.backdrop.color
 		local backdropAlpha = (template == "transparent") and 0.70 or 1
 		
 		local borderTexture = textures.blank
-		local borderColor = config.general.border.color
+		local borderColor = Filger.config.general.border.color
 
-		local inset = Scale(config.general.border.size or 1)
+		local inset = Scale(Filger.config.general.border.size or 1)
 		local backdrop = {
 			bgFile = backdropTexture
 		}
@@ -148,9 +117,9 @@ function Filger:MergeAPI()
 
     while (Object) do
         local t = Object:GetObjectType()
-        if (not Object:IsForbidden() and not Handled[Object:GetObjectType()]) then
+        if (not Object:IsForbidden() and not Handled[t]) then
             AddAPI(Object)
-            Handled[Object:GetObjectType()] = true
+            Handled[t] = true
         end
         Object = EnumerateFrames(Object)
     end

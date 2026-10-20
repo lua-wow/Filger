@@ -6,6 +6,10 @@
 docs/*
 Makefile
 exclude.lst
+.luacheckrc
+mise.toml
+CLAUDE.md
+.claude/*
 
 **/.git
 **/.gitignore
@@ -14,3 +18,5 @@ exclude.lst
 **/.github/*
 **/.pkgmeta
 **/.luacheckrc
+**/UPSTREAM_REVISION
+libs/LibStub/tests/*
