@@ -17,6 +17,8 @@ jobs:
               uses: actions/checkout@v7
               with:
                   submodules: recursive # TOC lists files inside submodules
+                  token: ${{ secrets.SUBMODULES_TOKEN }} # libs/CallbackHandler-1.0 is private
+                  persist-credentials: false
 
             - name: Luacheck
               uses: lunarmodules/luacheck@v1
