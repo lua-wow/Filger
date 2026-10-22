@@ -56,11 +56,15 @@ Details in [Migration](#migration-each-phase-ships-on-its-own) and [Experiments]
         Blocked by Experiment 2: no instance ID is reachable from tainted code in combat
   - [x] Secret cooldown timer text: a `C_DurationUtil` duration text binding on `button.Time`, with a
         seconds formatter (`2m`, `45s`, `4.3`) and a step color curve (red under 5 s). Verified on Retail
-        in combat (2026-10-21). Blizzard countdown numbers stay hidden.
-- [ ] **Phase 1: family split, no behavior change**
-  - [ ] Move `aura_proto` and aura frame definitions to `core/Classic/`; add `core\[Family]\...` to the TOC
-  - [ ] `core/Mainline/` starts as a copy
-  - [ ] Experiment 9: `[Family]` resolves on every client, Forever included
+        in combat (2026-10-21). Blizzard countdown numbers stay hidden. Created on Mainline only: Classic
+        bindings have no `SetTextColorCurve` (`APIDoc/DurationTextBindingObjectAPIDocumentation.lua`,
+        crashed on MoP 2026-10-21).
+- [x] **Phase 1: family split, no behavior change**
+  - [x] Move `aura_proto` and aura frame definitions to `core/Classic/auras.lua` (`ns.aura_proto`,
+        frames added to `Filger.config.frames`); add `core\[Family]\auras.lua` to the TOC. Shared layout
+        numbers live in `Filger.config.layout`
+  - [x] `core/Mainline/auras.lua` starts as a copy
+  - [x] Experiment 9: `[Family]` resolves on every client (Forever and Titan not tested)
 - [ ] **Phase 2: Mainline container for PLAYER_AURAS and PLAYER_BUFFS**
   - [ ] Experiment 4: container test addon
   - [ ] Experiment 5: filter strings on Retail and each Classic client
@@ -517,6 +521,8 @@ combat** (target dummy, then a dungeon boss).
 9. **`[Family]` loading.** Add a one-line `print` to each `core/<Family>/` stub. `/reload` on every
    client: Retail and Forever must print Mainline, the rest Classic, and exactly one line must print per
    client. Out of combat is fine.
+   - **Result (2026-10-21):** Retail prints `Mainline`; Era, TBC and MoP print `Classic`, one line
+     each. Forever and Titan not tested (no client).
 
 ## Open questions for you
 

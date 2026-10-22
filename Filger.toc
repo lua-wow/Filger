@@ -23,4 +23,5 @@ data\shared\blacklist.lua
 data\shared\cooldowns.lua
 core\init.xml
 config.lua
+core\[Family]\auras.lua
 Filger.lua
