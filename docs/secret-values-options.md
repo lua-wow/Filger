@@ -65,11 +65,13 @@ Details in [Migration](#migration-each-phase-ships-on-its-own) and [Experiments]
         numbers live in `Filger.config.layout`
   - [x] `core/Mainline/auras.lua` starts as a copy
   - [x] Experiment 9: `[Family]` resolves on every client (Forever and Titan not tested)
-- [ ] **Phase 2: Mainline container for PLAYER_AURAS and PLAYER_BUFFS**
+- [x] **Phase 2: Mainline container for PLAYER_AURAS and PLAYER_BUFFS**
   - [ ] Experiment 4: container test addon
   - [ ] Experiment 5: filter strings on Retail and each Classic client
-  - [ ] PLAYER_AURAS: `HELPFUL|PLAYER` + `includeSpellIDs`
-  - [ ] PLAYER_BUFFS: `HELPFUL|!PLAYER` + `excludeSpellIDs`
+  - [x] PLAYER_AURAS: `HELPFUL|PLAYER` + `includeSpellIDs` (strict allowlist: only listed, enabled
+        numeric spell IDs are shown)
+  - [x] PLAYER_BUFFS: `HELPFUL|!PLAYER` + `excludeSpellIDs`
+  - [x] Frames are named from their `config.frames` key (`FilgerPlayerAuras`, ...)
 - [ ] **Phase 3: remaining Mainline frames**
   - [ ] Experiment 6: private aura anchors
   - [ ] TARGET_DEBUFFS, TARGET_AURAS, FOCUS_DEBUFFS

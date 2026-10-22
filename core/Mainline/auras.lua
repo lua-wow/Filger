@@ -366,6 +366,85 @@ end
 ns.aura_proto = aura_proto
 
 --------------------------------------------------
+-- AURA CONTAINERS
+--------------------------------------------------
+-- Blizzard's secure container filters, sorts and displays auras that are secret to Filger.
+local container_proto = {}
+
+do
+    local AnchorUtil = _G.AnchorUtil
+    local AuraContainerSortMethod = _G.AuraContainerSortMethod
+    local C_XMLUtil = _G.C_XMLUtil
+
+    local TEMPLATE = "CustomAuraContainerTemplate"
+
+    -- container buttons can only be styled here: once auras are secret, tainted code can't touch them
+    local function CreateInitializer(element)
+        local size = element.size
+        local tooltip = Filger.config.general.gametooltip
+
+        return function(button)
+            button:SetSize(size, size)
+            Filger:StyleButton(button)
+
+            button:SetIcon(button.Icon)
+            button:SetDurationCooldown(button.Cooldown)
+            button:SetApplicationCount(button.Count)
+            button:SetDurationText(button.Time, Filger.timeTextOptions)
+
+            if tooltip then
+                button:SetTooltipAnchorPoint("ANCHOR_RIGHT")
+            else
+                button:SetMouseMotionEnabled(false)
+            end
+        end
+    end
+
+    function container_proto:CreateContainer(data)
+        if not C_XMLUtil.GetTemplateInfo(TEMPLATE) then
+            Filger:warn(TEMPLATE .. " not found, " .. self:GetName() .. " is disabled.")
+            return
+        end
+
+        local container = CreateFrame("AuraContainer", self:GetName() .. "Container", self, TEMPLATE)
+        container:SetPoint(self.initialAnchor, self, self.initialAnchor)
+        container:SetFlowLayoutAnchorPoint(self.initialAnchor)
+        container:SetFlowLayoutGrowthDirection(
+            (self["growth-x"] == "LEFT") and AnchorUtil.FlowDirection.Left or AnchorUtil.FlowDirection.Right,
+            (self["growth-y"] == "DOWN") and AnchorUtil.FlowDirection.Down or AnchorUtil.FlowDirection.Up)
+        container:SetUnit(self.unit)
+
+        local initializeFrame = CreateInitializer(self)
+        local layout = {
+            elementSpacing = self.spacing,
+            lineSpacing = self.spacing,
+            elementWidth = self.size,
+            elementHeight = self.size
+        }
+
+        for i, group in ipairs(data.groups) do
+            container:AddAuraGroup(self:GetName() .. "Group" .. i, group.filter, {
+                maxFrameCount = self.limit,
+                candidateFilters = group.candidateFilters,
+                sortMethod = AuraContainerSortMethod.ExpirationOnly,
+                layout = layout,
+                initializeFrame = initializeFrame
+            })
+        end
+
+        self.container = container
+    end
+
+    function container_proto:ForceUpdate()
+        if self.container then
+            self.container:UpdateAllAuras()
+        end
+    end
+end
+
+ns.container_proto = container_proto
+
+--------------------------------------------------
 -- FRAMES
 --------------------------------------------------
 local class = Filger.class
@@ -375,6 +454,17 @@ local all = Filger.all or {}
 local layout = Filger.config.layout
 local size, spacing = layout.size, layout.spacing
 local xOffset, yOffset = layout.xOffset, layout.yOffset
+
+-- container candidate filters take { [spellId] = true }; name keys can't be matched
+local function ToSpellIDs(list)
+    local ids = {}
+    for spellId, value in next, list do
+        if type(spellId) == "number" and (value == true or (type(value) == "table" and value.enabled)) then
+            ids[spellId] = true
+        end
+    end
+    return ids
+end
 
 Mixin(Filger.config.frames, {
         -- LEFT
@@ -398,7 +488,6 @@ Mixin(Filger.config.frames, {
         ["PLAYER_AURAS"] = {
             enabled = true,
             unit = "player",
-            filter = "PLAYER|HELPFUL",
             anchor = { "RIGHT", UIParent, "CENTER", -xOffset, 0 },
             limit = 8,
             size = size,
@@ -406,14 +495,18 @@ Mixin(Filger.config.frames, {
             initialAnchor = "BOTTOMRIGHT",
             ["growth-x"] = "LEFT",
             ["growth-y"] = "DOWN",
-            spells = Mixin(spells[class] or {}, spells["ALL"] or {})
+            groups = {
+                {
+                    filter = "HELPFUL|PLAYER",
+                    candidateFilters = {
+                        includeSpellIDs = ToSpellIDs(Mixin(spells[class] or {}, spells["ALL"] or {}))
+                    }
+                }
+            }
         },
         ["PLAYER_BUFFS"] = {
             enabled = true,
             unit = "player",
-            filter = "HELPFUL",
-            caster = "all",
-            hidePlayer = true,
             anchor = { "RIGHT", UIParent, "CENTER", -xOffset, -yOffset },
             limit = 8,
             size = size,
@@ -421,9 +514,14 @@ Mixin(Filger.config.frames, {
             initialAnchor = "BOTTOMRIGHT",
             ["growth-x"] = "LEFT",
             ["growth-y"] = "DOWN",
-            FilterAura = function(element, unit, data)
-                return data.enabled and not data.isPlayerAura
-            end
+            groups = {
+                {
+                    filter = "HELPFUL|!PLAYER",
+                    candidateFilters = {
+                        excludeSpellIDs = ToSpellIDs(blacklist)
+                    }
+                }
+            }
         },
         ["TARGET_DEBUFFS"] = {
             enabled = true,

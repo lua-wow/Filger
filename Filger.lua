@@ -39,6 +39,14 @@ do
     timeColorCurve:AddPoint(0, CreateColor(0.99, 0.31, 0.31))
     timeColorCurve:AddPoint(5, CreateColor(0.84, 0.75, 0.65))
 
+    -- aura container duration text (Mainline); Classic bindings have no SetTextColorCurve
+    if Filger.isMainline then
+        Filger.timeTextOptions = {
+            textFormatter = timeFormatter,
+            textColor = { curve = timeColorCurve, property = Enum.DurationTextBindingProperty.RemainingDuration }
+        }
+    end
+
     function button_proto:OnEnter()
         if (GameTooltip:IsForbidden() and not self:IsVisible()) then return end
 
@@ -103,6 +111,52 @@ do
         end
     end
 
+    --[[ Filger:StyleButton(button)
+    Creates the button's visual regions (backdrop, cooldown, icon, count, time text).
+    Shared by Filger buttons and aura container buttons.
+    --]]
+    function Filger:StyleButton(button)
+        -- resources
+        local font, fontSize, fontStyle = Filger.fonts.normal, 12, "OUTLINE"
+        -- aura container buttons are unnamed; "$parent" would create globals like "Icon"
+        local name = button:GetName()
+
+        button:CreateBackdrop()
+
+        local cooldown = CreateFrame("Cooldown", name and name .. "CD", button, "CooldownFrameTemplate")
+        cooldown:SetAllPoints()
+        cooldown:SetReverse(true)
+        cooldown:SetDrawEdge(false)
+        cooldown:SetHideCountdownNumbers(true)
+        -- cooldown.noOCC = true
+        -- cooldown.noCooldownCount = true
+        button.Cooldown = cooldown
+
+        local icon = button:CreateTexture(name and name .. "Icon", "ARTWORK")
+        icon:SetAllPoints()
+        icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+        button.Icon = icon
+
+        local overlay = CreateFrame("Frame", name and name .. "Overlay", button, nil)
+        overlay:SetAllPoints(button)
+        overlay:SetFrameLevel(cooldown:GetFrameLevel() + 1)
+        button.Overlay = overlay
+
+        local count = overlay:CreateFontString(name and name .. "OverlayCount", "OVERLAY")
+        count:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 0, 0)
+        count:SetFont(font, fontSize, fontStyle)
+        count:SetJustifyH("RIGHT")
+        count:SetTextColor(0.84, 0.75, 0.65)
+        button.Count = count
+
+        local time = overlay:CreateFontString(name and name .. "OverlayTime", "OVERLAY")
+        time:SetPoint("CENTER", button, "CENTER", 0, 0)
+        time:SetFont(font, 20, fontStyle)
+        time:SetJustifyH("CENTER")
+        time:SetTextColor(0.84, 0.75, 0.65)
+        button.Time = time
+    end
+
     --[[ Callback: button_proto:CreateButton(element, index)
 	Creates an aura/cooldown button at a given position.
 
@@ -113,46 +167,12 @@ do
 	* button - the button used to represent the aura (Button)
     --]]
     function Filger:CreateButton(element, index)
-        -- resources
-        local font, fontSize, fontStyle = Filger.fonts.normal, 12, "OUTLINE"
-
         local button = Mixin(CreateFrame("Frame", element:GetName() .. "Aura" .. index, element), button_proto)
         button:SetWidth(element.size)
         button:SetHeight(element.size)
-        button:CreateBackdrop()
+        self:StyleButton(button)
 
-        local cooldown = CreateFrame("Cooldown", "$parentCD", button, "CooldownFrameTemplate")
-        cooldown:SetAllPoints()
-        cooldown:SetReverse(true)
-        cooldown:SetDrawEdge(false)
-        cooldown:SetHideCountdownNumbers(true)
-        -- cooldown.noOCC = true
-        -- cooldown.noCooldownCount = true
-        button.Cooldown = cooldown
-
-        local icon = button:CreateTexture("$parentIcon", "ARTWORK")
-        icon:SetAllPoints()
-        icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
-        button.Icon = icon
-
-        local overlay = CreateFrame("Frame", "$parentOverlay", button, nil)
-        overlay:SetAllPoints(button)
-        overlay:SetFrameLevel(cooldown:GetFrameLevel() + 1)
-        button.Overlay = overlay
-
-        local count = overlay:CreateFontString("$parentCount", "OVERLAY")
-        count:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 0, 0)
-        count:SetFont(font, fontSize, fontStyle)
-        count:SetJustifyH("RIGHT")
-        count:SetTextColor(0.84, 0.75, 0.65)
-        button.Count = count
-
-        local time = overlay:CreateFontString("$parentTime", "OVERLAY")
-        time:SetPoint("CENTER", button, "CENTER", 0, 0)
-        time:SetFont(font, 20, fontStyle)
-        time:SetJustifyH("CENTER")
-        time:SetTextColor(0.84, 0.75, 0.65)
-        button.Time = time
+        local time = button.Time
 
         -- only secret cooldowns (Mainline) need it; Classic bindings have no SetTextColorCurve
         if Filger.isMainline then
@@ -478,10 +498,10 @@ do
         end
     end
 
-    function Filger:Spawn(data)
-        local index = #self
-        local unit = data.unit:gsub("^%l", string.upper):gsub("t(arget)", "T%1")
-        local element = Mixin(CreateFrame("Frame", self:GetName() .. unit .. index, self), element_proto)
+    function Filger:Spawn(key, data)
+        -- "PLAYER_AURAS" -> "FilgerPlayerAuras"
+        local name = key:lower():gsub("^%l", string.upper):gsub("_(%l)", string.upper)
+        local element = Mixin(CreateFrame("Frame", self:GetName() .. name, self), element_proto)
 
         -- configuration
         element.unit = data.unit or "player"
@@ -517,6 +537,10 @@ do
 
             element:RegisterEvent("SPELL_UPDATE_COOLDOWN")
             element:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", self.unit)
+        elseif data.groups then
+            -- Mainline only: Blizzard's secure aura container filters and displays the auras
+            element = Mixin(element, ns.container_proto)
+            element:CreateContainer(data)
         else
             element = Mixin(element, ns.aura_proto)
 
@@ -571,9 +595,9 @@ function Filger:PLAYER_LOGIN()
         -- self:RegisterEvent("PLAYER_ENTERING_WORLD")
 
         -- create panels based on spell list
-        for _, data in pairs(self.config.frames) do
+        for key, data in pairs(self.config.frames) do
             if (data.enabled) then
-                local element = self:Spawn(data)
+                local element = self:Spawn(key, data)
                 element:ForceUpdate()
                 table.insert(self, element)
             end
