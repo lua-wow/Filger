@@ -17,6 +17,10 @@ local GetItemCooldown = C_Container.GetItemCooldown
 local GetInventoryItemCooldown = _G.GetInventoryItemCooldown
 local C_Secrets = _G.C_Secrets
 local issecretvalue = _G.issecretvalue
+local C_StringUtil = _G.C_StringUtil
+local C_CurveUtil = _G.C_CurveUtil
+local C_DurationUtil = _G.C_DurationUtil
+local Enum = _G.Enum
 
 --------------------------------------------------
 -- Filger
@@ -28,6 +32,19 @@ local isInit = false
 --------------------------------------------------
 do
     local button_proto = {}
+
+    -- secret durations: text and color like OnUpdate ("2m", "45s", "4.3"; red under 5s)
+    local timeFormatter = C_StringUtil.CreateSecondsFormatter()
+    timeFormatter:SetDefaultAbbreviation(Enum.SecondsFormatterAbbreviation.OneLetter)
+    timeFormatter:SetStripIntervalWhitespace(Enum.SecondsFormatterIntervalWhitespace.StripIgnoreLocale)
+    timeFormatter:SetDesiredUnitCount(1)
+    timeFormatter:SetCanRoundUpLastUnit(true)
+    timeFormatter:SetMillisecondsThreshold(5)
+
+    local timeColorCurve = C_CurveUtil.CreateColorCurve()
+    timeColorCurve:SetType(Enum.LuaCurveType.Step)
+    timeColorCurve:AddPoint(0, CreateColor(0.99, 0.31, 0.31))
+    timeColorCurve:AddPoint(5, CreateColor(0.84, 0.75, 0.65))
 
     function button_proto:OnEnter()
         if (GameTooltip:IsForbidden() and not self:IsVisible()) then return end
@@ -53,14 +70,14 @@ do
         end
     end
 
-    -- secret durations can't drive the OnUpdate timer text, Blizzard countdown numbers are used instead
+    -- secret durations can't drive the OnUpdate timer text, the duration text binding is used instead
     function button_proto:SetSecret(isSecret)
         if self.isSecret == isSecret then return end
         self.isSecret = isSecret
-        self.Cooldown:SetHideCountdownNumbers(not isSecret)
+        self.TimeBinding:SetEnabled(isSecret)
+        self.Time:SetText("")
         if isSecret then
             self:SetScript("OnUpdate", nil)
-            self.Time:SetText("")
         end
     end
 
@@ -141,6 +158,15 @@ do
         time:SetJustifyH("CENTER")
         time:SetTextColor(0.84, 0.75, 0.65)
         button.Time = time
+
+        local timeBinding = C_DurationUtil.CreateDurationTextBinding()
+        timeBinding:SetFontString(time)
+        timeBinding:SetFormatter(timeFormatter)
+        timeBinding:SetTextColorCurve(timeColorCurve, Enum.DurationTextBindingProperty.RemainingDuration)
+        timeBinding:SetExpiredText("")
+        timeBinding:SetZeroDurationText("")
+        timeBinding:SetEnabled(false)
+        button.TimeBinding = timeBinding
 
         local animation = button:CreateAnimationGroup()
         animation:SetLooping("BOUNCE")
@@ -563,6 +589,7 @@ do
         if button.Cooldown then
             if data.durationObject then
                 button.Cooldown:SetCooldownFromDurationObject(data.durationObject)
+                button.TimeBinding:SetDuration(data.durationObject)
                 button.Cooldown:Show()
             elseif data.duration and data.duration > 0 then
                 button.Cooldown:SetCooldown(data.expirationTime - data.duration, data.duration, data.timeMod)
@@ -645,7 +672,7 @@ do
                     start = cdInfo.startTime
                     duration = cdInfo.duration
                 end
-                enabled = cdInfo.enabled
+                enabled = cdInfo.isEnabled and 1 or 0
             end
         elseif data.slotId then
             index = "SLOT_" .. data.slotId
@@ -682,19 +709,28 @@ do
         }
     end
 
-    function cooldown_proto:UpdateCooldowns(event, unit)
+    function cooldown_proto:UpdateCooldowns(event, unit, spellID, baseSpellID)
         local changed = true
-        self.all = table.wipe(self.all or {})
-        self.active = table.wipe(self.active or {})
+        self.active = self.active or {}
+        if not spellID then
+            table.wipe(self.active)
+        end
 
         for _, row in next, self.spells do
-            local data = self:ProcessCooldownData(unit, row)
-            self.all[data.index] = data
+            -- no event fires when a cooldown ends, so shown rows are re-checked on every event;
+            -- slots and items are always re-checked because their events carry the item's spell ID
+            if not spellID or not row.spellId or self.active[row]
+                or row.spellId == spellID or row.spellId == baseSpellID then
+                local data = self:ProcessCooldownData(unit, row)
 
-            if self:FilterCooldown(data) then
-                self.active[data.index] = true
-            elseif data.spellId then
-                self.casted[data.spellId] = nil
+                if self:FilterCooldown(data) then
+                    self.active[row] = data
+                else
+                    self.active[row] = nil
+                    if data.spellId then
+                        self.casted[data.spellId] = nil
+                    end
+                end
             end
         end
 
@@ -703,8 +739,8 @@ do
             -- and repopulate them, multiple table.remove calls are insanely slow
             self.sorted = table.wipe(self.sorted or {})
 
-            for index, _ in next, self.active do
-                table.insert(self.sorted, self.all[index])
+            for _, data in next, self.active do
+                table.insert(self.sorted, data)
             end
 
             table.sort(self.sorted, self.SortCooldowns)
@@ -741,8 +777,9 @@ do
         self:UpdateCooldowns("ForceUpdate", self.unit, nil)
     end
 
-    function cooldown_proto:SPELL_UPDATE_COOLDOWN()
-        self:UpdateCooldowns("SPELL_UPDATE_COOLDOWN", self.unit)
+    -- spellID is nil when every cooldown should be updated
+    function cooldown_proto:SPELL_UPDATE_COOLDOWN(spellID, baseSpellID)
+        self:UpdateCooldowns("SPELL_UPDATE_COOLDOWN", self.unit, spellID, baseSpellID)
     end
 
     -- register which spell the player cast

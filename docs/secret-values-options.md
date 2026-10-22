@@ -42,14 +42,21 @@ Analysis only. No code was changed. As of 2026-10-19.
 Details in [Migration](#migration-each-phase-ships-on-its-own) and [Experiments](#experiments).
 
 - [ ] **Phase 0: fixes that work today**
-  - [ ] Experiment 1: restriction state on every client
-  - [ ] Experiment 2: `GetAuraDuration` and `#` on secret instance IDs (Retail, in combat)
-  - [ ] Experiment 3: never-secret coverage of `data/`, Stagger
-  - [ ] Read `cdInfo.isEnabled` (`Filger.lua:648`)
-  - [ ] Refresh only the event's `spellID` in `SPELL_UPDATE_COOLDOWN` (nil → all; override/base IDs;
-        items and slots still refreshed)
-  - [ ] Secret auras: `GetAuraDuration` + `SetCooldownFromDurationObject`, no `duration > 0` compare
-        (needs Experiment 2)
+  - [x] Experiment 1: restriction state on every client (Forever and Titan not tested)
+  - [x] Experiment 2: `GetAuraDuration` and `#` on secret instance IDs (Retail, in combat): **fails**,
+        tainted code can't call any `RequiresUnitAuraAccess` API while auras are secret
+  - [x] Experiment 3: never-secret coverage of `data/`, Stagger (spells 1/100, blacklist 17/313,
+        cooldowns 0/28, Stagger contextually secret)
+  - [x] Read `cdInfo.isEnabled` (`Filger.lua:648`)
+  - [x] Refresh only the event's `spellID` in `SPELL_UPDATE_COOLDOWN` (nil → all; override/base IDs;
+        items and slots still refreshed). Shown rows are also re-checked on every event: logged on
+        Retail and MoP (2026-10-21), the event fires when a cooldown starts, never when it ends.
+        `spellID` was never secret in combat, and `baseSpellID` was always nil.
+  - [ ] ~~Secret auras: `GetAuraDuration` + `SetCooldownFromDurationObject`, no `duration > 0` compare~~
+        Blocked by Experiment 2: no instance ID is reachable from tainted code in combat
+  - [x] Secret cooldown timer text: a `C_DurationUtil` duration text binding on `button.Time`, with a
+        seconds formatter (`2m`, `45s`, `4.3`) and a step color curve (red under 5 s). Verified on Retail
+        in combat (2026-10-21). Blizzard countdown numbers stay hidden.
 - [ ] **Phase 1: family split, no behavior change**
   - [ ] Move `aura_proto` and aura frame definitions to `core/Classic/`; add `core\[Family]\...` to the TOC
   - [ ] `core/Mainline/` starts as a copy
@@ -63,7 +70,7 @@ Details in [Migration](#migration-each-phase-ships-on-its-own) and [Experiments]
   - [ ] Experiment 6: private aura anchors
   - [ ] TARGET_DEBUFFS, TARGET_AURAS, FOCUS_DEBUFFS
   - [ ] BOSS_DEBUFFS (`isBossAura`, private-aura anchors if Experiment 6 passes)
-  - [ ] PLAYER_DEBUFFS: dispellable, crowd control, boss, Stagger groups
+  - [ ] PLAYER_DEBUFFS: dispellable, crowd control, boss groups (Stagger dropped, Experiment 3)
   - [ ] Delete the copied event path from `core/Mainline/`
 - [ ] **Other experiments**
   - [ ] Experiment 7: cooldown edges (items, slots, secret cast `spellID`)
@@ -412,7 +419,8 @@ iteration, after Filger works on every game version. Until then `data/` stays un
    - TARGET_DEBUFFS (`HARMFUL|PLAYER` on hostile units), TARGET_AURAS, FOCUS_DEBUFFS.
    - BOSS_DEBUFFS (`isBossAura`; plus private-aura anchors if Experiment 6 passes).
    - PLAYER_DEBUFFS shows only important debuffs, one group each: `HARMFUL|RAID_PLAYER_DISPELLABLE`,
-     `HARMFUL|CROWD_CONTROL`, `isBossAura`, and Stagger by ID if it is never-secret (Experiment 3).
+     `HARMFUL|CROWD_CONTROL`, `isBossAura`. ~~Stagger by ID~~: not possible, Stagger is contextually
+     secret (Experiment 3).
    - Then delete the copied event path from `core/Mainline/`.
 
 ### Impossible in secret mode on Retail and Forever (drop or replace)
@@ -426,7 +434,7 @@ iteration, after Filger works on every game version. Until then `data/` stays un
 | `sourceUnit == nil` (`config.lua:156`, `171`) | Impossible | `isBossAura` |
 | LibDispel type/dispelable lookups, dispel flash (`Filger.lua:347-348`, `200-206`) | Impossible | `RAID_PLAYER_DISPELLABLE`/`DISPELLABLE` group + `AddDispelTypeTexture` / `GetAuraDispelTypeColor` (UNVERIFIED) |
 | Dispel-colored border via `Filger.colors[dispelName]` (`Filger.lua:187`) | Impossible as a table key | `GetAuraDispelTypeColor(curve)` → `SetBackdropBorderColor` (UNVERIFIED that the backdrop accepts secrets) |
-| Own timer text and red under 5 s (`Filger.lua:72-92`) | Impossible | Duration text binding + color curve |
+| Own timer text and red under 5 s (`Filger.lua:72-92`) | Impossible | Duration text binding + color curve (works for cooldowns, verified on Retail) |
 | Sorting auras by expiration in Lua | Impossible | Container `Expiration` sort |
 | Sorting cooldowns by remaining time while secret (`Filger.lua:620`) | Impossible | Fixed list order |
 | Incremental `UNIT_AURA` bookkeeping keyed by `auraInstanceID` | Impossible | Container handles updates |
@@ -447,12 +455,47 @@ combat** (target dummy, then a dungeon boss).
    `/run print(C_Secrets.HasSecretRestrictions(), C_Secrets.ShouldAurasBeSecret(), C_Secrets.ShouldCooldownsBeSecret())`
    on every client: out of combat, in combat in the open world, in a dungeon out of combat, and in a boss
    fight. Pass: Classic prints `false false false` everywhere.
+   - **Result (2026-10-21):**
+     - Retail: `true false false` out of combat (open world and dungeon); `true true true` in combat
+       (dummy and boss). Restrictions follow combat state; a dungeon alone doesn't restrict these APIs.
+       `HasSecretRestrictions()` is always `true`, so it tells which client this is, not whether data
+       is secret right now.
+     - Era, TBC, MoP: `false false false` (open world, in and out of combat). Dungeon steps skipped,
+       since `HasSecretRestrictions()` is false on these clients.
+     - Forever, Titan: not tested (no client).
 2. **Instance IDs from tainted code.**
    `/run local t=C_UnitAuras.GetUnitAuraInstanceIDs("player","HELPFUL"); local id=t[1]; print(issecretvalue(id), pcall(function() return #t end), pcall(C_UnitAuras.GetAuraDuration,"player",id))`.
    Settles whether `GetAuraDuration` and the `#` count work on secret IDs.
+   - **Result (2026-10-21, Retail, in a dungeon):**
+     - Out of combat: `false true true LuaDurationObject: …`. IDs aren't secret, and `GetAuraDuration`
+       works. The middle `pcall` printed only `true` because a call that isn't last in an argument list
+       keeps only its first return value. That's a flaw in the snippet, not a finding.
+     - In combat: the first call already errors with `GetUnitAuraInstanceIDs(): Auras cannot be accessed
+       when secret while tainted by '*** ForceTaint_Strong ***'`. `RequiresUnitAuraAccess` is a
+       `Precondition` with `FailureMode = "Error"` (`APIDoc/SecretPredicatesDocumentation.lua:48`). It
+       is set on 18 `C_UnitAuras` functions, including `GetAuraSlots`, `GetAuraDataBySlot`,
+       `GetAuraDataByAuraInstanceID`, `GetUnitAuraInstanceIDs`, `GetUnitAuras`, `GetAuraDuration`,
+       `IsAuraFilteredOutByInstanceID`, `GetAuraDispelTypeColor` and `GetAuraApplicationDisplayCount`.
+       So the problem isn't that instance IDs are secret: tainted code can't reach any instance ID at
+       all.
+     - Consequence: in combat on Retail, the only aura data an addon can read itself comes from the
+       `RequiresNonSecretAura` lookups (`GetPlayerAuraBySpellID`, `GetUnitAuraBySpellID`, …) for
+       never-secret spells. Everything else needs the AuraContainer.
+     - Caveat: `/run` is tainted with `ForceTaint_Strong`. Addon code is tainted too, so the result
+       should be the same for Filger, but that is **UNVERIFIED** from an addon file.
 3. **Never-secret coverage** (out of combat is fine). A dev command loops over `Filger.spells`,
    `Filger.blacklist` and `Filger.cooldowns` and counts `C_Secrets.GetSpellAuraSecrecy(id) == Enum.SecrecyLevel.NeverSecret`.
    Also check Stagger: `/run for _,id in ipairs({124273,124274,124275}) do print(id, C_Secrets.GetSpellAuraSecrecy(id)) end`.
+   - **Result (2026-10-21, Retail, `/run` loops; cooldowns checked with `GetSpellCooldownSecrecy`):**
+     - `Filger.spells` (all classes): 1/100 never-secret (344179). In combat, `ScanSpellAuras`
+       finds almost nothing.
+     - `Filger.blacklist` (numeric keys): 17/313 never-secret: 80354 404464 404468 462854 390435
+       381753 1126 206151 2823 3408 6673 1459 57723 57724 369459 264689 21562. Only these can be
+       ID-filtered on debuffs on the player.
+     - `Filger.cooldowns`: 0/28. Every cooldown is contextually secret, so the duration-object
+       path is required in combat.
+     - Stagger 124273/124274/124275: `2` (`ContextuallySecret`). Stagger is a harmful aura on the
+       player, so the identity gate blocks it. A Stagger group by ID is impossible on Retail.
 4. **Container test addon** (about 30 lines, `CreateFrame("AuraContainer", nil, UIParent, "CustomAuraContainerTemplate")`):
    - one group `HELPFUL|PLAYER` with `includeSpellIDs`
    - one group `HARMFUL` on `player` with `includeSpellIDs` (expected empty in combat) and with
