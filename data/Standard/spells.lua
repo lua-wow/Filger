@@ -103,7 +103,7 @@ local data = {
         [198069] = CreateSpellPriority(9),       -- Power of the Dark Side
 
         [428933] = CreateSpellPriority(10),      -- Premonition of Insight (-cooldown)
-        [428930] = CreateSpellPriority(10),      -- Premonition of Piety (+ healing)
+        -- [428930] = CreateSpellPriority(10),      -- Premonition of Piety (+ healing)
         [428934] = CreateSpellPriority(10),      -- Premonition of Solace (single heal to shield)
 
         -- Holy
@@ -135,7 +135,7 @@ local data = {
         [470532] = CreateSpellPriority(7),       -- Arc Discharge
         [375986] = CreateSpellPriority(7),       -- Primordial Wave
         [187878] = CreateSpellPriority(7),       -- Crash Lightning
-        [470058] = CreateSpellPriority(1),       -- Vulcanic Blaze
+        -- [470058] = CreateSpellPriority(1),       -- Vulcanic Blaze
         [201900] = CreateSpellPriority(1),       -- Hot Hand
         [384411] = CreateSpellPriority(1),       -- Static Accumulation
         [455110] = CreateSpellPriority(1),       -- Supercharge

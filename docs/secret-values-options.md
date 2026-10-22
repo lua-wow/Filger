@@ -66,8 +66,10 @@ Details in [Migration](#migration-each-phase-ships-on-its-own) and [Experiments]
   - [x] `core/Mainline/auras.lua` starts as a copy
   - [x] Experiment 9: `[Family]` resolves on every client (Forever and Titan not tested)
 - [x] **Phase 2: Mainline container for PLAYER_AURAS and PLAYER_BUFFS**
-  - [ ] Experiment 4: container test addon
-  - [ ] Experiment 5: filter strings on Retail and each Classic client
+  - [x] Experiment 4: container spell-ID gate (Retail, in combat): passes, `includeSpellIDs` refused
+        and `excludeSpellIDs` ignored on player debuffs, as the gate table says
+  - [x] Experiment 5: filter strings (Retail): `!` negation, `BIG_DEFENSIVE` and `IMPORTANT` work;
+        `NOT_CANCELABLE` silently ignored. Classic not needed: its aura file keeps Lua filtering
   - [x] PLAYER_AURAS: `HELPFUL|PLAYER` + `includeSpellIDs` (strict allowlist: only listed, enabled
         numeric spell IDs are shown)
   - [x] PLAYER_BUFFS: `HELPFUL|!PLAYER` + `excludeSpellIDs`
@@ -236,7 +238,7 @@ Details in [Migration](#migration-each-phase-ships-on-its-own) and [Experiments]
 |---|---|---|---|---|---|
 | Retail 12.1.5 (`standard`) | Yes (15 functions) | Yes | Yes | Yes | Full list incl. `IMPORTANT`, `DISPELLABLE`, `!` |
 | Forever 1.60.1 (`camelot`) | Yes (15) | Yes | Yes (`standard, camelot`) | Yes | Same as Retail (**UNVERIFIED** line by line) |
-| MoP 5.5.4 | 0 | Yes | No (`standard` only) | No | Up to `BIG_DEFENSIVE`; keeps `NOT_CANCELABLE`; no `IMPORTANT`/`DISPELLABLE` |
+| MoP 5.5.4 | 0 | Yes | No (`standard` only) | No | Up to `BIG_DEFENSIVE` in `AuraUtil.lua`, but in game (Experiment 5): no `!` negation, `BIG_DEFENSIVE` ignored; keeps `NOT_CANCELABLE`; no `IMPORTANT`/`DISPELLABLE` |
 | Titan WotLK 3.80.2 | 0 | Yes | No | No | Same as MoP (**VERIFIED** for MoP and Era; Titan/TBC assumed identical, **UNVERIFIED**) |
 | TBC 2.5.6 | 0 | Yes | No | No | See above |
 | Era 1.15.9 | 0 | Yes | No | No | Same as MoP |
@@ -508,9 +510,42 @@ combat** (target dummy, then a dungeon boss).
      `excludeSpellIDs` (expected unfiltered)
    - `SetUnit("focus")`
    - Pass: no taint errors, and the filters behave as the gate table says.
+   - **Result (2026-10-22, Retail, Brewmaster, target dummy):** `/filger exp4 101643,124275`
+     (`core/development.lua`), Transcendence as the buff, Light Stagger as the debuff.
+     - Out of combat: T1 shows Transcendence. T2/T3 not checked (Stagger falls off after combat).
+     - In combat: T1 Transcendence; T2 (`HARMFUL` + include Stagger) **empty**; T3 (`HARMFUL` +
+       exclude Stagger) **shows Light Stagger**; T4 (focus `HARMFUL`) shows Keg Smash and Mystic Touch.
+       No errors reported. Matches the gate table: ID filters on debuffs on the player are refused.
+     - `CustomAuraButtonTemplate` has no regions. Without an `initializeFrame` that calls `SetIcon`,
+       buttons draw nothing (first run showed an empty T1).
 5. **Filter strings.** `/run print(#{C_UnitAuras.GetAuraSlots("player","HELPFUL|!PLAYER")}-1)`, then the
    same for `HELPFUL|BIG_DEFENSIVE`, `HARMFUL|RAID_PLAYER_DISPELLABLE` and `HELPFUL|!CANCELABLE`. Run it
    with a known defensive up, on Retail and each Classic client. Out of combat is fine.
+   - Now `/filger exp5` (`core/development.lua`). Unknown tokens don't error, they're ignored: a count
+     equal to the `HELPFUL`/`HARMFUL` baseline means the token is unknown or matches everything.
+   - **Result (2026-10-22, Retail, solo, out of combat):** Celestial Brew, Fortifying Brew, Tiger's
+     Lust and a trinket buff up; no debuffs.
+     - `HELPFUL` 17; `PLAYER` 17 + `!PLAYER` 0 = 17; `CANCELABLE` 17 + `!CANCELABLE` 0 = 17. Negation
+       works.
+     - `NOT_CANCELABLE` 17 (= baseline): removed on Retail and silently ignored, no error.
+     - `BIG_DEFENSIVE` 1, `IMPORTANT` 1: applied by the server (below baseline). Which buff each
+       matched wasn't recorded.
+     - `RAID_PLAYER_DISPELLABLE`, `DISPELLABLE` 0: inconclusive, `HARMFUL` was 0.
+     - Not tested: a buff from another caster, a dispellable debuff.
+   - **Result (2026-10-22, MoP, solo, out of combat):** no debuffs.
+     - `HELPFUL` 7; `PLAYER` 6 works.
+     - `!` negation is **not supported**: `!PLAYER` 7 and `!CANCELABLE` 7 equal the baseline, so the
+       negated token is ignored. Confirmed with a Paladin's Hand of Freedom on the player: `HELPFUL` 4,
+       `PLAYER` 2, `!PLAYER` 4 (should be 2).
+     - `CANCELABLE` 7 + `NOT_CANCELABLE` 0 = 7: `NOT_CANCELABLE` works on MoP.
+     - `BIG_DEFENSIVE` 7 and `IMPORTANT` 7 (= baseline): ignored. This contradicts the client table,
+       which lists `BIG_DEFENSIVE` for MoP from `AuraUtil.lua`; the token is known to the UI code but
+       the server doesn't apply it.
+     - Dispel filters 0: inconclusive.
+     - Classic auras use only `HELPFUL`, `HARMFUL` and `PLAYER|HELPFUL` (`core/Classic/auras.lua`),
+       so nothing breaks today. Classic filters must not use `!` or the new flags.
+     - Era and TBC skipped: the container filter strings are Mainline only, and Classic keeps its
+       Lua filtering.
 6. **Private aura anchors.** In a test addon, call `C_UnitAuras.AddPrivateAuraAnchor{ unitToken="player",
    auraIndex=1, parent=frame, showCooldownFrame=true, iconInfo={ iconAnchor={point="CENTER",
    relativeTo=frame, relativePoint="CENTER", offsetX=0, offsetY=0}, iconWidth=40, iconHeight=40 } }`. It
