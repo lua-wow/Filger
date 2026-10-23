@@ -232,7 +232,7 @@ Each step is one commit that leaves the addon working.
 Progress:
 - [x] 0. Drop `LibClassicDurations`
 - [x] 1. Skin integration
-- [ ] 2. Document load order
+- [x] 2. Document load order
 - [ ] 3. Extract `core/button.lua`
 - [ ] 4. Extract `core/element.lua`
 - [ ] 5. Extract `elements/cooldowns.lua`
