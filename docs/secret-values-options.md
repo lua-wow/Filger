@@ -74,7 +74,7 @@ Details in [Migration](#migration-each-phase-ships-on-its-own) and [Experiments]
         numeric spell IDs are shown)
   - [x] PLAYER_BUFFS: `HELPFUL|!PLAYER` + `excludeSpellIDs`
   - [x] Frames are named from their `config.frames` key (`FilgerPlayerAuras`, ...)
-- [ ] **Phase 3: remaining Mainline frames**
+- [x] **Phase 3: remaining Mainline frames**
   - [x] Experiment 6: private aura anchors: **pass**, addon code can add them in combat while auras
         are secret
   - [x] TARGET_DEBUFFS, TARGET_AURAS, FOCUS_DEBUFFS: groups with `hostile` are enabled by
@@ -85,7 +85,7 @@ Details in [Migration](#migration-each-phase-ships-on-its-own) and [Experiments]
         anchors (`privateAuras`) after the container slot
   - [x] PLAYER_DEBUFFS: `HARMFUL|RAID_PLAYER_DISPELLABLE`, `HARMFUL|CROWD_CONTROL`, `HARMFUL` +
         `isBossAura` groups (Stagger dropped, Experiment 3)
-  - [ ] Delete the copied event path from `core/Mainline/`
+  - [x] Delete the copied event path from `core/Mainline/`
 - [ ] **Other experiments**
   - [ ] Experiment 7: cooldown edges (items, slots, secret cast `spellID`)
   - [ ] Experiment 8: tooltip methods on each Classic client
