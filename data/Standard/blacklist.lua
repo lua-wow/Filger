@@ -34,6 +34,8 @@ do
         [166646] = true, -- Windwalking
         [129914] = true, -- Combat Wisdom
         [450380] = true, -- Chi Wave
+        [451021] = true, -- Flurry Charge
+        [454494] = true, -- August Blessing
 
         -- PRIEST
         [21562] = true,   -- Power Word: Fortitude

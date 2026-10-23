@@ -155,7 +155,7 @@ local data = {
         CreateSpellCooldown(1022),          -- Blessing of Protection
         CreateSpellCooldown(1044),          -- Blessing of Freedom
         CreateSpellCooldown(6940),          -- Blessing of Sacrifice
-        CreateSpellCooldown(31884),         -- Avenging Wrath (Holy)
+        CreateSpellCooldown(31884),         -- Avenging Wrath
         CreateSpellCooldown(96231, false),  -- Rebuke
         CreateSpellCooldown(115750),        -- Blinding Light
         CreateSpellCooldown(375576),        -- Divine Toll
@@ -176,13 +176,11 @@ local data = {
         CreateSpellCooldown(204018),        -- Blessing of Spellwarding
         CreateSpellCooldown(327193),        -- Moment of Glory
         CreateSpellCooldown(378974),        -- Bastion of Light
-        CreateSpellCooldown(31884),         -- Sanctified Wrath
         CreateSpellCooldown(389539),        -- Sentinel
         CreateSpellCooldown(387174),        -- Eye of Tyr
         
         -- Retribution
         CreateSpellCooldown(403876),        -- Divine Protection
-        CreateSpellCooldown(31884),         -- Avenging Wrath: Might
         CreateSpellCooldown(255937, false), -- Wake of Ashes
         CreateSpellCooldown(343721),        -- Final Reckoning
         CreateSpellCooldown(343527, false), -- Execution Sentence

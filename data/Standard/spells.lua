@@ -51,6 +51,9 @@ local data = {
         [384267] = CreateSpellPriority(3),       -- Siphon Storm
     },
     ["MONK"] = {
+        -- All
+        [101643] = CreateSpellPriority(1),       -- Transcendence
+
         -- Mistweaver
         [432180] = CreateSpellPriority(false),   -- Dance of the Wind
         [388193] = CreateSpellPriority(10),      -- Jadefire Stomp
@@ -60,6 +63,7 @@ local data = {
         [122278] = CreateSpellPriority(1),       -- Dampen Harm
         [122783] = CreateSpellPriority(1),       -- Diffuse Magic
         [322507] = CreateSpellPriority(3),       -- Celestial Brew
+        [1260619] = CreateSpellPriority(3),      -- Elevated Stagger
         [325092] = CreateSpellPriority(10),      -- Purified Chi
     },
     ["PALADIN"] = {
@@ -99,7 +103,7 @@ local data = {
         [198069] = CreateSpellPriority(9),       -- Power of the Dark Side
 
         [428933] = CreateSpellPriority(10),      -- Premonition of Insight (-cooldown)
-        [428930] = CreateSpellPriority(10),      -- Premonition of Piety (+ healing)
+        -- [428930] = CreateSpellPriority(10),      -- Premonition of Piety (+ healing)
         [428934] = CreateSpellPriority(10),      -- Premonition of Solace (single heal to shield)
 
         -- Holy
@@ -131,7 +135,7 @@ local data = {
         [470532] = CreateSpellPriority(7),       -- Arc Discharge
         [375986] = CreateSpellPriority(7),       -- Primordial Wave
         [187878] = CreateSpellPriority(7),       -- Crash Lightning
-        [470058] = CreateSpellPriority(1),       -- Vulcanic Blaze
+        -- [470058] = CreateSpellPriority(1),       -- Vulcanic Blaze
         [201900] = CreateSpellPriority(1),       -- Hot Hand
         [384411] = CreateSpellPriority(1),       -- Static Accumulation
         [455110] = CreateSpellPriority(1),       -- Supercharge
@@ -154,6 +158,7 @@ local data = {
         [457925] = CreateSpellPriority(false),   -- Venomous Potential (Seal of the Poisoned Pact)
         [462513] = CreateSpellPriority(8, 1),    -- Severed Strands (Spymaster's Web)
         [449947] = CreateSpellPriority(20),      -- Realigning Nexus Convergence Divergence (Treacherous Transmitter)
+        [1219102] = CreateSpellPriority(8),      -- Mudborne (trinket)
 
         -- Consumables
         [431932] = CreateSpellPriority(5),       -- Tempered Potion

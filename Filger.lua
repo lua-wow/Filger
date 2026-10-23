@@ -1,22 +1,20 @@
 local _, ns = ...
 local Filger = ns.Filger
 
-local LibDispel = LibStub("LibDispel")
-assert(LibDispel, "Filger requires LibDispel")
-
-local blacklist = ns.Filger.blacklist or {}
-
 -- Blizzard
 local CreateFrame = _G.CreateFrame
-local UnitIsUnit = _G.UnitIsUnit
-local UnitIsOwnerOrControllerOfUnit = _G.UnitIsOwnerOrControllerOfUnit
 local IsSpellKnown = C_SpellBook.IsSpellKnown
 local GetInventoryItemLink = _G.GetInventoryItemLink
 local GetItemInfo = C_Item.GetItemInfo
 local GetItemCooldown = C_Container.GetItemCooldown
 local GetInventoryItemCooldown = _G.GetInventoryItemCooldown
+local GetOverrideSpell = C_Spell and C_Spell.GetOverrideSpell
 local C_Secrets = _G.C_Secrets
 local issecretvalue = _G.issecretvalue
+local C_StringUtil = _G.C_StringUtil
+local C_CurveUtil = _G.C_CurveUtil
+local C_DurationUtil = _G.C_DurationUtil
+local Enum = _G.Enum
 
 --------------------------------------------------
 -- Filger
@@ -29,16 +27,33 @@ local isInit = false
 do
     local button_proto = {}
 
+    -- secret durations: text and color like OnUpdate ("2m", "45s", "4.3"; red under 5s)
+    local timeFormatter = C_StringUtil.CreateSecondsFormatter()
+    timeFormatter:SetDefaultAbbreviation(Enum.SecondsFormatterAbbreviation.OneLetter)
+    timeFormatter:SetStripIntervalWhitespace(Enum.SecondsFormatterIntervalWhitespace.StripIgnoreLocale)
+    timeFormatter:SetDesiredUnitCount(1)
+    timeFormatter:SetCanRoundUpLastUnit(true)
+    timeFormatter:SetMillisecondsThreshold(5)
+
+    local timeColorCurve = C_CurveUtil.CreateColorCurve()
+    timeColorCurve:SetType(Enum.LuaCurveType.Step)
+    timeColorCurve:AddPoint(0, CreateColor(0.99, 0.31, 0.31))
+    timeColorCurve:AddPoint(5, CreateColor(0.84, 0.75, 0.65))
+
+    -- aura container duration text (Mainline); Classic bindings have no SetTextColorCurve
+    if Filger.isMainline then
+        Filger.timeTextOptions = {
+            textFormatter = timeFormatter,
+            textColor = { curve = timeColorCurve, property = Enum.DurationTextBindingProperty.RemainingDuration }
+        }
+    end
+
     function button_proto:OnEnter()
         if (GameTooltip:IsForbidden() and not self:IsVisible()) then return end
 
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 
-        if self.auraIndex then
-            -- classic aura tooltip
-            GameTooltip:SetUnitAura(self.unit, self.auraIndex, self.isHarmful and "HARMFUL" or "HELPFUL")
-        elseif self.auraInstanceID and GameTooltip.SetUnitDebuffByAuraInstanceID then
-            -- retail aura tooltip
+        if self.auraInstanceID and GameTooltip.SetUnitDebuffByAuraInstanceID then
             if self.isHarmful then
                 GameTooltip:SetUnitDebuffByAuraInstanceID(self.unit, self.auraInstanceID)
             else
@@ -53,14 +68,16 @@ do
         end
     end
 
-    -- secret durations can't drive the OnUpdate timer text, Blizzard countdown numbers are used instead
+    -- secret durations can't drive the OnUpdate timer text, the duration text binding is used instead
     function button_proto:SetSecret(isSecret)
         if self.isSecret == isSecret then return end
         self.isSecret = isSecret
-        self.Cooldown:SetHideCountdownNumbers(not isSecret)
+        if self.TimeBinding then
+            self.TimeBinding:SetEnabled(isSecret)
+        end
+        self.Time:SetText("")
         if isSecret then
             self:SetScript("OnUpdate", nil)
-            self.Time:SetText("")
         end
     end
 
@@ -91,6 +108,52 @@ do
         end
     end
 
+    --[[ Filger:StyleButton(button)
+    Creates the button's visual regions (backdrop, cooldown, icon, count, time text).
+    Shared by Filger buttons and aura container buttons.
+    --]]
+    function Filger:StyleButton(button)
+        -- resources
+        local font, fontSize, fontStyle = Filger.fonts.normal, 12, "OUTLINE"
+        -- aura container buttons are unnamed; "$parent" would create globals like "Icon"
+        local name = button:GetName()
+
+        button:CreateBackdrop()
+
+        local cooldown = CreateFrame("Cooldown", name and name .. "CD", button, "CooldownFrameTemplate")
+        cooldown:SetAllPoints()
+        cooldown:SetReverse(true)
+        cooldown:SetDrawEdge(false)
+        cooldown:SetHideCountdownNumbers(true)
+        -- cooldown.noOCC = true
+        -- cooldown.noCooldownCount = true
+        button.Cooldown = cooldown
+
+        local icon = button:CreateTexture(name and name .. "Icon", "ARTWORK")
+        icon:SetAllPoints()
+        icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+        button.Icon = icon
+
+        local overlay = CreateFrame("Frame", name and name .. "Overlay", button, nil)
+        overlay:SetAllPoints(button)
+        overlay:SetFrameLevel(cooldown:GetFrameLevel() + 1)
+        button.Overlay = overlay
+
+        local count = overlay:CreateFontString(name and name .. "OverlayCount", "OVERLAY")
+        count:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 0, 0)
+        count:SetFont(font, fontSize, fontStyle)
+        count:SetJustifyH("RIGHT")
+        count:SetTextColor(0.84, 0.75, 0.65)
+        button.Count = count
+
+        local time = overlay:CreateFontString(name and name .. "OverlayTime", "OVERLAY")
+        time:SetPoint("CENTER", button, "CENTER", 0, 0)
+        time:SetFont(font, 20, fontStyle)
+        time:SetJustifyH("CENTER")
+        time:SetTextColor(0.84, 0.75, 0.65)
+        button.Time = time
+    end
+
     --[[ Callback: button_proto:CreateButton(element, index)
 	Creates an aura/cooldown button at a given position.
 
@@ -101,46 +164,24 @@ do
 	* button - the button used to represent the aura (Button)
     --]]
     function Filger:CreateButton(element, index)
-        -- resources
-        local font, fontSize, fontStyle = Filger.fonts.normal, 12, "OUTLINE"
-
         local button = Mixin(CreateFrame("Frame", element:GetName() .. "Aura" .. index, element), button_proto)
         button:SetWidth(element.size)
         button:SetHeight(element.size)
-        button:CreateBackdrop()
+        self:StyleButton(button)
 
-        local cooldown = CreateFrame("Cooldown", "$parentCD", button, "CooldownFrameTemplate")
-        cooldown:SetAllPoints()
-        cooldown:SetReverse(true)
-        cooldown:SetDrawEdge(false)
-        cooldown:SetHideCountdownNumbers(true)
-        -- cooldown.noOCC = true
-        -- cooldown.noCooldownCount = true
-        button.Cooldown = cooldown
+        local time = button.Time
 
-        local icon = button:CreateTexture("$parentIcon", "ARTWORK")
-        icon:SetAllPoints()
-        icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
-        button.Icon = icon
-
-        local overlay = CreateFrame("Frame", "$parentOverlay", button, nil)
-        overlay:SetAllPoints(button)
-        overlay:SetFrameLevel(cooldown:GetFrameLevel() + 1)
-        button.Overlay = overlay
-
-        local count = overlay:CreateFontString("$parentCount", "OVERLAY")
-        count:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 0, 0)
-        count:SetFont(font, fontSize, fontStyle)
-        count:SetJustifyH("RIGHT")
-        count:SetTextColor(0.84, 0.75, 0.65)
-        button.Count = count
-
-        local time = overlay:CreateFontString("$parentTime", "OVERLAY")
-        time:SetPoint("CENTER", button, "CENTER", 0, 0)
-        time:SetFont(font, 20, fontStyle)
-        time:SetJustifyH("CENTER")
-        time:SetTextColor(0.84, 0.75, 0.65)
-        button.Time = time
+        -- only secret cooldowns (Mainline) need it; Classic bindings have no SetTextColorCurve
+        if Filger.isMainline then
+            local timeBinding = C_DurationUtil.CreateDurationTextBinding()
+            timeBinding:SetFontString(time)
+            timeBinding:SetFormatter(timeFormatter)
+            timeBinding:SetTextColorCurve(timeColorCurve, Enum.DurationTextBindingProperty.RemainingDuration)
+            timeBinding:SetExpiredText("")
+            timeBinding:SetZeroDurationText("")
+            timeBinding:SetEnabled(false)
+            button.TimeBinding = timeBinding
+        end
 
         local animation = button:CreateAnimationGroup()
         animation:SetLooping("BOUNCE")
@@ -159,358 +200,6 @@ do
         end
 
         return button
-    end
-end
-
---------------------------------------------------
--- AURAS
---------------------------------------------------
-local aura_proto = {
-    createdButtons = 0,
-    anchoredButtons = 0,
-    visibleButtons = 0
-}
-
-do
-    --[[ Callback: button:UpdateColor(button, unit, data)
-    Called after the aura button has been updated.
-
-    * self   - the widget holding the aura buttons
-    * button - the updated aura button (Button)
-    * unit   - the unit on which the aura is cast (string)
-    * data   - the [UnitAuraInfo](https://wowpedia.fandom.com/wiki/Struct_UnitAuraInfo) object (table)
-    * index  - the actual position of the aura button (number)
-    ]]--
-    function aura_proto:UpdateColor(button, unit, data)
-        if button.Backdrop then
-            if (data.isHarmful and UnitCanAssist("player", unit)) or (data.isHelpful and UnitCanAttack(unit, "player") and UnitCanAttack("player", unit)) then
-                local color = Filger.colors[data.dispelName]
-                button.Backdrop:SetBackdropBorderColor(color.r, color.g, color.b, color.a or 1)
-            else
-                local color = Filger.config.general.backdrop.color
-                button.Backdrop:SetBackdropBorderColor(color.r, color.g, color.b, color.a or 1)
-            end
-        end
-
-        if button.Icon and self.desaturated == true then
-            button.Icon:SetDesaturated(data.isHarmful and not data.isPlayerAura and not UnitIsUnit(unit, "player"))
-        end
-
-        if button.Animation then
-            if data.isDispelable or data.isStealable then
-                button.Animation:Play()
-                button.Animation.playing = true
-            else
-                button.Animation:Stop()
-                button.Animation.playing = false
-            end
-        end
-    end
-
-    --[[ Callback: aura_proto:Update(unit, data, index)
-    Update the aura button and its components.
-
-    * self   - the widget holding the aura buttons
-    * unit   - the unit on which the aura is cast (string)
-    * data   - the [UnitAuraInfo](https://wowpedia.fandom.com/wiki/Struct_UnitAuraInfo) object (table)
-    * index  - the actual position of the aura button (number)
-    ]]--
-    function aura_proto:Update(unit, data, index)
-        if not data.name then return end
-
-        local button = self[index]
-        if not button then
-            button = Filger:CreateButton(self, index)
-
-            table.insert(self, button)
-
-            self.createdButtons = self.createdButtons + 1
-        end
-
-        -- tooltips
-        button.unit = unit
-        button.filter = self.filter
-        button.auraInstanceID = data.auraInstanceID
-        button.auraIndex = data.auraIndex
-        button.isHarmful = data.isHarmful
-
-        -- timers
-        button.name = data.name
-        button.spellId = data.spellId
-        button.duration = data.duration or 0
-        button.expirationTime = data.expirationTime or GetTime()
-
-        if button.Cooldown then
-            if data.duration and data.duration > 0 then
-                button.Cooldown:SetCooldown(data.expirationTime - data.duration, data.duration, data.timeMod)
-                button.Cooldown:Show()
-            else
-                button.Cooldown:Hide()
-            end
-        end
-
-        if button.Icon then
-            if data.icon then
-                button.Icon:SetTexture(data.icon)
-                button.Icon:Show()
-            else
-                button.Icon:Hide()
-            end
-        end
-
-        if button.Count then
-            button.Count:SetText((data.applications and data.applications > 1) and data.applications or "")
-        end
-
-        if data.duration and data.duration > 0 then
-            button:SetScript("OnUpdate", button.OnUpdate)
-        end
-
-        button:Show()
-
-        self:UpdateColor(button, unit, data)
-    end
-
-    --[[ Override:  aura_proto.SortAuras(a, b)
-    Defines a custom sorting algorithm for ordering the auras.
-
-    Defaults to [AuraUtil.DefaultAuraCompare](https://github.com/Gethe/wow-ui-source/search?q=DefaultAuraCompare).
-
-    Overridden by the more specific SortAuras overrides if they are defined.
-    --]]
-    aura_proto.SortAuras = function(a, b)
-        if (a.priority ~= b.priority) then
-            return a.priority > b.priority
-        end
-
-        if (a.expirationTime ~= b.expirationTime) then
-            return a.expirationTime < b.expirationTime
-        end
-
-        -- if (a.canApplyAura ~= b.canApplyAura) then
-        --     return a.canApplyAura
-        -- end
-    
-        return a.auraInstanceID < b.auraInstanceID
-    end
-
-    --[[ Override: aura_proto:FilterAura(unit, data)
-    Defines a custom filter that controls if the aura button should be shown.
-
-    * self - the widget holding the aura buttons
-    * unit - the unit for which the update has been triggered (string)
-    * data - [UnitAuraInfo](https://wowpedia.fandom.com/wiki/Struct_UnitAuraInfo) object (table)
-
-    ## Returns
-
-    * show - indicates whether the aura button should be shown (boolean)
-    --]]
-    function aura_proto:FilterAura(unit, data)
-        return data.enabled and data.applications >= data.stackThreshold
-    end
-
-    function aura_proto:GetAuraIndex(unit, auraInstanceID, filter)
-        local index = 1
-        repeat
-            local data = C_UnitAuras.GetAuraDataByIndex(unit, index, filter)
-            if not data then
-                return nil
-            elseif data.auraInstanceID == auraInstanceID then
-                return index
-            end
-            index = index + 1
-        until (not data)
-        return nil
-    end
-
-    --[[ Override: aura_proto:ProcessData(unit, data)
-    Add some custom value sto the UnitAuraInfo.
-
-    * self - the widget holding the aura buttons
-    * unit - the unit for which the update has been triggered (string)
-    * data - [UnitAuraInfo](https://wowpedia.fandom.com/wiki/Struct_UnitAuraInfo) object (table)
-
-    ## Returns
-
-    * data - a custom 'UnitAuraInfo' object (table)
-    --]]
-    function aura_proto:ProcessData(unit, data)
-        if not data then return end
-
-        if self.restricted then
-            -- unit comparisons may be secret while restricted
-            data.isPlayerAura = data.isFromPlayerOrPlayerPet
-        else
-            data.isPlayerAura = data.sourceUnit and (UnitIsUnit("player", data.sourceUnit) or UnitIsOwnerOrControllerOfUnit("player", data.sourceUnit))
-        end
-
-        data.dispelName = LibDispel:GetDispelType(data.spellId, data.dispelName)
-        data.isDispelable = LibDispel:IsDispelable(unit, data.spellId, data.dispelName, data.isHarmful)
-
-        local spell = self.spells[data.spellId]
-        if spell then
-            data.enabled = spell.enabled or false
-            data.priority = spell.priority or 0
-            data.stackThreshold = spell.stackThreshold or 0
-        else
-            data.enabled = true
-            data.priority = 0
-            data.stackThreshold = 0
-        end
-
-        if blacklist[data.spellId] or blacklist[data.name] then
-            data.enabled = false
-        end
-
-        if Filger.isVanilla then
-            data.auraIndex = self:GetAuraIndex(unit, data.auraInstanceID, self.filter)
-        end
-
-        return data
-    end
-
-    -- Retail: while auras are secret, tainted code can't list them; only spells whose aura
-    -- isn't secret can be looked up one by one, so only listed spells are shown.
-    function aura_proto:ScanSpellAuras(unit)
-        local isHarmful = self.filter:find("HARMFUL") ~= nil
-        local isPlayer = self.filter:find("PLAYER") ~= nil
-
-        for spellId in next, self.spells do
-            if not C_Secrets.ShouldSpellAuraBeSecret(spellId) then
-                local data = C_UnitAuras.GetUnitAuraBySpellID(unit, spellId)
-                if data and data.isHarmful == isHarmful and (not isPlayer or data.isFromPlayerOrPlayerPet) then
-                    data = self:ProcessData(unit, data)
-                    self.all[data.auraInstanceID] = data
-
-                    if self:FilterAura(unit, data) then
-                        self.actives[data.auraInstanceID] = true
-                    end
-                end
-            end
-        end
-    end
-
-    function aura_proto:UpdateAuras(event, unit, updateInfo)
-        if (self.unit ~= unit) then return end
-
-        local isRestricted = C_Secrets and C_Secrets.ShouldAurasBeSecret()
-        -- updateInfo is secret while restricted; cached auras are stale right after it
-	    local isFullUpdate = isRestricted or self.restricted or not updateInfo or updateInfo.isFullUpdate
-        self.restricted = isRestricted
-
-        local changed = false
-
-        if isFullUpdate then
-            self.all = table.wipe(self.all or {})
-            self.actives = table.wipe(self.actives or {})
-            changed = true
-
-            if isRestricted then
-                self:ScanSpellAuras(unit)
-            else
-                local slots = { C_UnitAuras.GetAuraSlots(unit, self.filter) }
-                for i = 2, #slots do -- #1 return is continuationToken, we don't care about it
-                    local data = self:ProcessData(unit, C_UnitAuras.GetAuraDataBySlot(unit, slots[i]))
-                    self.all[data.auraInstanceID] = data
-
-                    if self:FilterAura(unit, data) then
-                        self.actives[data.auraInstanceID] = true
-                    end
-                end
-            end
-        else
-            if updateInfo.addedAuras then
-                for _, data in next, updateInfo.addedAuras do
-                    if not C_UnitAuras.IsAuraFilteredOutByInstanceID(unit, data.auraInstanceID, self.filter) then
-                        self.all[data.auraInstanceID] = self:ProcessData(unit, data)
-                        if self:FilterAura(unit, data) then
-                            self.actives[data.auraInstanceID] = true
-                            changed = true
-                        end
-                    end
-                end
-            end
-
-            if updateInfo.updatedAuraInstanceIDs then
-                for _, auraInstanceID in next, updateInfo.updatedAuraInstanceIDs do
-                    local data = self.all[auraInstanceID]
-                    if data then
-                        self.all[auraInstanceID] = self:ProcessData(unit, C_UnitAuras.GetAuraDataByAuraInstanceID(unit, auraInstanceID))
-                        if self:FilterAura(unit, data) then
-                            self.actives[auraInstanceID] = true
-                            changed = true
-                        end
-                    end
-                end
-            end
-
-            if updateInfo.removedAuraInstanceIDs then
-                for _, auraInstanceID in next, updateInfo.removedAuraInstanceIDs do
-                    if self.all[auraInstanceID] then
-                        self.all[auraInstanceID] = nil
-                    end
-
-                    if self.actives[auraInstanceID] then
-                        self.actives[auraInstanceID] = nil
-                        changed = true
-                    end
-                end
-            end
-        end
-
-        if changed then
-            -- instead of removing auras one by one, just wipe the tables entirely
-            -- and repopulate them, multiple table.remove calls are insanely slow
-            self.sorted = table.wipe(self.sorted or {})
-
-            for auraInstanceID, _ in next, self.actives do
-                table.insert(self.sorted, self.all[auraInstanceID])
-            end
-
-            table.sort(self.sorted, self.SortAuras)
-
-            local numVisible = math.min(self.limit, #self.sorted)
-
-            for i = 1, numVisible do
-                self:Update(unit, self.sorted[i], i)
-            end
-
-            local visibleChanged = true
-
-            if (numVisible ~= self.visibleButtons) then
-                self.visibleButtons = numVisible
-                visibleChanged = true
-            end
-
-            for i = numVisible + 1, #self do
-                self[i]:Hide()
-            end
-
-            if (visibleChanged or self.createdButtons > self.anchoredButtons) then
-                if visibleChanged then
-                    self:SetPosition(1, numVisible)
-                else
-                    self:SetPosition(self.anchoredButtons + 1, self.createdButtons)
-                    self.anchoredButtons = self.createdButtons
-                end
-            end
-        end
-    end
-
-    function aura_proto:ForceUpdate()
-        self:UpdateAuras("ForceUpdate", self.unit, nil)
-    end
-
-    function aura_proto:UNIT_AURA(unit, updateInfo)
-        self:UpdateAuras("UNIT_AURA", unit, updateInfo)
-    end
-
-    function aura_proto:PLAYER_TARGET_CHANGED(...)
-        self:ForceUpdate()
-    end
-
-    function aura_proto:PLAYER_FOCUS_CHANGED(...)
-        self:ForceUpdate()
     end
 end
 
@@ -563,6 +252,7 @@ do
         if button.Cooldown then
             if data.durationObject then
                 button.Cooldown:SetCooldownFromDurationObject(data.durationObject)
+                button.TimeBinding:SetDuration(data.durationObject)
                 button.Cooldown:Show()
             elseif data.duration and data.duration > 0 then
                 button.Cooldown:SetCooldown(data.expirationTime - data.duration, data.duration, data.timeMod)
@@ -645,7 +335,7 @@ do
                     start = cdInfo.startTime
                     duration = cdInfo.duration
                 end
-                enabled = cdInfo.enabled
+                enabled = cdInfo.isEnabled and 1 or 0
             end
         elseif data.slotId then
             index = "SLOT_" .. data.slotId
@@ -669,6 +359,8 @@ do
             index = index,
             name = name,
             spellId = data.spellId,
+            -- a talent can replace one tracked spell with another (e.g. Sentinel overrides Avenging Wrath)
+            activeSpellId = data.spellId and GetOverrideSpell and GetOverrideSpell(data.spellId) or data.spellId,
             slotId = data.slotId,
             itemId = data.itemId,
             icon = icon,
@@ -682,19 +374,28 @@ do
         }
     end
 
-    function cooldown_proto:UpdateCooldowns(event, unit)
+    function cooldown_proto:UpdateCooldowns(event, unit, spellID, baseSpellID)
         local changed = true
-        self.all = table.wipe(self.all or {})
-        self.active = table.wipe(self.active or {})
+        self.active = self.active or {}
+        if not spellID then
+            table.wipe(self.active)
+        end
 
         for _, row in next, self.spells do
-            local data = self:ProcessCooldownData(unit, row)
-            self.all[data.index] = data
+            -- no event fires when a cooldown ends, so shown rows are re-checked on every event;
+            -- slots and items are always re-checked because their events carry the item's spell ID
+            if not spellID or not row.spellId or self.active[row]
+                or row.spellId == spellID or row.spellId == baseSpellID then
+                local data = self:ProcessCooldownData(unit, row)
 
-            if self:FilterCooldown(data) then
-                self.active[data.index] = true
-            elseif data.spellId then
-                self.casted[data.spellId] = nil
+                if self:FilterCooldown(data) then
+                    self.active[row] = data
+                else
+                    self.active[row] = nil
+                    if data.spellId then
+                        self.casted[data.spellId] = nil
+                    end
+                end
             end
         end
 
@@ -702,9 +403,14 @@ do
             -- instead of removing auras one by one, just wipe the tables entirely
             -- and repopulate them, multiple table.remove calls are insanely slow
             self.sorted = table.wipe(self.sorted or {})
+            self.shownSpells = table.wipe(self.shownSpells or {})
 
-            for index, _ in next, self.active do
-                table.insert(self.sorted, self.all[index])
+            for _, data in next, self.active do
+                local id = data.activeSpellId
+                if not id or not self.shownSpells[id] then
+                    if id then self.shownSpells[id] = true end
+                    table.insert(self.sorted, data)
+                end
             end
 
             table.sort(self.sorted, self.SortCooldowns)
@@ -741,8 +447,9 @@ do
         self:UpdateCooldowns("ForceUpdate", self.unit, nil)
     end
 
-    function cooldown_proto:SPELL_UPDATE_COOLDOWN()
-        self:UpdateCooldowns("SPELL_UPDATE_COOLDOWN", self.unit)
+    -- spellID is nil when every cooldown should be updated
+    function cooldown_proto:SPELL_UPDATE_COOLDOWN(spellID, baseSpellID)
+        self:UpdateCooldowns("SPELL_UPDATE_COOLDOWN", self.unit, spellID, baseSpellID)
     end
 
     -- register which spell the player cast
@@ -795,10 +502,10 @@ do
         end
     end
 
-    function Filger:Spawn(data)
-        local index = #self
-        local unit = data.unit:gsub("^%l", string.upper):gsub("t(arget)", "T%1")
-        local element = Mixin(CreateFrame("Frame", self:GetName() .. unit .. index, self), element_proto)
+    function Filger:Spawn(key, data)
+        -- "PLAYER_AURAS" -> "FilgerPlayerAuras"
+        local name = key:lower():gsub("^%l", string.upper):gsub("_(%l)", string.upper)
+        local element = Mixin(CreateFrame("Frame", self:GetName() .. name, self), element_proto)
 
         -- configuration
         element.unit = data.unit or "player"
@@ -834,8 +541,12 @@ do
 
             element:RegisterEvent("SPELL_UPDATE_COOLDOWN")
             element:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", self.unit)
+        elseif data.groups then
+            -- Mainline only: Blizzard's secure aura container filters and displays the auras
+            element = Mixin(element, ns.container_proto)
+            element:CreateContainer(data)
         else
-            element = Mixin(element, aura_proto)
+            element = Mixin(element, ns.aura_proto)
 
             -- overrider element functions with configurations
             element.SortAuras = data.SortAuras or element.SortAuras
@@ -888,9 +599,9 @@ function Filger:PLAYER_LOGIN()
         -- self:RegisterEvent("PLAYER_ENTERING_WORLD")
 
         -- create panels based on spell list
-        for _, data in pairs(self.config.frames) do
+        for key, data in pairs(self.config.frames) do
             if (data.enabled) then
-                local element = self:Spawn(data)
+                local element = self:Spawn(key, data)
                 element:ForceUpdate()
                 table.insert(self, element)
             end

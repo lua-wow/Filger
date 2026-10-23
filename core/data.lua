@@ -94,10 +94,14 @@ end
 -- player class rows first, then "ALL" rows (racials, gear), each in source order
 local buildCooldowns = function(Filger)
     local cooldowns = {}
+    local seen = {}
     for _, key in ipairs({ Filger.class, "ALL" }) do
         for _, source in ipairs(cooldownSources) do
             for _, row in ipairs(source[key] or {}) do
-                if row.enabled then
+                if row.spellId and seen[row.spellId] then
+                    Filger:warn("COOLDOWN", "Spell " .. row.spellId .. " is duplicated.")
+                elseif row.enabled then
+                    if row.spellId then seen[row.spellId] = true end
                     if row.slotId or Filger.GetSpellInfo(row.spellId) then
                         table.insert(cooldowns, row)
                     else
