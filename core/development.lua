@@ -132,15 +132,15 @@ Filger:AddCommand("exp6", exp6, "experiment 6: private aura anchors on the playe
 -- usage: /filger exp7 [itemID] toggles logging; enter combat and cast spells / use the item
 -- on each player cast: is the spellID secret, are slot 13/14 and item cooldowns secret
 local exp7Frame
--- prints start/duration when readable, so an active cooldown is visible
+-- prints start/duration/enabled when readable, so an active cooldown is visible
 local function secrecy(...)
-    local ok, start, duration = pcall(...)
+    local ok, start, duration, enabled = pcall(...)
     if not ok then return "error: " .. tostring(start) end
     if start == nil then return "nil" end
-    if issecretvalue(start) or issecretvalue(duration) then
+    if issecretvalue and (issecretvalue(start) or issecretvalue(duration)) then
         return "|cffff0000secret|r " .. tostring(issecretvalue(start)) .. "/" .. tostring(issecretvalue(duration))
     end
-    return format("%.1f/%.1f", start, duration)
+    return format("%.1f/%.1f/%s", start, duration, tostring(enabled))
 end
 
 local exp7 = function(arg)
@@ -181,3 +181,42 @@ local exp8 = function()
 end
 
 Filger:AddCommand("exp8", exp8, "experiment 8: aura tooltip methods on GameTooltip")
+
+-- Experiment 10: which event reports each item/slot cooldown change
+-- usage: /filger exp10 [itemID] toggles logging; use a trinket and a potion, compare with Filger's icons
+-- prints a line when an event sees slot 13/14/item values that differ from what that same event saw last
+local exp10Frame
+local exp10Events = { "SPELL_UPDATE_COOLDOWN", "BAG_UPDATE_COOLDOWN", "ACTIONBAR_UPDATE_COOLDOWN" }
+
+local exp10 = function(arg)
+    if exp10Frame then
+        exp10Frame:UnregisterAllEvents()
+        exp10Frame = nil
+        print(Filger.title, "exp10: stopped")
+        return
+    end
+    local itemID = tonumber(arg)
+    local last = {}
+
+    exp10Frame = CreateFrame("Frame")
+    for _, event in ipairs(exp10Events) do
+        exp10Frame:RegisterEvent(event)
+    end
+    exp10Frame:SetScript("OnEvent", function(_, event, ...)
+        local slot13 = secrecy(GetInventoryItemCooldown, "player", 13)
+        local slot14 = secrecy(GetInventoryItemCooldown, "player", 14)
+        local item = itemID and secrecy(C_Container.GetItemCooldown, itemID) or "-"
+        local snapshot = slot13 .. " " .. slot14 .. " " .. item
+        if last[event] == snapshot then return end
+        last[event] = snapshot
+        -- SPELL_UPDATE_COOLDOWN payload: spellID, baseSpellID, category, startRecoveryCategory, itemID (Retail only)
+        local spellID, _, _, _, payloadItemID = ...
+        local payload = event == "SPELL_UPDATE_COOLDOWN"
+            and ("spellID " .. tostring(spellID) .. " itemID " .. tostring(payloadItemID)) or ""
+        print(Filger.title, "exp10:", format("%.1f", GetTime()), event, payload,
+            "slot13", slot13, "slot14", slot14, "item", item)
+    end)
+    print(Filger.title, "exp10: logging slot 13/14/item cooldown changes per event, run again to stop")
+end
+
+Filger:AddCommand("exp10", exp10, "experiment 10: item cooldown refresh events (/filger exp10 [itemID])")

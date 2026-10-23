@@ -41,7 +41,7 @@ Analysis only. No code was changed. As of 2026-10-19.
 
 Details in [Migration](#migration-each-phase-ships-on-its-own) and [Experiments](#experiments).
 
-- [ ] **Phase 0: fixes that work today**
+- [x] **Phase 0: fixes that work today**
   - [x] Experiment 1: restriction state on every client (Forever and Titan not tested)
   - [x] Experiment 2: `GetAuraDuration` and `#` on secret instance IDs (Retail, in combat): **fails**,
         tainted code can't call any `RequiresUnitAuraAccess` API while auras are secret
@@ -86,13 +86,14 @@ Details in [Migration](#migration-each-phase-ships-on-its-own) and [Experiments]
   - [x] PLAYER_DEBUFFS: `HARMFUL|RAID_PLAYER_DISPELLABLE`, `HARMFUL|CROWD_CONTROL`, `HARMFUL` +
         `isBossAura` groups (Stagger dropped, Experiment 3)
   - [x] Delete the copied event path from `core/Mainline/`
-- [ ] **Other experiments**
+- [x] **Other experiments**
   - [x] Experiment 7: cooldown edges (Retail, dummy and boss): nothing secret; item cooldowns aren't
         applied yet at `UNIT_SPELLCAST_SUCCEEDED`
   - [x] Experiment 8: tooltip methods on each Classic client: all five exist on Retail, Era, TBC, MoP
         (Forever and Titan not tested); index branch removed, instance-ID tooltips verified on all four
-  - [ ] Experiment 10: item and slot cooldowns refresh when they start and when they shorten
-        (`SPELL_UPDATE_COOLDOWN` only today; `BAG_UPDATE_COOLDOWN` may be needed)
+  - [x] Experiment 10: item and slot cooldowns refresh when they start and when they shorten:
+        `SPELL_UPDATE_COOLDOWN` is enough on Retail (start, shortening, end) and MoP (start);
+        `BAG_UPDATE_COOLDOWN` isn't needed. Era, TBC and the rest of MoP not tested
 - [ ] **Later iteration:** spell data ([spell-data-generation.md](spell-data-generation.md))
 
 ## Facts
@@ -626,6 +627,72 @@ combat** (target dummy, then a dungeon boss).
       Filger's icons start and follow the cooldown, including a cooldown that shortens.
     - Pass: the icons stay correct with today's events. Otherwise register the missing event for item
       and slot rows only.
+    - Now `/filger exp10 [itemID]` (`core/development.lua`): toggles a log of `SPELL_UPDATE_COOLDOWN`,
+      `BAG_UPDATE_COOLDOWN` and `ACTIONBAR_UPDATE_COOLDOWN`. A line prints when an event sees slot
+      13/14/item values that differ from what that same event saw last, so each event's first view of a
+      start, a shortening and an end shows up once.
+    - **Source (2026-10-23, `wow-ui-source` live, classic, classic_anniversary, classic_era, forever,
+      classic_titan):**
+      - `BAG_UPDATE_COOLDOWN` exists on every client, with no payload (`ContainerDocumentation.lua`).
+      - Blizzard refreshes item and slot cooldowns on `BAG_UPDATE_COOLDOWN`: equipped slots
+        (`PaperDollItemSlotButton_OnEvent`, Retail and Classic), bags (`ContainerFrame`), the bank,
+        the objective tracker's quest items and the Retail `CooldownViewer` (`OnBagUpdateCooldownEvent`).
+        Action buttons use `ACTIONBAR_UPDATE_COOLDOWN`. No Blizzard item or slot button uses
+        `SPELL_UPDATE_COOLDOWN`.
+      - Retail and Forever `SPELL_UPDATE_COOLDOWN` carry a fifth argument `itemID` ("the itemID associated
+        with the cast of the spell"); Classic clients don't. So on Retail an item use likely fires
+        `SPELL_UPDATE_COOLDOWN` too, but whether it fires again when an item cooldown shortens is
+        **UNVERIFIED**.
+    - **Result (2026-10-23, Retail, first run):** `/filger exp10 211878`, trinket in slot 14 and the potion
+      used. The client is inferred from spell 1221146 (seen on Retail in Experiment 7); combat state not
+      recorded.
+      - Both starts are already readable in the same frame on all three events, in the order
+        `ACTIONBAR_UPDATE_COOLDOWN`, `BAG_UPDATE_COOLDOWN`, `SPELL_UPDATE_COOLDOWN`: trinket at 37940.8
+        (`slot14 37940.6/120.0`, `spellID 1221146`), potion at 37957.9 (`item 37957.7/300.0`,
+        `spellID 216521`). This confirms 1221146 is the trinket's use spell.
+      - The `itemID` argument was `nil` on both item uses, despite its documentation.
+      - So starts work with today's events: Filger re-checks slot and item rows on every
+        `SPELL_UPDATE_COOLDOWN` (`cooldown_proto:UpdateCooldowns`).
+      - Not covered: a shortening, the end of a cooldown (the log stopped before either), Filger's icons,
+        and the Classic clients.
+    - **Result (2026-10-23, Retail, same session continued):**
+      - **No event fires when a cooldown ends.** The trinket was due at 38060.6, and 0/0 first showed at
+        38063.0 on an unrelated cast (`spellID 458503`). The potion was due at 38257.7 and showed 0/0 at
+        38261.4 (`spellID 450552`). Filger doesn't depend on this: `button_proto:OnUpdate` hides the icon
+        at `expirationTime`.
+      - **Shortening is reported.** The trinket started at 38290.4, then its start moved 2 s earlier about
+        once a second (38288.4 … 38214.4) and it ended at 38334.0, roughly 76 s early. Every step showed
+        up in the same frame on all three events, with `SPELL_UPDATE_COOLDOWN` carrying a player spell
+        (1219102, 437965, 1263408, …). Filger re-reads slot rows on each of these events, so
+        `expirationTime` follows the shortening. Each line is a change, so this doesn't show whether the
+        shortening triggers the event or rides on the casts.
+      - `BAG_UPDATE_COOLDOWN` never reported a change that `SPELL_UPDATE_COOLDOWN` missed. At 38213.1 it
+        didn't fire while `SPELL_UPDATE_COOLDOWN` (`spellID nil`) and `ACTIONBAR_UPDATE_COOLDOWN` did,
+        with `GetItemCooldown(211878)` returning `nil`. Then 0/0 at 38213.7, then 37958.9/300 at 38214.3:
+        the start moved 1.2 s later. Cause not checked.
+      - The `itemID` argument stayed `nil` on every event.
+      - **Retail passes for starts, shortenings and ends with today's events.** Filger's trinket icon
+        followed the cooldown. The potion showed no icon: `data/` has slot rows only
+        (`data/shared/cooldowns.lua`: slots 2, 6, 13, 14), and there's no item-row constructor.
+        `buildCooldowns` (`core/data.lua`) would also drop an `itemId` row, since it keeps only rows
+        with `slotId` or a known `spellId`. The `data.itemId` branch in `ProcessCooldownData` is
+        unreachable today. Classic clients still to run.
+    - **Result (2026-10-23, MoP, Monk, in combat):** `/filger exp10 76097` (Master Healing Potion), trinket
+      in slot 14 and the potion used.
+      - Trinket start: `slot14 40321.4/90.0` readable at 40321.6 on all three events in the same frame
+        (`SPELL_UPDATE_COOLDOWN` `spellID 146395`). The `itemID` argument is `nil`, as the MoP docs say.
+      - **Potion in combat:** from 40326.1 (`spellID 105708`), `GetItemCooldown(76097)` returned
+        `<now>/60.0`: the start moved forward with every read (40326.1 … 40330.7). This looks like
+        Classic's "potion cooldown starts when you leave combat". The log didn't show `enabled` and
+        stopped before combat ended, so it's **UNVERIFIED**. If it holds, Filger's `start + duration`
+        would show a full 60 s forever while in combat, unless `enabled` is 0 (`FilterCooldown` hides
+        it). Moot: potions aren't tracked (decided 2026-10-23; all potions share one cooldown and the
+        item IDs change every patch and expansion).
+      - `SPELL_UPDATE_COOLDOWN` saw every change. `BAG_UPDATE_COOLDOWN` skipped some (40326.8, 40327.6,
+        40327.8, 40328.7) and fired 0.2 s after the others at 40272.4. `ACTIONBAR_UPDATE_COOLDOWN` fired
+        alone once (40326.2).
+      - Not covered: the trinket end, a shortening, the potion after leaving combat, Filger's trinket icon.
+      - `/filger exp10` now also prints `enabled` (third value) for slots and the item.
 
 ## Open questions for you
 
