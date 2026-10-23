@@ -52,11 +52,7 @@ do
 
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 
-        if self.auraIndex then
-            -- classic aura tooltip
-            GameTooltip:SetUnitAura(self.unit, self.auraIndex, self.isHarmful and "HARMFUL" or "HELPFUL")
-        elseif self.auraInstanceID and GameTooltip.SetUnitDebuffByAuraInstanceID then
-            -- retail aura tooltip
+        if self.auraInstanceID and GameTooltip.SetUnitDebuffByAuraInstanceID then
             if self.isHarmful then
                 GameTooltip:SetUnitDebuffByAuraInstanceID(self.unit, self.auraInstanceID)
             else

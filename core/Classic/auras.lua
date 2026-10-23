@@ -80,7 +80,6 @@ do
         button.unit = unit
         button.filter = self.filter
         button.auraInstanceID = data.auraInstanceID
-        button.auraIndex = data.auraIndex
         button.isHarmful = data.isHarmful
 
         -- timers
@@ -158,20 +157,6 @@ do
         return data.enabled and data.applications >= data.stackThreshold
     end
 
-    function aura_proto:GetAuraIndex(unit, auraInstanceID, filter)
-        local index = 1
-        repeat
-            local data = C_UnitAuras.GetAuraDataByIndex(unit, index, filter)
-            if not data then
-                return nil
-            elseif data.auraInstanceID == auraInstanceID then
-                return index
-            end
-            index = index + 1
-        until (not data)
-        return nil
-    end
-
     --[[ Override: aura_proto:ProcessData(unit, data)
     Add some custom value sto the UnitAuraInfo.
 
@@ -209,10 +194,6 @@ do
 
         if blacklist[data.spellId] or blacklist[data.name] then
             data.enabled = false
-        end
-
-        if Filger.isVanilla then
-            data.auraIndex = self:GetAuraIndex(unit, data.auraInstanceID, self.filter)
         end
 
         return data

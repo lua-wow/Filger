@@ -87,8 +87,12 @@ Details in [Migration](#migration-each-phase-ships-on-its-own) and [Experiments]
         `isBossAura` groups (Stagger dropped, Experiment 3)
   - [x] Delete the copied event path from `core/Mainline/`
 - [ ] **Other experiments**
-  - [ ] Experiment 7: cooldown edges (items, slots, secret cast `spellID`)
-  - [ ] Experiment 8: tooltip methods on each Classic client
+  - [x] Experiment 7: cooldown edges (Retail, dummy and boss): nothing secret; item cooldowns aren't
+        applied yet at `UNIT_SPELLCAST_SUCCEEDED`
+  - [x] Experiment 8: tooltip methods on each Classic client: all five exist on Retail, Era, TBC, MoP
+        (Forever and Titan not tested); index branch removed, instance-ID tooltips verified on all four
+  - [ ] Experiment 10: item and slot cooldowns refresh when they start and when they shorten
+        (`SPELL_UPDATE_COOLDOWN` only today; `BAG_UPDATE_COOLDOWN` may be needed)
 - [ ] **Later iteration:** spell data ([spell-data-generation.md](spell-data-generation.md))
 
 ## Facts
@@ -97,13 +101,12 @@ Details in [Migration](#migration-each-phase-ships-on-its-own) and [Experiments]
 
 | Location | APIs | Data read → decision | Client path |
 |---|---|---|---|
-| `Filger.lua:32-54` `OnEnter` | `GameTooltip:SetUnitAura`, `SetUnit{Buff,Debuff}ByAuraInstanceID`, `SetSpellByID` | `auraIndex` / `auraInstanceID` → tooltip | Index on Vanilla, instance ID elsewhere |
+| `Filger.lua:32-54` `OnEnter` | `SetUnit{Buff,Debuff}ByAuraInstanceID`, `SetSpellByID` | `auraInstanceID` → tooltip | All (index branch removed) |
 | `Filger.lua:72-92` `OnUpdate` | `GetTime` | `expirationTime - GetTime()`, `<= 5` → red text, hide on expiry | All |
 | `Filger.lua:184-208` `UpdateColor` | `UnitCanAssist`, `UnitCanAttack` | `isHarmful/isHelpful`, `Filger.colors[dispelName]` (table key), `isPlayerAura` → desaturate, `isDispelable/isStealable` → flash | All |
 | `Filger.lua:218-272` `Update` | `Cooldown:SetCooldown`, `SetTexture`, `SetText` | `name` check, `duration > 0`, `expirationTime - duration`, `applications > 1` | All |
 | `Filger.lua:281-295` `SortAuras` | — | Compares `priority`, `expirationTime`, `auraInstanceID` | All |
 | `Filger.lua:308-310` `FilterAura` | — | `applications >= stackThreshold` | All |
-| `Filger.lua:312-324` `GetAuraIndex` | `C_UnitAuras.GetAuraDataByIndex` | `auraInstanceID ==` → tooltip index | Vanilla |
 | `Filger.lua:337-370` `ProcessData` | `UnitIsUnit`, `UnitIsOwnerOrControllerOfUnit`, LibDispel | `sourceUnit` (or `isFromPlayerOrPlayerPet` when restricted), `spellId`/`dispelName` → LibDispel, `self.spells[spellId]`, `blacklist[spellId]`, `blacklist[name]` | All |
 | `Filger.lua:374-391` `ScanSpellAuras` | `C_Secrets.ShouldSpellAuraBeSecret`, `C_UnitAuras.GetUnitAuraBySpellID` | `isHarmful ==`, `isFromPlayerOrPlayerPet` | Retail/Forever while restricted |
 | `Filger.lua:393-498` `UpdateAuras` | `C_Secrets.ShouldAurasBeSecret`, `GetAuraSlots`, `GetAuraDataBySlot`, `GetAuraDataByAuraInstanceID`, `IsAuraFilteredOutByInstanceID`, `UNIT_AURA` | `updateInfo` fields, `self.all[auraInstanceID]` keys | All (restricted branch on Retail/Forever) |
@@ -262,11 +265,11 @@ Details in [Migration](#migration-each-phase-ships-on-its-own) and [Experiments]
   - Secret mode: `C_Secrets.HasSecretRestrictions()`, which exists everywhere and is documented to be false
     when the build has no restrictions.
   - Whether `CustomAuraContainerTemplate` exists.
-  - The Vanilla tooltip by index (`Filger.lua:37-39`, `365-367`).
+  - ~~The Vanilla tooltip by index~~ Removed: the instance-ID tooltip works on Era (Experiment 8).
   - The filter-string vocabulary (`!CANCELABLE` vs `NOT_CANCELABLE`, the Retail-only `IMPORTANT` and
     `DISPELLABLE`).
   - Whether `GameTooltip:SetUnit{Buff,Debuff}ByAuraInstanceID` exists. It's a widget method that isn't in
-    the API docs; already guarded at `Filger.lua:40`; **UNVERIFIED** per client.
+    the API docs; already guarded at `Filger.lua:40`. Exists on Retail, Era, TBC and MoP (Experiment 8).
 
 ## Options
 
@@ -457,8 +460,7 @@ iteration, after Filger works on every game version. Until then `data/` stays un
 
 Same branch, same TOC, its own aura file (`core/Classic/`), which is today's code. Classic has no
 secret flags, so today's logic keeps working there, including the boss-debuff and blacklist data.
-Filter-string differences (`NOT_CANCELABLE`) stay inside each family's frame definitions. The Vanilla
-tooltip-by-index branch stays inside the Classic file.
+Filter-string differences (`NOT_CANCELABLE`) stay inside each family's frame definitions.
 
 ## Experiments
 
@@ -564,13 +566,66 @@ combat** (target dummy, then a dungeon boss).
 7. **Cooldown edges.** In combat, print `issecretvalue` for `GetInventoryItemCooldown("player",13)` and
    `C_Container.GetItemCooldown(<potion>)`. Log which of the player's own spells arrive with a secret
    `spellID` in `UNIT_SPELLCAST_SUCCEEDED`.
+   - Now `/filger exp7 [itemID]` (`core/development.lua`): toggles a log line per player cast with
+     `spellID` (or `secret`) and start/duration (or `secret`) for slots 13, 14 and the item.
+   - **Result (2026-10-23, Retail, Brewmaster, target dummy):** `/filger exp7 211880`, 15 casts, 14 of
+     them in combat.
+     - `UNIT_SPELLCAST_SUCCEEDED` on `player`: no secret `spellID`, including procs and
+       triggered spells (1241059, 1221146, 1219102). The `issecretvalue` skip in
+       `cooldown_proto:UNIT_SPELLCAST_SUCCEEDED` never fired.
+     - `GetInventoryItemCooldown` slots 13/14 and `C_Container.GetItemCooldown(211880)`: start and
+       duration not secret in combat, unlike spell cooldowns (Experiment 3: 0/28 never-secret). Matches
+       the API docs, which list no secret returns for `GetItemCooldown`. That run printed only
+       `issecretvalue`, so it doesn't show whether a cooldown was active; the boss run below does.
+   - **Result (2026-10-23, Retail, Brewmaster, dungeon boss):** `/filger exp7 211878` (Algari Healing
+     Potion), values printed. Trinket in slot 14 and the potion used in combat.
+     - Nothing secret: every `spellID` readable, and slots 13/14 and the item return plain numbers
+       while their cooldowns run (slot 14 `…/120.0`, item `…/300.0`).
+     - Item ID 211878 showed the 300 s cooldown of a potion drunk in the previous run (start 35327.8,
+       cast of 431416 at 35326.9), so the potion ranks share one cooldown, or 211880 and 211878 were
+       the same rank there. Not separated.
+     - At `UNIT_SPELLCAST_SUCCEEDED` the new item cooldown isn't applied yet: the potion cast (431416)
+       read `item 0.0/0.0`, the next cast read start 35630.9 (before the event's `GetTime` 35631.1).
+       Same for the trinket: the 1221146/1219102 cast at 35494.8 read `slot14 0.0/0.0`, the next cast
+       read start 35494.6. 1221146/1219102 are likely the trinket's use (also seen on the dummy);
+       **UNVERIFIED**.
+     - The slot 14 start moved earlier while the cooldown ran (35494.6 → 35468.6) and the cooldown ended
+       early at about 35590. Something reduced the trinket cooldown; the cause wasn't checked. Item
+       cooldowns must be re-read on update events, not computed once from the first read.
+     - Consequence for Filger: item and slot cooldowns need no secret branch. Filger refreshes them only
+       on `SPELL_UPDATE_COOLDOWN` (`Filger.lua:538`); whether that fires for item cooldowns, or
+       `BAG_UPDATE_COOLDOWN` is needed, is **UNVERIFIED**.
 8. **Tooltips.** `/run print(GameTooltip.SetUnitBuffByAuraInstanceID ~= nil, GameTooltip.SetUnitAura ~= nil)`
    on each Classic client.
+   - Now `/filger exp8` (`core/development.lua`): prints which `GameTooltip` aura methods exist.
+   - **Result (2026-10-23, Retail, Era, TBC, MoP):** `SetUnitAura`, `SetUnitBuff`, `SetUnitDebuff`,
+     `SetUnitBuffByAuraInstanceID` and `SetUnitDebuffByAuraInstanceID` all exist on every client.
+     Forever and Titan not tested.
+     - Rendering by instance ID (`/run`: `GetAuraDataByIndex("player",1,"HELPFUL")`, then
+       `SetUnitBuffByAuraInstanceID` with its `auraInstanceID`):
+       - Era: index 1 was Honorless Target (instance ID 2, Fortitude also up); the tooltip showed
+         Honorless Target. **Pass** for one buff.
+       - MoP: the tooltip showed Cyclonic Inspiration, the index-1 buff (the buff bar orders buffs
+         differently). The name wasn't printed, so the match is likely but not confirmed.
+       - After removing the index branch (2026-10-23): Filger buff and debuff tooltips show the right
+         aura on Retail, Era, TBC and MoP.
+     - Consequence: the Vanilla index branch (`Filger.isVanilla` → `GetAuraIndex` in
+       `core/Classic/auras.lua`, a full aura scan per processed aura) was removed (2026-10-23). Every
+       client now uses the instance-ID tooltip.
 9. **`[Family]` loading.** Add a one-line `print` to each `core/<Family>/` stub. `/reload` on every
    client: Retail and Forever must print Mainline, the rest Classic, and exactly one line must print per
    client. Out of combat is fine.
    - **Result (2026-10-21):** Retail prints `Mainline`; Era, TBC and MoP print `Classic`, one line
      each. Forever and Titan not tested (no client).
+10. **Item cooldown refresh.** Filger refreshes item and slot cooldowns only on `SPELL_UPDATE_COOLDOWN`
+    (`Filger.lua:538`). Experiment 7 showed that an item cooldown starts just after
+    `UNIT_SPELLCAST_SUCCEEDED` and can shorten while it runs. Check which event reports each change:
+    - Search `../refs` for how Blizzard's UI refreshes item cooldowns (`BAG_UPDATE_COOLDOWN`,
+      `ACTIONBAR_UPDATE_COOLDOWN`).
+    - In game, on Retail and each Classic client: use a trinket and a potion in combat, and check that
+      Filger's icons start and follow the cooldown, including a cooldown that shortens.
+    - Pass: the icons stay correct with today's events. Otherwise register the missing event for item
+      and slot rows only.
 
 ## Open questions for you
 

@@ -127,3 +127,57 @@ local exp6 = function()
 end
 
 Filger:AddCommand("exp6", exp6, "experiment 6: private aura anchors on the player")
+
+-- Experiment 7: cooldown edges (item/slot cooldowns, secret cast spellID)
+-- usage: /filger exp7 [itemID] toggles logging; enter combat and cast spells / use the item
+-- on each player cast: is the spellID secret, are slot 13/14 and item cooldowns secret
+local exp7Frame
+-- prints start/duration when readable, so an active cooldown is visible
+local function secrecy(...)
+    local ok, start, duration = pcall(...)
+    if not ok then return "error: " .. tostring(start) end
+    if start == nil then return "nil" end
+    if issecretvalue(start) or issecretvalue(duration) then
+        return "|cffff0000secret|r " .. tostring(issecretvalue(start)) .. "/" .. tostring(issecretvalue(duration))
+    end
+    return format("%.1f/%.1f", start, duration)
+end
+
+local exp7 = function(arg)
+    if not issecretvalue then
+        print(Filger.title, "exp7: no issecretvalue on this client")
+        return
+    elseif exp7Frame then
+        exp7Frame:UnregisterAllEvents()
+        exp7Frame = nil
+        print(Filger.title, "exp7: stopped")
+        return
+    end
+    local itemID = tonumber(arg)
+
+    exp7Frame = CreateFrame("Frame")
+    exp7Frame:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", "player")
+    exp7Frame:SetScript("OnEvent", function(_, _, _, _, spellID)
+        -- a secret spellID can't be printed or looked up; the cast order tells which spell it was
+        local id = issecretvalue(spellID) and "|cffff0000secret|r" or tostring(spellID)
+        print(Filger.title, "exp7:", format("%.1f", GetTime()), "combat", tostring(InCombatLockdown()),
+            "spellID", id,
+            "slot13", secrecy(GetInventoryItemCooldown, "player", 13),
+            "slot14", secrecy(GetInventoryItemCooldown, "player", 14),
+            "item", itemID and secrecy(C_Container.GetItemCooldown, itemID) or "-")
+    end)
+    print(Filger.title, "exp7: logging player casts (start/duration or secret), run again to stop")
+end
+
+Filger:AddCommand("exp7", exp7, "experiment 7: cooldown edges, logs player casts (/filger exp7 [itemID])")
+
+-- Experiment 8: which aura tooltip methods each client has
+-- usage: /filger exp8 (anywhere)
+local exp8 = function()
+    for _, method in ipairs({ "SetUnitAura", "SetUnitBuff", "SetUnitDebuff", "SetUnitBuffByAuraInstanceID",
+        "SetUnitDebuffByAuraInstanceID" }) do
+        print(Filger.title, "exp8:", method, GameTooltip[method] ~= nil)
+    end
+end
+
+Filger:AddCommand("exp8", exp8, "experiment 8: aura tooltip methods on GameTooltip")
