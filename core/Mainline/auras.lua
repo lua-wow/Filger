@@ -435,6 +435,26 @@ do
             end
         end
 
+        -- private auras (boss mechanics) never reach C_UnitAuras; Blizzard draws them into these anchors
+        local growthx = (self["growth-x"] == "LEFT") and -1 or 1
+        for i = 1, data.privateAuras or 0 do
+            local anchor = CreateFrame("Frame", nil, self)
+            anchor:SetSize(self.size, self.size)
+            anchor:SetPoint(self.initialAnchor, self, self.initialAnchor, (self.limit + i - 1) * (self.size + self.spacing) * growthx, 0)
+            C_UnitAuras.AddPrivateAuraAnchor({
+                unitToken = self.unit,
+                auraIndex = i,
+                parent = anchor,
+                showCooldownFrame = true,
+                showCountdownNumbers = true,
+                iconInfo = {
+                    iconAnchor = { point = "CENTER", relativeTo = anchor, relativePoint = "CENTER", offsetX = 0, offsetY = 0 },
+                    iconWidth = self.size,
+                    iconHeight = self.size
+                }
+            })
+        end
+
         self.container = container
 
         -- the container doesn't follow unit token changes by itself
@@ -606,9 +626,8 @@ Mixin(Filger.config.frames, {
             }
         },
         ["BOSS_DEBUFFS"] = {
-            enabled = false,
+            enabled = true,
             unit = "player",
-            filter = "HARMFUL",
             anchor = { "CENTER", UIParent, "CENTER", 0, 160 },
             limit = 1,
             size = math.floor(1.5 * size),
@@ -616,8 +635,12 @@ Mixin(Filger.config.frames, {
             initialAnchor = "BOTTOMLEFT",
             ["growth-x"] = "RIGHT",
             ["growth-y"] = "DOWN",
-            FilterAura = function(element, unit, data)
-                return data.enabled and data.isBossAura or (data.sourceUnit == nil)
-            end
+            groups = {
+                {
+                    filter = "HARMFUL",
+                    candidateFilters = { isBossAura = true }
+                }
+            },
+            privateAuras = 2
         },
 })
