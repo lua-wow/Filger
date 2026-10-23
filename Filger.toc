@@ -22,7 +22,7 @@ data\[Game]\cooldowns.lua
 data\[Game]\spells.lua
 data\shared\blacklist.lua
 data\shared\cooldowns.lua
-# Filger frame, client flags, utils, api, button, commands
+# Filger frame, client flags, utils, api, button, element, commands
 core\init.xml
 # validates data (Finalize), builds Filger.config (needs core + data)
 config.lua

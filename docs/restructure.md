@@ -234,7 +234,7 @@ Progress:
 - [x] 1. Skin integration
 - [x] 2. Document load order
 - [x] 3. Extract `core/button.lua`
-- [ ] 4. Extract `core/element.lua`
+- [x] 4. Extract `core/element.lua`
 - [ ] 5. Extract `elements/cooldowns.lua`
 - [ ] 6. Move the family auras
 - [ ] 7. Per-instance state
@@ -252,9 +252,10 @@ Progress:
 2. **Document load order** with `#` comments in `Filger.toc`.
 3. **Done: extracted `core/button.lua`**: `button_proto`, formatter/curve, `timeTextOptions`, `StyleButton`,
    `CreateButton`, unchanged. Add to `core/init.xml` after `api.lua`.
-4. **Extract `core/element.lua`**: `element_proto:SetPosition` and `Filger:Spawn`, unchanged.
-5. **Extract `elements/cooldowns.lua`**: `cooldown_proto`, exposed as `ns.cooldown_proto` like the aura
-   protos. `Filger.lua` is now bootstrap only.
+4. **Done: extracted `core/element.lua`**: `element_proto:SetPosition` and `Filger:Spawn`, unchanged.
+   `Filger.lua` exposes `cooldown_proto` as `ns.cooldown_proto` like the aura protos, so `Spawn` can reach it.
+5. **Extract `elements/cooldowns.lua`**: move `cooldown_proto` and its `ns.cooldown_proto` export.
+   `Filger.lua` is now bootstrap only.
 6. **Move the family auras** to `elements/[Family]/auras.lua` and update the TOC line.
 7. **Per-instance state**: create `casted`/`spells`/`active` per element instead of on the proto.
 8. **Explicit element type**: frame defs get `type = "cooldowns" | "container" | "auras"`; `Spawn`
