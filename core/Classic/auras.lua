@@ -33,11 +33,9 @@ do
     function aura_proto:UpdateColor(button, unit, data)
         if button.Backdrop then
             if (data.isHarmful and UnitCanAssist("player", unit)) or (data.isHelpful and UnitCanAttack(unit, "player") and UnitCanAttack("player", unit)) then
-                local color = Filger.colors[data.dispelName]
-                button.Backdrop:SetBackdropBorderColor(color.r, color.g, color.b, color.a or 1)
+                Filger:SetBorderColor(button.Backdrop, Filger.colors[data.dispelName])
             else
-                local color = Filger.config.general.backdrop.color
-                button.Backdrop:SetBackdropBorderColor(color.r, color.g, color.b, color.a or 1)
+                Filger:SetBorderColor(button.Backdrop, Filger.config.general.backdrop.color)
             end
         end
 

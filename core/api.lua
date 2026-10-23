@@ -5,8 +5,17 @@ local textures = Filger.textures
 -- Blizzard
 local IsAddOnLoaded = C_AddOns and C_AddOns.IsAddOnLoaded or _G.IsAddOnLoaded
 
--- skip it if Tukui exists
-if IsAddOnLoaded("Tainted") or IsAddOnLoaded("Tukui") then
+-- Tukui borders are textures colored by Backdrop:SetBorderColor; ElvUI and Filger use a BackdropTemplate border
+function Filger:SetBorderColor(backdrop, color)
+	if backdrop.SetBorderColor then
+		backdrop:SetBorderColor(color.r, color.g, color.b, color.a or 1)
+	else
+		backdrop:SetBackdropBorderColor(color.r, color.g, color.b, color.a or 1)
+	end
+end
+
+-- skip it if a UI with its own CreateBackdrop is loaded
+if IsAddOnLoaded("Tainted") or IsAddOnLoaded("Tukui") or IsAddOnLoaded("ElvUI") then
 	return
 end
 

@@ -231,7 +231,7 @@ Each step is one commit that leaves the addon working.
 
 Progress:
 - [x] 0. Drop `LibClassicDurations`
-- [ ] 1. Skin integration
+- [x] 1. Skin integration
 - [ ] 2. Document load order
 - [ ] 3. Extract `core/button.lua`
 - [ ] 4. Extract `core/element.lua`
@@ -246,8 +246,9 @@ Progress:
 0. **Done: removed `LibClassicDurations` and `CallbackHandler-1.0`.** The library was added because Era
    reported `duration = 0` for auras from other casters. Era now reports real durations (another
    player's Arcane Intellect on a target: `duration = 1800`). Neither library was loaded, so no behavior change.
-1. **Skin integration** ([above](#skin-integration)). Behavior change (ElvUI deferral becomes deliberate,
-   dispel borders show under Tukui/ElvUI), independent of the restructure.
+1. **Done: skin integration** ([above](#skin-integration)). ElvUI added to `OptionalDeps` and the
+   `api.lua` early return; `StyleButton` maps `button.backdrop` to `button.Backdrop`; Classic dispel
+   borders go through `Filger:SetBorderColor` (Tukui `SetBorderColor`, else `SetBackdropBorderColor`).
 2. **Document load order** with `#` comments in `Filger.toc`.
 3. **Extract `core/button.lua`**: `button_proto`, formatter/curve, `timeTextOptions`, `StyleButton`,
    `CreateButton`, unchanged. Add to `core/init.xml` after `api.lua`.

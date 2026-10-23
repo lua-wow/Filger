@@ -119,6 +119,8 @@ do
         local name = button:GetName()
 
         button:CreateBackdrop()
+        -- ElvUI stores its backdrop as `backdrop`
+        button.Backdrop = button.Backdrop or button.backdrop
 
         local cooldown = CreateFrame("Cooldown", name and name .. "CD", button, "CooldownFrameTemplate")
         cooldown:SetAllPoints()

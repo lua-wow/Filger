@@ -65,6 +65,7 @@ local data = {
         [322507] = CreateSpellPriority(3),       -- Celestial Brew
         [1260619] = CreateSpellPriority(3),      -- Elevated Stagger
         [325092] = CreateSpellPriority(10),      -- Purified Chi
+        [1241059] = CreateSpellPriority(3),      -- Celestial Infusion
     },
     ["PALADIN"] = {
         -- Holy
