@@ -75,9 +75,10 @@ Details in [Migration](#migration-each-phase-ships-on-its-own) and [Experiments]
   - [x] PLAYER_BUFFS: `HELPFUL|!PLAYER` + `excludeSpellIDs`
   - [x] Frames are named from their `config.frames` key (`FilgerPlayerAuras`, ...)
 - [ ] **Phase 3: remaining Mainline frames**
-  - [ ] Experiment 6: private aura anchors
+  - [x] Experiment 6: private aura anchors: **pass**, addon code can add them in combat while auras
+        are secret
   - [ ] TARGET_DEBUFFS, TARGET_AURAS, FOCUS_DEBUFFS
-  - [ ] BOSS_DEBUFFS (`isBossAura`, private-aura anchors if Experiment 6 passes)
+  - [ ] BOSS_DEBUFFS (`isBossAura` plus private-aura anchors, Experiment 6)
   - [ ] PLAYER_DEBUFFS: dispellable, crowd control, boss groups (Stagger dropped, Experiment 3)
   - [ ] Delete the copied event path from `core/Mainline/`
 - [ ] **Other experiments**
@@ -229,8 +230,8 @@ Details in [Migration](#migration-each-phase-ships-on-its-own) and [Experiments]
 - Cooldown Manager: addons can read the static catalog; the live state is secret. See cooldown-manager.md
   §4–§8.
 - Private auras (many boss mechanics) are never returned by `C_UnitAuras`. Blizzard shows them through
-  `C_UnitAuras.AddPrivateAuraAnchor(args)`. Whether a third-party addon may call it in a restricted context
-  is **UNVERIFIED**.
+  `C_UnitAuras.AddPrivateAuraAnchor(args)`. Addon code can call it in combat while auras are secret:
+  **VERIFIED** (Experiment 6).
 
 ### Classic clients
 
@@ -324,7 +325,7 @@ iteration, after Filger works on every game version. Until then `data/` stays un
   in code". Edit Mode owns position. There's no focus support, and the CDM shows only auras the player
   cast.
 - **Effort:** S (skin). **Risk:** high coupling to Blizzard internals.
-- **Evidence:** cooldown-manager.md §7–§10 (VERIFIED). Private-aura anchors from addons are UNVERIFIED.
+- **Evidence:** cooldown-manager.md §7–§10 (VERIFIED). Private-aura anchors from addons work (Experiment 6).
 
 ### F. Architecture: split vs one path
 
@@ -425,7 +426,7 @@ iteration, after Filger works on every game version. Until then `data/` stays un
    frames are allowed to filter by ID.
 4. **Phase 3: the remaining Mainline frames.**
    - TARGET_DEBUFFS (`HARMFUL|PLAYER` on hostile units), TARGET_AURAS, FOCUS_DEBUFFS.
-   - BOSS_DEBUFFS (`isBossAura`; plus private-aura anchors if Experiment 6 passes).
+   - BOSS_DEBUFFS (`isBossAura`; plus private-aura anchors, Experiment 6).
    - PLAYER_DEBUFFS shows only important debuffs, one group each: `HARMFUL|RAID_PLAYER_DISPELLABLE`,
      `HARMFUL|CROWD_CONTROL`, `isBossAura`. ~~Stagger by ID~~: not possible, Stagger is contextually
      secret (Experiment 3).
@@ -550,6 +551,11 @@ combat** (target dummy, then a dungeon boss).
    auraIndex=1, parent=frame, showCooldownFrame=true, iconInfo={ iconAnchor={point="CENTER",
    relativeTo=frame, relativePoint="CENTER", offsetX=0, offsetY=0}, iconWidth=40, iconHeight=40 } }`. It
    needs a dungeon boss that applies a private aura. Pass: no error, and the icon shows.
+   - Now `/filger exp6` (`core/development.lua`): anchors for `auraIndex` 1–3 on the player.
+   - **Result (2026-10-22, Retail, Aberrus, Echo of Neltharion, solo):** run in combat:
+     `aurasSecret true`, anchor IDs 3133–3135, no error. Two different private debuffs (Volcanic Heart
+     among them) drew in the anchor slots. Blizzard's raid frames didn't show them (solo, so likely no
+     raid frames; not investigated).
 7. **Cooldown edges.** In combat, print `issecretvalue` for `GetInventoryItemCooldown("player",13)` and
    `C_Container.GetItemCooldown(<potion>)`. Log which of the player's own spells arrive with a secret
    `spellID` in `UNIT_SPELLCAST_SUCCEEDED`.

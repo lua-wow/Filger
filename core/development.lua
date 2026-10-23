@@ -84,3 +84,46 @@ local exp5 = function()
 end
 
 Filger:AddCommand("exp5", exp5, "experiment 5: aura counts per filter string on the player")
+
+-- Experiment 6: private aura anchors from addon code
+-- usage: /filger exp6 (anywhere; the private aura icon draws inside the grey boxes)
+local exp6 = function()
+    if not C_UnitAuras.AddPrivateAuraAnchor then
+        print(Filger.title, "exp6: no AddPrivateAuraAnchor on this client")
+        return
+    elseif _G.FilgerExp6 then
+        print(Filger.title, "exp6: already created")
+        return
+    end
+
+    local frame = CreateFrame("Frame", "FilgerExp6", UIParent)
+    frame:SetSize(3 * 44, 44)
+    frame:SetPoint("CENTER", UIParent, "CENTER", 0, 200)
+
+    -- one anchor per private aura slot on the player
+    for i = 1, 3 do
+        local slot = CreateFrame("Frame", nil, frame)
+        slot:SetSize(40, 40)
+        slot:SetPoint("LEFT", frame, "LEFT", (i - 1) * 44, 0)
+        local bg = slot:CreateTexture(nil, "BACKGROUND")
+        bg:SetAllPoints()
+        bg:SetColorTexture(0.3, 0.3, 0.3, 0.5)
+
+        local ok, anchorID = pcall(C_UnitAuras.AddPrivateAuraAnchor, {
+            unitToken = "player",
+            auraIndex = i,
+            parent = slot,
+            showCooldownFrame = true,
+            showCountdownNumbers = true,
+            iconInfo = {
+                iconAnchor = { point = "CENTER", relativeTo = slot, relativePoint = "CENTER", offsetX = 0, offsetY = 0 },
+                iconWidth = 40,
+                iconHeight = 40
+            }
+        })
+        print(Filger.title, "exp6: slot", i, "aurasSecret", C_Secrets and C_Secrets.ShouldAurasBeSecret(),
+            ok and "anchorID" or "error", tostring(anchorID))
+    end
+end
+
+Filger:AddCommand("exp6", exp6, "experiment 6: private aura anchors on the player")

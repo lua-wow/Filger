@@ -8,7 +8,6 @@ local blacklist = ns.Filger.blacklist or {}
 
 -- Blizzard
 local UnitIsUnit = _G.UnitIsUnit
-local UnitIsOwnerOrControllerOfUnit = _G.UnitIsOwnerOrControllerOfUnit
 local C_Secrets = _G.C_Secrets
 
 --------------------------------------------------
@@ -186,12 +185,9 @@ do
     function aura_proto:ProcessData(unit, data)
         if not data then return end
 
-        if self.restricted then
-            -- unit comparisons may be secret while restricted
-            data.isPlayerAura = data.isFromPlayerOrPlayerPet
-        else
-            data.isPlayerAura = data.sourceUnit and (UnitIsUnit("player", data.sourceUnit) or UnitIsOwnerOrControllerOfUnit("player", data.sourceUnit))
-        end
+        -- UnitIsUnit/UnitIsOwnerOrControllerOfUnit on sourceUnit can be secret even out of combat
+        -- (NPC sources, restricted maps), so rely on the aura's own flag
+        data.isPlayerAura = data.isFromPlayerOrPlayerPet
 
         data.dispelName = LibDispel:GetDispelType(data.spellId, data.dispelName)
         data.isDispelable = LibDispel:IsDispelable(unit, data.spellId, data.dispelName, data.isHarmful)
