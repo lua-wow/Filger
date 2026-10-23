@@ -516,7 +516,6 @@ Mixin(Filger.config.frames, {
         ["PLAYER_DEBUFFS"] = {
             enabled = true,
             unit = "player",
-            filter = "HARMFUL",
             anchor = { "RIGHT", UIParent, "CENTER", -xOffset, yOffset },
             limit = 8,
             size = size,
@@ -524,10 +523,15 @@ Mixin(Filger.config.frames, {
             initialAnchor = "BOTTOMRIGHT",
             ["growth-x"] = "LEFT",
             ["growth-y"] = "DOWN",
-            spells = {
-                [124275] = { enabled = true, priority = 3 },    -- Light Stagger
-                [124274] = { enabled = true, priority = 3 },    -- Moderate Stagger
-                [124273] = { enabled = true, priority = 3 }     -- Heavy Stagger
+            -- debuffs on the player can't be filtered by spell ID (Stagger is contextually secret);
+            -- only the important ones, one group each
+            groups = {
+                { filter = "HARMFUL|RAID_PLAYER_DISPELLABLE" },
+                { filter = "HARMFUL|CROWD_CONTROL" },
+                {
+                    filter = "HARMFUL",
+                    candidateFilters = { isBossAura = true }
+                }
             }
         },
         ["PLAYER_AURAS"] = {

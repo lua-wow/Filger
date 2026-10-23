@@ -83,7 +83,8 @@ Details in [Migration](#migration-each-phase-ships-on-its-own) and [Experiments]
         `HELPFUL|IMPORTANT` + `HELPFUL|DISPELLABLE` (hostile); FOCUS_DEBUFFS `HARMFUL` + `isBossAura`
   - [x] BOSS_DEBUFFS: enabled on Mainline. `HARMFUL` + `isBossAura` (limit 1), plus 2 private-aura
         anchors (`privateAuras`) after the container slot
-  - [ ] PLAYER_DEBUFFS: dispellable, crowd control, boss groups (Stagger dropped, Experiment 3)
+  - [x] PLAYER_DEBUFFS: `HARMFUL|RAID_PLAYER_DISPELLABLE`, `HARMFUL|CROWD_CONTROL`, `HARMFUL` +
+        `isBossAura` groups (Stagger dropped, Experiment 3)
   - [ ] Delete the copied event path from `core/Mainline/`
 - [ ] **Other experiments**
   - [ ] Experiment 7: cooldown edges (items, slots, secret cast `spellID`)
