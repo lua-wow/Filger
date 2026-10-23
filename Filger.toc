@@ -22,11 +22,11 @@ data\[Game]\cooldowns.lua
 data\[Game]\spells.lua
 data\shared\blacklist.lua
 data\shared\cooldowns.lua
-# Filger frame, client flags, utils, api, commands
+# Filger frame, client flags, utils, api, button, commands
 core\init.xml
 # validates data (Finalize), builds Filger.config (needs core + data)
 config.lua
 # aura prototype; adds its frames to Filger.config.frames
 core\[Family]\auras.lua
-# button and cooldown element, spawns frames at PLAYER_LOGIN
+# cooldown element, spawns frames at PLAYER_LOGIN
 Filger.lua

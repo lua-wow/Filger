@@ -233,7 +233,7 @@ Progress:
 - [x] 0. Drop `LibClassicDurations`
 - [x] 1. Skin integration
 - [x] 2. Document load order
-- [ ] 3. Extract `core/button.lua`
+- [x] 3. Extract `core/button.lua`
 - [ ] 4. Extract `core/element.lua`
 - [ ] 5. Extract `elements/cooldowns.lua`
 - [ ] 6. Move the family auras
@@ -250,7 +250,7 @@ Progress:
    `api.lua` early return; `StyleButton` maps `button.backdrop` to `button.Backdrop`; Classic dispel
    borders go through `Filger:SetBorderColor` (Tukui `SetBorderColor`, else `SetBackdropBorderColor`).
 2. **Document load order** with `#` comments in `Filger.toc`.
-3. **Extract `core/button.lua`**: `button_proto`, formatter/curve, `timeTextOptions`, `StyleButton`,
+3. **Done: extracted `core/button.lua`**: `button_proto`, formatter/curve, `timeTextOptions`, `StyleButton`,
    `CreateButton`, unchanged. Add to `core/init.xml` after `api.lua`.
 4. **Extract `core/element.lua`**: `element_proto:SetPosition` and `Filger:Spawn`, unchanged.
 5. **Extract `elements/cooldowns.lua`**: `cooldown_proto`, exposed as `ns.cooldown_proto` like the aura
