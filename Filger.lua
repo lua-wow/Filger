@@ -8,6 +8,7 @@ local GetInventoryItemLink = _G.GetInventoryItemLink
 local GetItemInfo = C_Item.GetItemInfo
 local GetItemCooldown = C_Container.GetItemCooldown
 local GetInventoryItemCooldown = _G.GetInventoryItemCooldown
+local GetOverrideSpell = C_Spell and C_Spell.GetOverrideSpell
 local C_Secrets = _G.C_Secrets
 local issecretvalue = _G.issecretvalue
 local C_StringUtil = _G.C_StringUtil
@@ -358,6 +359,8 @@ do
             index = index,
             name = name,
             spellId = data.spellId,
+            -- a talent can replace one tracked spell with another (e.g. Sentinel overrides Avenging Wrath)
+            activeSpellId = data.spellId and GetOverrideSpell and GetOverrideSpell(data.spellId) or data.spellId,
             slotId = data.slotId,
             itemId = data.itemId,
             icon = icon,
@@ -400,9 +403,14 @@ do
             -- instead of removing auras one by one, just wipe the tables entirely
             -- and repopulate them, multiple table.remove calls are insanely slow
             self.sorted = table.wipe(self.sorted or {})
+            self.shownSpells = table.wipe(self.shownSpells or {})
 
             for _, data in next, self.active do
-                table.insert(self.sorted, data)
+                local id = data.activeSpellId
+                if not id or not self.shownSpells[id] then
+                    if id then self.shownSpells[id] = true end
+                    table.insert(self.sorted, data)
+                end
             end
 
             table.sort(self.sorted, self.SortCooldowns)
