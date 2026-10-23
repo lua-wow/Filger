@@ -419,22 +419,52 @@ do
         }
 
         for i, group in ipairs(data.groups) do
-            container:AddAuraGroup(self:GetName() .. "Group" .. i, group.filter, {
+            local key = self:GetName() .. "Group" .. i
+            container:AddAuraGroup(key, group.filter, {
                 maxFrameCount = self.limit,
                 candidateFilters = group.candidateFilters,
                 sortMethod = AuraContainerSortMethod.ExpirationOnly,
                 layout = layout,
                 initializeFrame = initializeFrame
             })
+
+            -- groups with `hostile` are only enabled while the unit's reaction matches
+            if group.hostile ~= nil then
+                self.reactionGroups = self.reactionGroups or {}
+                self.reactionGroups[key] = group.hostile
+            end
         end
 
         self.container = container
+
+        -- the container doesn't follow unit token changes by itself
+        if (self.unit == "target") then
+            self:RegisterEvent("PLAYER_TARGET_CHANGED")
+        elseif (self.unit == "focus") then
+            self:RegisterEvent("PLAYER_FOCUS_CHANGED")
+        end
     end
 
     function container_proto:ForceUpdate()
-        if self.container then
-            self.container:UpdateAllAuras()
+        local container = self.container
+        if not container then return end
+
+        if self.reactionGroups then
+            local hostile = UnitCanAttack(self.unit, "player")
+            for key, groupHostile in next, self.reactionGroups do
+                container:SetAuraGroupEnabled(key, groupHostile == hostile)
+            end
         end
+
+        container:UpdateAllAuras()
+    end
+
+    function container_proto:PLAYER_TARGET_CHANGED()
+        self:ForceUpdate()
+    end
+
+    function container_proto:PLAYER_FOCUS_CHANGED()
+        self:ForceUpdate()
     end
 end
 
@@ -445,7 +475,6 @@ ns.container_proto = container_proto
 --------------------------------------------------
 local class = Filger.class
 local spells = Filger.spells or {}
-local all = Filger.all or {}
 
 local layout = Filger.config.layout
 local size, spacing = layout.size, layout.spacing
@@ -522,7 +551,6 @@ Mixin(Filger.config.frames, {
         ["TARGET_DEBUFFS"] = {
             enabled = true,
             unit = "target",
-            filter = "HARMFUL",
             anchor = { "LEFT", UIParent, "CENTER", xOffset, yOffset },
             limit = 8,
             size = size,
@@ -530,33 +558,14 @@ Mixin(Filger.config.frames, {
             initialAnchor = "BOTTOMLEFT",
             ["growth-x"] = "RIGHT",
             ["growth-y"] = "DOWN",
-            spells = all,
-            FilterAura = function(element, unit, data)
-                if UnitCanAttack(unit, "player") then
-                    return data.enabled and data.isPlayerAura
-                end
-                return data.enabled and not data.isPlayerAura
-            end,
-            SortAuras = function(a, b)
-                if (a.priority ~= b.priority) then
-                    return a.priority < b.priority
-                end
-
-                if (a.expirationTime ~= b.expirationTime) then
-                    return a.expirationTime < b.expirationTime
-                end
-        
-                if (a.isPlayerAura ~= b.isPlayerAura) then
-                    return a.isPlayerAura
-                end
-            
-                return a.auraInstanceID < b.auraInstanceID
-            end
+            groups = {
+                { filter = "HARMFUL|PLAYER", hostile = true },
+                { filter = "HARMFUL|!PLAYER", hostile = false }
+            }
         },
         ["TARGET_AURAS"] = {
             enabled = true,
             unit = "target",
-            filter = "HELPFUL",
             anchor = { "LEFT", UIParent, "CENTER", xOffset, 0 },
             limit = 8,
             size = size,
@@ -564,12 +573,24 @@ Mixin(Filger.config.frames, {
             initialAnchor = "BOTTOMLEFT",
             ["growth-x"] = "RIGHT",
             ["growth-y"] = "DOWN",
-            spells = all
+            groups = {
+                {
+                    filter = "HELPFUL",
+                    hostile = false,
+                    candidateFilters = {
+                        excludeSpellIDs = ToSpellIDs(blacklist)
+                    }
+                },
+                -- buffs on hostile units can't be filtered by spell ID; keep the groups to show
+                { filter = "HELPFUL|IMPORTANT", hostile = true },
+                { filter = "HELPFUL|DISPELLABLE", hostile = true },
+                -- { filter = "HELPFUL", hostile = true, candidateFilters = { isStealable = true } },
+                -- { filter = "HELPFUL", hostile = true },
+            }
         },
         ["FOCUS_DEBUFFS"] = {
             enabled = true,
             unit = "focus",
-            filter = "HARMFUL",
             anchor = { "LEFT", UIParent, "CENTER", xOffset, -yOffset },
             limit = 8,
             size = size,
@@ -577,11 +598,13 @@ Mixin(Filger.config.frames, {
             initialAnchor = "BOTTOMLEFT",
             ["growth-x"] = "RIGHT",
             ["growth-y"] = "DOWN",
-            desaturated = false,
-            FilterAura = function(element, unit, data)
-                return data.enabled and data.isBossAura or (data.sourceUnit == nil) or not data.isFromPlayerOrPlayerPet
-            end
-        }, 
+            groups = {
+                {
+                    filter = "HARMFUL",
+                    candidateFilters = { isBossAura = true }
+                }
+            }
+        },
         ["BOSS_DEBUFFS"] = {
             enabled = false,
             unit = "player",

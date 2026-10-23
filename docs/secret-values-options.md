@@ -77,7 +77,10 @@ Details in [Migration](#migration-each-phase-ships-on-its-own) and [Experiments]
 - [ ] **Phase 3: remaining Mainline frames**
   - [x] Experiment 6: private aura anchors: **pass**, addon code can add them in combat while auras
         are secret
-  - [ ] TARGET_DEBUFFS, TARGET_AURAS, FOCUS_DEBUFFS
+  - [x] TARGET_DEBUFFS, TARGET_AURAS, FOCUS_DEBUFFS: groups with `hostile` are enabled by
+        `UnitCanAttack` on target/focus change. TARGET_DEBUFFS `HARMFUL|PLAYER` (hostile) /
+        `HARMFUL|!PLAYER` (friendly); TARGET_AURAS `HELPFUL` + blacklist (friendly) /
+        `HELPFUL|IMPORTANT` + `HELPFUL|DISPELLABLE` (hostile); FOCUS_DEBUFFS `HARMFUL` + `isBossAura`
   - [ ] BOSS_DEBUFFS (`isBossAura` plus private-aura anchors, Experiment 6)
   - [ ] PLAYER_DEBUFFS: dispellable, crowd control, boss groups (Stagger dropped, Experiment 3)
   - [ ] Delete the copied event path from `core/Mainline/`
