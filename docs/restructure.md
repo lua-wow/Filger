@@ -236,7 +236,7 @@ Progress:
 - [x] 3. Extract `core/button.lua`
 - [x] 4. Extract `core/element.lua`
 - [x] 5. Extract `elements/cooldowns.lua`
-- [ ] 6. Move the family auras
+- [x] 6. Move the family auras
 - [ ] 7. Per-instance state
 - [ ] 8. Explicit element type
 - [ ] 9. Share the render path
@@ -256,7 +256,7 @@ Progress:
    `Filger.lua` exposes `cooldown_proto` as `ns.cooldown_proto` like the aura protos, so `Spawn` can reach it.
 5. **Done: extracted `elements/cooldowns.lua`**: moved `cooldown_proto` and its `ns.cooldown_proto` export.
    `Filger.lua` is now bootstrap only.
-6. **Move the family auras** to `elements/[Family]/auras.lua` and update the TOC line.
+6. **Done: moved the family auras** to `elements/[Family]/auras.lua` and updated the TOC line.
 7. **Per-instance state**: create `casted`/`spells`/`active` per element instead of on the proto.
 8. **Explicit element type**: frame defs get `type = "cooldowns" | "container" | "auras"`; `Spawn`
    dispatches on it.
