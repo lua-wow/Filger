@@ -42,34 +42,6 @@ local Scale = function(size)
     return mult * math.floor(size / mult + 0.5)
 end
 
-API.SetOutside = function(self, anchor, xOffset, yOffset)
-	xOffset = xOffset and Scale(xOffset) or Scale(1)
-	yOffset = yOffset and Scale(yOffset) or Scale(1)
-
-	anchor = anchor or self:GetParent()
-
-	if self:GetPoint() then
-		self:ClearAllPoints()
-	end
-
-	self:SetPoint("TOPLEFT", anchor, "TOPLEFT", -xOffset, yOffset)
-	self:SetPoint("BOTTOMRIGHT", anchor, "BOTTOMRIGHT", xOffset, -yOffset)
-end
-
-API.SetInside = function(self, anchor, xOffset, yOffset)
-	xOffset = xOffset and Scale(xOffset) or Scale(1)
-	yOffset = yOffset and Scale(yOffset) or Scale(1)
-
-	anchor = anchor or self:GetParent()
-
-	if self:GetPoint() then
-		self:ClearAllPoints()
-	end
-
-	self:SetPoint("TOPLEFT", anchor, "TOPLEFT", xOffset, -yOffset)
-	self:SetPoint("BOTTOMRIGHT", anchor, "BOTTOMRIGHT", -xOffset, yOffset)
-end
-
 API.CreateBackdrop = function(self, template)
 	if not self.Backdrop then
 		local backdropTexture = textures.blank

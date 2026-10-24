@@ -80,7 +80,6 @@ do
         -- configuration
         element.unit = data.unit or "player"
         element.filter = data.filter or "HELPFUL"
-        element.caster = data.caster or nil
 
         element.limit = data.limit or 32
         element.size = data.size or 32
@@ -92,15 +91,6 @@ do
         element:SetPoint(unpack(data.anchor))
         element:SetWidth((element.limit * element.size) + (element.limit - 1) * element.spacing)
         element:SetHeight(element.size)
-        -- element:CreateBackdrop()
-    
-        -- local text = element:CreateFontString(nil, "OVERLAY")
-        -- text:SetPoint("CENTER", element, "CENTER", 0, 1)
-        -- text:SetFont(Font, FontSize, FontStyle)
-        -- text:SetText(element:GetName())
-        -- text:SetJustifyH("CENTER")
-        -- text:Hide()
-        -- element.text = text
     
         if (data.type == "cooldowns") then
             element = Mixin(element, ns.cooldown_proto)

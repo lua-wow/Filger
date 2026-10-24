@@ -17,7 +17,7 @@ Load order (`Filger.toc`):
 | | `colors.lua` | `Filger:CreateColor`, `Filger.colors` (dispel colors, Classic only) |
 | | `medias.lua` | Font/texture paths |
 | | `utils.lua` | print/warn/error, `FormatTime`, `GetSpellInfo`/`GetSpellCooldown` shims |
-| | `api.lua` | Tukui-style `MergeAPI` (patches widget metatables with `SetOutside/SetInside/CreateBackdrop`); skipped if Tukui/Tainted is loaded |
+| | `api.lua` | Tukui-style `MergeAPI` (patches widget metatables with `CreateBackdrop`); skipped if Tukui/Tainted is loaded |
 | | `commands.lua` | `/filger` dispatcher, `auras` command |
 | | `development.lua` | `exp4..exp10` experiments (ships to users; not in `exclude.lst`) |
 | 5 | `config.lua` | Calls `ns.data.Finalize()`, then builds `Filger.config` = `general` + `layout` + the `PLAYER_COOLDOWNS` frame |
@@ -241,7 +241,7 @@ Progress:
 - [x] 8. Explicit element type
 - [x] 9. Share the render path
 - [x] 10. Layout once
-- [ ] 11. Remove unused code
+- [x] 11. Remove unused code
 
 0. **Done: removed `LibClassicDurations` and `CallbackHandler-1.0`.** The library was added because Era
    reported `duration = 0` for auras from other casters. Era now reports real durations (another
@@ -266,7 +266,7 @@ Progress:
 10. **Done: layout once**: `config.lua` defines all 8 frames' anchor/limit/size/spacing/growth with small
     `left`/`right` default tables; family files add `type`, `groups` or `filter/spells/FilterAura/SortAuras`,
     and per-family overrides (`BOSS_DEBUFFS.enabled = false` on Classic, `desaturated`).
-11. **Remove unused code**: `SetOutside`/`SetInside`, `caster`, `hidePlayer`, `well_fed`, the stale field
+11. **Done: removed unused code**: `SetOutside`/`SetInside`, `caster`, `hidePlayer`, `well_fed`, the stale field
     doc in `config.lua`, commented blocks in `Spawn`.
 
 Later, optional:

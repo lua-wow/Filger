@@ -334,8 +334,6 @@ for key, data in next, {
     ["PLAYER_BUFFS"] = {
         type = "auras",
         filter = "HELPFUL",
-        caster = "all",
-        hidePlayer = true,
         FilterAura = function(element, unit, data)
             return data.enabled and not data.isPlayerAura
         end
