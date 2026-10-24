@@ -7,9 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+-   Split `Filger.lua` into `core/button.lua`, `core/element.lua` and `elements/cooldowns.lua`; family auras moved to `elements/[Family]/auras.lua`
+-   Auras and cooldowns share button acquisition and render path; spawn dispatches on explicit element type
+-   Cooldown casted/active state is created per element instead of on the prototype
+-   Aura frame layout defined once in `config.lua`
+-   Button backdrop deferred to ElvUI; Classic dispel borders colored under Tukui/ElvUI
+-   Line endings normalized to LF
+
 ### Removed
 
 -   Unused libraries LibClassicDurations and CallbackHandler-1.0
+-   Unused API, config fields and commented code
+
+### Fixed
+
+-   Load-time `print` in data files tainting chat history (#6)
 
 ## [5.3.0] - 2026-10-19
 
