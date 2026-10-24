@@ -359,6 +359,7 @@ Mixin(Filger.config.frames, {
         -- LEFT
         ["PLAYER_DEBUFFS"] = {
             enabled = true,
+            type = "auras",
             unit = "player",
             filter = "HARMFUL",
             anchor = { "RIGHT", UIParent, "CENTER", -xOffset, yOffset },
@@ -376,6 +377,7 @@ Mixin(Filger.config.frames, {
         },
         ["PLAYER_AURAS"] = {
             enabled = true,
+            type = "auras",
             unit = "player",
             filter = "PLAYER|HELPFUL",
             anchor = { "RIGHT", UIParent, "CENTER", -xOffset, 0 },
@@ -389,6 +391,7 @@ Mixin(Filger.config.frames, {
         },
         ["PLAYER_BUFFS"] = {
             enabled = true,
+            type = "auras",
             unit = "player",
             filter = "HELPFUL",
             caster = "all",
@@ -406,6 +409,7 @@ Mixin(Filger.config.frames, {
         },
         ["TARGET_DEBUFFS"] = {
             enabled = true,
+            type = "auras",
             unit = "target",
             filter = "HARMFUL",
             anchor = { "LEFT", UIParent, "CENTER", xOffset, yOffset },
@@ -440,6 +444,7 @@ Mixin(Filger.config.frames, {
         },
         ["TARGET_AURAS"] = {
             enabled = true,
+            type = "auras",
             unit = "target",
             filter = "HELPFUL",
             anchor = { "LEFT", UIParent, "CENTER", xOffset, 0 },
@@ -453,6 +458,7 @@ Mixin(Filger.config.frames, {
         },
         ["FOCUS_DEBUFFS"] = {
             enabled = true,
+            type = "auras",
             unit = "focus",
             filter = "HARMFUL",
             anchor = { "LEFT", UIParent, "CENTER", xOffset, -yOffset },
@@ -469,6 +475,7 @@ Mixin(Filger.config.frames, {
         }, 
         ["BOSS_DEBUFFS"] = {
             enabled = false,
+            type = "auras",
             unit = "player",
             filter = "HARMFUL",
             anchor = { "CENTER", UIParent, "CENTER", 0, 160 },

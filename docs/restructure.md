@@ -238,7 +238,7 @@ Progress:
 - [x] 5. Extract `elements/cooldowns.lua`
 - [x] 6. Move the family auras
 - [x] 7. Per-instance state
-- [ ] 8. Explicit element type
+- [x] 8. Explicit element type
 - [ ] 9. Share the render path
 - [ ] 10. Layout once
 - [ ] 11. Remove unused code
@@ -258,7 +258,7 @@ Progress:
    `Filger.lua` is now bootstrap only.
 6. **Done: moved the family auras** to `elements/[Family]/auras.lua` and updated the TOC line.
 7. **Done: per-instance state**: Spawn creates `casted`/`spells`/`active` per element instead of on the proto.
-8. **Explicit element type**: frame defs get `type = "cooldowns" | "container" | "auras"`; `Spawn`
+8. **Done: explicit element type**: frame defs get `type = "cooldowns" | "container" | "auras"`; `Spawn`
    dispatches on it.
 9. **Share the render path**: `element_proto:AcquireButton(index)` and `element_proto:Render(unit, sorted)`
    (sort, update 1..n, hide the rest, `SetPosition(1, n)`), used by `aura_proto` and `cooldown_proto`.

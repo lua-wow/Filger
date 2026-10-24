@@ -157,6 +157,7 @@ Mixin(Filger.config.frames, {
         -- LEFT
         ["PLAYER_DEBUFFS"] = {
             enabled = true,
+            type = "container",
             unit = "player",
             anchor = { "RIGHT", UIParent, "CENTER", -xOffset, yOffset },
             limit = 8,
@@ -178,6 +179,7 @@ Mixin(Filger.config.frames, {
         },
         ["PLAYER_AURAS"] = {
             enabled = true,
+            type = "container",
             unit = "player",
             anchor = { "RIGHT", UIParent, "CENTER", -xOffset, 0 },
             limit = 8,
@@ -197,6 +199,7 @@ Mixin(Filger.config.frames, {
         },
         ["PLAYER_BUFFS"] = {
             enabled = true,
+            type = "container",
             unit = "player",
             anchor = { "RIGHT", UIParent, "CENTER", -xOffset, -yOffset },
             limit = 8,
@@ -216,6 +219,7 @@ Mixin(Filger.config.frames, {
         },
         ["TARGET_DEBUFFS"] = {
             enabled = true,
+            type = "container",
             unit = "target",
             anchor = { "LEFT", UIParent, "CENTER", xOffset, yOffset },
             limit = 8,
@@ -231,6 +235,7 @@ Mixin(Filger.config.frames, {
         },
         ["TARGET_AURAS"] = {
             enabled = true,
+            type = "container",
             unit = "target",
             anchor = { "LEFT", UIParent, "CENTER", xOffset, 0 },
             limit = 8,
@@ -256,6 +261,7 @@ Mixin(Filger.config.frames, {
         },
         ["FOCUS_DEBUFFS"] = {
             enabled = true,
+            type = "container",
             unit = "focus",
             anchor = { "LEFT", UIParent, "CENTER", xOffset, -yOffset },
             limit = 8,
@@ -273,6 +279,7 @@ Mixin(Filger.config.frames, {
         },
         ["BOSS_DEBUFFS"] = {
             enabled = true,
+            type = "container",
             unit = "player",
             anchor = { "CENTER", UIParent, "CENTER", 0, 160 },
             limit = 1,

@@ -77,7 +77,7 @@ do
         -- text:Hide()
         -- element.text = text
     
-        if (element.filter == "COOLDOWN") then
+        if (data.type == "cooldowns") then
             element = Mixin(element, ns.cooldown_proto)
             
             -- overrider element functions with configurations
@@ -89,11 +89,11 @@ do
 
             element:RegisterEvent("SPELL_UPDATE_COOLDOWN")
             element:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", self.unit)
-        elseif data.groups then
+        elseif (data.type == "container") then
             -- Mainline only: Blizzard's secure aura container filters and displays the auras
             element = Mixin(element, ns.container_proto)
             element:CreateContainer(data)
-        else
+        elseif (data.type == "auras") then
             element = Mixin(element, ns.aura_proto)
 
             -- overrider element functions with configurations
