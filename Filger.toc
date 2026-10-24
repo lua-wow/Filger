@@ -28,7 +28,7 @@ core\init.xml
 config.lua
 # cooldown element
 elements\cooldowns.lua
-# aura prototype; adds its frames to Filger.config.frames
+# aura prototype; adds what each aura frame shows to Filger.config.frames
 elements\[Family]\auras.lua
 # spawns frames at PLAYER_LOGIN
 Filger.lua

@@ -240,7 +240,7 @@ Progress:
 - [x] 7. Per-instance state
 - [x] 8. Explicit element type
 - [x] 9. Share the render path
-- [ ] 10. Layout once
+- [x] 10. Layout once
 - [ ] 11. Remove unused code
 
 0. **Done: removed `LibClassicDurations` and `CallbackHandler-1.0`.** The library was added because Era
@@ -263,7 +263,7 @@ Progress:
 9. **Done: shared the render path**: `element_proto:AcquireButton(index)` and `element_proto:Render(unit, sorted, compare)`
    (sort, update 1..n, hide the rest, `SetPosition(1, n)`), used by `aura_proto` and `cooldown_proto`.
    Dropped the dead bookkeeping. Same behavior: `SetPosition(1, n)` already ran on every update.
-10. **Layout once**: `config.lua` defines all 8 frames' anchor/limit/size/spacing/growth with small
+10. **Done: layout once**: `config.lua` defines all 8 frames' anchor/limit/size/spacing/growth with small
     `left`/`right` default tables; family files add `type`, `groups` or `filter/spells/FilterAura/SortAuras`,
     and per-family overrides (`BOSS_DEBUFFS.enabled = false` on Classic, `desaturated`).
 11. **Remove unused code**: `SetOutside`/`SetInside`, `caster`, `hidePlayer`, `well_fed`, the stale field
