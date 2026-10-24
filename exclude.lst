@@ -1,22 +1,23 @@
-.git*
-.github*
+# git
+*.git
+*.git/*
+*.github/*
 *.gitignore
 *.gitattributes
 *.gitmodules
-docs/*
-Makefile
-exclude.lst
-.luacheckrc
-mise.toml
-CLAUDE.md
-.claude/*
 
-**/.git
-**/.gitignore
-**/.gitattributes
-**/.gitmodules
-**/.github/*
-**/.pkgmeta
-**/.luacheckrc
-**/UPSTREAM_REVISION
+# development files
+.claude/*
+CLAUDE.md
+mise.toml
+*Makefile
+*exclude.lst
+*.luacheckrc
+
+# extra files
+docs/*
+
+# submodule leftovers
+*.pkgmeta
+*UPSTREAM_REVISION
 libs/LibStub/tests/*
