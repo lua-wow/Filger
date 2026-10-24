@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.4.0] - 2026-10-25
+
 ### Changed
 
 -   Split `Filger.lua` into `core/button.lua`, `core/element.lua` and `elements/cooldowns.lua`; family auras moved to `elements/[Family]/auras.lua`
