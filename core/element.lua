@@ -84,6 +84,9 @@ do
             element.SortCooldowns = data.SortCooldowns or element.SortCooldowns
             element.FilterCooldown = data.FilterCooldown or element.FilterCooldown
 
+            element.casted = {}
+            element.active = {}
+
             element:RegisterEvent("SPELL_UPDATE_COOLDOWN")
             element:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", self.unit)
         elseif data.groups then
@@ -108,7 +111,7 @@ do
             end
         end
 
-        element.spells = data.spells or element.spells or {}
+        element.spells = data.spells or {}
     
         element:SetScript("OnEvent", function(self, event, ...)
             -- call event handler

@@ -15,8 +15,6 @@ local issecretvalue = _G.issecretvalue
 -- COOLDOWNS
 --------------------------------------------------
 local cooldown_proto = {
-    casted = {},
-    spells = {},
     createdButtons = 0,
     anchoredButtons = 0,
     visibleButtons = 0
@@ -184,7 +182,6 @@ do
 
     function cooldown_proto:UpdateCooldowns(event, unit, spellID, baseSpellID)
         local changed = true
-        self.active = self.active or {}
         if not spellID then
             table.wipe(self.active)
         end
