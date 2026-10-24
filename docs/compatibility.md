@@ -37,7 +37,6 @@ One `Filger.toc` serves every client (`## Interface: 11509, 20506, 38002, 50504,
 ## Libraries
 
 Git submodules in `libs/`, loaded by `libs/init.xml`: `LibStub`, `LibDispel`.
-`CallbackHandler-1.0` and `LibClassicDurations` are present but commented out.
 
 ## Runtime client checks
 

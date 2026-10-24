@@ -3,7 +3,7 @@
 ## Author: Luaerror
 ## Credits: Nils Ruesch, Shestak, Affli, Garagar, hidekki, FourOne, Tukz
 
-## OptionalDeps: Tainted, Tukui
+## OptionalDeps: Tainted, Tukui, ElvUI
 ## SavedVariables: FilgerData
 
 ## Notes: Minimal buff/debuff tracker
@@ -15,13 +15,20 @@
 ## X-Maintainer: pedrozc90
 
 libs\init.xml
+# data plumbing, then data files push rows into ns.data
 core\data.lua
 data\[Game]\blacklist.lua
 data\[Game]\cooldowns.lua
 data\[Game]\spells.lua
 data\shared\blacklist.lua
 data\shared\cooldowns.lua
+# Filger frame, client flags, utils, api, button, element, commands
 core\init.xml
+# validates data (Finalize), builds Filger.config (needs core + data)
 config.lua
-core\[Family]\auras.lua
+# cooldown element
+elements\cooldowns.lua
+# aura prototype; adds what each aura frame shows to Filger.config.frames
+elements\[Family]\auras.lua
+# spawns frames at PLAYER_LOGIN
 Filger.lua

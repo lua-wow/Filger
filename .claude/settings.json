@@ -1,11 +1,30 @@
 {
     "permissions": {
+        "allow": [
+            "Bash(gh issue list:*)",
+            "Bash(gh issue view:*)",
+            "Bash(gh pr list:*)",
+            "Bash(gh pr view:*)",
+            "Bash(gh pr diff:*)",
+            "Bash(gh repo view:*)"
+        ],
         "deny": [
-            "Bash(git push:*)",
-            "Bash(git commit:*)",
+            "Bash(gh issue close:*)",
+            "Bash(gh issue comment:*)",
+            "Bash(gh issue edit:*)",
+            "Bash(gh issue create:*)",
+            "Bash(gh issue delete:*)",
+            "Bash(gh issue reopen:*)",
+            "Bash(gh pr merge:*)",
+            "Bash(gh pr comment:*)",
+            "Bash(gh pr create:*)",
+            "Bash(gh pr edit:*)",
+            "Bash(gh pr close:*)",
+            "Bash(gh api:*)",
             "Bash(git add:*)",
+            "Bash(git commit:*)",
+            "Bash(git push:*)",
             "Bash(git submodule update:*)",
-            "Bash(gh:*)",
             "Edit(~/.github/addons/refs/**)"
         ],
         "additionalDirectories": [

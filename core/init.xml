@@ -4,6 +4,8 @@
     <Script file="medias.lua"/>
     <Script file="utils.lua"/>
     <Script file="api.lua"/>
+    <Script file="button.lua"/>
+    <Script file="element.lua"/>
     <Script file="commands.lua"/>
     <Script file="development.lua"/>
 </Ui>

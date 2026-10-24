@@ -65,6 +65,7 @@ I review and test changes in-game, then group them into commits myself.
 - Don't create, edit or comment on GitHub issues/PRs unless I explicitly ask.
 - Issue workflow: read the issue → inspect code → propose a plan → implement → leave uncommitted.
 - Never add `Co-authored by Claude Code` on commits, PRs or issues.
+- Do not mention documentations, plans, any claude code md file in commits or PR.
 
 ## Verifying
 

@@ -14,11 +14,7 @@ local C_Secrets = _G.C_Secrets
 --------------------------------------------------
 -- AURAS
 --------------------------------------------------
-local aura_proto = {
-    createdButtons = 0,
-    anchoredButtons = 0,
-    visibleButtons = 0
-}
+local aura_proto = {}
 
 do
     --[[ Callback: button:UpdateColor(button, unit, data)
@@ -33,11 +29,9 @@ do
     function aura_proto:UpdateColor(button, unit, data)
         if button.Backdrop then
             if (data.isHarmful and UnitCanAssist("player", unit)) or (data.isHelpful and UnitCanAttack(unit, "player") and UnitCanAttack("player", unit)) then
-                local color = Filger.colors[data.dispelName]
-                button.Backdrop:SetBackdropBorderColor(color.r, color.g, color.b, color.a or 1)
+                Filger:SetBorderColor(button.Backdrop, Filger.colors[data.dispelName])
             else
-                local color = Filger.config.general.backdrop.color
-                button.Backdrop:SetBackdropBorderColor(color.r, color.g, color.b, color.a or 1)
+                Filger:SetBorderColor(button.Backdrop, Filger.config.general.backdrop.color)
             end
         end
 
@@ -67,14 +61,7 @@ do
     function aura_proto:Update(unit, data, index)
         if not data.name then return end
 
-        local button = self[index]
-        if not button then
-            button = Filger:CreateButton(self, index)
-
-            table.insert(self, button)
-
-            self.createdButtons = self.createdButtons + 1
-        end
+        local button = self:AcquireButton(index)
 
         -- tooltips
         button.unit = unit
@@ -297,33 +284,7 @@ do
                 table.insert(self.sorted, self.all[auraInstanceID])
             end
 
-            table.sort(self.sorted, self.SortAuras)
-
-            local numVisible = math.min(self.limit, #self.sorted)
-
-            for i = 1, numVisible do
-                self:Update(unit, self.sorted[i], i)
-            end
-
-            local visibleChanged = true
-
-            if (numVisible ~= self.visibleButtons) then
-                self.visibleButtons = numVisible
-                visibleChanged = true
-            end
-
-            for i = numVisible + 1, #self do
-                self[i]:Hide()
-            end
-
-            if (visibleChanged or self.createdButtons > self.anchoredButtons) then
-                if visibleChanged then
-                    self:SetPosition(1, numVisible)
-                else
-                    self:SetPosition(self.anchoredButtons + 1, self.createdButtons)
-                    self.anchoredButtons = self.createdButtons
-                end
-            end
+            self:Render(unit, self.sorted, self.SortAuras)
         end
     end
 
@@ -353,135 +314,79 @@ local class = Filger.class
 local spells = Filger.spells or {}
 local all = Filger.all or {}
 
-local layout = Filger.config.layout
-local size, spacing = layout.size, layout.spacing
-local xOffset, yOffset = layout.xOffset, layout.yOffset
+-- adds what each frame shows to its layout in config.lua
+for key, data in next, {
+    -- LEFT
+    ["PLAYER_DEBUFFS"] = {
+        type = "auras",
+        filter = "HARMFUL",
+        spells = {
+            [124275] = { enabled = true, priority = 3 },    -- Light Stagger
+            [124274] = { enabled = true, priority = 3 },    -- Moderate Stagger
+            [124273] = { enabled = true, priority = 3 }     -- Heavy Stagger
+        }
+    },
+    ["PLAYER_AURAS"] = {
+        type = "auras",
+        filter = "PLAYER|HELPFUL",
+        spells = Mixin(spells[class] or {}, spells["ALL"] or {})
+    },
+    ["PLAYER_BUFFS"] = {
+        type = "auras",
+        filter = "HELPFUL",
+        FilterAura = function(element, unit, data)
+            return data.enabled and not data.isPlayerAura
+        end
+    },
+    -- RIGHT
+    ["TARGET_DEBUFFS"] = {
+        type = "auras",
+        filter = "HARMFUL",
+        spells = all,
+        FilterAura = function(element, unit, data)
+            if UnitCanAttack(unit, "player") then
+                return data.enabled and data.isPlayerAura
+            end
+            return data.enabled and not data.isPlayerAura
+        end,
+        SortAuras = function(a, b)
+            if (a.priority ~= b.priority) then
+                return a.priority < b.priority
+            end
 
-Mixin(Filger.config.frames, {
-        -- LEFT
-        ["PLAYER_DEBUFFS"] = {
-            enabled = true,
-            unit = "player",
-            filter = "HARMFUL",
-            anchor = { "RIGHT", UIParent, "CENTER", -xOffset, yOffset },
-            limit = 8,
-            size = size,
-            spacing = spacing,
-            initialAnchor = "BOTTOMRIGHT",
-            ["growth-x"] = "LEFT",
-            ["growth-y"] = "DOWN",
-            spells = {
-                [124275] = { enabled = true, priority = 3 },    -- Light Stagger
-                [124274] = { enabled = true, priority = 3 },    -- Moderate Stagger
-                [124273] = { enabled = true, priority = 3 }     -- Heavy Stagger
-            }
-        },
-        ["PLAYER_AURAS"] = {
-            enabled = true,
-            unit = "player",
-            filter = "PLAYER|HELPFUL",
-            anchor = { "RIGHT", UIParent, "CENTER", -xOffset, 0 },
-            limit = 8,
-            size = size,
-            spacing = spacing,
-            initialAnchor = "BOTTOMRIGHT",
-            ["growth-x"] = "LEFT",
-            ["growth-y"] = "DOWN",
-            spells = Mixin(spells[class] or {}, spells["ALL"] or {})
-        },
-        ["PLAYER_BUFFS"] = {
-            enabled = true,
-            unit = "player",
-            filter = "HELPFUL",
-            caster = "all",
-            hidePlayer = true,
-            anchor = { "RIGHT", UIParent, "CENTER", -xOffset, -yOffset },
-            limit = 8,
-            size = size,
-            spacing = spacing,
-            initialAnchor = "BOTTOMRIGHT",
-            ["growth-x"] = "LEFT",
-            ["growth-y"] = "DOWN",
-            FilterAura = function(element, unit, data)
-                return data.enabled and not data.isPlayerAura
+            if (a.expirationTime ~= b.expirationTime) then
+                return a.expirationTime < b.expirationTime
             end
-        },
-        ["TARGET_DEBUFFS"] = {
-            enabled = true,
-            unit = "target",
-            filter = "HARMFUL",
-            anchor = { "LEFT", UIParent, "CENTER", xOffset, yOffset },
-            limit = 8,
-            size = size,
-            spacing = spacing,
-            initialAnchor = "BOTTOMLEFT",
-            ["growth-x"] = "RIGHT",
-            ["growth-y"] = "DOWN",
-            spells = all,
-            FilterAura = function(element, unit, data)
-                if UnitCanAttack(unit, "player") then
-                    return data.enabled and data.isPlayerAura
-                end
-                return data.enabled and not data.isPlayerAura
-            end,
-            SortAuras = function(a, b)
-                if (a.priority ~= b.priority) then
-                    return a.priority < b.priority
-                end
 
-                if (a.expirationTime ~= b.expirationTime) then
-                    return a.expirationTime < b.expirationTime
-                end
-        
-                if (a.isPlayerAura ~= b.isPlayerAura) then
-                    return a.isPlayerAura
-                end
-            
-                return a.auraInstanceID < b.auraInstanceID
+            if (a.isPlayerAura ~= b.isPlayerAura) then
+                return a.isPlayerAura
             end
-        },
-        ["TARGET_AURAS"] = {
-            enabled = true,
-            unit = "target",
-            filter = "HELPFUL",
-            anchor = { "LEFT", UIParent, "CENTER", xOffset, 0 },
-            limit = 8,
-            size = size,
-            spacing = spacing,
-            initialAnchor = "BOTTOMLEFT",
-            ["growth-x"] = "RIGHT",
-            ["growth-y"] = "DOWN",
-            spells = all
-        },
-        ["FOCUS_DEBUFFS"] = {
-            enabled = true,
-            unit = "focus",
-            filter = "HARMFUL",
-            anchor = { "LEFT", UIParent, "CENTER", xOffset, -yOffset },
-            limit = 8,
-            size = size,
-            spacing = spacing,
-            initialAnchor = "BOTTOMLEFT",
-            ["growth-x"] = "RIGHT",
-            ["growth-y"] = "DOWN",
-            desaturated = false,
-            FilterAura = function(element, unit, data)
-                return data.enabled and data.isBossAura or (data.sourceUnit == nil) or not data.isFromPlayerOrPlayerPet
-            end
-        }, 
-        ["BOSS_DEBUFFS"] = {
-            enabled = false,
-            unit = "player",
-            filter = "HARMFUL",
-            anchor = { "CENTER", UIParent, "CENTER", 0, 160 },
-            limit = 1,
-            size = math.floor(1.5 * size),
-            spacing = spacing,
-            initialAnchor = "BOTTOMLEFT",
-            ["growth-x"] = "RIGHT",
-            ["growth-y"] = "DOWN",
-            FilterAura = function(element, unit, data)
-                return data.enabled and data.isBossAura or (data.sourceUnit == nil)
-            end
-        },
-})
+
+            return a.auraInstanceID < b.auraInstanceID
+        end
+    },
+    ["TARGET_AURAS"] = {
+        type = "auras",
+        filter = "HELPFUL",
+        spells = all
+    },
+    ["FOCUS_DEBUFFS"] = {
+        type = "auras",
+        filter = "HARMFUL",
+        desaturated = false,
+        FilterAura = function(element, unit, data)
+            return data.enabled and data.isBossAura or (data.sourceUnit == nil) or not data.isFromPlayerOrPlayerPet
+        end
+    },
+    -- CENTER
+    ["BOSS_DEBUFFS"] = {
+        enabled = false,
+        type = "auras",
+        filter = "HARMFUL",
+        FilterAura = function(element, unit, data)
+            return data.enabled and data.isBossAura or (data.sourceUnit == nil)
+        end
+    },
+} do
+    Mixin(Filger.config.frames[key], data)
+end
