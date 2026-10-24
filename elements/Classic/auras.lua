@@ -14,11 +14,7 @@ local C_Secrets = _G.C_Secrets
 --------------------------------------------------
 -- AURAS
 --------------------------------------------------
-local aura_proto = {
-    createdButtons = 0,
-    anchoredButtons = 0,
-    visibleButtons = 0
-}
+local aura_proto = {}
 
 do
     --[[ Callback: button:UpdateColor(button, unit, data)
@@ -65,14 +61,7 @@ do
     function aura_proto:Update(unit, data, index)
         if not data.name then return end
 
-        local button = self[index]
-        if not button then
-            button = Filger:CreateButton(self, index)
-
-            table.insert(self, button)
-
-            self.createdButtons = self.createdButtons + 1
-        end
+        local button = self:AcquireButton(index)
 
         -- tooltips
         button.unit = unit
@@ -295,33 +284,7 @@ do
                 table.insert(self.sorted, self.all[auraInstanceID])
             end
 
-            table.sort(self.sorted, self.SortAuras)
-
-            local numVisible = math.min(self.limit, #self.sorted)
-
-            for i = 1, numVisible do
-                self:Update(unit, self.sorted[i], i)
-            end
-
-            local visibleChanged = true
-
-            if (numVisible ~= self.visibleButtons) then
-                self.visibleButtons = numVisible
-                visibleChanged = true
-            end
-
-            for i = numVisible + 1, #self do
-                self[i]:Hide()
-            end
-
-            if (visibleChanged or self.createdButtons > self.anchoredButtons) then
-                if visibleChanged then
-                    self:SetPosition(1, numVisible)
-                else
-                    self:SetPosition(self.anchoredButtons + 1, self.createdButtons)
-                    self.anchoredButtons = self.createdButtons
-                end
-            end
+            self:Render(unit, self.sorted, self.SortAuras)
         end
     end
 

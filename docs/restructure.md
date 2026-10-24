@@ -239,7 +239,7 @@ Progress:
 - [x] 6. Move the family auras
 - [x] 7. Per-instance state
 - [x] 8. Explicit element type
-- [ ] 9. Share the render path
+- [x] 9. Share the render path
 - [ ] 10. Layout once
 - [ ] 11. Remove unused code
 
@@ -260,9 +260,9 @@ Progress:
 7. **Done: per-instance state**: Spawn creates `casted`/`spells`/`active` per element instead of on the proto.
 8. **Done: explicit element type**: frame defs get `type = "cooldowns" | "container" | "auras"`; `Spawn`
    dispatches on it.
-9. **Share the render path**: `element_proto:AcquireButton(index)` and `element_proto:Render(unit, sorted)`
+9. **Done: shared the render path**: `element_proto:AcquireButton(index)` and `element_proto:Render(unit, sorted, compare)`
    (sort, update 1..n, hide the rest, `SetPosition(1, n)`), used by `aura_proto` and `cooldown_proto`.
-   Drop the dead bookkeeping. Same behavior: `SetPosition(1, n)` already runs on every update.
+   Dropped the dead bookkeeping. Same behavior: `SetPosition(1, n)` already ran on every update.
 10. **Layout once**: `config.lua` defines all 8 frames' anchor/limit/size/spacing/growth with small
     `left`/`right` default tables; family files add `type`, `groups` or `filter/spells/FilterAura/SortAuras`,
     and per-family overrides (`BOSS_DEBUFFS.enabled = false` on Classic, `desaturated`).

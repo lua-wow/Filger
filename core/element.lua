@@ -47,6 +47,31 @@ do
         end
     end
 
+    function element_proto:AcquireButton(index)
+        local button = self[index]
+        if not button then
+            button = Filger:CreateButton(self, index)
+            table.insert(self, button)
+        end
+        return button
+    end
+
+    function element_proto:Render(unit, sorted, compare)
+        table.sort(sorted, compare)
+
+        local numVisible = math.min(self.limit, #sorted)
+
+        for i = 1, numVisible do
+            self:Update(unit, sorted[i], i)
+        end
+
+        for i = numVisible + 1, #self do
+            self[i]:Hide()
+        end
+
+        self:SetPosition(1, numVisible)
+    end
+
     function Filger:Spawn(key, data)
         -- "PLAYER_AURAS" -> "FilgerPlayerAuras"
         local name = key:lower():gsub("^%l", string.upper):gsub("_(%l)", string.upper)

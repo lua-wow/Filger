@@ -14,11 +14,7 @@ local issecretvalue = _G.issecretvalue
 --------------------------------------------------
 -- COOLDOWNS
 --------------------------------------------------
-local cooldown_proto = {
-    createdButtons = 0,
-    anchoredButtons = 0,
-    visibleButtons = 0
-}
+local cooldown_proto = {}
 
 do
     --[[ Callback: cooldown_proto:Update(unit, data, index)
@@ -32,14 +28,7 @@ do
     function cooldown_proto:Update(unit, data, index)
         if not data.name then return end
 
-        local button = self[index]
-        if not button then
-            button = Filger:CreateButton(self, index)
-
-            table.insert(self, button)
-
-            self.createdButtons = self.createdButtons + 1
-        end
+        local button = self:AcquireButton(index)
 
         button:SetSecret(data.durationObject ~= nil)
 
@@ -181,7 +170,6 @@ do
     end
 
     function cooldown_proto:UpdateCooldowns(event, unit, spellID, baseSpellID)
-        local changed = true
         if not spellID then
             table.wipe(self.active)
         end
@@ -204,48 +192,20 @@ do
             end
         end
 
-        if changed then
-            -- instead of removing auras one by one, just wipe the tables entirely
-            -- and repopulate them, multiple table.remove calls are insanely slow
-            self.sorted = table.wipe(self.sorted or {})
-            self.shownSpells = table.wipe(self.shownSpells or {})
+        -- instead of removing auras one by one, just wipe the tables entirely
+        -- and repopulate them, multiple table.remove calls are insanely slow
+        self.sorted = table.wipe(self.sorted or {})
+        self.shownSpells = table.wipe(self.shownSpells or {})
 
-            for _, data in next, self.active do
-                local id = data.activeSpellId
-                if not id or not self.shownSpells[id] then
-                    if id then self.shownSpells[id] = true end
-                    table.insert(self.sorted, data)
-                end
-            end
-
-            table.sort(self.sorted, self.SortCooldowns)
-
-            local numVisible = math.min(self.limit, #self.sorted)
-
-            for i = 1, numVisible do
-                self:Update(unit, self.sorted[i], i)
-            end
-
-            local visibleChanged = true
-
-            if (numVisible ~= self.visibleButtons) then
-                self.visibleButtons = numVisible
-                visibleChanged = true
-            end
-
-            for i = numVisible + 1, #self do
-                self[i]:Hide()
-            end
-
-            if (visibleChanged or self.createdButtons > self.anchoredButtons) then
-                if visibleChanged then
-                    self:SetPosition(1, numVisible)
-                else
-                    self:SetPosition(self.anchoredButtons + 1, self.createdButtons)
-                    self.anchoredButtons = self.createdButtons
-                end
+        for _, data in next, self.active do
+            local id = data.activeSpellId
+            if not id or not self.shownSpells[id] then
+                if id then self.shownSpells[id] = true end
+                table.insert(self.sorted, data)
             end
         end
+
+        self:Render(unit, self.sorted, self.SortCooldowns)
     end
 
     function cooldown_proto:ForceUpdate()
