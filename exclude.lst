@@ -13,6 +13,7 @@ mise.toml
 *Makefile
 *exclude.lst
 *.luacheckrc
+tests/*
 
 # extra files
 docs/*
