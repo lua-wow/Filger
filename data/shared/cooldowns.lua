@@ -4,7 +4,7 @@ local CreateSpellCooldown = ns.data.CreateSpellCooldown
 local CreateSlotCooldown = ns.data.CreateSlotCooldown
 local AddCooldowns = ns.data.AddCooldowns
 
-local expansion = _G.LE_EXPANSION_LEVEL_CURRENT
+local expansion = _G.LE_EXPANSION_LEVEL_CURRENT or -1
 local LE_EXPANSION_CLASSIC = _G.LE_EXPANSION_CLASSIC or 0
 local LE_EXPANSION_BURNING_CRUSADE = _G.LE_EXPANSION_BURNING_CRUSADE or 1
 local LE_EXPANSION_WRATH_OF_THE_LICH_KING = _G.LE_EXPANSION_WRATH_OF_THE_LICH_KING or 2

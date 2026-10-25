@@ -27,7 +27,14 @@ function ns.AddCommand(command, handler, description)
 end
 
 local help = function()
-    for cmd, v in next, commands do
+    local names = {}
+    for cmd in next, commands do
+        table.insert(names, cmd)
+    end
+    table.sort(names)
+
+    for _, cmd in ipairs(names) do
+        local v = commands[cmd]
         if (v.description) then
             print(Filger.title, "|cffff8000" .. cmd .. "|r", "-", v.description)
         end

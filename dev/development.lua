@@ -7,7 +7,7 @@ if not ns.config.general.dev then return end
 -- Development (write anything here)
 ------------------------------------------------------------
 
--- Experiment 4 (docs/secret-values-options.md): spell-ID gate of CustomAuraContainerTemplate
+-- Experiment 4: spell-ID gate of CustomAuraContainerTemplate
 -- usage: /filger exp4 <buffID>,<debuffID> (out of combat, then enter combat and compare)
 local exp4 = function(arg)
     local buff, debuff = (arg or ""):match("^(%d+),(%d+)$")
