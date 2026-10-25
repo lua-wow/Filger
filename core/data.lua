@@ -4,7 +4,8 @@ local _, ns = ...
 -- Data
 ------------------------------------------------------------
 -- Loaded before core\init.xml: data files only collect tables here.
--- Validation runs in Finalize() at ADDON_LOADED; it fills data.blacklist/spells/cooldowns.
+-- Validation runs in Finalize() at ADDON_LOADED; it fills data.blacklist/spells/cooldowns,
+-- and records unresolved or duplicated IDs in data.invalid as { kind, class, id }.
 local data = {}
 
 -- Compat
@@ -60,7 +61,7 @@ function data.AddCooldowns(source)
     table.insert(cooldownSources, source)
 end
 
-local buildBlacklist = function()
+local buildBlacklist = function(invalid)
     local blacklist = {}
     for _, source in ipairs(blacklistSources) do
         for spellId, enabled in next, source do
@@ -68,7 +69,7 @@ local buildBlacklist = function()
                 if type(spellId) == "string" or GetSpellInfo(spellId) then
                     blacklist[spellId] = true
                 else
-                    warn("Blacklist", "Spell " .. spellId .. " do not exists.")
+                    table.insert(invalid, { kind = "blacklist", id = spellId })
                 end
             end
         end
@@ -76,7 +77,7 @@ local buildBlacklist = function()
     return blacklist
 end
 
-local buildSpells = function()
+local buildSpells = function(invalid)
     local spells = {}
     for _, source in ipairs(spellSources) do
         for class, list in next, source do
@@ -88,7 +89,7 @@ local buildSpells = function()
                 if GetSpellInfo(spellId) then
                     spells[class][spellId] = info
                 else
-                    warn("SPELLS", "Spell " .. spellId .. " do not exists.")
+                    table.insert(invalid, { kind = "spell", class = class, id = spellId })
                 end
             end
         end
@@ -96,35 +97,60 @@ local buildSpells = function()
     return spells
 end
 
--- player class rows first, then "ALL" rows (racials, gear), each in source order
-local buildCooldowns = function()
-    local cooldowns = {}
-    local seen = {}
-    for _, key in ipairs({ ns.player.class, "ALL" }) do
-        for _, source in ipairs(cooldownSources) do
-            for _, row in ipairs(source[key] or {}) do
-                if row.spellId and seen[row.spellId] then
-                    warn("COOLDOWN", "Spell " .. row.spellId .. " is duplicated.")
-                elseif row.enabled then
-                    if row.spellId then seen[row.spellId] = true end
-                    if row.slotId or GetSpellInfo(row.spellId) then
-                        table.insert(cooldowns, row)
-                    else
-                        warn("COOLDOWN", "Spell " .. row.spellId .. " do not exists.")
-                    end
+-- validates the enabled rows of `class`; appends the valid ones to `out` when given
+local collectCooldowns = function(class, seen, out, invalid)
+    for _, source in ipairs(cooldownSources) do
+        for _, row in ipairs(source[class] or {}) do
+            if row.spellId and seen[row.spellId] then
+                table.insert(invalid, { kind = "duplicate", class = class, id = row.spellId })
+            elseif row.enabled then
+                if row.spellId then seen[row.spellId] = true end
+                if row.slotId or GetSpellInfo(row.spellId) then
+                    if out then table.insert(out, row) end
+                else
+                    table.insert(invalid, { kind = "cooldown", class = class, id = row.spellId })
                 end
             end
         end
+    end
+end
+
+-- player class rows first, then "ALL" rows (racials, gear), each in source order;
+-- other classes are only validated
+local buildCooldowns = function(invalid)
+    local cooldowns = {}
+    local seen = {}
+    collectCooldowns(ns.player.class, seen, cooldowns, invalid)
+    collectCooldowns("ALL", seen, cooldowns, invalid)
+
+    local others = {}
+    for _, source in ipairs(cooldownSources) do
+        for class in next, source do
+            if class ~= ns.player.class and class ~= "ALL" then
+                others[class] = true
+            end
+        end
+    end
+    for class in next, others do
+        collectCooldowns(class, {}, nil, invalid)
     end
     return cooldowns
 end
 
 function data.Finalize()
-    data.blacklist = buildBlacklist()
-    data.spells = buildSpells()
-    data.cooldowns = buildCooldowns()
+    local invalid = {}
+    data.blacklist = buildBlacklist(invalid)
+    data.spells = buildSpells(invalid)
+    data.cooldowns = buildCooldowns(invalid)
+    data.invalid = invalid
 
     blacklistSources, spellSources, cooldownSources = nil, nil, nil
+
+    if ns.config.general.dev then
+        for _, entry in ipairs(invalid) do
+            warn(entry.kind .. (entry.class and ("/" .. entry.class) or ""), entry.id)
+        end
+    end
 end
 
 ns.data = data
