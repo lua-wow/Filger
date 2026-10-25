@@ -41,7 +41,7 @@ do
     end
 
     function button_proto:OnEnter()
-        if (GameTooltip:IsForbidden() and not self:IsVisible()) then return end
+        if (GameTooltip:IsForbidden() or not self:IsVisible()) then return end
 
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 
