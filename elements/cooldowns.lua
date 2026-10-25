@@ -176,6 +176,10 @@ do
 
                 if self:FilterCooldown(data) then
                     self.active[row] = data
+                    -- a secret cooldown already shown counts as cast, in case the cast event's spellID was secret
+                    if data.durationObject then
+                        self.casted[data.spellId] = true
+                    end
                 else
                     self.active[row] = nil
                     if data.spellId then
