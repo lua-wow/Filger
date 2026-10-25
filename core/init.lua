@@ -33,7 +33,6 @@ ns.client = client
 
 -- player
 ns.player = {
-    name = UnitName("player"),
     class = select(2, UnitClass("player"))
 }
 

@@ -83,9 +83,7 @@ do
         button.isHarmful = data.isHarmful
 
         -- timers
-        button.name = data.name
         button.spellId = data.spellId
-        button.duration = data.duration or 0
         button.expirationTime = data.expirationTime or GetTime()
 
         if button.Cooldown then

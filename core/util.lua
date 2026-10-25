@@ -8,16 +8,8 @@ local floor, ceil = math.floor, math.ceil
 ------------------------------------------------------------
 local util = {}
 
-function util.print(...)
-    print("|cffff8000Filger|r", ...)
-end
-
 function util.warn(...)
     print("|cffffd100Filger WARNING|r", ...)
-end
-
-function util.error(...)
-    print("|cffffa1a1Filger ERROR|r", ...)
 end
 
 -- format seconds to min/hour/day

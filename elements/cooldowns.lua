@@ -4,7 +4,6 @@ local _, ns = ...
 local IsSpellKnown = C_SpellBook.IsSpellKnown
 local GetInventoryItemLink = _G.GetInventoryItemLink
 local GetItemInfo = C_Item.GetItemInfo
-local GetItemCooldown = C_Container.GetItemCooldown
 local GetInventoryItemCooldown = _G.GetInventoryItemCooldown
 local GetOverrideSpell = C_Spell and C_Spell.GetOverrideSpell
 
@@ -39,12 +38,8 @@ do
         button.unit = unit
         button.spellId = data.spellId
         button.slotId = data.slotId
-        button.itemId = data.itemId
 
         -- timers
-        button.name = data.name
-        -- button.spellId = data.spellId
-        button.duration = data.duration or 0
         button.expirationTime = data.expirationTime or GetTime()
 
         if button.Cooldown then
@@ -144,10 +139,6 @@ do
             else
                 enabled = 0
             end
-        elseif data.itemId then
-            index = "ITEM_" .. data.itemId
-            name, _, _, _, _, _, _, _, _, icon, _, _, _, _, _, _, _ = GetItemInfo(data.itemId)
-            start, duration, enabled = GetItemCooldown(data.itemId)
         end
 
         duration = duration or 0
@@ -160,7 +151,6 @@ do
             -- a talent can replace one tracked spell with another (e.g. Sentinel overrides Avenging Wrath)
             activeSpellId = data.spellId and GetOverrideSpell and GetOverrideSpell(data.spellId) or data.spellId,
             slotId = data.slotId,
-            itemId = data.itemId,
             icon = icon,
             start = start,
             duration = duration,

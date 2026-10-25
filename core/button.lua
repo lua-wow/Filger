@@ -51,8 +51,6 @@ do
             else
                 GameTooltip:SetUnitBuffByAuraInstanceID(self.unit, self.auraInstanceID)
             end
-        elseif self.itemId then
-            GameTooltip:SetItemByID(self.itemId)
         elseif self.slotId then
             GameTooltip:SetInventoryItem(self.unit, self.slotId)
         elseif self.spellId then
