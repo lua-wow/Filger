@@ -4,7 +4,6 @@
 ## Credits: Nils Ruesch, Shestak, Affli, Garagar, hidekki, FourOne, Tukz
 
 ## OptionalDeps: Tainted, Tukui, ElvUI
-## SavedVariables: FilgerData
 
 ## Notes: Minimal buff/debuff tracker
 ## Title: |cffff8000Filger|r
