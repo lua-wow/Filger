@@ -6,6 +6,7 @@ local _, ns = ...
 -- Loaded before core\init.xml: data files only collect tables here.
 -- Validation runs in Finalize() at ADDON_LOADED; it fills data.blacklist/spells/cooldowns,
 -- and records unresolved or duplicated IDs in data.invalid as { kind, class, id }.
+-- A blacklist value of "name" also blacklists the spell's localized name (Classic filters only).
 local data = {}
 
 -- Compat
@@ -66,8 +67,12 @@ local buildBlacklist = function(invalid)
     for _, source in ipairs(blacklistSources) do
         for spellId, enabled in next, source do
             if enabled then
-                if type(spellId) == "string" or GetSpellInfo(spellId) then
+                local info = GetSpellInfo(spellId)
+                if info then
                     blacklist[spellId] = true
+                    if enabled == "name" then
+                        blacklist[info.name] = true
+                    end
                 else
                     table.insert(invalid, { kind = "blacklist", id = spellId })
                 end

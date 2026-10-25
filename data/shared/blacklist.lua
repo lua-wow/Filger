@@ -19,10 +19,11 @@ local LE_EXPANSION_MIDNIGHT = _G.LE_EXPANSION_MIDNIGHT or 11
 --------------------------------------------------
 -- Black List
 --------------------------------------------------
+-- "name": also hide every aura sharing this spell's localized name (all ranks, new food buffs)
 local general = {
-    ["Well Fed"] = true,
-    ["Drink"] = true,
-    ["Food"] = true,
+    [19705] = "name",                                           -- Well Fed
+    [430] = "name",                                             -- Drink
+    [433] = "name",                                             -- Food
  
     -- Lust
     [57723] = (EXPANSION >= LE_EXPANSION_WRATH_OF_THE_LICH_KING),   -- Exhaustion (Heroism)
@@ -32,15 +33,14 @@ local general = {
     [390435] = (EXPANSION >= LE_EXPANSION_DRAGONFLIGHT),            -- Exhaustion (Evoker - Fury of the Aspects)
 
     -- DRUID
-    ["Mark of the Wild"] = true,
-    [1126] = true,                                              -- Mark of the Wild
+    [1126] = "name",                                            -- Mark of the Wild
     [768] = true,                                               -- Cat Form
     [5487] = true,                                              -- Bear Form
     [24858] = true,                                             -- Moonkin Form
     [114282] = (EXPANSION >= LE_EXPANSION_MISTS_OF_PANDARIA),   -- Treant Form
 
     -- MAGE
-    ["Arcane Intellect"] = true,
+    [1459] = "name",                                            -- Arcane Intellect
 
     -- PALADIN
     [7294] = (EXPANSION <= LE_EXPANSION_CATACLYSM),             -- Retribution Aura
@@ -49,7 +49,7 @@ local general = {
     [32223] = (EXPANSION >= LE_EXPANSION_BURNING_CRUSADE),      -- Crusader Aura
 
     -- PRIEST
-    ["Power Word: Fortitude"] = true,
+    [1243] = "name",                                            -- Power Word: Fortitude
 }
 
 AddBlacklist(general)

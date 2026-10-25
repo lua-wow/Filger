@@ -85,8 +85,6 @@ do
         [462821] = true, -- General's Bulwark
 
         -- Consumables
-        ["Well Fed"] = true,
-        ["Hearty Well Fed"] = true,
         [454188] = true, -- Hearty Well Fed
         [462180] = true, -- Hearty Well Fed
         [462181] = true, -- Hearty Well Fed
