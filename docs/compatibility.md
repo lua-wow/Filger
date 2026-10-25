@@ -50,7 +50,7 @@ is any `classic` family client; `ns.client.isMainline` is its negation (Retail a
 
 - Secret values allow no arithmetic, comparison, string operations or use as table keys.
 - Before using an API result in logic, check the target client's
-  `Blizzard_APIDocumentationGenerated` ([reference-repositories.md](reference-repositories.md));
+  `Blizzard_APIDocumentationGenerated` ([references.md](references.md));
   APIs and secret flags differ per client. If unsure, say so.
 - Most affected: aura scanning (`C_UnitAuras`, `UnitAuraInfo`) and cooldowns
   (`C_Spell.GetSpellCooldown`, `GetItemCooldown`). Audit before fixing.

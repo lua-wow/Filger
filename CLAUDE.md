@@ -50,7 +50,7 @@ architecture win when they conflict.
 ## References
 
 - Blizzard `wow-ui-source` (local clone in `../refs`, read-only) is the API authority. Use
-  targeted searches, not broad exploration. Map: [docs/reference-repositories.md](docs/reference-repositories.md).
+  targeted searches, not broad exploration. Map: [docs/references.md](docs/references.md).
 
 ## Git & GitHub
 

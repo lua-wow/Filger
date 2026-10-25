@@ -1,38 +1,28 @@
 # Reference repositories
 
 Local clones in `../refs`, outside this repo. **Read-only**: never edit, and no git write operations.
-Use them when investigating WoW API, UI, template, event or compatibility behavior.
-
-- Search, don't browse: targeted `Grep`/`Glob` scoped to one repo, addon and flavor dir.
-  No recursive listings or whole-repo reads.
-- Pick the worktree that matches the client in question before searching.
-
-## Authority
-
-**`wow-ui-source`** (Blizzard's own UI source) is the only reference and is authoritative for
-how Blizzard UI and APIs actually work. Never invent an API; if it can't be verified, mark it
-"unverified". Wiki (after Blizzard source): `https://warcraft.wiki.gg/wiki/API:[NAME]`
-(e.g. `C_Spell.GetSpellInfo`) and `https://warcraft.wiki.gg/wiki/Event:[NAME]` (e.g. `PLAYER_LOGIN`).
+Pick the worktree matching the client, then search it with targeted `Grep`/`Glob` scoped to one
+addon and flavor dir; no recursive listings or whole-repo reads. Secondary source, after Blizzard
+code: `https://warcraft.wiki.gg/wiki/API:[NAME]` and `https://warcraft.wiki.gg/wiki/Event:[NAME]`.
 
 ## `wow-ui-source` (Blizzard UI; authoritative)
 
-| Path (`../refs/wow-ui-source/...`) | Branch                | Version (`version.txt`) | Client                       |
-|------------------------------------|-----------------------|-------------------------|------------------------------|
-| `.`                                | `live`                | 12.1.0                  | Retail/Midnight              |
-| `worktrees/forever`                | `forever`             | 1.60.1                  | Classic Forever              |
-| `worktrees/classic`                | `classic`             | 5.5.4                   | MoP Classic                  |
-| `worktrees/classic_titan`          | `classic_titan`       | 3.80.2                  | WotLK (Titan)                |
-| `worktrees/classic_anniversary`    | `classic_anniversary` | 2.5.6                   | TBC Anniversary              |
-| `worktrees/classic_era`            | `classic_era`         | 1.15.9                  | Classic Era                  |
+| Path (`../refs/wow-ui-source/...`) | Branch                | Client          |
+|------------------------------------|-----------------------|-----------------|
+| `.`                                | `live`                | Retail/Midnight |
+| `worktrees/forever`                | `forever`             | Classic Forever |
+| `worktrees/classic`                | `classic`             | MoP Classic     |
+| `worktrees/classic_titan`          | `classic_titan`       | WotLK (Titan)   |
+| `worktrees/classic_anniversary`    | `classic_anniversary` | TBC Anniversary |
+| `worktrees/classic_era`            | `classic_era`         | Classic Era     |
 
-No worktree covers Cata (`40402`); Cata API behavior is unverified.
+Each worktree's build is in its `version.txt`.
 
 - Code lives in `Interface/AddOns/Blizzard_<Name>/<Flavor>/`. Flavor dirs: `Shared`,
   `Mainline`, `Classic`, `Vanilla`, `TBC`, `Wrath`, `Cata`, `Mists` (`Camelot` in forever).
   Every classic-family worktree contains all flavor dirs: don't infer the client from the dir.
   Instead read the per-flavor TOC (`*_Classic.toc`, `*_Mainline.toc`): each file line is tagged
   `[AllowLoadGameType vanilla|tbc|wrath|cata|mists]`.
-- `classic_titan` is Filger's WotLK target (see [compatibility.md](compatibility.md)).
 - API truth: `Interface/AddOns/Blizzard_APIDocumentationGenerated/*Documentation.lua`
   (check every worktree; APIs and secret flags differ per client).
 - Removed/renamed APIs: `Interface/AddOns/Blizzard_Deprecated*`.
