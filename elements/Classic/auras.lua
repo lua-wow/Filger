@@ -267,11 +267,14 @@ do
 
             if updateInfo.updatedAuraInstanceIDs then
                 for _, auraInstanceID in next, updateInfo.updatedAuraInstanceIDs do
-                    local data = self.all[auraInstanceID]
-                    if data then
-                        self.all[auraInstanceID] = self:ProcessData(unit, C_UnitAuras.GetAuraDataByAuraInstanceID(unit, auraInstanceID))
-                        if self:FilterAura(unit, data) then
+                    if self.all[auraInstanceID] then
+                        local data = self:ProcessData(unit, C_UnitAuras.GetAuraDataByAuraInstanceID(unit, auraInstanceID))
+                        self.all[auraInstanceID] = data
+                        if data and self:FilterAura(unit, data) then
                             self.actives[auraInstanceID] = true
+                            changed = true
+                        elseif self.actives[auraInstanceID] then
+                            self.actives[auraInstanceID] = nil
                             changed = true
                         end
                     end
