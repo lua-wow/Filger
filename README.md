@@ -49,6 +49,7 @@ Spells shown or hidden per client are listed in [data/](./data).
 -   `/filger help` - List all available commands.
 -   `/filger auras <player|target|focus> <buffs|debuffs>` - List your auras on a unit with their spell IDs.
     Out of combat only on Retail, while auras are secret.
+-   `/filger validate` - List configured spell IDs that don't exist on this client.
 
 ## Configuration
 

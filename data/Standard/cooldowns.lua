@@ -55,7 +55,7 @@ local data = {
         -- Unholy
         CreateSpellCooldown(42650),         -- Army of the Dead
         CreateSpellCooldown(49206),         -- Summon Gargoyle
-        CreateSpellCooldown(455395),        -- Rise Abomination
+        -- CreateSpellCooldown(455395),        -- Rise Abomination
     },
     ["DRUID"] = {
         -- General
@@ -197,7 +197,7 @@ local data = {
         CreateSpellCooldown(32375),         -- Mass Dispel
         CreateSpellCooldown(34433),         -- Shadowfiennd
         CreateSpellCooldown(73325),         -- Leap of Faith
-        CreateSpellCooldown(108920),        -- Void Tendrils
+        -- CreateSpellCooldown(108920),        -- Void Tendrils
         CreateSpellCooldown(108968),        -- Void Shift
         CreateSpellCooldown(120517),        -- Halo (Disciple / Holy)
         CreateSpellCooldown(120644),        -- Halo (Shadow)
@@ -255,7 +255,7 @@ local data = {
         CreateSpellCooldown(98008),         -- Spirit Link Totem
         CreateSpellCooldown(108280),        -- Healing Tide Totem
         CreateSpellCooldown(114052),        -- Ascendance
-        CreateSpellCooldown(157153),        -- Cloudburst Totem
+        -- CreateSpellCooldown(157153),        -- Cloudburst Totem
         CreateSpellCooldown(198838),        -- Eartheb Wall Totem
         CreateSpellCooldown(207399),        -- Ancestral Protection Totem
 
