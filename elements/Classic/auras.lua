@@ -112,6 +112,9 @@ do
 
         if data.duration and data.duration > 0 then
             button:SetScript("OnUpdate", button.OnUpdate)
+        else
+            button:SetScript("OnUpdate", nil)
+            button.Time:SetText("")
         end
 
         button:Show()
