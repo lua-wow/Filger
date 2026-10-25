@@ -1,8 +1,23 @@
 local _, ns = ...
-local Filger = ns.Filger
 
 -- Blizzard
 local ColorMixin = _G.ColorMixin
+
+------------------------------------------------------------
+-- Medias
+------------------------------------------------------------
+local media = {}
+
+media.fonts = {
+    ["normal"] = [[Interface\AddOns\Filger\medias\fonts\normal_font.ttf]],
+    ["pixel"] = [[Interface\AddOns\Filger\medias\fonts\pixel_font.ttf]],
+}
+
+media.textures = {
+    ["blank"] = [[Interface\AddOns\Filger\medias\textures\blank.blp]],
+    ["bubble"] = [[Interface\AddOns\Filger\medias\textures\bubble.blp]],
+    ["glow"] = [[Interface\AddOns\Filger\medias\textures\glow.blp]],
+}
 
 local color_proto = {
 	SetRGBA = function(self, r, g, b, a)
@@ -32,22 +47,10 @@ local color_proto = {
 	end
 }
 
-function Filger:CreateColor(r, g, b, a)
+function media.CreateColor(r, g, b, a)
 	local color = Mixin({}, ColorMixin, color_proto)
 	color:SetRGBA(r, g, b, a)
 	return color
 end
 
-local colors = {
-	["Stealable"] = Filger:CreateColor(0.93, 0.91, 0.55),
-	["Bleed"] = Filger:CreateColor(0.90, 0.10, 0.10),
-	["Enrage"] = Filger:CreateColor(0.78, 0.25, 0.25)
-}
-
-for debuffType, info in next, AuraUtil.GetDebuffDisplayInfoTable() do
-	if not colors[debuffType] then
-		colors[debuffType] = CreateColor(info.color.r, info.color.g, info.color.b)
-	end
-end
-
-Filger.colors = colors
+ns.media = media

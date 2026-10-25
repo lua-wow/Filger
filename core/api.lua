@@ -1,12 +1,11 @@
 local _, ns = ...
-local Filger = ns.Filger
-local textures = Filger.textures
+local textures = ns.media.textures
 
 -- Blizzard
 local IsAddOnLoaded = C_AddOns and C_AddOns.IsAddOnLoaded or _G.IsAddOnLoaded
 
 -- Tukui borders are textures colored by Backdrop:SetBorderColor; ElvUI and Filger use a BackdropTemplate border
-function Filger:SetBorderColor(backdrop, color)
+function ns.SetBorderColor(backdrop, color)
 	if backdrop.SetBorderColor then
 		backdrop:SetBorderColor(color.r, color.g, color.b, color.a or 1)
 	else
@@ -36,7 +35,7 @@ local Scale = function(size)
 	end
 
 	-- Calculate the scaling multiplier
-    local mult = Filger.pixelPerfectScale / uiScale
+    local mult = ns.pixelPerfectScale / uiScale
 
 	-- Return the scaled size, rounded to the nearest integer
     return mult * math.floor(size / mult + 0.5)
@@ -45,13 +44,13 @@ end
 API.CreateBackdrop = function(self, template)
 	if not self.Backdrop then
 		local backdropTexture = textures.blank
-		local backdropColor = Filger.config.general.backdrop.color
+		local backdropColor = ns.config.general.backdrop.color
 		local backdropAlpha = (template == "transparent") and 0.70 or 1
 		
 		local borderTexture = textures.blank
-		local borderColor = Filger.config.general.border.color
+		local borderColor = ns.config.general.border.color
 
-		local inset = Scale(Filger.config.general.border.size or 1)
+		local inset = Scale(ns.config.general.border.size or 1)
 		local backdrop = {
 			bgFile = backdropTexture
 		}
@@ -77,7 +76,7 @@ end
 --------------------------------------------------
 -- Merge Filger API with WoW API
 --------------------------------------------------
-function Filger:MergeAPI()
+function ns.MergeAPI()
     local AddAPI = function(obj)
         local mt = getmetatable(obj).__index
         for name, func in pairs(API) do

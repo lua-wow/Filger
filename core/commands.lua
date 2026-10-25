@@ -1,8 +1,7 @@
 local _, ns = ...
 local Filger = ns.Filger
 
--- Blizzard
-local C_Secrets = _G.C_Secrets
+local AurasSecret = ns.compat.AurasSecret
 
 ------------------------------------------------------------
 -- Slash Commands
@@ -20,7 +19,7 @@ SlashCmdList["FILGER"] = function(cmd)
     entry.func(arg)
 end
 
-function Filger:AddCommand(command, handler, description)
+function ns.AddCommand(command, handler, description)
     commands[command] = {
         func = handler,
         description = description
@@ -35,7 +34,7 @@ local help = function()
     end
 end
 
-Filger:AddCommand("help", help, "list commands")
+ns.AddCommand("help", help, "list commands")
 
 -- lists the unit's own auras with their spell IDs, to fill data/<Game>/spells.lua
 -- usage: /filger auras player buffs (arg arrives without spaces: "playerbuffs")
@@ -47,7 +46,7 @@ local auras = function(arg)
     end
 
     -- tainted code can't read secret auras (in combat on Retail), GetAuraSlots would error
-    if C_Secrets and C_Secrets.ShouldAurasBeSecret() then
+    if AurasSecret() then
         print(Filger.title, "auras are secret right now, leave combat and try again.")
         return
     end
@@ -61,4 +60,4 @@ local auras = function(arg)
     end
 end
 
-Filger:AddCommand("auras", auras, "list your auras on a unit with their spell IDs (/filger auras player buffs)")
+ns.AddCommand("auras", auras, "list your auras on a unit with their spell IDs (/filger auras player buffs)")

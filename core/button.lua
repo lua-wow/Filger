@@ -1,5 +1,7 @@
 local _, ns = ...
-local Filger = ns.Filger
+local fonts = ns.media.fonts
+local FormatTime = ns.util.FormatTime
+local isMainline = ns.client.isMainline
 
 -- Blizzard
 local CreateFrame = _G.CreateFrame
@@ -14,22 +16,25 @@ local Enum = _G.Enum
 do
     local button_proto = {}
 
-    -- secret durations: text and color like OnUpdate ("2m", "45s", "4.3"; red under 5s)
-    local timeFormatter = C_StringUtil.CreateSecondsFormatter()
-    timeFormatter:SetDefaultAbbreviation(Enum.SecondsFormatterAbbreviation.OneLetter)
-    timeFormatter:SetStripIntervalWhitespace(Enum.SecondsFormatterIntervalWhitespace.StripIgnoreLocale)
-    timeFormatter:SetDesiredUnitCount(1)
-    timeFormatter:SetCanRoundUpLastUnit(true)
-    timeFormatter:SetMillisecondsThreshold(5)
+    local timeFormatter, timeColorCurve, timeTextOptions
 
-    local timeColorCurve = C_CurveUtil.CreateColorCurve()
-    timeColorCurve:SetType(Enum.LuaCurveType.Step)
-    timeColorCurve:AddPoint(0, CreateColor(0.99, 0.31, 0.31))
-    timeColorCurve:AddPoint(5, CreateColor(0.84, 0.75, 0.65))
+    -- secret durations (Mainline): text and color like OnUpdate ("2m", "45s", "4.3"; red under 5s);
+    -- Classic bindings have no SetTextColorCurve
+    if isMainline then
+        timeFormatter = C_StringUtil.CreateSecondsFormatter()
+        timeFormatter:SetDefaultAbbreviation(Enum.SecondsFormatterAbbreviation.OneLetter)
+        timeFormatter:SetStripIntervalWhitespace(Enum.SecondsFormatterIntervalWhitespace.StripIgnoreLocale)
+        timeFormatter:SetDesiredUnitCount(1)
+        timeFormatter:SetCanRoundUpLastUnit(true)
+        timeFormatter:SetMillisecondsThreshold(5)
 
-    -- aura container duration text (Mainline); Classic bindings have no SetTextColorCurve
-    if Filger.isMainline then
-        Filger.timeTextOptions = {
+        timeColorCurve = C_CurveUtil.CreateColorCurve()
+        timeColorCurve:SetType(Enum.LuaCurveType.Step)
+        timeColorCurve:AddPoint(0, CreateColor(0.99, 0.31, 0.31))
+        timeColorCurve:AddPoint(5, CreateColor(0.84, 0.75, 0.65))
+
+        -- aura container duration text
+        timeTextOptions = {
             textFormatter = timeFormatter,
             textColor = { curve = timeColorCurve, property = Enum.DurationTextBindingProperty.RemainingDuration }
         }
@@ -79,7 +84,7 @@ do
             local remaining = (self.expirationTime or 0) - GetTime()
             if self.Time then
                 if remaining > 0 then
-                    self.Time:SetText(Filger.FormatTime(remaining))
+                    self.Time:SetText(FormatTime(remaining))
                     if remaining <= 5 then
                         self.Time:SetTextColor(0.99, 0.31, 0.31)
                     else
@@ -95,13 +100,13 @@ do
         end
     end
 
-    --[[ Filger:StyleButton(button)
+    --[[ StyleButton(button)
     Creates the button's visual regions (backdrop, cooldown, icon, count, time text).
     Shared by Filger buttons and aura container buttons.
     --]]
-    function Filger:StyleButton(button)
+    local function StyleButton(button)
         -- resources
-        local font, fontSize, fontStyle = Filger.fonts.normal, 12, "OUTLINE"
+        local font, fontSize, fontStyle = fonts.normal, 12, "OUTLINE"
         -- aura container buttons are unnamed; "$parent" would create globals like "Icon"
         local name = button:GetName()
 
@@ -143,7 +148,7 @@ do
         button.Time = time
     end
 
-    --[[ Callback: button_proto:CreateButton(element, index)
+    --[[ CreateButton(element, index)
 	Creates an aura/cooldown button at a given position.
 
     * self     - the widget holding the aura buttons
@@ -152,16 +157,16 @@ do
     ## Returns
 	* button - the button used to represent the aura (Button)
     --]]
-    function Filger:CreateButton(element, index)
+    local function CreateButton(element, index)
         local button = Mixin(CreateFrame("Frame", element:GetName() .. "Aura" .. index, element), button_proto)
         button:SetWidth(element.size)
         button:SetHeight(element.size)
-        self:StyleButton(button)
+        StyleButton(button)
 
         local time = button.Time
 
         -- only secret cooldowns (Mainline) need it; Classic bindings have no SetTextColorCurve
-        if Filger.isMainline then
+        if isMainline then
             local timeBinding = C_DurationUtil.CreateDurationTextBinding()
             timeBinding:SetFontString(time)
             timeBinding:SetFormatter(timeFormatter)
@@ -183,11 +188,17 @@ do
         fadeout:SetSmoothing("IN_OUT")
         animation.Fadeout = fadeout
 
-        if self.config.general.gametooltip then
+        if ns.config.general.gametooltip then
             button:SetScript("OnEnter", button.OnEnter)
             button:SetScript("OnLeave", button.OnLeave)
         end
 
         return button
     end
+
+    ns.button = {
+        Style = StyleButton,
+        Create = CreateButton,
+        timeTextOptions = timeTextOptions
+    }
 end

@@ -1,15 +1,24 @@
 local _, ns = ...
-local Filger = ns.Filger
-
-ns.data.Finalize()
-
-local cooldowns = Filger.cooldowns or {}
+local CreateColor = ns.media.CreateColor
 
 ------------------------------------------------------------
 -- Config
 ------------------------------------------------------------
+ns.config = {
+    ["general"] = {
+        ["backdrop"] = {
+            ["color"] = CreateColor(0.15, 0.15, 0.15)
+        },
+        ["border"] = {
+            ["color"] = CreateColor(0.00, 0.00, 0.00),
+            ["size"] = 1
+        },
+        ["gametooltip"] = true,                                 -- enabled tooltips
+        ["dev"] = false,                                        -- enables dev/development.lua commands
+    }
+}
 
--- aura frame layout; elements/<Family>/auras.lua adds what each frame shows
+-- aura frame layout; ns.elements.Auras.Frames adds what each frame shows
 local size, spacing = 35, 5
 local xOffset, yOffset = 239, 39
 
@@ -17,24 +26,15 @@ local left = { limit = 8, size = size, spacing = spacing, initialAnchor = "BOTTO
 local right = { limit = 8, size = size, spacing = spacing, initialAnchor = "BOTTOMLEFT", ["growth-x"] = "RIGHT", ["growth-y"] = "DOWN" }
 
 local function Frame(defaults, data)
-    return Mixin({ enabled = true }, defaults, data)
+    return Mixin({ enabled = true, type = "Auras" }, defaults, data)
 end
 
-Filger.config = {
-    ["general"] = {
-        ["backdrop"] = {
-            ["color"] = Filger:CreateColor(0.15, 0.15, 0.15)
-        },
-        ["border"] = {
-            ["color"] = Filger:CreateColor(0.00, 0.00, 0.00),
-            ["size"] = 1
-        },
-        ["gametooltip"] = true,                                 -- enabled tooltips
-    },
-    ["frames"] = {
+-- runs at ADDON_LOADED, after ns.data.Finalize()
+function ns.BuildConfig()
+    local frames = {
         ["PLAYER_COOLDOWNS"] = {
             enabled = true,
-            type = "cooldowns",
+            type = "Cooldowns",
             unit = "player",
             anchor = { "CENTER", UIParent, "BOTTOM", 0, 175 },
             limit = 8,
@@ -44,7 +44,7 @@ Filger.config = {
             initialAnchor = "CENTER",
             ["growth-x"] = "CENTER",
             ["growth-y"] = "CENTER",
-            spells = cooldowns
+            spells = ns.data.cooldowns
         },
         -- LEFT
         ["PLAYER_DEBUFFS"] = Frame(left, { unit = "player", anchor = { "RIGHT", UIParent, "CENTER", -xOffset, yOffset } }),
@@ -57,4 +57,10 @@ Filger.config = {
         -- CENTER
         ["BOSS_DEBUFFS"] = Frame(right, { unit = "player", anchor = { "CENTER", UIParent, "CENTER", 0, 160 }, limit = 1, size = math.floor(1.5 * size) })
     }
-}
+
+    for key, data in next, ns.elements.Auras.Frames(ns.data) do
+        Mixin(frames[key], data)
+    end
+
+    ns.config.frames = frames
+end

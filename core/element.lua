@@ -1,5 +1,6 @@
 local _, ns = ...
 local Filger = ns.Filger
+local CreateButton = ns.button.Create
 
 -- Blizzard
 local CreateFrame = _G.CreateFrame
@@ -50,7 +51,7 @@ do
     function element_proto:AcquireButton(index)
         local button = self[index]
         if not button then
-            button = Filger:CreateButton(self, index)
+            button = CreateButton(self, index)
             table.insert(self, button)
         end
         return button
@@ -72,10 +73,10 @@ do
         self:SetPosition(1, numVisible)
     end
 
-    function Filger:Spawn(key, data)
+    local function Spawn(key, data)
         -- "PLAYER_AURAS" -> "FilgerPlayerAuras"
         local name = key:lower():gsub("^%l", string.upper):gsub("_(%l)", string.upper)
-        local element = Mixin(CreateFrame("Frame", self:GetName() .. name, self), element_proto)
+        local element = Mixin(CreateFrame("Frame", Filger:GetName() .. name, Filger), element_proto)
 
         -- configuration
         element.unit = data.unit or "player"
@@ -91,43 +92,13 @@ do
         element:SetPoint(unpack(data.anchor))
         element:SetWidth((element.limit * element.size) + (element.limit - 1) * element.spacing)
         element:SetHeight(element.size)
-    
-        if (data.type == "cooldowns") then
-            element = Mixin(element, ns.cooldown_proto)
-            
-            -- overrider element functions with configurations
-            element.SortCooldowns = data.SortCooldowns or element.SortCooldowns
-            element.FilterCooldown = data.FilterCooldown or element.FilterCooldown
-
-            element.casted = {}
-            element.active = {}
-
-            element:RegisterEvent("SPELL_UPDATE_COOLDOWN")
-            element:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", self.unit)
-        elseif (data.type == "container") then
-            -- Mainline only: Blizzard's secure aura container filters and displays the auras
-            element = Mixin(element, ns.container_proto)
-            element:CreateContainer(data)
-        elseif (data.type == "auras") then
-            element = Mixin(element, ns.aura_proto)
-
-            -- overrider element functions with configurations
-            element.SortAuras = data.SortAuras or element.SortAuras
-            element.FilterAura = data.FilterAura or element.FilterAura
-
-            element:RegisterEvent("UNIT_AURA")
-
-            if (element.unit == "target") then
-                element:RegisterEvent("PLAYER_TARGET_CHANGED")
-            end
-
-            if (element.unit == "focus") then
-                element:RegisterEvent("PLAYER_FOCUS_CHANGED")
-            end
-        end
 
         element.spells = data.spells or {}
-    
+
+        -- "Auras" or "Cooldowns": the type's proto creates its state and registers its events
+        Mixin(element, ns.elements[data.type])
+        element:Enable(data)
+
         element:SetScript("OnEvent", function(self, event, ...)
             -- call event handler
             self[event](self, ...)
@@ -135,4 +106,8 @@ do
     
         return element
     end
+
+    ns.element = {
+        Spawn = Spawn
+    }
 end

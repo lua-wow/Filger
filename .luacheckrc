@@ -9,7 +9,7 @@ unused_secondaries = false -- e.g. local name, _, itemLevel = GetItemInfo(...)
 exclude_files = {
     '.claude/**',
     'docs/**',
-    'core/development.lua', -- dev-only helpers
+    'dev/development.lua', -- dev-only helpers
     'libs/**', -- submodules
 }
 

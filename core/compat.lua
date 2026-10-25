@@ -1,44 +1,24 @@
 local _, ns = ...
-local Filger = ns.Filger
 
-local format = string.format
-local floor, ceil = math.floor, math.ceil
+-- Blizzard
+local C_Secrets = _G.C_Secrets
+local issecretvalue = _G.issecretvalue
 
 ------------------------------------------------------------
--- Functions
+-- Compat
 ------------------------------------------------------------
-function Filger:print(...)
-    print("|cffff8000Filger|r", ...)
-end
+-- spell shims and secret predicates, resolved once at load
+local compat = {}
 
-function Filger:warn(...)
-    print("|cffffd100Filger WARNING|r", ...)
-end
+local never = function() return false end
 
-function Filger:error(...)
-    print("|cffffa1a1Filger ERROR|r", ...)
-end
+-- Retail: tainted code can't list auras or read updateInfo while this is true
+compat.AurasSecret = C_Secrets and C_Secrets.ShouldAurasBeSecret or never
+compat.SpellAuraSecret = C_Secrets and C_Secrets.ShouldSpellAuraBeSecret or never
+compat.SpellCooldownSecret = C_Secrets and C_Secrets.ShouldSpellCooldownBeSecret or never
+compat.IsSecret = issecretvalue or never
 
--- format seconds to min/hour/day
-local day, hour, minute = 86400, 3600, 60
-
-function Filger.FormatTime(s)
-    local v = tonumber(s) or 0
-
-	if (v >= day) then
-		return format("%dd", ceil(v / day))
-	elseif (v >= hour) then
-		return format("%dh", ceil(v / hour))
-	elseif (v >= minute) then
-		return format("%dm", ceil(v / minute))
-	elseif (v >= minute / 12) then
-		return floor(v)
-	end
-
-	return format("%.1f", v)
-end
-
-function Filger.GetSpellInfo(spellID)
+function compat.GetSpellInfo(spellID)
 	if C_Spell and C_Spell.GetSpellInfo then
 		return C_Spell.GetSpellInfo(spellID)
 	else
@@ -58,7 +38,7 @@ function Filger.GetSpellInfo(spellID)
 	end
 end
 
-function Filger.GetSpellCooldown(spellID)
+function compat.GetSpellCooldown(spellID)
 	if C_Spell and C_Spell.GetSpellCooldown then
 		return C_Spell.GetSpellCooldown(spellID)
 	else
@@ -71,3 +51,5 @@ function Filger.GetSpellCooldown(spellID)
 		}
 	end
 end
+
+ns.compat = compat

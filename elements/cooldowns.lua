@@ -1,5 +1,4 @@
 local _, ns = ...
-local Filger = ns.Filger
 
 -- Blizzard
 local IsSpellKnown = C_SpellBook.IsSpellKnown
@@ -8,8 +7,12 @@ local GetItemInfo = C_Item.GetItemInfo
 local GetItemCooldown = C_Container.GetItemCooldown
 local GetInventoryItemCooldown = _G.GetInventoryItemCooldown
 local GetOverrideSpell = C_Spell and C_Spell.GetOverrideSpell
-local C_Secrets = _G.C_Secrets
-local issecretvalue = _G.issecretvalue
+
+-- Compat
+local GetSpellInfo = ns.compat.GetSpellInfo
+local GetSpellCooldown = ns.compat.GetSpellCooldown
+local SpellCooldownSecret = ns.compat.SpellCooldownSecret
+local IsSecret = ns.compat.IsSecret
 
 --------------------------------------------------
 -- COOLDOWNS
@@ -114,14 +117,14 @@ do
 
         if data.spellId then
             index = "SPELL_" .. data.spellId
-            local info = Filger.GetSpellInfo(data.spellId)
+            local info = GetSpellInfo(data.spellId)
             if info then
                 name = info.name
                 icon = info.iconID
             end
-            local cdInfo = Filger.GetSpellCooldown(data.spellId)
+            local cdInfo = GetSpellCooldown(data.spellId)
             if cdInfo then
-                if C_Secrets and C_Secrets.ShouldSpellCooldownBeSecret(data.spellId) then
+                if SpellCooldownSecret(data.spellId) then
                     -- startTime/duration are secret; isActive/isOnGCD never are
                     if cdInfo.isActive and not cdInfo.isOnGCD then
                         durationObject = C_Spell.GetSpellCooldownDuration(data.spellId)
@@ -219,9 +222,21 @@ do
 
     -- register which spell the player cast
     function cooldown_proto:UNIT_SPELLCAST_SUCCEEDED(unit, guid, spellId)
-        if issecretvalue and issecretvalue(spellId) then return end
+        if IsSecret(spellId) then return end
         self.casted[spellId] = true
+    end
+
+    function cooldown_proto:Enable(data)
+        -- overrider element functions with configurations
+        self.SortCooldowns = data.SortCooldowns or self.SortCooldowns
+        self.FilterCooldown = data.FilterCooldown or self.FilterCooldown
+
+        self.casted = {}
+        self.active = {}
+
+        self:RegisterEvent("SPELL_UPDATE_COOLDOWN")
+        self:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", self.unit)
     end
 end
 
-ns.cooldown_proto = cooldown_proto
+ns.elements.Cooldowns = cooldown_proto

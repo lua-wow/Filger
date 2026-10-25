@@ -1,15 +1,28 @@
 local _, ns = ...
-local Filger = ns.Filger
 
 local LibDispel = LibStub("LibDispel")
 assert(LibDispel, "Filger requires LibDispel")
 
-local blacklist = ns.Filger.blacklist or {}
-
 -- Blizzard
 local UnitIsUnit = _G.UnitIsUnit
 local UnitIsOwnerOrControllerOfUnit = _G.UnitIsOwnerOrControllerOfUnit
-local C_Secrets = _G.C_Secrets
+
+-- Compat
+local AurasSecret = ns.compat.AurasSecret
+local SpellAuraSecret = ns.compat.SpellAuraSecret
+
+-- dispel border colors, by aura dispelName
+local colors = {
+	["Stealable"] = ns.media.CreateColor(0.93, 0.91, 0.55),
+	["Bleed"] = ns.media.CreateColor(0.90, 0.10, 0.10),
+	["Enrage"] = ns.media.CreateColor(0.78, 0.25, 0.25)
+}
+
+for debuffType, info in next, AuraUtil.GetDebuffDisplayInfoTable() do
+	if not colors[debuffType] then
+		colors[debuffType] = CreateColor(info.color.r, info.color.g, info.color.b)
+	end
+end
 
 --------------------------------------------------
 -- AURAS
@@ -29,9 +42,9 @@ do
     function aura_proto:UpdateColor(button, unit, data)
         if button.Backdrop then
             if (data.isHarmful and UnitCanAssist("player", unit)) or (data.isHelpful and UnitCanAttack(unit, "player") and UnitCanAttack("player", unit)) then
-                Filger:SetBorderColor(button.Backdrop, Filger.colors[data.dispelName])
+                ns.SetBorderColor(button.Backdrop, colors[data.dispelName])
             else
-                Filger:SetBorderColor(button.Backdrop, Filger.config.general.backdrop.color)
+                ns.SetBorderColor(button.Backdrop, ns.config.general.backdrop.color)
             end
         end
 
@@ -179,6 +192,7 @@ do
             data.stackThreshold = 0
         end
 
+        local blacklist = ns.data.blacklist
         if blacklist[data.spellId] or blacklist[data.name] then
             data.enabled = false
         end
@@ -193,7 +207,7 @@ do
         local isPlayer = self.filter:find("PLAYER") ~= nil
 
         for spellId in next, self.spells do
-            if not C_Secrets.ShouldSpellAuraBeSecret(spellId) then
+            if not SpellAuraSecret(spellId) then
                 local data = C_UnitAuras.GetUnitAuraBySpellID(unit, spellId)
                 if data and data.isHarmful == isHarmful and (not isPlayer or data.isFromPlayerOrPlayerPet) then
                     data = self:ProcessData(unit, data)
@@ -210,7 +224,7 @@ do
     function aura_proto:UpdateAuras(event, unit, updateInfo)
         if (self.unit ~= unit) then return end
 
-        local isRestricted = C_Secrets and C_Secrets.ShouldAurasBeSecret()
+        local isRestricted = AurasSecret()
         -- updateInfo is secret while restricted; cached auras are stale right after it
 	    local isFullUpdate = isRestricted or self.restricted or not updateInfo or updateInfo.isFullUpdate
         self.restricted = isRestricted
@@ -303,90 +317,105 @@ do
     function aura_proto:PLAYER_FOCUS_CHANGED(...)
         self:ForceUpdate()
     end
+
+    function aura_proto:Enable(data)
+        -- overrider element functions with configurations
+        self.SortAuras = data.SortAuras or self.SortAuras
+        self.FilterAura = data.FilterAura or self.FilterAura
+
+        self:RegisterEvent("UNIT_AURA")
+
+        if (self.unit == "target") then
+            self:RegisterEvent("PLAYER_TARGET_CHANGED")
+        end
+
+        if (self.unit == "focus") then
+            self:RegisterEvent("PLAYER_FOCUS_CHANGED")
+        end
+    end
 end
 
-ns.aura_proto = aura_proto
+ns.elements.Auras = aura_proto
 
 --------------------------------------------------
 -- FRAMES
 --------------------------------------------------
-local class = Filger.class
-local spells = Filger.spells or {}
-local all = Filger.all or {}
+local class = ns.player.class
 
--- adds what each frame shows to its layout in config.lua
-for key, data in next, {
-    -- LEFT
-    ["PLAYER_DEBUFFS"] = {
-        type = "auras",
-        filter = "HARMFUL",
-        spells = {
-            [124275] = { enabled = true, priority = 3 },    -- Light Stagger
-            [124274] = { enabled = true, priority = 3 },    -- Moderate Stagger
-            [124273] = { enabled = true, priority = 3 }     -- Heavy Stagger
-        }
-    },
-    ["PLAYER_AURAS"] = {
-        type = "auras",
-        filter = "PLAYER|HELPFUL",
-        spells = Mixin(spells[class] or {}, spells["ALL"] or {})
-    },
-    ["PLAYER_BUFFS"] = {
-        type = "auras",
-        filter = "HELPFUL",
-        FilterAura = function(element, unit, data)
-            return data.enabled and not data.isPlayerAura
-        end
-    },
-    -- RIGHT
-    ["TARGET_DEBUFFS"] = {
-        type = "auras",
-        filter = "HARMFUL",
-        spells = all,
-        FilterAura = function(element, unit, data)
-            if UnitCanAttack(unit, "player") then
-                return data.enabled and data.isPlayerAura
-            end
-            return data.enabled and not data.isPlayerAura
-        end,
-        SortAuras = function(a, b)
-            if (a.priority ~= b.priority) then
-                return a.priority < b.priority
-            end
+-- what each frame shows; ns.BuildConfig adds it to the frame's layout
+function aura_proto.Frames(db)
+    local spells = db.spells
 
-            if (a.expirationTime ~= b.expirationTime) then
-                return a.expirationTime < b.expirationTime
-            end
+    -- every class's listed spells, for target auras
+    local all = {}
+    for _, list in next, spells do
+        Mixin(all, list)
+    end
 
-            if (a.isPlayerAura ~= b.isPlayerAura) then
-                return a.isPlayerAura
+    return {
+        -- LEFT
+        ["PLAYER_DEBUFFS"] = {
+            filter = "HARMFUL",
+            spells = {
+                [124275] = { enabled = true, priority = 3 },    -- Light Stagger
+                [124274] = { enabled = true, priority = 3 },    -- Moderate Stagger
+                [124273] = { enabled = true, priority = 3 }     -- Heavy Stagger
+            }
+        },
+        ["PLAYER_AURAS"] = {
+            filter = "PLAYER|HELPFUL",
+            spells = Mixin(spells[class] or {}, spells["ALL"] or {})
+        },
+        ["PLAYER_BUFFS"] = {
+            filter = "HELPFUL",
+            FilterAura = function(element, unit, data)
+                return data.enabled and not data.isPlayerAura
             end
+        },
+        -- RIGHT
+        ["TARGET_DEBUFFS"] = {
+            filter = "HARMFUL",
+            spells = all,
+            FilterAura = function(element, unit, data)
+                if UnitCanAttack(unit, "player") then
+                    return data.enabled and data.isPlayerAura
+                end
+                return data.enabled and not data.isPlayerAura
+            end,
+            SortAuras = function(a, b)
+                if (a.priority ~= b.priority) then
+                    return a.priority < b.priority
+                end
 
-            return a.auraInstanceID < b.auraInstanceID
-        end
-    },
-    ["TARGET_AURAS"] = {
-        type = "auras",
-        filter = "HELPFUL",
-        spells = all
-    },
-    ["FOCUS_DEBUFFS"] = {
-        type = "auras",
-        filter = "HARMFUL",
-        desaturated = false,
-        FilterAura = function(element, unit, data)
-            return data.enabled and data.isBossAura or (data.sourceUnit == nil) or not data.isFromPlayerOrPlayerPet
-        end
-    },
-    -- CENTER
-    ["BOSS_DEBUFFS"] = {
-        enabled = false,
-        type = "auras",
-        filter = "HARMFUL",
-        FilterAura = function(element, unit, data)
-            return data.enabled and data.isBossAura or (data.sourceUnit == nil)
-        end
-    },
-} do
-    Mixin(Filger.config.frames[key], data)
+                if (a.expirationTime ~= b.expirationTime) then
+                    return a.expirationTime < b.expirationTime
+                end
+
+                if (a.isPlayerAura ~= b.isPlayerAura) then
+                    return a.isPlayerAura
+                end
+
+                return a.auraInstanceID < b.auraInstanceID
+            end
+        },
+        ["TARGET_AURAS"] = {
+            filter = "HELPFUL",
+            spells = all
+        },
+        ["FOCUS_DEBUFFS"] = {
+            filter = "HARMFUL",
+            desaturated = false,
+            FilterAura = function(element, unit, data)
+                return data.enabled and data.isBossAura or (data.sourceUnit == nil) or not data.isFromPlayerOrPlayerPet
+            end
+        },
+        -- CENTER
+        ["BOSS_DEBUFFS"] = {
+            enabled = false,
+            filter = "HARMFUL",
+            FilterAura = function(element, unit, data)
+                return data.enabled and data.isBossAura or (data.sourceUnit == nil)
+            end
+        },
+    }
 end

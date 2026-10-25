@@ -5,6 +5,7 @@ local Filger = ns.Filger
 -- Filger
 --------------------------------------------------
 local isInit = false
+local spawned = {}
 
 Filger:RegisterEvent("ADDON_LOADED")
 Filger:RegisterEvent("PLAYER_LOGIN")
@@ -17,12 +18,14 @@ end)
 
 function Filger:ADDON_LOADED(addon)
     if (addon ~= "Filger") then return end
-    self.unit = "player"
-    self.guid = UnitGUID(self.unit)
+
+    -- order matters: config reads the validated data, the backdrop API reads the config
+    ns.data.Finalize()
+    ns.BuildConfig()
 
     -- Filger standalone
-    if self.MergeAPI then
-        self:MergeAPI()
+    if ns.MergeAPI then
+        ns.MergeAPI()
     end
 end
 
@@ -31,11 +34,11 @@ function Filger:PLAYER_LOGIN()
         -- self:RegisterEvent("PLAYER_ENTERING_WORLD")
 
         -- create panels based on spell list
-        for key, data in pairs(self.config.frames) do
+        for key, data in pairs(ns.config.frames) do
             if (data.enabled) then
-                local element = self:Spawn(key, data)
+                local element = ns.element.Spawn(key, data)
                 element:ForceUpdate()
-                table.insert(self, element)
+                table.insert(spawned, element)
             end
         end
 

@@ -1,6 +1,8 @@
 local _, ns = ...
 local Filger = ns.Filger
 
+if not ns.config.general.dev then return end
+
 ------------------------------------------------------------
 -- Development (write anything here)
 ------------------------------------------------------------
@@ -58,7 +60,7 @@ local exp4 = function(arg)
     print(Filger.title, "exp4: created T1-T4, buff", buff, "debuff", debuff)
 end
 
-Filger:AddCommand("exp4", exp4, "experiment 4: aura container spell-ID gate (/filger exp4 <buffID>,<debuffID>)")
+ns.AddCommand("exp4", exp4, "experiment 4: aura container spell-ID gate (/filger exp4 <buffID>,<debuffID>)")
 
 -- Experiment 5: which filter strings each client accepts and fills
 -- usage: /filger exp5 (out of combat; GetAuraSlots errors on secret auras)
@@ -83,7 +85,7 @@ local exp5 = function()
     end
 end
 
-Filger:AddCommand("exp5", exp5, "experiment 5: aura counts per filter string on the player")
+ns.AddCommand("exp5", exp5, "experiment 5: aura counts per filter string on the player")
 
 -- Experiment 6: private aura anchors from addon code
 -- usage: /filger exp6 (anywhere; the private aura icon draws inside the grey boxes)
@@ -126,7 +128,7 @@ local exp6 = function()
     end
 end
 
-Filger:AddCommand("exp6", exp6, "experiment 6: private aura anchors on the player")
+ns.AddCommand("exp6", exp6, "experiment 6: private aura anchors on the player")
 
 -- Experiment 7: cooldown edges (item/slot cooldowns, secret cast spellID)
 -- usage: /filger exp7 [itemID] toggles logging; enter combat and cast spells / use the item
@@ -169,7 +171,7 @@ local exp7 = function(arg)
     print(Filger.title, "exp7: logging player casts (start/duration or secret), run again to stop")
 end
 
-Filger:AddCommand("exp7", exp7, "experiment 7: cooldown edges, logs player casts (/filger exp7 [itemID])")
+ns.AddCommand("exp7", exp7, "experiment 7: cooldown edges, logs player casts (/filger exp7 [itemID])")
 
 -- Experiment 8: which aura tooltip methods each client has
 -- usage: /filger exp8 (anywhere)
@@ -180,7 +182,7 @@ local exp8 = function()
     end
 end
 
-Filger:AddCommand("exp8", exp8, "experiment 8: aura tooltip methods on GameTooltip")
+ns.AddCommand("exp8", exp8, "experiment 8: aura tooltip methods on GameTooltip")
 
 -- Experiment 10: which event reports each item/slot cooldown change
 -- usage: /filger exp10 [itemID] toggles logging; use a trinket and a potion, compare with Filger's icons
@@ -219,4 +221,4 @@ local exp10 = function(arg)
     print(Filger.title, "exp10: logging slot 13/14/item cooldown changes per event, run again to stop")
 end
 
-Filger:AddCommand("exp10", exp10, "experiment 10: item cooldown refresh events (/filger exp10 [itemID])")
+ns.AddCommand("exp10", exp10, "experiment 10: item cooldown refresh events (/filger exp10 [itemID])")
