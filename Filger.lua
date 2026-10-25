@@ -19,14 +19,9 @@ end)
 function Filger:ADDON_LOADED(addon)
     if (addon ~= "Filger") then return end
 
-    -- order matters: config reads the validated data, the backdrop API reads the config
+    -- order matters: config reads the validated data
     ns.data.Finalize()
     ns.BuildConfig()
-
-    -- Filger standalone
-    if ns.MergeAPI then
-        ns.MergeAPI()
-    end
 end
 
 function Filger:PLAYER_LOGIN()

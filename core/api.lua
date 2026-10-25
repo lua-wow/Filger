@@ -13,16 +13,12 @@ function ns.SetBorderColor(backdrop, color)
 	end
 end
 
--- skip it if a UI with its own CreateBackdrop is loaded
-if IsAddOnLoaded("Tainted") or IsAddOnLoaded("Tukui") or IsAddOnLoaded("ElvUI") then
-	return
-end
+-- these UIs add their own CreateBackdrop to every frame; OptionalDeps loads them first
+local hasUIBackdrop = IsAddOnLoaded("Tainted") or IsAddOnLoaded("Tukui") or IsAddOnLoaded("ElvUI")
 
 ---------------------------------------------------
 -- API
 ---------------------------------------------------
-local API = {}
-
 local Scale = function(size)
 	-- Ensure 'size' is a valid number, default to 1 if not
 	size = tonumber(size) or 1
@@ -41,8 +37,10 @@ local Scale = function(size)
     return mult * math.floor(size / mult + 0.5)
 end
 
-API.CreateBackdrop = function(self, template)
-	if not self.Backdrop then
+function ns.CreateBackdrop(frame, template)
+	if hasUIBackdrop and frame.CreateBackdrop then
+		frame:CreateBackdrop(template)
+	elseif not frame.Backdrop then
 		local backdropTexture = textures.blank
 		local backdropColor = ns.config.general.backdrop.color
 		local backdropAlpha = (template == "transparent") and 0.70 or 1
@@ -61,46 +59,14 @@ API.CreateBackdrop = function(self, template)
 			backdrop.insets = { top = inset, left = inset, bottom = inset, right = inset }
 		end
 		
-		local level = self:GetFrameLevel() or 1
+		local level = frame:GetFrameLevel() or 1
 
-		self.Backdrop = CreateFrame("Frame", nil, self, "BackdropTemplate")
-		self.Backdrop:SetPoint("TOPLEFT", -inset, inset)
-		self.Backdrop:SetPoint("BOTTOMRIGHT", inset, -inset)
-		self.Backdrop:SetFrameLevel(level - 1)
-		self.Backdrop:SetBackdrop(backdrop)
-		self.Backdrop:SetBackdropColor(backdropColor.r, backdropColor.g, backdropColor.b, backdropAlpha)
-		self.Backdrop:SetBackdropBorderColor(borderColor.r, borderColor.g, borderColor.b)
+		frame.Backdrop = CreateFrame("Frame", nil, frame, "BackdropTemplate")
+		frame.Backdrop:SetPoint("TOPLEFT", -inset, inset)
+		frame.Backdrop:SetPoint("BOTTOMRIGHT", inset, -inset)
+		frame.Backdrop:SetFrameLevel(level - 1)
+		frame.Backdrop:SetBackdrop(backdrop)
+		frame.Backdrop:SetBackdropColor(backdropColor.r, backdropColor.g, backdropColor.b, backdropAlpha)
+		frame.Backdrop:SetBackdropBorderColor(borderColor.r, borderColor.g, borderColor.b)
 	end
-end
-
---------------------------------------------------
--- Merge Filger API with WoW API
---------------------------------------------------
-function ns.MergeAPI()
-    local AddAPI = function(obj)
-        local mt = getmetatable(obj).__index
-        for name, func in pairs(API) do
-            if (not obj[name]) then mt[name] = func end
-        end
-    end
-
-    local Handled = {
-        ["Frame"] = true
-    }
-
-    local Object = CreateFrame("Frame")
-    AddAPI(Object)
-    AddAPI(Object:CreateTexture())
-    AddAPI(Object:CreateFontString())
-
-    Object = EnumerateFrames()
-
-    while (Object) do
-        local t = Object:GetObjectType()
-        if (not Object:IsForbidden() and not Handled[t]) then
-            AddAPI(Object)
-            Handled[t] = true
-        end
-        Object = EnumerateFrames(Object)
-    end
 end
