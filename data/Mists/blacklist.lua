@@ -7,10 +7,7 @@ local AddBlacklist = ns.data.AddBlacklist
 --------------------------------------------------
 do
     local data = {
-        --------------------------------------------------
-        -- Season of Discovery
-        --------------------------------------------------
-        [349981] = true,                                    -- Supercharged Chronoboon Displacer
+        [128943] = true,    -- Cyclonic Inspiration
     }
 
     AddBlacklist(data)

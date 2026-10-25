@@ -54,11 +54,6 @@ do
         [11787] = true,                                     -- Blood Pact (Rank 5)
         [27267] = true,                                     -- Blood Pact (Rank 6)
         [47982] = true,                                     -- Blood Pact (Rank 7)
-
-        --------------------------------------------------
-        -- Season of Discovery
-        --------------------------------------------------
-        [349981] = true,                                    -- Supercharged Chronoboon Displacer
     }
 
     AddBlacklist(data)

@@ -107,16 +107,31 @@ do
         return a.index < b.index
     end
 
+    -- returns the row's reused data table; name/icon are cached and only looked up again when they can change
     function cooldown_proto:ProcessCooldownData(unit, data)
-        local index, name, icon, start, duration, enabled, durationObject
+        local d = self.rows[data]
+        if not d then
+            d = {
+                index = data.spellId and ("SPELL_" .. data.spellId) or ("SLOT_" .. data.slotId),
+                spellId = data.spellId,
+                slotId = data.slotId
+            }
+            self.rows[data] = d
+        end
+
+        local start, duration, enabled, durationObject
 
         if data.spellId then
-            index = "SPELL_" .. data.spellId
-            local info = GetSpellInfo(data.spellId)
-            if info then
-                name = info.name
-                icon = info.iconID
+            -- a talent can replace one tracked spell with another (e.g. Sentinel overrides Avenging Wrath)
+            local activeSpellId = GetOverrideSpell and GetOverrideSpell(data.spellId) or data.spellId
+            -- iconID follows the override, so look it up again when the override changes
+            if not d.name or d.activeSpellId ~= activeSpellId then
+                local info = GetSpellInfo(data.spellId)
+                d.name = info and info.name
+                d.icon = info and info.iconID
             end
+            d.activeSpellId = activeSpellId
+
             local cdInfo = GetSpellCooldown(data.spellId)
             if cdInfo then
                 if SpellCooldownSecret(data.spellId) then
@@ -131,12 +146,20 @@ do
                 enabled = cdInfo.isEnabled and 1 or 0
             end
         elseif data.slotId then
-            index = "SLOT_" .. data.slotId
             local itemLink = GetInventoryItemLink(unit, data.slotId)
             if (itemLink) then
-                name, _, _, _, _, _, _, _, _, icon, _, _, _, _, _, _, _ = GetItemInfo(itemLink)
+                if itemLink ~= d.itemLink then
+                    local name, _, _, _, _, _, _, _, _, icon = GetItemInfo(itemLink)
+                    d.name = name
+                    d.icon = icon
+                    -- item info can be uncached on first lookup; keep retrying until it returns a name
+                    d.itemLink = name and itemLink
+                end
                 start, duration, enabled = GetInventoryItemCooldown(unit, data.slotId)
             else
+                d.name = nil
+                d.icon = nil
+                d.itemLink = nil
                 enabled = 0
             end
         end
@@ -144,22 +167,15 @@ do
         duration = duration or 0
         start = start or 0
 
-        return {
-            index = index,
-            name = name,
-            spellId = data.spellId,
-            -- a talent can replace one tracked spell with another (e.g. Sentinel overrides Avenging Wrath)
-            activeSpellId = data.spellId and GetOverrideSpell and GetOverrideSpell(data.spellId) or data.spellId,
-            slotId = data.slotId,
-            icon = icon,
-            start = start,
-            duration = duration,
-            expirationTime = start + duration,
-            durationObject = durationObject,
-            enabled = (enabled ~= 0),
-            casted = (not data.spellId) and true or self.casted[data.spellId],
-            isKnown = (not data.spellId) and true or IsSpellKnown(data.spellId)
-        }
+        d.start = start
+        d.duration = duration
+        d.expirationTime = start + duration
+        d.durationObject = durationObject
+        d.enabled = (enabled ~= 0)
+        d.casted = (not data.spellId) and true or self.casted[data.spellId]
+        d.isKnown = (not data.spellId) and true or IsSpellKnown(data.spellId)
+
+        return d
     end
 
     function cooldown_proto:UpdateCooldowns(event, unit, spellID, baseSpellID)
@@ -227,6 +243,7 @@ do
 
         self.casted = {}
         self.active = {}
+        self.rows = {}
 
         self:RegisterEvent("SPELL_UPDATE_COOLDOWN")
         self:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", self.unit)

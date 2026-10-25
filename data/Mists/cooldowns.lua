@@ -47,7 +47,7 @@ local data = {
         CreateSpellCooldown(119392), -- Charging Ox Wave
         CreateSpellCooldown(119381), -- Leg Sweep
         CreateSpellCooldown(122278), -- Dampen Harm
-        CreateSpellCooldown(122283), -- Diffuse Magic
+        CreateSpellCooldown(122783), -- Diffuse Magic
         CreateSpellCooldown(123904), -- Invoke Xuen, the White Tiger
 
         -- Brewmaster

@@ -14,11 +14,6 @@ do
 
         -- Consumables
         [17629] = true,                                     -- Flask of Chromatic Resistance
-
-        --------------------------------------------------
-        -- Season of Discovery
-        --------------------------------------------------
-        [349981] = true,                                    -- Supercharged Chronoboon Displacer
     }
 
     AddBlacklist(data)

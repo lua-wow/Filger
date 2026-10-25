@@ -65,11 +65,6 @@ do
         [33077] = true,                                     -- Agility (Scroll of Agility V)
 
         [33082] = true,                                     -- Strength (Scroll of Strength V)
-
-        --------------------------------------------------
-        -- Season of Discovery
-        --------------------------------------------------
-        [349981] = true,                                    -- Supercharged Chronoboon Displacer
     }
 
     AddBlacklist(data)
