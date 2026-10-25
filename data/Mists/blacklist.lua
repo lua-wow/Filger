@@ -8,6 +8,7 @@ local AddBlacklist = ns.data.AddBlacklist
 do
     local data = {
         [128943] = true,    -- Cyclonic Inspiration
+        [81744] = true,     -- Horde
     }
 
     AddBlacklist(data)

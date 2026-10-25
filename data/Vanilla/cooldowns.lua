@@ -7,6 +7,13 @@ local AddCooldowns = ns.data.AddCooldowns
 -- Classic Era
 --------------------------------------------------
 local data = {
+    ["MAGE"] = {
+        -- Arcane
+        CreateSpellCooldown(12051),         -- Evocation
+
+        -- Frost
+        CreateSpellCooldown(12472),         -- Icy Veins
+    },
     ["PALADIN"] = {
         -- General
         CreateSpellCooldown(498),           -- Divine Protection

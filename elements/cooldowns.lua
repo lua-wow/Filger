@@ -230,6 +230,20 @@ do
         self:UpdateCooldowns("SPELL_UPDATE_COOLDOWN", self.unit, spellID, baseSpellID)
     end
 
+    -- only refresh when a tracked slot changed
+    function cooldown_proto:PLAYER_EQUIPMENT_CHANGED(slot)
+        for _, row in next, self.spells do
+            if row.slotId == slot then
+                return self:ForceUpdate()
+            end
+        end
+    end
+
+    -- talent/spec changes alter isKnown and overrides
+    function cooldown_proto:SPELLS_CHANGED()
+        self:ForceUpdate()
+    end
+
     -- register which spell the player cast
     function cooldown_proto:UNIT_SPELLCAST_SUCCEEDED(unit, guid, spellId)
         if IsSecret(spellId) then return end
@@ -246,6 +260,8 @@ do
         self.rows = {}
 
         self:RegisterEvent("SPELL_UPDATE_COOLDOWN")
+        self:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
+        self:RegisterEvent("SPELLS_CHANGED")
         self:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", self.unit)
     end
 end

@@ -7,6 +7,13 @@ local AddCooldowns = ns.data.AddCooldowns
 -- The Burning Crusade Classic
 --------------------------------------------------
 local data = {
+    ["MAGE"] = {
+        -- Arcane
+        CreateSpellCooldown(12051),         -- Evocation
+
+        -- Frost
+        CreateSpellCooldown(12472),         -- Icy Veins
+    },
     ["PRIEST"] = {
         -- Discipline
         CreateSpellCooldown(10060),         -- Power Infusion
