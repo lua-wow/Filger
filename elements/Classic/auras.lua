@@ -245,10 +245,12 @@ do
                 local slots = { C_UnitAuras.GetAuraSlots(unit, self.filter) }
                 for i = 2, #slots do -- #1 return is continuationToken, we don't care about it
                     local data = self:ProcessData(unit, C_UnitAuras.GetAuraDataBySlot(unit, slots[i]))
-                    self.all[data.auraInstanceID] = data
+                    if data then
+                        self.all[data.auraInstanceID] = data
 
-                    if self:FilterAura(unit, data) then
-                        self.actives[data.auraInstanceID] = true
+                        if self:FilterAura(unit, data) then
+                            self.actives[data.auraInstanceID] = true
+                        end
                     end
                 end
             end
