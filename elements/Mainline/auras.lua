@@ -176,7 +176,7 @@ function container_proto.Frames(db)
                 {
                     filter = "HELPFUL|PLAYER",
                     candidateFilters = {
-                        includeSpellIDs = ToSpellIDs(Mixin(spells[class] or {}, spells["ALL"] or {}))
+                        includeSpellIDs = ToSpellIDs(Mixin({}, spells[class] or {}, spells["ALL"] or {}))
                     }
                 }
             }

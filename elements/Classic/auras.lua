@@ -372,7 +372,7 @@ function aura_proto.Frames(db)
         },
         ["PLAYER_AURAS"] = {
             filter = "PLAYER|HELPFUL",
-            spells = Mixin(spells[class] or {}, spells["ALL"] or {})
+            spells = Mixin({}, spells[class] or {}, spells["ALL"] or {})
         },
         ["PLAYER_BUFFS"] = {
             filter = "HELPFUL",
