@@ -47,6 +47,8 @@ Spells shown or hidden per client are listed in [data/](./data).
 ### Commands
 
 -   `/filger help` - List all available commands.
+-   `/filger auras <player|target|focus> <buffs|debuffs>` - List your auras on a unit with their spell IDs.
+    Out of combat only on Retail, while auras are secret.
 
 ## Configuration
 
@@ -57,8 +59,8 @@ Please report Lua errors as [issues](https://github.com/lua-wow/Filger/issues).
 ## Dependencies
 
 -   Required: none.
--   Optional: [Tainted](https://github.com/lua-wow/Tainted) or [Tukui](https://github.com/tukui-org/Tukui).
-    When either is loaded, Filger uses its API instead of its own.
+-   Optional: [Tainted](https://github.com/lua-wow/Tainted), [Tukui](https://github.com/tukui-org/Tukui)
+    or [ElvUI](https://github.com/tukui-org/ElvUI). When one is loaded, Filger uses its API instead of its own.
 
 ## Installation
 

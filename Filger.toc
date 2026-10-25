@@ -11,7 +11,7 @@
 
 ## IconTexture: Interface\ICONS\Spell_Shadow_Shadowwordpain
 
-## X-Website: https://github.com/wow-lua/Filger
+## X-Website: https://github.com/lua-wow/Filger
 ## X-Maintainer: pedrozc90
 
 libs\init.xml
