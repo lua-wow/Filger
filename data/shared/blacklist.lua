@@ -49,7 +49,7 @@ local general = {
     [32223] = (EXPANSION >= LE_EXPANSION_BURNING_CRUSADE),      -- Crusader Aura
 
     -- PRIEST
-    [1243] = (EXPANSION <= LE_EXPANSION_MISTS_OF_PANDARIA) and "name", -- Power Word: Fortitude (Retail uses 21562)
+    [1243] = (EXPANSION < LE_EXPANSION_MISTS_OF_PANDARIA) and "name", -- Power Word: Fortitude (Retail uses 21562)
 }
 
 AddBlacklist(general)

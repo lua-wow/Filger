@@ -9,6 +9,9 @@ do
     local data = {
         [128943] = true,    -- Cyclonic Inspiration
         [81744] = true,     -- Horde
+
+        -- PRIEST
+        [21562] = true,     -- Power Word: Fortitude
     }
 
     AddBlacklist(data)
