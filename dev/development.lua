@@ -222,3 +222,64 @@ local exp10 = function(arg)
 end
 
 ns.AddCommand("exp10", exp10, "experiment 10: item cooldown refresh events (/filger exp10 [itemID])")
+
+-- T20: listed aura IDs that never show up (a cast ID listed instead of the aura ID)
+-- usage: /filger unseen starts logging; play the spec, then /filger unseen again lists them
+-- Retail records nothing while auras are secret (combat, instances): test outside combat there
+local unseenFrame, listed, seen
+local unseenUnits = { player = true, target = true, focus = true }
+
+local function markAura(data)
+    if data and listed[data.spellId] then
+        seen[data.spellId] = true
+    end
+end
+
+local function scanUnit(unit)
+    for _, filter in ipairs({ "HELPFUL", "HARMFUL" }) do
+        local slots = { C_UnitAuras.GetAuraSlots(unit, filter) }
+        for i = 2, #slots do -- #1 return is continuationToken
+            markAura(C_UnitAuras.GetAuraDataBySlot(unit, slots[i]))
+        end
+    end
+end
+
+local unseen = function()
+    if unseenFrame then
+        unseenFrame:UnregisterAllEvents()
+        unseenFrame = nil
+
+        local ids = {}
+        for spellId in next, listed do
+            if not seen[spellId] then table.insert(ids, spellId) end
+        end
+        table.sort(ids)
+        for _, spellId in ipairs(ids) do
+            local info = ns.compat.GetSpellInfo(spellId)
+            print(Filger.title, "unseen:", spellId, info and info.name or "?")
+        end
+        print(Filger.title, "unseen: stopped,", #ids, "listed IDs never seen")
+        return
+    end
+
+    listed = Mixin({}, ns.data.spells[ns.player.class] or {}, ns.data.spells.ALL or {})
+    seen = {}
+
+    unseenFrame = CreateFrame("Frame")
+    unseenFrame:RegisterEvent("UNIT_AURA")
+    unseenFrame:SetScript("OnEvent", function(_, _, unit, updateInfo)
+        -- updateInfo and aura slots are secret while restricted
+        if not unseenUnits[unit] or ns.compat.AurasSecret() then return end
+        if not updateInfo or updateInfo.isFullUpdate then
+            scanUnit(unit)
+        elseif updateInfo.addedAuras then
+            for _, data in next, updateInfo.addedAuras do
+                markAura(data)
+            end
+        end
+    end)
+    if not ns.compat.AurasSecret() then scanUnit("player") end
+    print(Filger.title, "unseen: logging listed aura IDs, run again to report")
+end
+
+ns.AddCommand("unseen", unseen, "dev: logs listed aura IDs; run again to list the ones never seen")
