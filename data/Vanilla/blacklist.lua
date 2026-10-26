@@ -38,7 +38,11 @@ do
         [21562] = true,                                     -- Prayer of Fortitude (Rank 1)
         [21564] = true,                                     -- Prayer of Fortitude (Rank 2)
 
+        [14819] = true,                                     -- Divine Spirit
         [27681] = true,                                     -- Prayer of Spirit
+
+        [976] = true,                                       -- Shadow Protection (Rank 1)
+        [10957] = true,                                     -- Shadow Protection (Rank 2)
 
         -- WARLOCK
         [687] = true,                                       -- Demon Skin (Rank 1)
