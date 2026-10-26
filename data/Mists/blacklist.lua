@@ -45,6 +45,7 @@ do
 
         -- WARLOCK
         [109773] = true, -- Dark Intent
+        [108446] = true, -- Soul Link
     }
     AddBlacklist(data)
 end
