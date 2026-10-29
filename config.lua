@@ -14,7 +14,7 @@ ns.config = {
             ["size"] = 1
         },
         ["gametooltip"] = true,                                 -- enabled tooltips
-        ["dev"] = false,                                        -- enables dev/development.lua commands
+        ["dev"] = true,                                        -- enables dev/development.lua commands
     }
 }
 

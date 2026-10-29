@@ -117,3 +117,36 @@ local unseen = function()
 end
 
 ns.AddCommand("unseen", unseen, "dev: logs listed aura IDs; run again to list the ones never seen")
+
+-- fingerprint of the final data, to compare a client before and after moving blacklist IDs
+-- usage: /filger dump; name checksums depend on the client locale
+local function checksum(values)
+    local h = 0
+    for _, v in ipairs(values) do
+        local s = tostring(v)
+        for i = 1, #s do h = (h * 31 + s:byte(i)) % 2147483647 end
+        h = (h * 31 + 10) % 2147483647 -- separator, so {1,23} ~= {12,3}
+    end
+    return format("%08x", h)
+end
+
+local dump = function()
+    -- sorted, so the checksum doesn't depend on table iteration order
+    local ids, names = {}, {}
+    for key in next, ns.data.blacklist do
+        table.insert(type(key) == "number" and ids or names, key)
+    end
+    table.sort(ids)
+    table.sort(names)
+
+    -- cooldown order is display order, so it is not sorted
+    local cooldowns = {}
+    for _, row in ipairs(ns.data.cooldowns) do
+        table.insert(cooldowns, row.spellId and ("spell" .. row.spellId) or ("slot" .. row.slotId))
+    end
+
+    print(Filger.title, "dump: blacklist", #ids, "ids", checksum(ids), "/", #names, "names", checksum(names))
+    print(Filger.title, "dump: cooldowns", ns.player.class, #cooldowns, checksum(cooldowns))
+end
+
+ns.AddCommand("dump", dump, "dev: count and checksum of the final blacklist and cooldowns")

@@ -18,12 +18,12 @@ libs\LibDispel\LibDispel.xml [AllowLoadGameType classic]
 core\compat.lua
 core\util.lua
 core\data.lua
+core\init.xml
 data\[Game]\blacklist.lua
 data\[Game]\cooldowns.lua
 data\[Game]\spells.lua
 data\shared\blacklist.lua
 data\shared\cooldowns.lua
-core\init.xml
 config.lua
 elements\cooldowns.lua
 elements\[Family]\auras.lua

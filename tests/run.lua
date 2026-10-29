@@ -29,6 +29,7 @@ local function newData(known, class)
     local ns = {
         config = { general = { dev = false } },
         player = { class = class or "MAGE" },
+        client = { expansion = 2 },
         compat = {
             GetSpellInfo = function(id)
                 return known and known[id] and { name = known[id] } or nil
@@ -100,6 +101,18 @@ test("CreateSlotCooldown", function()
     eq(data.CreateSlotCooldown("13").slotId, "13", "numeric string slotId")
     eq(data.CreateSlotCooldown(13, false).enabled, false, "disabled")
     eq(pcall(data.CreateSlotCooldown, "x"), false, "non-numeric slotId errors")
+end)
+
+test("In", function()
+    local data = newData() -- expansion 2
+
+    eq(data.In(0), true, "from below")
+    eq(data.In(2), true, "from equal")
+    eq(data.In(3), false, "from above")
+    eq(data.In(0, 2), true, "to equal")
+    eq(data.In(0, 1), false, "to below")
+    eq(data.In(2, 2), true, "single")
+    eq(data.In(3, 4), false, "range above")
 end)
 
 ------------------------------------------------------------

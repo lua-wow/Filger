@@ -24,10 +24,6 @@ ignore = {
     '631', -- line is too long
 }
 
--- data files keep the full expansion ladder for authoring entries
-files['data/shared/blacklist.lua'] = { ignore = { '211/LE_EXPANSION_.*' } }
-files['data/shared/cooldowns.lua'] = { ignore = { '211/LE_EXPANSION_.*' } }
-
 -- globals Filger is allowed to set or mutate
 globals = {
     -- slash commands
@@ -48,6 +44,19 @@ read_globals = {
     'C_UnitAuras',
 
     -- constants
+    'LE_EXPANSION_BATTLE_FOR_AZEROTH',
+    'LE_EXPANSION_BURNING_CRUSADE',
+    'LE_EXPANSION_CATACLYSM',
+    'LE_EXPANSION_CLASSIC',
+    'LE_EXPANSION_DRAGONFLIGHT',
+    'LE_EXPANSION_LEGION',
+    'LE_EXPANSION_LEVEL_CURRENT',
+    'LE_EXPANSION_MIDNIGHT',
+    'LE_EXPANSION_MISTS_OF_PANDARIA',
+    'LE_EXPANSION_SHADOWLANDS',
+    'LE_EXPANSION_WAR_WITHIN',
+    'LE_EXPANSION_WARLORDS_OF_DRAENOR',
+    'LE_EXPANSION_WRATH_OF_THE_LICH_KING',
     'WOW_PROJECT_BURNING_CRUSADE_CLASSIC',
     'WOW_PROJECT_CAMELOT',
     'WOW_PROJECT_CATACLYSM_CLASSIC',

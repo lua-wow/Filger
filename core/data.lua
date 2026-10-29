@@ -3,7 +3,7 @@ local _, ns = ...
 ------------------------------------------------------------
 -- Data
 ------------------------------------------------------------
--- Loaded before core\init.xml: data files only collect tables here.
+-- Loaded before the data files, which only collect tables here.
 -- Validation runs in Finalize() at ADDON_LOADED; it fills data.blacklist/spells/cooldowns,
 -- and records unresolved or duplicated IDs in data.invalid as { kind, class, id }.
 -- A blacklist value of "name" also blacklists the spell's localized name (Classic filters only).
@@ -48,6 +48,13 @@ function data.CreateSlotCooldown(slotId, enabled)
         enabled = true
     end
     return { slotId = slotId, enabled = enabled }
+end
+
+-- true when the client's expansion is within from..to (inclusive; `to` optional);
+-- reads ns.client at call time, since core\init.xml loads after this file
+function data.In(from, to)
+    local expansion = ns.client.expansion
+    return expansion >= from and (to == nil or expansion <= to)
 end
 
 function data.AddBlacklist(source)

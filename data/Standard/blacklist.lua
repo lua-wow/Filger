@@ -19,7 +19,6 @@ local data = {
 
     -- DRUID
     [400734] = true,  -- After the Wildfire
-    [783] = true,     -- Travel Form
     [210053] = true,  -- Mount Form
 
     -- MAGE
@@ -44,19 +43,15 @@ local data = {
     [317920] = true,  -- Concentration Aura
 
     -- PRIEST
-    [21562] = true,   -- Power Word: Fortitude
     [194384] = true,  -- Atonement
 
     -- ROGUE
     [315584] = true,  -- Instant Poison
-    [8679] = true,    -- Wound Poison
-    [5761] = true,    -- Numbing Poison
     [381637] = true,  -- Atrophic Poison
     [381664] = true,  -- Amplifying Poison
 
     -- SHAMAN
     [462854] = true,  -- Skyfury
-    [52127] = true,   -- Water Shield
 
     -- WARRIOR
     [386196] = true,  -- Berserker Stance

@@ -29,7 +29,29 @@ client.isCamelot = (WOW_PROJECT_ID == WOW_PROJECT_CAMELOT)
 client.isClassic = (client.isVanilla or client.isTBC or client.isWrath or client.isCata or client.isMists)
 client.isMainline = not client.isClassic
 
+client.interface = select(4, GetBuildInfo())
+
+-- expansion levels for gating shared data
+-- reference: https://warcraft.wiki.gg/wiki/LE_EXPANSION
+local expansions = {
+    Classic = LE_EXPANSION_CLASSIC,
+    BurningCrusade = LE_EXPANSION_BURNING_CRUSADE,
+    Wrath = LE_EXPANSION_WRATH_OF_THE_LICH_KING,
+    Cataclysm = LE_EXPANSION_CATACLYSM,
+    Mists = LE_EXPANSION_MISTS_OF_PANDARIA,
+    Warlords = LE_EXPANSION_WARLORDS_OF_DRAENOR,
+    Legion = LE_EXPANSION_LEGION,
+    BattleForAzeroth = LE_EXPANSION_BATTLE_FOR_AZEROTH,
+    Shadowlands = LE_EXPANSION_SHADOWLANDS,
+    Dragonflight = LE_EXPANSION_DRAGONFLIGHT,
+    WarWithin = LE_EXPANSION_WAR_WITHIN,
+    Midnight = LE_EXPANSION_MIDNIGHT,
+}
+
+client.expansion = LE_EXPANSION_LEVEL_CURRENT
+
 ns.client = client
+ns.expansions = expansions
 
 -- player
 ns.player = {
