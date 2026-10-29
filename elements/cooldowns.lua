@@ -198,7 +198,8 @@ do
                     end
                 else
                     self.active[row] = nil
-                    if data.spellId then
+                    -- an on-hold cooldown (e.g. Inner Focus) starts later; keep the cast so it shows then
+                    if data.spellId and data.enabled then
                         self.casted[data.spellId] = nil
                     end
                 end

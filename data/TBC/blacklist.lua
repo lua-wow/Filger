@@ -32,6 +32,8 @@ local data = {
     -- HUNTER
     [13165] = "name", -- Aspect of the Hawk
     [13163] = true,   -- Aspect of the Monkey
+    [34074] = true,   -- Aspect of the Viper
+    [24529] = true,   -- Spirit Bond
 
     -- MAGE
     [1460] = true,    -- Arcane Intellect (Rank 2)
@@ -55,6 +57,8 @@ local data = {
     [25782] = "name", -- Greater Blessing of Might
     [25894] = "name", -- Greater Blessing of Wisdom
     [25898] = true,   -- Greater Blessing of Kings
+    [19899] = true,   -- Fire Resistance Aura (Rank 2)
+    [19900] = true,   -- Fire Resistance Aura (Rank 3)
     [21084] = "name", -- Seal of Righteousness
 
     -- PRIEST
@@ -66,7 +70,17 @@ local data = {
     [10938] = true,   -- Power Word: Fortitude (Rank 6)
     [25389] = true,   -- Power Word: Fortitude (Rank 7)
 
+    [21562] = true,   -- Prayer of Fortitude (Rank 1)
+    [21564] = true,   -- Prayer of Fortitude (Rank 2)
+
+    [976] = true,     -- Shadow Protection (Rank 1)
+    [10957] = true,   -- Shadow Protection (Rank 2)
+
+    [27683] = true,   -- Prayer of Shadow Protection
+
     [25431] = true,   -- Inner Fire (Rank 7)
+    [14819] = true,   -- Divine Spirit
+    [27681] = true,   -- Prayer of Spirit (Rank 1)
     [32999] = true,   -- Prayer of Spirit (Rank 2)
     [588] = "name",   -- Inner Fire
     [15473] = true,   -- Shadowform
@@ -100,17 +114,50 @@ local data = {
     [17629] = true,   -- Flask of Chromatic Resistance
 
     -- Scrolls
+    [8091] = true,    -- Armor (Scroll of Protection)
+    [8094] = true,    -- Armor (Scroll of Protection II)
+    [8095] = true,    -- Armor (Scroll of Protection III)
+    [12175] = true,   -- Armor (Scroll of Protection IV)
     [33079] = true,   -- Armor (Scroll of Protection V)
 
+    [8096] = true,    -- Intellect (Scroll of Intellect)
+    [8097] = true,    -- Intellect (Scroll of Intellect II)
+    [8098] = true,    -- Intellect (Scroll of Intellect III)
+    [12176] = true,   -- Intellect (Scroll of Intellect IV)
     [33078] = true,   -- Intellect (Scroll of Intellect V)
 
+    [8099] = true,    -- Stamina (Scroll of Stamina)
+    [8100] = true,    -- Stamina (Scroll of Stamina II)
+    [8101] = true,    -- Stamina (Scroll of Stamina III)
+    [12178] = true,   -- Stamina (Scroll of Stamina IV)
     [33081] = true,   -- Stamina (Scroll of Stamina V)
 
+    [8112] = true,    -- Spirit Magic (Scroll of Spirit)
+    [8113] = true,    -- Spirit Magic (Scroll of Spirit II)
+    [8114] = true,    -- Spirit Magic (Scroll of Spirit III)
+    [12177] = true,   -- Spirit Magic (Scroll of Spirit IV)
     [33080] = true,   -- Spirit Magic (Scroll of Spirit V)
 
+    [8115] = true,    -- Agility (Scroll of Agility)
+    [8116] = true,    -- Agility (Scroll of Agility II)
+    [8117] = true,    -- Agility (Scroll of Agility III)
+    [12174] = true,   -- Agility (Scroll of Agility IV)
     [33077] = true,   -- Agility (Scroll of Agility V)
 
+    [8118] = true,    -- Strength (Scroll of Strength)
+    [8119] = true,    -- Strength (Scroll of Strength II)
+    [8120] = true,    -- Strength (Scroll of Strength III)
+    [12179] = true,   -- Strength (Scroll of Strength IV)
     [33082] = true,   -- Strength (Scroll of Strength V)
+
+    -- Reputation
+    [17670] = true,   -- Agent Dawn Commission
+
+    -- Christimas
+    [26218] = true,   -- Mistletoe
+
+    -- Hallowen
+    [24755] = true,   -- Tricked or Treated
 }
 
 AddBlacklist(data)

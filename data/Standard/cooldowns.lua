@@ -194,6 +194,7 @@ local data = {
         CreateSpellCooldown(187650),        -- Freezing Trap
         CreateSpellCooldown(109248),        -- Binding Shot
         CreateSpellCooldown(19577),         -- Intimidation
+        CreateSpellCooldown(34477),         -- Misdirection
 
         -- Beast Mastery
         CreateSpellCooldown(19574),         -- Bestial Wrath
@@ -250,6 +251,7 @@ local data = {
         CreateSpellCooldown(12472),         -- Icy Veins
         CreateSpellCooldown(84714),         -- Frozen Orb
         CreateSpellCooldown(235219),        -- Cold Snap
+        CreateSpellCooldown(31687),         -- Summon Water Elemental
 
         CreateSpellCooldown(235870),        -- Alexstrasza's Fury
         CreateSpellCooldown(214634),        -- Ebonbolt
@@ -289,6 +291,7 @@ local data = {
         CreateSpellCooldown(119582, false), -- Purifiying Brew
         CreateSpellCooldown(132578),        -- Invoke Niuzao, the Black Ox
         CreateSpellCooldown(115399),        -- Black Ox Brew
+        CreateSpellCooldown(115315),        -- Summon Black Ox Statue
         CreateSpellCooldown(322507),        -- Celestial Brew
         CreateSpellCooldown(115176),        -- Zen Meditation
         CreateSpellCooldown(325153),        -- Exploding Keg

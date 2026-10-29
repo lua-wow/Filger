@@ -36,3 +36,23 @@ Each worktree's build is in its `version.txt`.
 | Cooldowns | `Blizzard_CooldownViewer` (retail); `C_Spell.GetSpellCooldown` / `GetItemCooldown` in API docs                 |
 | Spell API | `C_Spell` vs legacy `GetSpellInfo` in API docs and `Blizzard_Deprecated*`                                      |
 | Tooltips  | `Blizzard_GameTooltip` (`GameTooltip:SetUnitAura`)                                                             |
+
+## `../spellbook` (spell DB2 data and checks)
+
+A separate tool, not part of Filger. Don't edit it unless asked. It caches Blizzard's spell DB2
+tables from wago.tools per client build in `../spellbook/data/<build>/` and merges them into
+`spells.csv` (`ID,Name,Subtext,Class,Learnable,Dispel,Cooldown,CategoryCooldown,Charges,ChargeRecovery,Labels,Description`).
+Use it to verify spell IDs offline instead of relying on memory. Usage is in `../spellbook/README.md`.
+
+```sh
+lua ../spellbook/check.lua [Game ...]       # run from Filger's root: MISSING / NAME / NOCD / CLASS
+lua ../spellbook/check.lua --cooldowns      # learnable spells with a cooldown > 30s not in cooldowns.lua (CSV)
+```
+
+- Clients map to builds by version prefix in the `clients` table at the top of `check.lua`.
+  A missing build is downloaded (network); use the cached `data/` when it is enough.
+- To look up a single ID: `grep '^<id>,' ../spellbook/data/<build>/spells.csv`.
+- Caveats: an ID present in DB2 isn't necessarily obtainable (Retail keeps many removed spells).
+  `Learnable` has false negatives (for example Retail Barkskin = 0) and is sparse on Era and
+  Forever, so `1` is evidence and `0` is not. A Retail `Cooldown` of 0 doesn't prove there is no
+  cooldown. Treat DB2-only conclusions as **unverified** until they're checked in-game.

@@ -51,6 +51,8 @@ architecture win when they conflict.
 
 - Blizzard `wow-ui-source` (local clone in `../refs`, read-only) is the API authority. Use
   targeted searches, not broad exploration. Map: [docs/references.md](docs/references.md).
+- `../spellbook` (separate tool) caches per-client spell DB2 tables and checks `data/` spell IDs.
+  Use it to verify IDs instead of memory: [docs/references.md](docs/references.md#spellbook-spell-db2-data-and-checks).
 
 ## Git & GitHub
 

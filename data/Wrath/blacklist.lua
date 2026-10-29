@@ -53,6 +53,7 @@ local data = {
 
     [61316] = true,   -- Dalaran Brilliance
     [23028] = "name", -- Arcane Brilliance
+    [168] = "name",   -- Frost Armor
     [7302] = "name",  -- Ice Armor
     [6117] = "name",  -- Mage Armor
     [30482] = "name", -- Molten Armor
@@ -83,6 +84,7 @@ local data = {
     [588] = "name",   -- Inner Fire
     [48040] = true,   -- Inner Fire (Rank 8)
     [48168] = true,   -- Inner Fire (Rank 9)
+    [32999] = true,   -- Prayer of Spirit (Rank 2)
     [48074] = true,   -- Prayer of Spirit (Rank 3)
     [15473] = true,   -- Shadowform
     [23723] = true,   -- Mind Quickening
@@ -103,6 +105,7 @@ local data = {
     [11766] = true,   -- Blood Pact (Rank 4)
     [11767] = true,   -- Blood Pact (Rank 5)
     [27267] = true,   -- Blood Pact (Rank 6)
+    [27268] = true,   -- Blood Pact (Rank 6)
     [47982] = true,   -- Blood Pact (Rank 7)
 
     [706] = "name",   -- Demon Armor
@@ -115,6 +118,14 @@ local data = {
 
     [469] = "name",   -- Commanding Shout
     [6673] = "name",  -- Battle Shout
+
+    -- Scrolls
+    [33079] = true,   -- Armor (Scroll of Protection V)
+    [33078] = true,   -- Intellect (Scroll of Intellect V)
+    [33081] = true,   -- Stamina (Scroll of Stamina V)
+    [33080] = true,   -- Spirit Magic (Scroll of Spirit V)
+    [33077] = true,   -- Agility (Scroll of Agility V)
+    [33082] = true,   -- Strength (Scroll of Strength V)
 }
 
 AddBlacklist(data)

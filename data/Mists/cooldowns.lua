@@ -33,6 +33,7 @@ local data = {
 
         -- Guardian / Feral
         CreateSpellCooldown(61336),  -- Survival Instincts
+        CreateSpellCooldown(22842),  -- Frenzied Regeneration
         CreateSpellCooldown(102795), -- Bear Hug
         CreateSpellCooldown(106922), -- Might of Ursoc
         CreateSpellCooldown(106952), -- Berkserk
@@ -57,6 +58,7 @@ local data = {
         CreateSpellCooldown(48792),  -- Icebound Fortitude
         CreateSpellCooldown(48707),  -- Anti-Magic Shell
         CreateSpellCooldown(49028),  -- Dancing Rune Weapon
+        CreateSpellCooldown(48982),  -- Rune Tap
         CreateSpellCooldown(49039),  -- Lichborne
         CreateSpellCooldown(55233),  -- Vampiric Blood
         CreateSpellCooldown(42650),  -- Army of the Dead
@@ -94,6 +96,7 @@ local data = {
         CreateSpellCooldown(147362), -- Counter Shot
         CreateSpellCooldown(3045),   -- Rapid Fire
         CreateSpellCooldown(19574),  -- Bestial Wrath
+        CreateSpellCooldown(34026),  -- Kill Command
 
         -- Talents
         CreateSpellCooldown(34490),  -- Silencing Shot
@@ -109,8 +112,10 @@ local data = {
         CreateSpellCooldown(24604),  -- Furious Howl
         CreateSpellCooldown(26064),  -- Shell Shield
         CreateSpellCooldown(50245),  -- Pin
+        CreateSpellCooldown(50285),  -- Dust Cloud
         CreateSpellCooldown(50318),  -- Serenity Dust
         CreateSpellCooldown(50479),  -- Nether Shock
+        CreateSpellCooldown(50518),  -- Ravage
         CreateSpellCooldown(50519),  -- Sonic Blast
         CreateSpellCooldown(50541),  -- Clench
         CreateSpellCooldown(51753),  -- Camouflage
@@ -313,6 +318,7 @@ local data = {
         CreateSpellCooldown(121471), -- Shadow Blades
         CreateSpellCooldown(114018), -- Shroud of Concealment
         CreateSpellCooldown(57934),  -- Tricks of the Trade
+        CreateSpellCooldown(14183),  -- Premeditation
 
         -- Talents
         CreateSpellCooldown(14185),  -- Preparation
@@ -323,6 +329,7 @@ local data = {
 
         -- Combat
         CreateSpellCooldown(13750),  -- Adrenaline Rush
+        CreateSpellCooldown(13877),  -- Blade Flurry
         CreateSpellCooldown(51690),  -- Killing Spree
 
         -- Subtlety
@@ -337,6 +344,7 @@ local data = {
     ["SHAMAN"] = {
         -- General
         CreateSpellCooldown(8143),   -- Tremor Totem
+        CreateSpellCooldown(8177),   -- Grounding Totem
         CreateSpellCooldown(32182),  -- Heroism
         CreateSpellCooldown(79206),  -- Spiritwalker's Grace
         CreateSpellCooldown(108269), -- Capacitor Totem
@@ -423,6 +431,9 @@ local data = {
         CreateSpellCooldown(6544),   -- Heroic Leap
         CreateSpellCooldown(1160),   -- Demoralizing Shout
         CreateSpellCooldown(676),    -- Disarm
+        CreateSpellCooldown(2565),   -- Shield Block
+        CreateSpellCooldown(12328),  -- Sweeping Strikes
+        CreateSpellCooldown(57755),  -- Heroic Throw
 
         -- Talents
         CreateSpellCooldown(12292),  -- Bloodbath

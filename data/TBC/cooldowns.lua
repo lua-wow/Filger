@@ -190,6 +190,7 @@ local data = {
         CreateSpellCooldown(2894),  -- Fire Elemental Totem
 
         -- Talents
+        CreateSpellCooldown(17364), -- Stormstrike
         CreateSpellCooldown(16166), -- Elemental Mastery
         CreateSpellCooldown(16188), -- Nature's Swiftness
         CreateSpellCooldown(30823), -- Shamanistic Rage
@@ -234,6 +235,8 @@ local data = {
         CreateSpellCooldown(2687),  -- Bloodrage
         CreateSpellCooldown(6552),  -- Pummel (Rank 1)
         CreateSpellCooldown(20252), -- Intercept (Rank 1)
+        CreateSpellCooldown(1671),  -- Shield Bash (Rank 2)
+        CreateSpellCooldown(6178),  -- Charge (Rank 2)
 
         -- Talents
         CreateSpellCooldown(12292), -- Death Wish

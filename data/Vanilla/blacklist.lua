@@ -147,6 +147,9 @@ local data = {
     [8120] = true,    -- Strength (Scroll of Strength III)
     [12179] = true,   -- Strength (Scroll of Strength IV)
 
+    -- Reputation
+    [17670] = true,   -- Agent Dawn Commission
+
     -- Christimas
     [26218] = true,   -- Mistletoe
 

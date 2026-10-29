@@ -63,6 +63,7 @@ local data = {
         CreateSpellCooldown(16190),   -- Mana Tide Totem
         CreateSpellCooldown(16188),   -- Nature's Swiftness
         CreateSpellCooldown(425336),  -- Rage of the Farseer
+        CreateSpellCooldown(17364),   -- Stormstrike
     },
     ["WARLOCK"] = {
         CreateSpellCooldown(18288),   -- Amplify Curse
@@ -77,6 +78,7 @@ local data = {
         CreateSpellCooldown(12975),   -- Last Stand
         CreateSpellCooldown(403228),  -- Meathook
         CreateSpellCooldown(426490),  -- Rallying Cry
+        CreateSpellCooldown(12292),   -- Sweeping Strikes
     }
 }
 

@@ -84,6 +84,7 @@ local data = {
         CreateSpellCooldown(1499),    -- Freezing Trap (Rank 1)
         CreateSpellCooldown(34477),   -- Misdirection
         CreateSpellCooldown(53271),   -- Master's Call
+        CreateSpellCooldown(19801),   -- Tranquilizing Shot
 
         -- Talents
         CreateSpellCooldown(19574),   -- Bestial Wrath
@@ -213,6 +214,9 @@ local data = {
         CreateSpellCooldown(853),     -- Hammer of Justice (Rank 1)
         CreateSpellCooldown(31884),   -- Avenging Wrath
         CreateSpellCooldown(54428),   -- Divine Plea
+        CreateSpellCooldown(2812),    -- Holy Wrath (Rank 1)
+        CreateSpellCooldown(10318),   -- Holy Wrath (Rank 2)
+        CreateSpellCooldown(27139),   -- Holy Wrath (Rank 3)
 
         -- Talents
         CreateSpellCooldown(20216),   -- Divine Favor
