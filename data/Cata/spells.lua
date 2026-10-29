@@ -9,23 +9,23 @@ local AddSpells = ns.data.AddSpells
 local data = {
     ["DEATHKNIGHT"] = {
         -- Blood
-        [49222] = CreateSpellPriority(8),       -- Bone Shield
+        [49222] = CreateSpellPriority(8), -- Bone Shield
     },
     ["PALADIN"] = {
         -- Holy
-        [82327] = CreateSpellPriority(5),       -- Holy Radiance
-        [86273] = CreateSpellPriority(5),       -- Illuminated Healing
-        
+        [82327] = CreateSpellPriority(5), -- Holy Radiance
+        [86273] = CreateSpellPriority(5), -- Illuminated Healing
+
         -- Protection
-        [20925] = CreateSpellPriority(7),       -- Holy Shield
+        [20925] = CreateSpellPriority(7), -- Holy Shield
     },
     ["PRIEST"] = {
         -- Discipline
-        [81660] = CreateSpellPriority(8),       -- Evangelism (Rank 1)
-        [81661] = CreateSpellPriority(8),       -- Evangelism (Rank 2)
-        [59887] = CreateSpellPriority(7),       -- Borrowed Time (Rank 1)
-        [59888] = CreateSpellPriority(7),       -- Borrowed Time (Rank 2)
-        [59889] = CreateSpellPriority(7),       -- Borrowed Time (Rank 3)
+        [81660] = CreateSpellPriority(8), -- Evangelism (Rank 1)
+        [81661] = CreateSpellPriority(8), -- Evangelism (Rank 2)
+        [59887] = CreateSpellPriority(7), -- Borrowed Time (Rank 1)
+        [59888] = CreateSpellPriority(7), -- Borrowed Time (Rank 2)
+        [59889] = CreateSpellPriority(7), -- Borrowed Time (Rank 3)
     }
 }
 

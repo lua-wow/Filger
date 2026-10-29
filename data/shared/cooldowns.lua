@@ -20,23 +20,23 @@ local LE_EXPANSION_MIDNIGHT = _G.LE_EXPANSION_MIDNIGHT or 11
 
 local racials = {
     -- Horde
-    CreateSpellCooldown(7744),          -- Will of the Forsaken (Undead)
-    CreateSpellCooldown(20549),         -- War Stomp (Tauren)
-    CreateSpellCooldown(20572),         -- Blood Fury (Orc)
-    CreateSpellCooldown(26297),         -- Berserking (Troll)
-    CreateSpellCooldown(28730, expansion >= LE_EXPANSION_BURNING_CRUSADE),  -- Arcane Torrent (Blood Elf)
-    CreateSpellCooldown(255654, expansion >= LE_EXPANSION_LEGION),          -- Bull Rush (Highmountain Tauren)
+    CreateSpellCooldown(7744),                                                 -- Will of the Forsaken (Undead)
+    CreateSpellCooldown(20549),                                                -- War Stomp (Tauren)
+    CreateSpellCooldown(20572),                                                -- Blood Fury (Orc)
+    CreateSpellCooldown(26297),                                                -- Berserking (Troll)
+    CreateSpellCooldown(28730, expansion >= LE_EXPANSION_BURNING_CRUSADE),     -- Arcane Torrent (Blood Elf)
+    CreateSpellCooldown(255654, expansion >= LE_EXPANSION_LEGION),             -- Bull Rush (Highmountain Tauren)
 
     -- Alliance
-    CreateSpellCooldown(20594),         -- Stoneform (Dwarf)
-    CreateSpellCooldown(265221, expansion >= LE_EXPANSION_BATTLE_FOR_AZEROTH),  -- Fireblood Fury (Dark Iron Dwarf)
+    CreateSpellCooldown(20594),                                                -- Stoneform (Dwarf)
+    CreateSpellCooldown(265221, expansion >= LE_EXPANSION_BATTLE_FOR_AZEROTH), -- Fireblood Fury (Dark Iron Dwarf)
 }
 
 local gear = {
-   CreateSlotCooldown(2),    -- Neck
-   CreateSlotCooldown(6),    -- Waist
-   CreateSlotCooldown(13),   -- Trinket 1
-   CreateSlotCooldown(14),   -- Trinket 2 
+    CreateSlotCooldown(2),  -- Neck
+    CreateSlotCooldown(6),  -- Waist
+    CreateSlotCooldown(13), -- Trinket 1
+    CreateSlotCooldown(14), -- Trinket 2
 }
 
 -- racials and gear slots go after the player class cooldowns

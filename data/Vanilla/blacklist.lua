@@ -5,103 +5,191 @@ local AddBlacklist = ns.data.AddBlacklist
 --------------------------------------------------
 -- Classic Era
 --------------------------------------------------
-do
-    local data = {
-        -- DRUID
-        [5232] = true,                                      -- Mark of the Wild (Rank 2)
-        [6756] = true,                                      -- Mark of the Wild (Rank 3)
-        [5234] = true,                                      -- Mark of the Wild (Rank 4)
-        [8907] = true,                                      -- Mark of the Wild (Rank 5)
-        [9884] = true,                                      -- Mark of the Wild (Rank 6)
-        [9885] = true,                                      -- Mark of the Wild (Rank 7)
+local data = {
+    -- DRUID
+    [5232] = true,    -- Mark of the Wild (Rank 2)
+    [6756] = true,    -- Mark of the Wild (Rank 3)
+    [5234] = true,    -- Mark of the Wild (Rank 4)
+    [8907] = true,    -- Mark of the Wild (Rank 5)
+    [9884] = true,    -- Mark of the Wild (Rank 6)
+    [9885] = true,    -- Mark of the Wild (Rank 7)
 
-        [782] = true,                                       -- Thorns (Rank 2)
-        [1075] = true,                                      -- Thorns (Rank 3)
-        [8914] = true,                                      -- Thorns (Rank 4)
-        [9756] = true,                                      -- Thorns (Rank 5)
-        [9910] = true,                                      -- Thorns (Rank 6)
+    [782] = true,     -- Thorns (Rank 2)
+    [1075] = true,    -- Thorns (Rank 3)
+    [8914] = true,    -- Thorns (Rank 4)
+    [9756] = true,    -- Thorns (Rank 5)
+    [9910] = true,    -- Thorns (Rank 6)
 
-        -- MAGE
-        [1460] = true,                                      -- Arcane Intellect (Rank 2)
-        [1461] = true,                                      -- Arcane Intellect (Rank 3)
-        [10156] = true,                                     -- Arcane Intellect (Rank 4)
-        [10157] = true,                                     -- Arcane Intellect (Rank 5)
+    [21849] = true,   -- Gift of the Wild (Rank 1)
+    [21850] = true,   -- Gift of the Wild (Rank 2)
 
-        -- PRIEST
-        [1243] = true,                                      -- Power Word: Fortitude (Rank 1)
-        [1244] = true,                                      -- Power Word: Fortitude (Rank 2)
-        [1245] = true,                                      -- Power Word: Fortitude (Rank 3)
-        [2791] = true,                                      -- Power Word: Fortitude (Rank 4)
-        [10937] = true,                                     -- Power Word: Fortitude (Rank 5)
-        [10938] = true,                                     -- Power Word: Fortitude (Rank 6)
+    [783] = true,     -- Travel Form
+    [1066] = true,    -- Aquatic Form
+    [9634] = true,    -- Dire Bear Form
 
-        [21562] = true,                                     -- Prayer of Fortitude (Rank 1)
-        [21564] = true,                                     -- Prayer of Fortitude (Rank 2)
+    -- HUNTER
+    [13165] = "name", -- Aspect of the Hawk (Rank 1 - 7)
+    [13163] = true,   -- Aspect of the Monkey
 
-        [14819] = true,                                     -- Divine Spirit
-        [27681] = true,                                     -- Prayer of Spirit
+    -- MAGE
+    [1459] = true,    -- Arcane Intellect (Rank 1)
+    [1460] = true,    -- Arcane Intellect (Rank 2)
+    [1461] = true,    -- Arcane Intellect (Rank 3)
+    [10156] = true,   -- Arcane Intellect (Rank 4)
+    [10157] = true,   -- Arcane Intellect (Rank 5)
 
-        [976] = true,                                       -- Shadow Protection (Rank 1)
-        [10957] = true,                                     -- Shadow Protection (Rank 2)
+    [23028] = true,   -- Arcane Brilliance
 
-        -- WARLOCK
-        [687] = true,                                       -- Demon Skin (Rank 1)
-        [696] = true,                                       -- Demon Skin (Rank 2)
+    [168] = true,     -- Frost Armor (Rank 1)
+    [7300] = true,    -- Frost Armor (Rank 2)
+    [7301] = true,    -- Frost Armor (Rank 3)
 
-        [6307] = true,                                      -- Blood Pact (Rank 1)
-        [7804] = true,                                      -- Blood Pact (Rank 2)
-        [7805] = true,                                      -- Blood Pact (Rank 3)
-        [11766] = true,                                     -- Blood Pact (Rank 4)
-        [11787] = true,                                     -- Blood Pact (Rank 5)
+    [7302] = true,    -- Ice Armor (Rank 1)
+    [7320] = true,    -- Ice Armor (Rank 2)
+    [10219] = true,   -- Ice Armor (Rank 3)
+    [10220] = true,   -- Ice Armor (Rank 4)
 
-        -- Consumables
-        [17629] = true,                                     -- Flask of Chromatic Resistance
+    [6117] = true,    -- Mage Armor (Rank 1)
+    [22782] = true,   -- Mage Armor (Rank 2)
+    [22783] = true,   -- Mage Armor (Rank 3)
 
-        -- Scrolls
-        [8091] = true,                                      -- Armor (Scroll of Protection)
-        [8094] = true,                                      -- Armor (Scroll of Protection II)
-        [8095] = true,                                      -- Armor (Scroll of Protection III) 
-        [12175] = true,                                     -- Armor (Scroll of Protection IV)
+    -- PALADIN
+    [465] = "name",   -- Devotion Aura (Rank 1 - 7)
+    
+    [19891] = true,   -- Fire Resistence Aura (Rank 1)
+    [19899] = true,   -- Fire Resistence Aura (Rank 2)
+    [19900] = true,   -- Fire Resistence Aura (Ranl 3)
 
-        [8096] = true,                                      -- Intellect (Scroll of Intellect)
-        [8097] = true,                                      -- Intellect (Scroll of Intellect II)
-        [8098] = true,                                      -- Intellect (Scroll of Intellect III)
-        [12176] = true,                                     -- Intellect (Scroll of Intellect IV)
+    [25780] = true,   -- Righteous Fury
+    [20217] = true,   -- Blessing of Kings
+    [19742] = "name", -- Blessing of Wisdom (Rank 1 - 6)
+    [19740] = "name", -- Blessing of Might (Rank 1 - 6)
+    [25782] = true,   -- Greater Blessing of Might (Rank 1)
+    [25916] = true,   -- Greater Blessing of Might (Rank 2)
+    [25894] = true,   -- Greater Blessing of Wisdom (Rank 1)
+    [25918] = true,   -- Greater Blessing of Wisdom (Rank 2)
+    [25898] = true,   -- Greater Blessing of Kings
+    [21084] = "name", -- Seal of Righteousness (Rank 1 - 8)
 
-        [8099] = true,                                      -- Stamina (Scroll of Stamina)
-        [8100] = true,                                      -- Stamina (Scroll of Stamina II)
-        [8101] = true,                                      -- Stamina (Scroll of Stamina III)
-        [12178] = true,                                     -- Stamina (Scroll of Stamina IV)
+    -- PRIEST
+    [1243] = true,    -- Power Word: Fortitude (Rank 1)
+    [1244] = true,    -- Power Word: Fortitude (Rank 2)
+    [1245] = true,    -- Power Word: Fortitude (Rank 3)
+    [2791] = true,    -- Power Word: Fortitude (Rank 4)
+    [10937] = true,   -- Power Word: Fortitude (Rank 5)
+    [10938] = true,   -- Power Word: Fortitude (Rank 6)
 
-        [8112] = true,                                      -- Spirit Magic (Scroll of Spirit)
-        [8113] = true,                                      -- Spirit Magic (Scroll of Spirit II)
-        [8114] = true,                                      -- Spirit Magic (Scroll of Spirit III)
-        [12177] = true,                                     -- Spirit Magic (Scroll of Spirit IV)
+    [21562] = true,   -- Prayer of Fortitude (Rank 1)
+    [21564] = true,   -- Prayer of Fortitude (Rank 2)
 
-        [8115] = true,                                      -- Agility (Scroll of Agility)
-        [8116] = true,                                      -- Agility (Scroll of Agility II)
-        [8117] = true,                                      -- Agility (Scroll of Agility III)
-        [12174] = true,                                     -- Agility (Scroll of Agility IV)
+    [976] = true,     -- Shadow Protection (Rank 1)
+    [10957] = true,   -- Shadow Protection (Rank 2)
 
-        [8118] = true,                                      -- Strength (Scroll of Strength)
-        [8119] = true,                                      -- Strength (Scroll of Strength II)
-        [8120] = true,                                      -- Strength (Scroll of Strength III)
-        [12179] = true,                                     -- Strength (Scroll of Strength IV)
+    [27683] = true,   -- Prayer of Shadow Protection
 
-        -- Christimas
-        [26218] = true,                                     -- Mistletoe
+    [588] = "name",   -- Inner Fire (Rank 1 - 6)
+    [14819] = true,   -- Divine Spirit
+    [15473] = true,   -- Shadowform
+    [27681] = true,   -- Prayer of Spirit
 
-        --------------------------------------------------
-        -- Season of Discovery
-        --------------------------------------------------
-        [349981] = true,                                    -- Supercharged Chronoboon Displacer
-        [410935] = true,                                    -- Meditation on the Light
-        [417316] = true,                                    -- Meditation on the Loa
-        [418459] = true,                                    -- Meditation on Undeath
-        [419307] = true,                                    -- Meditation on Elune
-        [430947] = true,                                    -- Boon of Blackfathom (World Buff)
-        [436412] = true,                                    -- Discoverer's Delight
-    }
+    -- SHAMAN
+    [324] = "name",   -- Lightning Shield (Rank 1 - 7)
 
-    AddBlacklist(data)
-end
+    -- WARRIOR
+    [71] = true,      -- Defensive Stance
+    [2457] = true,    -- Battle Stance
+    [2458] = true,    -- Berserker Stance
+    [6673] = "name",  -- Battle Shout (Rank 1 - 7)
+
+    -- WARLOCK
+    [687] = true,     -- Demon Skin (Rank 1)
+    [696] = true,     -- Demon Skin (Rank 2)
+
+    [6307] = true,    -- Blood Pact (Rank 1)
+    [7804] = true,    -- Blood Pact (Rank 2)
+    [7805] = true,    -- Blood Pact (Rank 3)
+    [11766] = true,   -- Blood Pact (Rank 4)
+    [11767] = true,   -- Blood Pact (Rank 5)
+
+    [706] = "name",   -- Demon Armor (Rank 1 - 5)
+
+    -- Consumables
+    [17629] = true,   -- Flask of Chromatic Resistance
+
+    -- Scrolls
+    [8091] = true,    -- Armor (Scroll of Protection)
+    [8094] = true,    -- Armor (Scroll of Protection II)
+    [8095] = true,    -- Armor (Scroll of Protection III)
+    [12175] = true,   -- Armor (Scroll of Protection IV)
+
+    [8096] = true,    -- Intellect (Scroll of Intellect)
+    [8097] = true,    -- Intellect (Scroll of Intellect II)
+    [8098] = true,    -- Intellect (Scroll of Intellect III)
+    [12176] = true,   -- Intellect (Scroll of Intellect IV)
+
+    [8099] = true,    -- Stamina (Scroll of Stamina)
+    [8100] = true,    -- Stamina (Scroll of Stamina II)
+    [8101] = true,    -- Stamina (Scroll of Stamina III)
+    [12178] = true,   -- Stamina (Scroll of Stamina IV)
+
+    [8112] = true,    -- Spirit Magic (Scroll of Spirit)
+    [8113] = true,    -- Spirit Magic (Scroll of Spirit II)
+    [8114] = true,    -- Spirit Magic (Scroll of Spirit III)
+    [12177] = true,   -- Spirit Magic (Scroll of Spirit IV)
+
+    [8115] = true,    -- Agility (Scroll of Agility)
+    [8116] = true,    -- Agility (Scroll of Agility II)
+    [8117] = true,    -- Agility (Scroll of Agility III)
+    [12174] = true,   -- Agility (Scroll of Agility IV)
+
+    [8118] = true,    -- Strength (Scroll of Strength)
+    [8119] = true,    -- Strength (Scroll of Strength II)
+    [8120] = true,    -- Strength (Scroll of Strength III)
+    [12179] = true,   -- Strength (Scroll of Strength IV)
+
+    -- Christimas
+    [26218] = true,   -- Mistletoe
+
+    -- Hallowen
+    [24755] = true,   -- Tricked or Treated
+
+    -- Booms
+    [15366] = true,   -- Songflower Serenade
+    [22817] = true,   -- Fengus' Ferocity
+    [22818] = true,   -- Mol'dar's Moxie
+    [22820] = true,   -- Slip'kik's Savvy
+    [22888] = true,   -- Rallying Cry of the Dragonslayer
+    [355363] = true,   -- Rallying Cry of the Dragonslayer
+    [23768] = true,   -- Sayge's Dark Fortune of Damage
+    [24425] = true,   -- Spirit of Zandalar
+    [11371] = true,   -- Gift of Arthas
+    [355365] = true,  -- Spirit of Zandalar
+
+    [16363] = true,   -- Juju Power
+
+    --------------------------------------------------
+    -- Hardcore
+    --------------------------------------------------
+    [364001] = true,  -- Soul of Iron
+
+    --------------------------------------------------
+    -- Season of Discovery
+    --------------------------------------------------
+    [349981] = true,  -- Supercharged Chronoboon Displacer
+    [410935] = true,  -- Meditation on the Light
+    [417316] = true,  -- Meditation on the Loa
+    [418459] = true,  -- Meditation on Undeath
+    [419307] = true,  -- Meditation on Elune
+    [430947] = true,  -- Boon of Blackfathom (World Buff)
+    [436412] = true,  -- Discoverer's Delight
+
+    -- PALADIN
+    [407627] = true,  -- Righteous Fury
+
+    [430947] = true,  -- Boon of Blackfathom
+    [438536] = true,  -- Spark of Inspiration
+    [446695] = true,  -- Fervor of the Temple Explorer
+    [460940] = true,  -- Might of Stormwind
+}
+
+AddBlacklist(data)

@@ -5,46 +5,38 @@ local AddBlacklist = ns.data.AddBlacklist
 --------------------------------------------------
 -- Cataclysm Classic
 --------------------------------------------------
-do
-    local data = {
-        -- WARLOCK
-        [687] = true,                                       -- Demon Skin (Rank 1)
+local data = {
+    -- DEATHKNIGHT
+    [55610] = true, -- Improved Icy Talons
 
-        [6307] = true,                                      -- Blood Pact (Rank 1)
+    -- HUNTER
+    [77769] = true, -- Trap Launcher
 
-        -- Consumables
-        [17629] = true,                                     -- Flask of Chromatic Resistance
-    }
+    -- MAGE
+    [61316] = true, -- Dalaran Brilliance
 
-    AddBlacklist(data)
-end
+    -- PALADIN
+    [79102] = true, -- Blessing of Might
+    [20165] = true, -- Seal of Insight
 
-do
-    local data = {
-        -- DEATHKNIGHT
-        [55610] = true, -- Improved Icy Talons
+    -- PRIEST
+    [588] = true,   -- Inner Fire
+    [49868] = true, -- Mind Quickening
+    [79107] = true, -- Shadow Protection
+    [73413] = true, -- Inner Will
 
-        -- HUNTER
-        [77769] = true, -- Trap Launcher
+    -- SHAMAN
+    [30809] = true, -- Unleashed Rage
+    [51470] = true, -- Elemental Oath
+    [77747] = true, -- Totemic Wrath
 
-        -- MAGE
-        [61316] = true, -- Dalaran Brilliance
+    -- WARLOCK
+    [687] = true,   -- Demon Skin (Rank 1)
 
-        -- PALADIN
-        [79102] = true, -- Blessing of Might
-        [20165] = true, -- Seal of Insight
+    [6307] = true,  -- Blood Pact (Rank 1)
 
-        -- PRIEST
-        [588] = true, -- Inner Fire
-        [49868] = true, -- Mind Quickening
-        [79107] = true, -- Shadow Protection
-        [73413] = true, -- Inner Will
+    -- Consumables
+    [17629] = true, -- Flask of Chromatic Resistance
+}
 
-        -- SHAMAN
-        [30809] = true, -- Unleashed Rage
-        [51470] = true, -- Elemental Oath
-        [77747] = true, -- Totemic Wrath
-    }
-
-    AddBlacklist(data)
-end
+AddBlacklist(data)

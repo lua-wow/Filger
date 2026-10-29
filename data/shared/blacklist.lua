@@ -21,32 +21,32 @@ local LE_EXPANSION_MIDNIGHT = _G.LE_EXPANSION_MIDNIGHT or 11
 --------------------------------------------------
 -- "name": also hide every aura sharing this spell's localized name (all ranks, new food buffs)
 local general = {
-    [19705] = "name",                                           -- Well Fed
-    [430] = "name",                                             -- Drink
-    [433] = "name",                                             -- Food
- 
+    [430] = "name",                                                   -- Drink
+    [433] = "name",                                                   -- Food
+    [19705] = "name",                                                 -- Well Fed
+
     -- Lust
-    [57723] = (EXPANSION >= LE_EXPANSION_WRATH_OF_THE_LICH_KING),   -- Exhaustion (Heroism)
-    [57724] = (EXPANSION >= LE_EXPANSION_WRATH_OF_THE_LICH_KING),   -- Sated (Bloodlust)
-    [80354] = (EXPANSION >= LE_EXPANSION_MISTS_OF_PANDARIA),        -- Temporal Displacement (Mage)
-    [264689] = (EXPANSION >= LE_EXPANSION_SHADOWLANDS),             -- Fatigued (Hunter)
-    [390435] = (EXPANSION >= LE_EXPANSION_DRAGONFLIGHT),            -- Exhaustion (Evoker - Fury of the Aspects)
+    [57723] = (EXPANSION >= LE_EXPANSION_WRATH_OF_THE_LICH_KING),     -- Exhaustion (Heroism)
+    [57724] = (EXPANSION >= LE_EXPANSION_WRATH_OF_THE_LICH_KING),     -- Sated (Bloodlust)
+    [80354] = (EXPANSION >= LE_EXPANSION_MISTS_OF_PANDARIA),          -- Temporal Displacement (Mage)
+    [264689] = (EXPANSION >= LE_EXPANSION_SHADOWLANDS),               -- Fatigued (Hunter)
+    [390435] = (EXPANSION >= LE_EXPANSION_DRAGONFLIGHT),              -- Exhaustion (Evoker - Fury of the Aspects)
 
     -- DRUID
-    [1126] = "name",                                            -- Mark of the Wild
-    [768] = true,                                               -- Cat Form
-    [5487] = true,                                              -- Bear Form
-    [24858] = true,                                             -- Moonkin Form
-    [114282] = (EXPANSION >= LE_EXPANSION_MISTS_OF_PANDARIA),   -- Treant Form
+    [1126] = "name",                                                  -- Mark of the Wild
+    [768] = true,                                                     -- Cat Form
+    [5487] = true,                                                    -- Bear Form
+    [24858] = true,                                                   -- Moonkin Form
+    [114282] = (EXPANSION >= LE_EXPANSION_MISTS_OF_PANDARIA),         -- Treant Form
 
     -- MAGE
-    [1459] = "name",                                            -- Arcane Intellect
+    [1459] = "name",                                                  -- Arcane Intellect
 
     -- PALADIN
-    [7294] = (EXPANSION <= LE_EXPANSION_CATACLYSM),             -- Retribution Aura
-    [19746] = (EXPANSION <= LE_EXPANSION_CATACLYSM),            -- Concentration Aura
-    [19891] = (EXPANSION <= LE_EXPANSION_CATACLYSM),            -- Resistance Aura
-    [32223] = (EXPANSION >= LE_EXPANSION_BURNING_CRUSADE),      -- Crusader Aura
+    [7294] = (EXPANSION <= LE_EXPANSION_CATACLYSM),                   -- Retribution Aura
+    [19746] = (EXPANSION <= LE_EXPANSION_CATACLYSM),                  -- Concentration Aura
+    [19891] = (EXPANSION <= LE_EXPANSION_CATACLYSM),                  -- Resistance Aura
+    [32223] = (EXPANSION >= LE_EXPANSION_BURNING_CRUSADE),            -- Crusader Aura
 
     -- PRIEST
     [1243] = (EXPANSION < LE_EXPANSION_MISTS_OF_PANDARIA) and "name", -- Power Word: Fortitude (Retail uses 21562)
@@ -57,82 +57,80 @@ AddBlacklist(general)
 --------------------------------------------------
 -- Classic
 --------------------------------------------------
-do
-    local data = {
-        -- DRUID
-        [1126] = true,                                      -- Mark of the Wild (Rank 1)
+local classic = {
+    -- DRUID
+    [1126] = true,                                           -- Mark of the Wild (Rank 1)
 
-        [467] = (EXPANSION < LE_EXPANSION_CATACLYSM),       -- Thorns (Rank 1)
+    [467] = (EXPANSION < LE_EXPANSION_CATACLYSM),            -- Thorns (Rank 1)
 
-        [24907] = (EXPANSION <= LE_EXPANSION_MISTS_OF_PANDARIA), -- Moonkin Aura
+    [24907] = (EXPANSION <= LE_EXPANSION_MISTS_OF_PANDARIA), -- Moonkin Aura
 
-        -- HUNTER
-        [19506] = (EXPANSION <= LE_EXPANSION_MISTS_OF_PANDARIA), -- Trueshot Aura
+    -- HUNTER
+    [19506] = (EXPANSION <= LE_EXPANSION_MISTS_OF_PANDARIA), -- Trueshot Aura
 
-        -- MAGE
-        [1459] = true,                                      -- Arcane Intellect (Rank 1)
+    -- MAGE
+    [1459] = true,                                           -- Arcane Intellect (Rank 1)
 
-        -- PALADIN
-        [19740] = (EXPANSION <= LE_EXPANSION_MISTS_OF_PANDARIA), -- Blessing of Might
+    -- PALADIN
+    [19740] = (EXPANSION <= LE_EXPANSION_MISTS_OF_PANDARIA), -- Blessing of Might
 
-        -- ROGUE
-        [1784] = false,                                     -- Stealth
-        [2823] = true,                                      -- Deadly Poison
-        [3408] = true,                                      -- Crippling Poison
+    -- ROGUE
+    [1784] = false,                                          -- Stealth
+    [2823] = true,                                           -- Deadly Poison
+    [3408] = true,                                           -- Crippling Poison
 
-        -- Consumables
-        [673] = true,                                       -- Elixir of Minor Defense
-        [2367] = true,                                      -- Elixir of Lion's Strength
-        [2374] = true,                                      -- Elixir of Minor Agility
-        [2378] = true,                                      -- Elixir of Minor Fortitude
-        [3160] = true,                                      -- Elixir of Lesser Agility
-        [3164] = true,                                      -- Elixir of Ogre's Strength
-        [3166] = true,                                      -- Elixir of Wisdom
-        [3220] = true,                                      -- Elixir of Defense
-        [3593] = true,                                      -- Elixir of Fortitude
-        [6512] = true,                                      -- Elixir of Detect Lesser Invisibility
-        [7178] = true,                                      -- Elixir of Water Breathing
-        [7844] = true,                                      -- Elixir of Fire Power
-        [8212] = true,                                      -- Elixir of Giant Growth
-        [11319] = true,                                     -- Elixir of Water Walking
-        [11328] = true,                                     -- Elixir of Agility
-        [11334] = true,                                     -- Elixir of Greater Agility
-        [11348] = true,                                     -- Elixir of Superior Defense
-        [11349] = true,                                     -- Elixir of Greater Defense
-        [11389] = true,                                     -- Elixir of Detect Undead
-        [11390] = true,                                     -- Arcane Elixir
-        [11396] = true,                                     -- Elixir of Greater Intellect
-        [11403] = true,                                     -- Elixir of Dream Vision
-        [11405] = true,                                     -- Elixir of the Giants
-        [11406] = true,                                     -- Elixir of Demonslaying
-        [11407] = true,                                     -- Elixir of Detect Demon
-        [11474] = true,                                     -- Elixir of Shadow Power
-        [12608] = true,                                     -- Catseye Elixir
-        [17535] = true,                                     -- Elixir of the Sages
-        [17537] = true,                                     -- Elixir of Brute Force
-        [17538] = true,                                     -- Elixir of the Mongoose
-        [17539] = true,                                     -- Greater Arcane Elixir
-        [21920] = true,                                     -- Elixir of Frost Power
-        [22807] = false,                                    -- Elixir Greater Water Breathing
-        [26276] = true,                                     -- Elixir of Greater Firepower
-        [26677] = true,                                     -- Elixir of Poison Resistance
+    -- Consumables
+    [673] = true,                                            -- Elixir of Minor Defense
+    [2367] = true,                                           -- Elixir of Lion's Strength
+    [2374] = true,                                           -- Elixir of Minor Agility
+    [2378] = true,                                           -- Elixir of Minor Fortitude
+    [3160] = true,                                           -- Elixir of Lesser Agility
+    [3164] = true,                                           -- Elixir of Ogre's Strength
+    [3166] = true,                                           -- Elixir of Wisdom
+    [3220] = true,                                           -- Elixir of Defense
+    [3593] = true,                                           -- Elixir of Fortitude
+    [6512] = true,                                           -- Elixir of Detect Lesser Invisibility
+    [7178] = true,                                           -- Elixir of Water Breathing
+    [7844] = true,                                           -- Elixir of Fire Power
+    [8212] = true,                                           -- Elixir of Giant Growth
+    [11319] = true,                                          -- Elixir of Water Walking
+    [11328] = true,                                          -- Elixir of Agility
+    [11334] = true,                                          -- Elixir of Greater Agility
+    [11348] = true,                                          -- Elixir of Superior Defense
+    [11349] = true,                                          -- Elixir of Greater Defense
+    [11389] = true,                                          -- Elixir of Detect Undead
+    [11390] = true,                                          -- Arcane Elixir
+    [11396] = true,                                          -- Elixir of Greater Intellect
+    [11403] = true,                                          -- Elixir of Dream Vision
+    [11405] = true,                                          -- Elixir of the Giants
+    [11406] = true,                                          -- Elixir of Demonslaying
+    [11407] = true,                                          -- Elixir of Detect Demon
+    [11474] = true,                                          -- Elixir of Shadow Power
+    [12608] = true,                                          -- Catseye Elixir
+    [17535] = true,                                          -- Elixir of the Sages
+    [17537] = true,                                          -- Elixir of Brute Force
+    [17538] = true,                                          -- Elixir of the Mongoose
+    [17539] = true,                                          -- Greater Arcane Elixir
+    [21920] = true,                                          -- Elixir of Frost Power
+    [22807] = false,                                         -- Elixir Greater Water Breathing
+    [26276] = true,                                          -- Elixir of Greater Firepower
+    [26677] = true,                                          -- Elixir of Poison Resistance
 
-        [17624] = false,                                    -- Flask of Petrification
-        [17626] = true,                                     -- Flask of the Titans
-        [17627] = true,                                     -- Flask of Distilled Wisdom
-        [17628] = true,                                     -- Flask od Supreme Power
+    [17624] = false,                                         -- Flask of Petrification
+    [17626] = true,                                          -- Flask of the Titans
+    [17627] = true,                                          -- Flask of Distilled Wisdom
+    [17628] = true,                                          -- Flask od Supreme Power
 
-        -- Costumes
-        [8220] = true,                                      -- Flip Out!
-        [8222] = true,                                      -- Yaaarrrr
-        [16739] = true,                                     -- Orb of Deception
+    -- Costumes
+    [8220] = true,                                           -- Flip Out!
+    [8222] = true,                                           -- Yaaarrrr
+    [16739] = true,                                          -- Orb of Deception
 
-        -- Items
-        [17619] = true,                                     -- Alchemist Stone
-    }
+    -- Items
+    [17619] = true,                                          -- Alchemist Stone
+}
 
-    AddBlacklist(data)
-end
+AddBlacklist(classic)
 
 --------------------------------------------------
 -- The Burning Crusade
@@ -160,6 +158,7 @@ if EXPANSION >= LE_EXPANSION_WRATH_OF_THE_LICH_KING then
         -- World Buffs
         [57940] = true, -- Essence of Wintergrasp
     }
+
     AddBlacklist(data)
 end
 
@@ -172,17 +171,18 @@ if EXPANSION >= LE_EXPANSION_CATACLYSM then
         [108503] = true, -- Grimoire of Sacrifice
 
         -- Items
-        [93337] = true, -- Champion of Ramkahen
-        [93795] = true, -- Stormwind Champion
-        [93806] = true, -- Darnassus Champion
-        [93825] = true, -- Orgrimmar Champion
-        [93828] = true, -- Silvermoon Champion
-        [97341] = true, -- Guild Champion
+        [93337] = true,  -- Champion of Ramkahen
+        [93795] = true,  -- Stormwind Champion
+        [93806] = true,  -- Darnassus Champion
+        [93825] = true,  -- Orgrimmar Champion
+        [93828] = true,  -- Silvermoon Champion
+        [97341] = true,  -- Guild Champion
 
         -- Customes
-        [74589] = true, -- Identity Crisis (Faded Wizard Hat)
-        [96312] = true, -- Kalytha's Haunted Locket
+        [74589] = true,  -- Identity Crisis (Faded Wizard Hat)
+        [96312] = true,  -- Kalytha's Haunted Locket
     }
+
     AddBlacklist(data)
 end
 
@@ -224,6 +224,7 @@ if EXPANSION >= LE_EXPANSION_MISTS_OF_PANDARIA then
         [114800] = true, -- Polyformic Acid Potion
         [110880] = true, -- 1st Place
     }
+
     AddBlacklist(data)
 end
 
@@ -240,6 +241,7 @@ if EXPANSION >= LE_EXPANSION_WARLORDS_OF_DRAENOR then
         -- ???
         [182422] = true, -- Training Gear
     }
+
     AddBlacklist(data)
 end
 
@@ -264,6 +266,7 @@ if EXPANSION >= LE_EXPANSION_LEGION then
         -- Mythic+
         [206151] = true, -- Challenger's Burden
     }
+
     AddBlacklist(data)
 end
 
@@ -317,6 +320,7 @@ if EXPANSION >= LE_EXPANSION_BATTLE_FOR_AZEROTH then
         [312456] = true, -- Elite Extermination
         [310720] = true, -- Elite Extermination
     }
+
     AddBlacklist(data)
 end
 
@@ -334,6 +338,7 @@ if EXPANSION >= LE_EXPANSION_SHADOWLANDS then
         [368510] = true, -- So'leash's Secret Technique
         [368512] = true, -- So'leash's Secret Technique
     }
+
     AddBlacklist(data)
 end
 
@@ -343,23 +348,23 @@ end
 if EXPANSION >= LE_EXPANSION_DRAGONFLIGHT then
     local data = {
         -- DEATHKNIGHT
-        
+
         -- MONK
         [166646] = true, -- Windwalking
 
         -- PALADIN
-        [465] = true, -- Devotion Aura
+        [465] = true,    -- Devotion Aura
         [32223] = true,  -- Crusader Aura
 
         -- PRIEST
-        [21562] = true, -- Power Word: Fortitude
+        [21562] = true,  -- Power Word: Fortitude
         [280398] = true, -- Sins of the Many
 
         -- SHAMAN
         [395197] = true, -- Mana Spring
 
         -- WARRIOR
-        [6673] = true, -- Battle Shout
+        [6673] = true,   -- Battle Shout
         [202602] = true, -- Into the Fray
 
         -- Dragons Island

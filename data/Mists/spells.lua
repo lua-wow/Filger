@@ -8,19 +8,19 @@ local AddSpells = ns.data.AddSpells
 --------------------------------------------------
 local data = {
     ["PRIEST"] = {
-        
+
     },
     ["MONK"] = {
-        [129914] = CreateSpellPriority(false), -- Power Strike
+        [115080] = CreateSpellPriority(false), -- Touch of Death
         [117666] = CreateSpellPriority(false), -- Legacy of the Emperor
-        [121125] = CreateSpellPriority(false), -- Touch of Death
+        [129914] = CreateSpellPriority(false), -- Power Strike
 
         -- Brewmaster
-        [123402] = CreateSpellPriority(9), -- Guard
-        [125359] = CreateSpellPriority(8), -- Tiger   Power
-        [128636] = CreateSpellPriority(8), -- Power Guard
-        [128939] = CreateSpellPriority(9), -- Elusive Brew
-        [132365] = CreateSpellPriority(10), -- Vengeance
+        [118636] = CreateSpellPriority(8),     -- Power Guard
+        [123402] = CreateSpellPriority(9),     -- Guard
+        [125359] = CreateSpellPriority(8),     -- Tiger Power
+        [128939] = CreateSpellPriority(9),     -- Elusive Brew
+        [132365] = CreateSpellPriority(10),    -- Vengeance
     }
 }
 

@@ -5,8 +5,6 @@ local AddBlacklist = ns.data.AddBlacklist
 --------------------------------------------------
 -- Classic Forever
 --------------------------------------------------
-do
-    local data = {}
+local data = {}
 
-    AddBlacklist(data)
-end
+AddBlacklist(data)
