@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.5.0] - 2026-10-29
+
 ### Added
 
 -   `/filger unseen` dev command and a plain Lua test runner
