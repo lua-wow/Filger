@@ -1,55 +1,241 @@
 local _, ns = ...
 
 local AddBlacklist = ns.data.AddBlacklist
+local In = ns.data.In
 
-local EXPANSION = _G.LE_EXPANSION_LEVEL_CURRENT or -1
-local LE_EXPANSION_CLASSIC = _G.LE_EXPANSION_CLASSIC or 0
-local LE_EXPANSION_BURNING_CRUSADE = _G.LE_EXPANSION_BURNING_CRUSADE or 1
-local LE_EXPANSION_WRATH_OF_THE_LICH_KING = _G.LE_EXPANSION_WRATH_OF_THE_LICH_KING or 2
-local LE_EXPANSION_CATACLYSM = _G.LE_EXPANSION_CATACLYSM or 3
-local LE_EXPANSION_MISTS_OF_PANDARIA = _G.LE_EXPANSION_MISTS_OF_PANDARIA or 4
-local LE_EXPANSION_WARLORDS_OF_DRAENOR = _G.LE_EXPANSION_WARLORDS_OF_DRAENOR or 5
-local LE_EXPANSION_LEGION = _G.LE_EXPANSION_LEGION or 6
-local LE_EXPANSION_BATTLE_FOR_AZEROTH = _G.LE_EXPANSION_BATTLE_FOR_AZEROTH or 7
-local LE_EXPANSION_SHADOWLANDS = _G.LE_EXPANSION_SHADOWLANDS or 8
-local LE_EXPANSION_DRAGONFLIGHT = _G.LE_EXPANSION_DRAGONFLIGHT or 9
-local LE_EXPANSION_WAR_WITHIN = _G.LE_EXPANSION_WAR_WITHIN or 10
-local LE_EXPANSION_MIDNIGHT = _G.LE_EXPANSION_MIDNIGHT or 11
+local EXPANSION = ns.client.expansion
+local LE = ns.expansions
 
 --------------------------------------------------
 -- Black List
 --------------------------------------------------
+-- "name": also hide every aura sharing this spell's localized name (all ranks, new food buffs)
 local general = {
-    ["Well Fed"] = true,
-    ["Drink"] = true,
-    ["Food"] = true,
- 
+    [430] = "name",                                                                 -- Drink
+    [433] = "name",                                                                 -- Food
+    [19705] = "name",                                                               -- Well Fed
+
     -- Lust
-    [57723] = (EXPANSION >= LE_EXPANSION_WRATH_OF_THE_LICH_KING),   -- Exhaustion (Heroism)
-    [57724] = (EXPANSION >= LE_EXPANSION_WRATH_OF_THE_LICH_KING),   -- Sated (Bloodlust)
-    [80354] = (EXPANSION >= LE_EXPANSION_MISTS_OF_PANDARIA),        -- Temporal Displacement (Mage)
-    [264689] = (EXPANSION >= LE_EXPANSION_SHADOWLANDS),             -- Fatigued (Hunter)
-    [390435] = (EXPANSION >= LE_EXPANSION_DRAGONFLIGHT),            -- Exhaustion (Evoker - Fury of the Aspects)
+    [57723] = In(LE.Wrath),                                                         -- Exhaustion (Heroism)
+    [57724] = In(LE.Wrath),                                                         -- Sated (Bloodlust)
+    [80354] = In(LE.Mists),                                                         -- Temporal Displacement (Mage)
+    [264689] = In(LE.Shadowlands),                                                  -- Fatigued (Hunter)
+    [390435] = In(LE.Dragonflight),                                                 -- Exhaustion (Evoker - Fury of the Aspects)
+
+    -- DEATHKNIGHT
+    [48263] = In(LE.Wrath, LE.Mists),                                               -- Frost Presence (Blood Presence on Cata, Mists)
+    [48265] = In(LE.Wrath, LE.Mists),                                               -- Unholy Presence
+    [48266] = In(LE.Wrath, LE.Mists),                                               -- Blood Presence (Frost Presence on Cata, Mists)
+    [55610] = In(LE.Wrath, LE.Mists),                                               -- Improved Icy Talons
+    [57330] = In(LE.Wrath, LE.Wrath) and "name" or In(LE.Mists, LE.Mists),          -- Horn of Winter
 
     -- DRUID
-    ["Mark of the Wild"] = true,
-    [1126] = true,                                              -- Mark of the Wild
-    [768] = true,                                               -- Cat Form
-    [5487] = true,                                              -- Bear Form
-    [24858] = true,                                             -- Moonkin Form
-    [114282] = (EXPANSION >= LE_EXPANSION_MISTS_OF_PANDARIA),   -- Treant Form
+    [1126] = "name",                                                                -- Mark of the Wild
+    [768] = true,                                                                   -- Cat Form
+    [5487] = true,                                                                  -- Bear Form
+    [24858] = true,                                                                 -- Moonkin Form
+    [114282] = In(LE.Mists),                                                        -- Treant Form
+
+    [5232] = In(LE.Classic, LE.Wrath),                                              -- Mark of the Wild (Rank 2)
+    [6756] = In(LE.Classic, LE.Wrath),                                              -- Mark of the Wild (Rank 3)
+    [5234] = In(LE.Classic, LE.Wrath),                                              -- Mark of the Wild (Rank 4)
+    [8907] = In(LE.Classic, LE.Wrath),                                              -- Mark of the Wild (Rank 5)
+    [9884] = In(LE.Classic, LE.Wrath),                                              -- Mark of the Wild (Rank 6)
+    [9885] = In(LE.Classic, LE.Wrath),                                              -- Mark of the Wild (Rank 7)
+    [26990] = In(LE.BurningCrusade, LE.Wrath),                                      -- Mark of the Wild (Rank 8)
+
+    [782] = In(LE.Classic, LE.Wrath),                                               -- Thorns (Rank 2)
+    [1075] = In(LE.Classic, LE.Wrath),                                              -- Thorns (Rank 3)
+    [8914] = In(LE.Classic, LE.Wrath),                                              -- Thorns (Rank 4)
+    [9756] = In(LE.Classic, LE.Wrath),                                              -- Thorns (Rank 5)
+    [9910] = In(LE.Classic, LE.Wrath),                                              -- Thorns (Rank 6)
+    [26992] = In(LE.BurningCrusade, LE.Wrath),                                      -- Thorns (Rank 7)
+
+    [783] = true,                                                                   -- Travel Form
+    [1066] = In(LE.Classic, LE.Mists),                                              -- Aquatic Form
+    [9634] = In(LE.Classic, LE.Wrath),                                              -- Dire Bear Form
+    [33943] = In(LE.BurningCrusade, LE.Mists),                                      -- Flight Form
+    [40120] = In(LE.BurningCrusade, LE.Mists),                                      -- Swift Flight Form
+
+    [21849] = In(LE.Classic, LE.Wrath) and "name",                                  -- Gift of the Wild
+    [21850] = In(LE.Classic, LE.Classic),                                           -- Gift of the Wild (Rank 2)
+
+    -- HUNTER
+    [13165] = In(LE.Classic, LE.Wrath) and "name" or In(LE.Mists, LE.Mists),        -- Aspect of the Hawk
+    [13163] = In(LE.Classic, LE.Wrath),                                             -- Aspect of the Monkey
 
     -- MAGE
-    ["Arcane Intellect"] = true,
+    [1459] = "name",                                                                -- Arcane Intellect
+
+    [1460] = In(LE.Classic, LE.Wrath),                                              -- Arcane Intellect (Rank 2)
+    [1461] = In(LE.Classic, LE.Wrath),                                              -- Arcane Intellect (Rank 3)
+    [10156] = In(LE.Classic, LE.Wrath),                                             -- Arcane Intellect (Rank 4)
+    [10157] = In(LE.Classic, LE.Wrath),                                             -- Arcane Intellect (Rank 5)
+    [27126] = In(LE.BurningCrusade, LE.Wrath),                                      -- Arcane Intellect (Rank 6)
+
+    [30482] = In(LE.BurningCrusade, LE.Wrath) and "name" or In(LE.Mists, LE.Mists), -- Molten Armor
+
+    [61316] = In(LE.Wrath, LE.Mists),                                               -- Dalaran Brilliance
+
+    [23028] = In(LE.Classic, LE.Wrath) and "name",                                  -- Arcane Brilliance
+
+    [168] = In(LE.Classic, LE.Wrath) and "name",                                    -- Frost Armor
+    [7300] = In(LE.Classic, LE.Classic),                                            -- Frost Armor (Rank 2)
+    [7301] = In(LE.Classic, LE.Classic),                                            -- Frost Armor (Rank 3)
+
+    [7302] = In(LE.Classic, LE.Wrath) and "name" or In(LE.Mists, LE.Mists),         -- Ice Armor
+    [7320] = In(LE.Classic, LE.Classic),                                            -- Ice Armor (Rank 2)
+    [10219] = In(LE.Classic, LE.Classic),                                           -- Ice Armor (Rank 3)
+    [10220] = In(LE.Classic, LE.Classic),                                           -- Ice Armor (Rank 4)
+
+    [6117] = In(LE.Classic, LE.Wrath) and "name" or In(LE.Mists, LE.Mists),         -- Mage Armor
+    [22782] = In(LE.Classic, LE.Classic),                                           -- Mage Armor (Rank 2)
+    [22783] = In(LE.Classic, LE.Classic),                                           -- Mage Armor (Rank 3)
 
     -- PALADIN
-    [7294] = (EXPANSION <= LE_EXPANSION_CATACLYSM),             -- Retribution Aura
-    [19746] = (EXPANSION <= LE_EXPANSION_CATACLYSM),            -- Concentration Aura
-    [19891] = (EXPANSION <= LE_EXPANSION_CATACLYSM),            -- Resistance Aura
-    [32223] = (EXPANSION >= LE_EXPANSION_BURNING_CRUSADE),      -- Crusader Aura
+    [7294] = In(LE.Classic, LE.Cataclysm),                                          -- Retribution Aura
+    [19746] = In(LE.Classic, LE.Cataclysm),                                         -- Concentration Aura
+    [19891] = In(LE.Classic, LE.Cataclysm),                                         -- Resistance Aura
+    [32223] = In(LE.BurningCrusade),                                                -- Crusader Aura
+
+    [465] = In(LE.Classic, LE.Wrath) and "name",                                    -- Devotion Aura
+    [25780] = In(LE.Classic, LE.Mists),                                             -- Righteous Fury
+    [20217] = In(LE.Classic, LE.Mists),                                             -- Blessing of Kings
+    [19740] = In(LE.Classic, LE.Wrath) and "name" or In(LE.Cataclysm, LE.Mists),    -- Blessing of Might
+    [19742] = In(LE.Classic, LE.Wrath) and "name",                                  -- Blessing of Wisdom
+    [25782] = In(LE.Classic, LE.Wrath) and "name",                                  -- Greater Blessing of Might
+    [25916] = In(LE.Classic, LE.Classic),                                           -- Greater Blessing of Might (Rank 2)
+    [25894] = In(LE.Classic, LE.Wrath) and "name",                                  -- Greater Blessing of Wisdom
+    [25918] = In(LE.Classic, LE.Classic),                                           -- Greater Blessing of Wisdom (Rank 2)
+    [25898] = In(LE.Classic, LE.Wrath),                                             -- Greater Blessing of Kings
+    [19899] = In(LE.Classic, LE.BurningCrusade),                                    -- Fire Resistance Aura (Rank 2)
+    [19900] = In(LE.Classic, LE.BurningCrusade),                                    -- Fire Resistance Aura (Rank 3)
+    [21084] = In(LE.Classic, LE.Wrath) and "name",                                  -- Seal of Righteousness
 
     -- PRIEST
-    ["Power Word: Fortitude"] = true,
+    [1243] = In(LE.Classic, LE.Cataclysm) and "name",                               -- Power Word: Fortitude (Retail uses 21562)
+
+    [25389] = In(LE.BurningCrusade, LE.Wrath),                                      -- Power Word: Fortitude (Rank 7)
+
+    [21562] = In(LE.Classic, LE.Wrath) and "name" or true,                          -- Prayer of Fortitude (Power Word: Fortitude from Cata)
+    [21564] = In(LE.Classic, LE.BurningCrusade),                                    -- Prayer of Fortitude (Rank 2)
+
+    [976] = In(LE.Classic, LE.BurningCrusade),                                      -- Shadow Protection (Rank 1)
+    [10957] = In(LE.Classic, LE.BurningCrusade),                                    -- Shadow Protection (Rank 2)
+
+    [27683] = In(LE.Classic, LE.BurningCrusade),                                    -- Prayer of Shadow Protection
+
+    [14819] = In(LE.Classic, LE.BurningCrusade),                                    -- Divine Spirit
+    [27681] = In(LE.Classic, LE.BurningCrusade),                                    -- Prayer of Spirit (Rank 1)
+    [32999] = In(LE.BurningCrusade, LE.Wrath),                                      -- Prayer of Spirit (Rank 2)
+    [588] = In(LE.Classic, LE.Wrath) and "name" or In(LE.Mists, LE.Mists),          -- Inner Fire
+    [15473] = In(LE.Classic, LE.Mists),                                             -- Shadowform
+
+    [1244] = In(LE.Classic, LE.Wrath),                                              -- Power Word: Fortitude (Rank 2)
+    [1245] = In(LE.Classic, LE.Wrath),                                              -- Power Word: Fortitude (Rank 3)
+    [2791] = In(LE.Classic, LE.Wrath),                                              -- Power Word: Fortitude (Rank 4)
+    [10937] = In(LE.Classic, LE.Wrath),                                             -- Power Word: Fortitude (Rank 5)
+    [10938] = In(LE.Classic, LE.Wrath),                                             -- Power Word: Fortitude (Rank 6)
+
+    -- ROGUE
+    [8679] = In(LE.Mists),                                                          -- Wound Poison
+    [5761] = In(LE.Mists),                                                          -- Mind-numbing Poison
+
+    -- SHAMAN
+    [324] = In(LE.Classic, LE.Wrath) and "name" or In(LE.Mists, LE.Mists),          -- Lightning Shield
+    [24398] = In(LE.BurningCrusade, LE.Wrath) and "name",                           -- Water Shield
+
+    -- Windfury Weapon has 3 IDs per rank on Era: cast, effect, and one with no class
+    -- (R1 8232/8233/8234, R2 8235/8236/8237, R3 10486/10484/10488, R4 16362/16361/16363)
+    [8232] = In(LE.Classic, LE.Classic) and "name",                                 -- Windfury Weapon
+
+    [30809] = In(LE.Wrath, LE.Mists),                                               -- Unleashed Rage
+    [51470] = In(LE.Wrath, LE.Mists),                                               -- Elemental Oath
+
+    [52127] = In(LE.Mists),                                                         -- Water Shield
+
+    -- WARLOCK
+    [687] = In(LE.Classic, LE.Wrath),                                               -- Demon Skin (Rank 1)
+    [696] = In(LE.Classic, LE.Wrath),                                               -- Demon Skin (Rank 2)
+
+    [6307] = In(LE.Classic, LE.Wrath),                                              -- Blood Pact (Rank 1)
+    [7804] = In(LE.Classic, LE.Wrath),                                              -- Blood Pact (Rank 2)
+    [7805] = In(LE.Classic, LE.Wrath),                                              -- Blood Pact (Rank 3)
+    [11766] = In(LE.Classic, LE.Wrath),                                             -- Blood Pact (Rank 4)
+    [11767] = In(LE.Classic, LE.Wrath),                                             -- Blood Pact (Rank 5)
+    [27268] = In(LE.BurningCrusade, LE.Wrath),                                      -- Blood Pact (Rank 6)
+
+    [706] = In(LE.Classic, LE.Wrath) and "name",                                    -- Demon Armor
+    [28176] = In(LE.BurningCrusade, LE.Wrath) and "name",                           -- Fel Armor
+
+    -- WARRIOR
+    [2457] = In(LE.Classic, LE.Mists),                                              -- Battle Stance
+    [71] = In(LE.Classic, LE.Mists),                                                -- Defensive Stance
+    [2458] = In(LE.Classic, LE.Mists),                                              -- Berserker Stance
+    [6673] = In(LE.Classic, LE.Wrath) and "name" or In(LE.Mists, LE.Mists),         -- Battle Shout
+    [469] = In(LE.BurningCrusade, LE.Wrath) and "name" or In(LE.Mists, LE.Mists),   -- Commanding Shout
+
+    -- Scrolls
+    [8091] = In(LE.Classic, LE.BurningCrusade),                                     -- Armor (Scroll of Protection)
+    [8094] = In(LE.Classic, LE.BurningCrusade),                                     -- Armor (Scroll of Protection II)
+    [8095] = In(LE.Classic, LE.BurningCrusade),                                     -- Armor (Scroll of Protection III)
+    [12175] = In(LE.Classic, LE.BurningCrusade),                                    -- Armor (Scroll of Protection IV)
+    [33079] = In(LE.BurningCrusade, LE.Wrath),                                      -- Armor (Scroll of Protection V)
+
+    [8096] = In(LE.Classic, LE.BurningCrusade),                                     -- Intellect (Scroll of Intellect)
+    [8097] = In(LE.Classic, LE.BurningCrusade),                                     -- Intellect (Scroll of Intellect II)
+    [8098] = In(LE.Classic, LE.BurningCrusade),                                     -- Intellect (Scroll of Intellect III)
+    [12176] = In(LE.Classic, LE.BurningCrusade),                                    -- Intellect (Scroll of Intellect IV)
+    [33078] = In(LE.BurningCrusade, LE.Wrath),                                      -- Intellect (Scroll of Intellect V)
+
+    [8099] = In(LE.Classic, LE.BurningCrusade),                                     -- Stamina (Scroll of Stamina)
+    [8100] = In(LE.Classic, LE.BurningCrusade),                                     -- Stamina (Scroll of Stamina II)
+    [8101] = In(LE.Classic, LE.BurningCrusade),                                     -- Stamina (Scroll of Stamina III)
+    [12178] = In(LE.Classic, LE.BurningCrusade),                                    -- Stamina (Scroll of Stamina IV)
+    [33081] = In(LE.BurningCrusade, LE.Wrath),                                      -- Stamina (Scroll of Stamina V)
+
+    [8112] = In(LE.Classic, LE.BurningCrusade),                                     -- Spirit Magic (Scroll of Spirit)
+    [8113] = In(LE.Classic, LE.BurningCrusade),                                     -- Spirit Magic (Scroll of Spirit II)
+    [8114] = In(LE.Classic, LE.BurningCrusade),                                     -- Spirit Magic (Scroll of Spirit III)
+    [12177] = In(LE.Classic, LE.BurningCrusade),                                    -- Spirit Magic (Scroll of Spirit IV)
+    [33080] = In(LE.BurningCrusade, LE.Wrath),                                      -- Spirit Magic (Scroll of Spirit V)
+
+    [8115] = In(LE.Classic, LE.BurningCrusade),                                     -- Agility (Scroll of Agility)
+    [8116] = In(LE.Classic, LE.BurningCrusade),                                     -- Agility (Scroll of Agility II)
+    [8117] = In(LE.Classic, LE.BurningCrusade),                                     -- Agility (Scroll of Agility III)
+    [12174] = In(LE.Classic, LE.BurningCrusade),                                    -- Agility (Scroll of Agility IV)
+    [33077] = In(LE.BurningCrusade, LE.Wrath),                                      -- Agility (Scroll of Agility V)
+
+    [8118] = In(LE.Classic, LE.BurningCrusade),                                     -- Strength (Scroll of Strength)
+    [8119] = In(LE.Classic, LE.BurningCrusade),                                     -- Strength (Scroll of Strength II)
+    [8120] = In(LE.Classic, LE.BurningCrusade),                                     -- Strength (Scroll of Strength III)
+    [12179] = In(LE.Classic, LE.BurningCrusade),                                    -- Strength (Scroll of Strength IV)
+    [33082] = In(LE.BurningCrusade, LE.Wrath),                                      -- Strength (Scroll of Strength V)
+
+    -- Consumables
+    [17629] = In(LE.Classic, LE.BurningCrusade),                                    -- Flask of Chromatic Resistance
+
+    -- Reputation
+    [17670] = In(LE.Classic, LE.BurningCrusade),                                    -- Agent Dawn Commission
+
+    -- Christimas
+    [26218] = In(LE.Classic, LE.BurningCrusade),                                    -- Mistletoe
+
+    -- Hallowen
+    [24755] = In(LE.Classic, LE.BurningCrusade),                                    -- Tricked or Treated
+
+    -- Booms
+    [15366] = In(LE.Classic, LE.Classic),                                           -- Songflower Serenade
+    [22817] = In(LE.Classic, LE.Classic),                                           -- Fengus' Ferocity
+    [22818] = In(LE.Classic, LE.Classic),                                           -- Mol'dar's Moxie
+    [22820] = In(LE.Classic, LE.Classic),                                           -- Slip'kik's Savvy
+    [22888] = In(LE.Classic, LE.Classic),                                           -- Rallying Cry of the Dragonslayer
+    [355363] = In(LE.Classic, LE.Classic),                                          -- Rallying Cry of the Dragonslayer
+    [23768] = In(LE.Classic, LE.Classic),                                           -- Sayge's Dark Fortune of Damage
+    [24425] = In(LE.Classic, LE.Classic),                                           -- Spirit of Zandalar
+    [11371] = In(LE.Classic, LE.Classic),                                           -- Gift of Arthas
+    [355365] = In(LE.Classic, LE.Classic),                                          -- Spirit of Zandalar
+    [16323] = In(LE.Classic, LE.Classic),                                           -- Juju Power
 }
 
 AddBlacklist(general)
@@ -57,87 +243,82 @@ AddBlacklist(general)
 --------------------------------------------------
 -- Classic
 --------------------------------------------------
-do
-    local data = {
-        -- DRUID
-        [1126] = true,                                      -- Mark of the Wild (Rank 1)
+local classic = {
+    -- DRUID
+    [1126] = true,                                           -- Mark of the Wild (Rank 1)
 
-        [467] = (EXPANSION < LE_EXPANSION_CATACLYSM),       -- Thorns (Rank 1)
+    [467] = In(LE.Classic, LE.Wrath),                        -- Thorns (Rank 1)
 
-        [24907] = (EXPANSION <= LE_EXPANSION_MISTS_OF_PANDARIA), -- Moonkin Aura
+    [24907] = In(LE.Classic, LE.Mists),                      -- Moonkin Aura
 
-        -- HUNTER
-        [19506] = (EXPANSION <= LE_EXPANSION_MISTS_OF_PANDARIA), -- Trueshot Aura
+    -- HUNTER
+    [19506] = In(LE.Classic, LE.Mists),                      -- Trueshot Aura
 
-        -- MAGE
-        [1459] = true,                                      -- Arcane Intellect (Rank 1)
+    -- MAGE
+    [1459] = true,                                           -- Arcane Intellect (Rank 1)
 
-        -- PALADIN
-        [19740] = (EXPANSION <= LE_EXPANSION_MISTS_OF_PANDARIA), -- Blessing of Might
+    -- ROGUE
+    [1784] = false,                                          -- Stealth
+    [2823] = true,                                           -- Deadly Poison
+    [3408] = true,                                           -- Crippling Poison
 
-        -- ROGUE
-        [1784] = false,                                     -- Stealth
-        [2823] = true,                                      -- Deadly Poison
-        [3408] = true,                                      -- Crippling Poison
+    -- Consumables
+    [673] = true,                                            -- Elixir of Minor Defense
+    [2367] = true,                                           -- Elixir of Lion's Strength
+    [2374] = true,                                           -- Elixir of Minor Agility
+    [2378] = true,                                           -- Elixir of Minor Fortitude
+    [3160] = true,                                           -- Elixir of Lesser Agility
+    [3164] = true,                                           -- Elixir of Ogre's Strength
+    [3166] = true,                                           -- Elixir of Wisdom
+    [3220] = true,                                           -- Elixir of Defense
+    [3593] = true,                                           -- Elixir of Fortitude
+    [6512] = true,                                           -- Elixir of Detect Lesser Invisibility
+    [7178] = true,                                           -- Elixir of Water Breathing
+    [7844] = true,                                           -- Elixir of Fire Power
+    [8212] = true,                                           -- Elixir of Giant Growth
+    [11319] = true,                                          -- Elixir of Water Walking
+    [11328] = true,                                          -- Elixir of Agility
+    [11334] = true,                                          -- Elixir of Greater Agility
+    [11348] = true,                                          -- Elixir of Superior Defense
+    [11349] = true,                                          -- Elixir of Greater Defense
+    [11389] = true,                                          -- Elixir of Detect Undead
+    [11390] = true,                                          -- Arcane Elixir
+    [11396] = true,                                          -- Elixir of Greater Intellect
+    [11403] = true,                                          -- Elixir of Dream Vision
+    [11405] = true,                                          -- Elixir of the Giants
+    [11406] = true,                                          -- Elixir of Demonslaying
+    [11407] = true,                                          -- Elixir of Detect Demon
+    [11474] = true,                                          -- Elixir of Shadow Power
+    [12608] = true,                                          -- Catseye Elixir
+    [17535] = true,                                          -- Elixir of the Sages
+    [17537] = true,                                          -- Elixir of Brute Force
+    [17538] = true,                                          -- Elixir of the Mongoose
+    [17539] = true,                                          -- Greater Arcane Elixir
+    [21920] = true,                                          -- Elixir of Frost Power
+    [22807] = false,                                         -- Elixir Greater Water Breathing
+    [26276] = true,                                          -- Elixir of Greater Firepower
+    [26677] = true,                                          -- Elixir of Poison Resistance
 
-        -- Consumables
-        [673] = true,                                       -- Elixir of Minor Defense
-        [2367] = true,                                      -- Elixir of Lion's Strength
-        [2374] = true,                                      -- Elixir of Minor Agility
-        [2378] = true,                                      -- Elixir of Minor Fortitude
-        [3160] = true,                                      -- Elixir of Lesser Agility
-        [3164] = true,                                      -- Elixir of Ogre's Strength
-        [3166] = true,                                      -- Elixir of Wisdom
-        [3220] = true,                                      -- Elixir of Defense
-        [3593] = true,                                      -- Elixir of Fortitude
-        [6512] = true,                                      -- Elixir of Detect Lesser Invisibility
-        [7178] = true,                                      -- Elixir of Water Breathing
-        [7844] = true,                                      -- Elixir of Fire Power
-        [8212] = true,                                      -- Elixir of Giant Growth
-        [11319] = true,                                     -- Elixir of Water Walking
-        [11328] = true,                                     -- Elixir of Agility
-        [11334] = true,                                     -- Elixir of Greater Agility
-        [11348] = true,                                     -- Elixir of Superior Defense
-        [11349] = true,                                     -- Elixir of Greater Defense
-        [11389] = true,                                     -- Elixir of Detect Undead
-        [11390] = true,                                     -- Arcane Elixir
-        [11396] = true,                                     -- Elixir of Greater Intellect
-        [11403] = true,                                     -- Elixir of Dream Vision
-        [11405] = true,                                     -- Elixir of the Giants
-        [11406] = true,                                     -- Elixir of Demonslaying
-        [11407] = true,                                     -- Elixir of Detect Demon
-        [11474] = true,                                     -- Elixir of Shadow Power
-        [12608] = true,                                     -- Catseye Elixir
-        [17535] = true,                                     -- Elixir of the Sages
-        [17537] = true,                                     -- Elixir of Brute Force
-        [17538] = true,                                     -- Elixir of the Mongoose
-        [17539] = true,                                     -- Greater Arcane Elixir
-        [21920] = true,                                     -- Elixir of Frost Power
-        [22807] = false,                                    -- Elixir Greater Water Breathing
-        [26276] = true,                                     -- Elixir of Greater Firepower
-        [26677] = true,                                     -- Elixir of Poison Resistance
+    [17624] = false,                                         -- Flask of Petrification
+    [17626] = true,                                          -- Flask of the Titans
+    [17627] = true,                                          -- Flask of Distilled Wisdom
+    [17628] = true,                                          -- Flask od Supreme Power
 
-        [17624] = false,                                    -- Flask of Petrification
-        [17626] = true,                                     -- Flask of the Titans
-        [17627] = true,                                     -- Flask of Distilled Wisdom
-        [17628] = true,                                     -- Flask od Supreme Power
+    -- Costumes
+    [8220] = true,                                           -- Flip Out!
+    [8222] = true,                                           -- Yaaarrrr
+    [16739] = true,                                          -- Orb of Deception
 
-        -- Costumes
-        [8220] = true,                                      -- Flip Out!
-        [8222] = true,                                      -- Yaaarrrr
-        [16739] = true,                                     -- Orb of Deception
+    -- Items
+    [17619] = true,                                          -- Alchemist Stone
+}
 
-        -- Items
-        [17619] = true,                                     -- Alchemist Stone
-    }
-
-    AddBlacklist(data)
-end
+AddBlacklist(classic)
 
 --------------------------------------------------
 -- The Burning Crusade
 --------------------------------------------------
-if EXPANSION >= LE_EXPANSION_BURNING_CRUSADE then
+if EXPANSION >= LE.BurningCrusade then
     local data = {
         -- Events
         [44185] = true, -- Jack-o'-Lanterned!
@@ -149,7 +330,7 @@ end
 --------------------------------------------------
 -- Wrath of the Lich King
 --------------------------------------------------
-if EXPANSION >= LE_EXPANSION_WRATH_OF_THE_LICH_KING then
+if EXPANSION >= LE.Wrath then
     local data = {
         -- Items
         [72968] = true, -- Precious's Ribbon
@@ -160,36 +341,38 @@ if EXPANSION >= LE_EXPANSION_WRATH_OF_THE_LICH_KING then
         -- World Buffs
         [57940] = true, -- Essence of Wintergrasp
     }
+
     AddBlacklist(data)
 end
 
 --------------------------------------------------
 -- Cataclysm
 --------------------------------------------------
-if EXPANSION >= LE_EXPANSION_CATACLYSM then
+if EXPANSION >= LE.Cataclysm then
     local data = {
         -- WARLOCK
         [108503] = true, -- Grimoire of Sacrifice
 
         -- Items
-        [93337] = true, -- Champion of Ramkahen
-        [93795] = true, -- Stormwind Champion
-        [93806] = true, -- Darnassus Champion
-        [93825] = true, -- Orgrimmar Champion
-        [93828] = true, -- Silvermoon Champion
-        [97341] = true, -- Guild Champion
+        [93337] = true,  -- Champion of Ramkahen
+        [93795] = true,  -- Stormwind Champion
+        [93806] = true,  -- Darnassus Champion
+        [93825] = true,  -- Orgrimmar Champion
+        [93828] = true,  -- Silvermoon Champion
+        [97341] = true,  -- Guild Champion
 
         -- Customes
-        [74589] = true, -- Identity Crisis (Faded Wizard Hat)
-        [96312] = true, -- Kalytha's Haunted Locket
+        [74589] = true,  -- Identity Crisis (Faded Wizard Hat)
+        [96312] = true,  -- Kalytha's Haunted Locket
     }
+
     AddBlacklist(data)
 end
 
 --------------------------------------------------
 -- Mists of Pandaria
 --------------------------------------------------
-if EXPANSION >= LE_EXPANSION_MISTS_OF_PANDARIA then
+if EXPANSION >= LE.Mists then
     local data = {
         -- HUNTER
         [109260] = true, -- Aspect of the Iron Hawk
@@ -224,13 +407,14 @@ if EXPANSION >= LE_EXPANSION_MISTS_OF_PANDARIA then
         [114800] = true, -- Polyformic Acid Potion
         [110880] = true, -- 1st Place
     }
+
     AddBlacklist(data)
 end
 
 --------------------------------------------------
 -- Warlords of Draenor
 --------------------------------------------------
-if EXPANSION >= LE_EXPANSION_WARLORDS_OF_DRAENOR then
+if EXPANSION >= LE.Warlords then
     local data = {
         -- World Buffs
         [186401] = true, -- Sign of the Skirmisher
@@ -240,13 +424,14 @@ if EXPANSION >= LE_EXPANSION_WARLORDS_OF_DRAENOR then
         -- ???
         [182422] = true, -- Training Gear
     }
+
     AddBlacklist(data)
 end
 
 --------------------------------------------------
 -- Legion
 --------------------------------------------------
-if EXPANSION >= LE_EXPANSION_LEGION then
+if EXPANSION >= LE.Legion then
     local data = {
         -- PvP
         [282559] = true, -- Enlisted
@@ -264,13 +449,14 @@ if EXPANSION >= LE_EXPANSION_LEGION then
         -- Mythic+
         [206151] = true, -- Challenger's Burden
     }
+
     AddBlacklist(data)
 end
 
 --------------------------------------------------
 -- Battle for Azeroth
 --------------------------------------------------
-if EXPANSION >= LE_EXPANSION_BATTLE_FOR_AZEROTH then
+if EXPANSION >= LE.BattleForAzeroth then
     local data = {
         -- World Buffs
         [335148] = true, -- Sign of the Twisting Nether
@@ -317,13 +503,14 @@ if EXPANSION >= LE_EXPANSION_BATTLE_FOR_AZEROTH then
         [312456] = true, -- Elite Extermination
         [310720] = true, -- Elite Extermination
     }
+
     AddBlacklist(data)
 end
 
 --------------------------------------------------
 -- Shadowlands
 --------------------------------------------------
-if EXPANSION >= LE_EXPANSION_SHADOWLANDS then
+if EXPANSION >= LE.Shadowlands then
     local data = {
         -- World Buffs
         [347600] = true, -- Infused Ruby Tracking
@@ -334,32 +521,32 @@ if EXPANSION >= LE_EXPANSION_SHADOWLANDS then
         [368510] = true, -- So'leash's Secret Technique
         [368512] = true, -- So'leash's Secret Technique
     }
+
     AddBlacklist(data)
 end
 
 --------------------------------------------------
 -- Dragonflight
 --------------------------------------------------
-if EXPANSION >= LE_EXPANSION_DRAGONFLIGHT then
+if EXPANSION >= LE.Dragonflight then
     local data = {
         -- DEATHKNIGHT
-        
+
         -- MONK
         [166646] = true, -- Windwalking
 
         -- PALADIN
-        [465] = true, -- Devotion Aura
+        [465] = true,    -- Devotion Aura
         [32223] = true,  -- Crusader Aura
 
         -- PRIEST
-        [21562] = true, -- Power Word: Fortitude
         [280398] = true, -- Sins of the Many
 
         -- SHAMAN
         [395197] = true, -- Mana Spring
 
         -- WARRIOR
-        [6673] = true, -- Battle Shout
+        [6673] = true,   -- Battle Shout
         [202602] = true, -- Into the Fray
 
         -- Dragons Island

@@ -31,10 +31,28 @@ One `Filger.toc` serves every client (`## Interface: 11509, 20506, 38002, 50504,
   (e.g. `[ExcludeLoadGameType tbc, wrath, mists, standard]`).
 - `core\compat.lua` and `core\util.lua` load first (Blizzard globals only), so `core\data.lua`
   can use them at load.
-- Data is loaded before `core\init.xml` via `data\[Game]\<file>.lua`; every `[Game]` folder must
-  contain every listed file (stubs are fine). `data/shared/` loads everywhere, gated by
-  `LE_EXPANSION_LEVEL_CURRENT`. `[Family]` is too coarse for spell data.
+- Data is loaded after `core\init.xml` (it needs `ns.client`) via `data\[Game]\<file>.lua`; every
+  `[Game]` folder must contain every listed file (stubs are fine). `data/shared/` loads everywhere,
+  gated by `ns.client.expansion` (`LE_EXPANSION_LEVEL_CURRENT`) against `ns.expansions`.
+  `[Family]` is too coarse for spell data.
 - `## Title` is one untagged line.
+
+## Blacklist data
+
+- An ID listed for two or more games whose games form one range on
+  Vanilla → TBC → Wrath → Mists → Standard goes in the `general` table of
+  `data/shared/blacklist.lua` as `[id] = In(LE.<from>, LE.<to>)` (`to` omitted: up to the current
+  expansion). Retail additions stay in the `if EXPANSION >= LE.<X>` blocks.
+- Otherwise (one game, or games that don't form one range) it stays in `data/<Game>/blacklist.lua`.
+- Forever (expansion 0) inherits every shared range starting at `LE.Classic`. Era-only content
+  (Hardcore, Season of Discovery) stays in `data/Vanilla/`. `data/Cata/` is not maintained.
+- `"name"` also hides every aura with the same localized name. Use it where a game lists only
+  rank 1 (TBC, Wrath) or every rank (Vanilla); use `true` from Mists on, where `"name"` would
+  catch unrelated auras. An ID whose value differs by range is one expression:
+  `In(LE.Classic, LE.Wrath) and "name" or In(LE.Mists, LE.Mists)`.
+- `false` never un-hides an ID that another source hides; write "everywhere except X" as a range.
+- After moving IDs, `lua tests/dump.lua | diff before.txt -` must be empty unless the change is
+  intended; in game, compare `/filger dump`.
 
 ## Libraries
 
@@ -45,6 +63,10 @@ Git submodules in `libs/`: `LibStub` (loaded by `libs/init.xml`, every client) a
 
 Flags in `core/init.lua` (`ns.client`) compare `WOW_PROJECT_ID` (see table). `ns.client.isClassic`
 is any `classic` family client; `ns.client.isMainline` is its negation (Retail and Forever).
+
+`ns.client.expansion` is `LE_EXPANSION_LEVEL_CURRENT`; `ns.expansions` holds the `LE_EXPANSION_*`
+constants. Verified in-game: every `LE_EXPANSION_*` constant exists on every supported client, and
+`LE_EXPANSION_LEVEL_CURRENT` is 0 on Era and Forever, 1 on TBC, 2 on Titan, 4 on MoP and 11 on Retail.
 
 ## Secret values (Midnight / Retail)
 

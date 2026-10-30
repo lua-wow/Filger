@@ -108,7 +108,7 @@ do
         -- aura container buttons are unnamed; "$parent" would create globals like "Icon"
         local name = button:GetName()
 
-        button:CreateBackdrop()
+        ns.CreateBackdrop(button)
         -- ElvUI stores its backdrop as `backdrop`
         button.Backdrop = button.Backdrop or button.backdrop
 

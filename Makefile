@@ -4,6 +4,7 @@ SHELL := bash
 .SHELLFLAGS := -eu -o pipefail -c
 
 LUACHECK ?= luacheck
+LUA ?= lua
 
 # -- help ---------------------
 
@@ -17,3 +18,9 @@ help: ## Show available commands
 .PHONY: check
 check: ## Run static analysis (see .luacheckrc)
 	@$(LUACHECK) .
+
+# -- tests --------------------
+
+.PHONY: test
+test: ## Run unit tests (tests/run.lua)
+	@$(LUA) tests/run.lua

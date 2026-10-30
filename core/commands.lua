@@ -68,3 +68,28 @@ local auras = function(arg)
 end
 
 ns.AddCommand("auras", auras, "list your auras on a unit with their spell IDs (/filger auras player buffs)")
+
+-- lists configured IDs that don't resolve on this client
+local validate = function()
+    local groups, keys = {}, {}
+    for _, entry in ipairs(ns.data.invalid) do
+        local key = entry.kind .. (entry.class and ("/" .. entry.class) or "")
+        if not groups[key] then
+            groups[key] = {}
+            table.insert(keys, key)
+        end
+        table.insert(groups[key], entry.id)
+    end
+
+    if #keys == 0 then
+        print(Filger.title, "all configured IDs are valid.")
+        return
+    end
+
+    table.sort(keys)
+    for _, key in ipairs(keys) do
+        print(Filger.title, "|cffff8000" .. key .. "|r", table.concat(groups[key], ", "))
+    end
+end
+
+ns.AddCommand("validate", validate, "list configured IDs that don't exist on this client")
