@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+-   `/filger unseen` dev command and a plain Lua test runner
+
+### Changed
+
+-   Code restructured into `ns` modules; data and config built at `ADDON_LOADED`
+-   Spell, cooldown and blacklist tables updated for every client
+-   Cooldowns cache name and icon and refresh on equipment and spellbook changes
+-   LibDispel updated and loaded only on Classic
+-   Dev commands disabled by default
+
+### Removed
+
+-   Unused `FilgerData` SavedVariable, experimental slash commands and dead code
+
+### Fixed
+
+-   Stale timers hiding permanent auras; updated auras not re-filtered
+-   Class spell table mutated when merging `ALL`
+-   Tooltip guard and secret cooldown cast detection
+
 ## [5.4.0] - 2026-10-25
 
 ### Changed
