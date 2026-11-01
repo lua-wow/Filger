@@ -114,7 +114,8 @@ for _, game in ipairs(games) do
     for _, class in ipairs(classes) do
         if class ~= classes[1] then data = build(game, class) end
         for i, row in ipairs(data.cooldowns) do
-            emit(tag, "cooldown", class, i, row.spellId and ("spell " .. row.spellId) or ("slot " .. row.slotId))
+            emit(tag, "cooldown", class, i, row.spellId and ("spell " .. row.spellId)
+                or row.slotId and ("slot " .. row.slotId) or "potion")
         end
         local invalid = {}
         for _, entry in ipairs(data.invalid) do

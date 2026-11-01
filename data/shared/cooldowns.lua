@@ -2,6 +2,7 @@ local _, ns = ...
 
 local CreateSpellCooldown = ns.data.CreateSpellCooldown
 local CreateSlotCooldown = ns.data.CreateSlotCooldown
+local CreatePotionCooldown = ns.data.CreatePotionCooldown
 local AddCooldowns = ns.data.AddCooldowns
 
 local expansion = ns.client.expansion
@@ -26,6 +27,7 @@ local gear = {
     CreateSlotCooldown(6),  -- Waist
     CreateSlotCooldown(13), -- Trinket 1
     CreateSlotCooldown(14), -- Trinket 2
+    CreatePotionCooldown(true), -- Potions (shared cooldown)
 }
 
 -- racials and gear slots go after the player class cooldowns

@@ -7,15 +7,9 @@ local AddSpells = ns.data.AddSpells
 -- Mists of Pandaria Classic
 --------------------------------------------------
 local data = {
-    ["PALADIN"] = {
-        -- Holy
-        [82327] = CreateSpellPriority(5),      -- Holy Radiance
-        [86273] = CreateSpellPriority(5),      -- Illuminated Healing
-    },
-    ["PRIEST"] = {
-        -- Discipline
-        [81661] = CreateSpellPriority(8),      -- Evangelism
-        [59889] = CreateSpellPriority(7),      -- Borrowed Time
+    ["MAGE"] = {
+        -- Arcane
+        [36032] = CreateSpellPriority(10),     -- Arcane Charges
     },
     ["MONK"] = {
         [115080] = CreateSpellPriority(false), -- Touch of Death
@@ -28,7 +22,17 @@ local data = {
         [125359] = CreateSpellPriority(8),     -- Tiger Power
         [128939] = CreateSpellPriority(9),     -- Elusive Brew
         [132365] = CreateSpellPriority(10),    -- Vengeance
-    }
+    },
+    ["PALADIN"] = {
+        -- Holy
+        [82327] = CreateSpellPriority(5),      -- Holy Radiance
+        [86273] = CreateSpellPriority(5),      -- Illuminated Healing
+    },
+    ["PRIEST"] = {
+        -- Discipline
+        [81661] = CreateSpellPriority(8),      -- Evangelism
+        [59889] = CreateSpellPriority(7),      -- Borrowed Time
+    },
 }
 
 AddSpells(data)

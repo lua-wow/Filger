@@ -142,7 +142,8 @@ local dump = function()
     -- cooldown order is display order, so it is not sorted
     local cooldowns = {}
     for _, row in ipairs(ns.data.cooldowns) do
-        table.insert(cooldowns, row.spellId and ("spell" .. row.spellId) or ("slot" .. row.slotId))
+        table.insert(cooldowns, row.spellId and ("spell" .. row.spellId)
+            or row.slotId and ("slot" .. row.slotId) or "potion")
     end
 
     print(Filger.title, "dump: blacklist", #ids, "ids", checksum(ids), "/", #names, "names", checksum(names))
