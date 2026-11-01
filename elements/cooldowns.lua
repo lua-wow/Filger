@@ -6,6 +6,13 @@ local GetInventoryItemLink = _G.GetInventoryItemLink
 local GetItemInfo = C_Item.GetItemInfo
 local GetInventoryItemCooldown = _G.GetInventoryItemCooldown
 local GetOverrideSpell = C_Spell and C_Spell.GetOverrideSpell
+local GetItemCooldown = C_Container.GetItemCooldown
+local GetContainerNumSlots = C_Container.GetContainerNumSlots
+local GetContainerItemID = C_Container.GetContainerItemID
+local GetItemInfoInstant = C_Item.GetItemInfoInstant
+local GetItemSpell = C_Item.GetItemSpell
+local NUM_BAG_SLOTS = _G.NUM_BAG_SLOTS
+local Enum = _G.Enum
 
 -- Compat
 local GetSpellInfo = ns.compat.GetSpellInfo
@@ -17,6 +24,26 @@ local IsSecret = ns.compat.IsSecret
 -- COOLDOWNS
 --------------------------------------------------
 local cooldown_proto = {}
+
+-- adds use spell ID -> item ID for every potion in the bags; never wiped, so the last potion
+-- still maps if the bags update before its cast event.
+-- some potion-class items have their own cooldown, so the drunk one is picked by its cast
+local scanPotions = function(potions)
+    for bag = 0, NUM_BAG_SLOTS do
+        for slot = 1, GetContainerNumSlots(bag) do
+            local itemId = GetContainerItemID(bag, slot)
+            if itemId then
+                local _, _, _, _, _, classId, subClassId = GetItemInfoInstant(itemId)
+                if classId == Enum.ItemClass.Consumable and subClassId == Enum.ItemConsumableSubclass.Potion then
+                    local _, spellId = GetItemSpell(itemId)
+                    if spellId then
+                        potions[spellId] = itemId
+                    end
+                end
+            end
+        end
+    end
+end
 
 do
     --[[ Callback: cooldown_proto:Update(unit, data, index)
@@ -38,6 +65,7 @@ do
         button.unit = unit
         button.spellId = data.spellId
         button.slotId = data.slotId
+        button.itemId = data.itemId
 
         -- timers
         button.expirationTime = data.expirationTime or GetTime()
@@ -112,7 +140,8 @@ do
         local d = self.rows[data]
         if not d then
             d = {
-                index = data.spellId and ("SPELL_" .. data.spellId) or ("SLOT_" .. data.slotId),
+                index = data.spellId and ("SPELL_" .. data.spellId)
+                    or data.slotId and ("SLOT_" .. data.slotId) or "POTION",
                 spellId = data.spellId,
                 slotId = data.slotId
             }
@@ -160,6 +189,20 @@ do
                 d.name = nil
                 d.icon = nil
                 d.itemLink = nil
+                enabled = 0
+            end
+        elseif data.potion then
+            local itemId = self.potionId
+            if itemId and itemId ~= d.itemId then
+                local name, _, _, _, _, _, _, _, _, icon = GetItemInfo(itemId)
+                d.name = name
+                d.icon = icon
+                -- item info can be uncached on first lookup; keep retrying until it returns a name
+                d.itemId = name and itemId
+            end
+            if d.itemId then
+                start, duration, enabled = GetItemCooldown(d.itemId)
+            else
                 enabled = 0
             end
         end
@@ -240,6 +283,11 @@ do
         end
     end
 
+    -- potionId is kept when the potion leaves the bags, so a running cooldown stays shown
+    function cooldown_proto:BAG_UPDATE_DELAYED()
+        scanPotions(self.potions)
+    end
+
     -- talent/spec changes alter isKnown and overrides
     function cooldown_proto:SPELLS_CHANGED()
         self:ForceUpdate()
@@ -249,6 +297,13 @@ do
     function cooldown_proto:UNIT_SPELLCAST_SUCCEEDED(unit, guid, spellId)
         if IsSecret(spellId) then return end
         self.casted[spellId] = true
+
+        -- SPELL_UPDATE_COOLDOWN can fire before this, so refresh once the drunk potion is known
+        local itemId = self.potions and self.potions[spellId]
+        if itemId and itemId ~= self.potionId then
+            self.potionId = itemId
+            self:ForceUpdate()
+        end
     end
 
     function cooldown_proto:Enable(data)
@@ -264,6 +319,15 @@ do
         self:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
         self:RegisterEvent("SPELLS_CHANGED")
         self:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", self.unit)
+
+        for _, row in next, self.spells do
+            if row.potion then
+                self.potions = {}
+                scanPotions(self.potions)
+                self:RegisterEvent("BAG_UPDATE_DELAYED")
+                break
+            end
+        end
     end
 end
 

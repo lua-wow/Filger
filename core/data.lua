@@ -50,6 +50,14 @@ function data.CreateSlotCooldown(slotId, enabled)
     return { slotId = slotId, enabled = enabled }
 end
 
+-- one row for the shared potion cooldown; the element resolves it to whichever potion is in the bags
+function data.CreatePotionCooldown(enabled)
+    if (enabled == nil) then
+        enabled = true
+    end
+    return { potion = true, enabled = enabled }
+end
+
 -- true when the client's expansion is within from..to (inclusive; `to` optional);
 -- reads ns.client at call time, since core\init.xml loads after this file
 function data.In(from, to)
@@ -117,7 +125,7 @@ local collectCooldowns = function(class, seen, out, invalid)
                 table.insert(invalid, { kind = "duplicate", class = class, id = row.spellId })
             elseif row.enabled then
                 if row.spellId then seen[row.spellId] = true end
-                if row.slotId or GetSpellInfo(row.spellId) then
+                if row.slotId or row.potion or GetSpellInfo(row.spellId) then
                     if out then table.insert(out, row) end
                 else
                     table.insert(invalid, { kind = "cooldown", class = class, id = row.spellId })
