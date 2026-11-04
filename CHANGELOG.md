@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   `/filger test` fills every frame with random timed auras until the next command
 
+### Changed
+
+-   Cooldowns fill a centered row left to right, soonest first, instead of alternating from the center
+-   Secret cooldowns sort after timed ones, in the order they appeared
+
 ## [5.5.0] - 2026-10-29
 
 ### Added

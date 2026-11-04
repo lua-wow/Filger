@@ -27,16 +27,12 @@ do
             if (not button) then break end
 
             if anchor == "CENTER" then
-                -- Centralized positioning logic
+                -- left to right in sorted order, each row centered on the anchor
                 local index = i - from
-                local col, row
-                if index % 2 == 0 then
-                    col = math.floor(index / 2)
-                else
-                    col = -math.floor(index / 2) - 1
-                end
-                row = math.floor(index / cols)
-                
+                local row = math.floor(index / cols)
+                local rowCount = math.min(cols, to - from + 1 - row * cols)
+                local col = index % cols - (rowCount - 1) / 2
+
                 button:ClearAllPoints()
                 button:SetPoint(anchor, element, anchor, col * sizex, row * sizey)
             else

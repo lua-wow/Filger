@@ -126,10 +126,21 @@ do
     --[[ Override: cooldown_proto.SortCooldowns(a, b)
     Defines a custom sorting algorithm for ordering the cooldowns.
 
+    Timed cooldowns come first, by expiration. Secret cooldowns follow in the order they were
+    shown: their end time is secret and can't be compared.
+
     Overridden by the more specific SortCooldowns overrides if they are defined.
     --]]
     cooldown_proto.SortCooldowns = function(a, b)
-        if (a.expirationTime ~= b.expirationTime) then
+        local aSecret, bSecret = a.durationObject ~= nil, b.durationObject ~= nil
+        if aSecret ~= bSecret then
+            return bSecret
+        end
+        if aSecret then
+            if a.shownAt ~= b.shownAt then
+                return a.shownAt < b.shownAt
+            end
+        elseif a.expirationTime ~= b.expirationTime then
             return a.expirationTime < b.expirationTime
         end
         return a.index < b.index
@@ -235,12 +246,15 @@ do
 
                 if self:FilterCooldown(data) then
                     self.active[row] = data
+                    -- kept on the reused row table, so wiping self.active doesn't reset it
+                    data.shownAt = data.shownAt or GetTime()
                     -- a secret cooldown already shown counts as cast, in case the cast event's spellID was secret
                     if data.durationObject then
                         self.casted[data.spellId] = true
                     end
                 else
                     self.active[row] = nil
+                    data.shownAt = nil
                     -- an on-hold cooldown (e.g. Inner Focus) starts later; keep the cast so it shows then
                     if data.spellId and data.enabled then
                         self.casted[data.spellId] = nil
