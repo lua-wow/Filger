@@ -28,7 +28,8 @@
             "Edit(~/.github/addons/refs/**)"
         ],
         "additionalDirectories": [
-            "../refs"
+            "../refs/wow-ui-source",
+            "../spellbook"
         ]
     }
 }

@@ -7,6 +7,14 @@ local AurasSecret = ns.compat.AurasSecret
 -- Slash Commands
 ------------------------------------------------------------
 local commands = {}
+local testing = false
+
+local function SetTest(enabled)
+    testing = enabled
+    for _, element in ipairs(ns.spawned) do
+        element:SetTest(enabled)
+    end
+end
 
 SLASH_FILGER1 = "/filger"
 SlashCmdList["FILGER"] = function(cmd)
@@ -16,6 +24,13 @@ SlashCmdList["FILGER"] = function(cmd)
     
     -- empty or unknown command: show help
     local entry = commands[command] or commands["help"]
+
+    -- test mode lasts until the next command; "/filger test" again only stops it
+    if testing then
+        SetTest(false)
+        if command == "test" then return end
+    end
+
     entry.func(arg)
 end
 
@@ -42,6 +57,8 @@ local help = function()
 end
 
 ns.AddCommand("help", help, "list commands")
+
+ns.AddCommand("test", function() SetTest(true) end, "fill every frame with random auras until the next command")
 
 -- lists the unit's own auras with their spell IDs, to fill data/<Game>/spells.lua
 -- usage: /filger auras player buffs (arg arrives without spaces: "playerbuffs")

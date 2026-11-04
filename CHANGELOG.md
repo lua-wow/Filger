@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+-   `/filger test` fills every frame with random timed auras until the next command
+
 ## [5.5.0] - 2026-10-29
 
 ### Added

@@ -6,6 +6,7 @@ local Filger = ns.Filger
 --------------------------------------------------
 local isInit = false
 local spawned = {}
+ns.spawned = spawned
 
 Filger:RegisterEvent("ADDON_LOADED")
 Filger:RegisterEvent("PLAYER_LOGIN")
