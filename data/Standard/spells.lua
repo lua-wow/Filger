@@ -126,6 +126,7 @@ local data = {
         [1260619] = CreateSpellPriority(3),    -- Elevated Stagger
         [325092] = CreateSpellPriority(10),    -- Purified Chi
         [1241059] = CreateSpellPriority(3),    -- Celestial Infusion
+        [1262035] = CreateSpellPriority(6),    -- Fuel on the Fire
 
         -- Windwalker
         [137639] = CreateSpellPriority(8),     -- Storm, Earth, and Fire
