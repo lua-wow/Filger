@@ -93,6 +93,7 @@ local general = {
     [22783] = In(LE.Classic, LE.Classic),                                           -- Mage Armor (Rank 3)
 
     -- PALADIN
+    [5502] = In(LE.Classic, LE.Cataclysm),                                          -- Sense Undead
     [7294] = In(LE.Classic, LE.Cataclysm),                                          -- Retribution Aura
     [19746] = In(LE.Classic, LE.Cataclysm),                                         -- Concentration Aura
     [19891] = In(LE.Classic, LE.Cataclysm),                                         -- Resistance Aura
@@ -110,7 +111,6 @@ local general = {
     [25898] = In(LE.Classic, LE.Wrath),                                             -- Greater Blessing of Kings
     [19899] = In(LE.Classic, LE.BurningCrusade),                                    -- Fire Resistance Aura (Rank 2)
     [19900] = In(LE.Classic, LE.BurningCrusade),                                    -- Fire Resistance Aura (Rank 3)
-    [21084] = In(LE.Classic, LE.Wrath) and "name",                                  -- Seal of Righteousness
 
     -- PRIEST
     [1243] = In(LE.Classic, LE.Cataclysm) and "name",                               -- Power Word: Fortitude (Retail uses 21562)
@@ -174,6 +174,10 @@ local general = {
     [2458] = In(LE.Classic, LE.Mists),                                              -- Berserker Stance
     [6673] = In(LE.Classic, LE.Wrath) and "name" or In(LE.Mists, LE.Mists),         -- Battle Shout
     [469] = In(LE.BurningCrusade, LE.Wrath) and "name" or In(LE.Mists, LE.Mists),   -- Commanding Shout
+
+    -- Professions
+    [2580] = true,                                                                  -- Find Minerals
+    [2383] = true,                                                                  -- Find Herbs
 
     -- Scrolls
     [8091] = In(LE.Classic, LE.BurningCrusade),                                     -- Armor (Scroll of Protection)
